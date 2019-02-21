@@ -88,7 +88,7 @@ export default {
 }
 body
 {
-    background-image:url('hexagon.svg');
+    background-image:url('./assets/hexagon.svg');
 }
 .mek-flex-row
 {
