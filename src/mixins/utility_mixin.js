@@ -32,20 +32,13 @@ export default
         },
         invisible_pad:function(_array_of_items)
         {
-            /* let longest=_array_of_items.reduce(function(_length,_element)
-            {
-                return _element.length > _length ? _element.length : _length;
-            },0);
-            return "F".repeat(longest);
-             */
             let longestString="";
-            let longest=_array_of_items.reduce(function(_length,_element)
+            _array_of_items.forEach(function(_element)
             {
-                if(_element.length > _length)
+                if(_element.length > longestString.length)
                 {
                     longestString=_element;
                 }
-                return _element.length > _length ? _element.length : _length;
             },0);
             return longestString+"XX";
         },

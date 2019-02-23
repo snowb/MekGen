@@ -1,67 +1,52 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Range Mod</div>
-                <table style="margin:auto;">
-                    <tr style="font-weight:bold; border-bottom:1px solid black;">
-                        <td>Range Mod</td>
-                        <td>Range</td>
-                        <td>Cost</td>
-                    </tr>
-                    <tr><td colspan=3 style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(range_mod,index) in range_mod_table" :key="'range-mod-'+index"
-                        class="clickable"
-                        :class="selectedItem('selected_range_mod_index',index,'selected_item')"
-                        @click="select_range_mod(range_mod)"
-                    >
-                        <td>{{range_mod.range_mod*100}}%</td>
-                        <td style="text-align:left;">&nbsp;&nbsp;{{range_mod.range_mod*baseRange}}</td>
-                        <td style="text-align:left;">&nbsp;&nbsp;x{{decimalPad(range_mod.cost)}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>RANGE_MOD</td>
-                        <td>range</td>
-                        <td>cost</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="range_mod_table"
+        :headers="{range_mod:'Range Mod',range:'Range',cost:'Cost'}"
+        name="Range Mod" flow="col" :showHeaders="true"
+        :format="{range_mod:'percent',cost:'multiplier'}"
+        :selectedIndices="selected_range_mod_index"
+        @update-selected-indices="select_range_mod"
+    ></mek-sub-component-table>
 </template>
 
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
+
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name: "mek_range_mod",
     props:["rangeMod","baseRange"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={}
         obj.range_mod_table=
             [
-                {range_mod:0,cost:0.5},
-                {range_mod:0.25,cost:0.62},
-                {range_mod:0.5,cost:0.75},
-                {range_mod:0.75,cost:0.88},
-                {range_mod:1,cost:1},
-                {range_mod:1.25,cost:1.12},
-                {range_mod:1.5,cost:1.25},
-                {range_mod:1.75,cost:1.38},
-                {range_mod:2,cost:1.5},
-                {range_mod:2.5,cost:1.75},
-                {range_mod:3,cost:2},
+                {range_mod:0,cost:0.5,range:0},
+                {range_mod:0.25,cost:0.62,range:0.25*3},
+                {range_mod:0.5,cost:0.75,range:0.5*3},
+                {range_mod:0.75,cost:0.88,range:0.75*3},
+                {range_mod:1,cost:1,range:1*3},
+                {range_mod:1.25,cost:1.12,range:1.25*3},
+                {range_mod:1.5,cost:1.25,range:1.5*3},
+                {range_mod:1.75,cost:1.38,range:1.75*3},
+                {range_mod:2,cost:1.5,range:2*3},
+                {range_mod:2.5,cost:1.75,range:2.5*3},
+                {range_mod:3,cost:2,range:3*3},
             ];
         return obj;
     },
     methods:
     {
-        select_range_mod:function(_range_mod)
+        select_range_mod:function(_range_mod_index)
         {
-            this.$emit("update-range-mod",_range_mod);
+            this.$emit("update-range-mod",this.range_mod_table[_range_mod_index]);
         }
     },
     computed:
@@ -83,7 +68,18 @@ export default
             {
                 this.select_range_mod(this.range_mod_table[index]);
             }
-            return index;
+            return [index];
+        }
+    },
+    watch:
+    {
+        baseRange(_newval)
+        {
+            let newtable=this.range_mod_table.map((_val)=>
+            {
+                return {range_mod:_val.range_mod,cost:_val.cost,range:_newval*_val.range_mod}
+            });
+            this.$set(this,"range_mod_table",newtable);
         }
     }
 }

@@ -17,13 +17,14 @@
                             @click="updateSelectedIndices(index)"
                         >
                             <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                                {{prefix(key)}}{{item[key]}}
+                                <!--{{prefix(key)}}{{item[key]}}-->
+                                {{formatOutput(item[key],key)}}
                             </div>
                         </td>
                     </tr>
                 </table>
                 <table style="margin:auto;" v-else>
-                    <tr v-if="showHeaders">
+                    <tr v-if="showHeaders" class="head_row">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
                             {{header}}
                         </th>
@@ -35,7 +36,8 @@
                         @click="updateSelectedIndices(index)"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                            {{prefix(key)}}{{item[key]}}
+                            <!--{{prefix(key)}}{{item[key]}}-->
+                            {{formatOutput(item[key],key)}}
                         </td>
                     </tr>
                     <tr style="visibility:hidden;height:0px;line-height:0px;">
@@ -50,12 +52,11 @@
 </template>
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
-import utility_mixin from "../../mixins/utility_mixin";
 
 export default 
 {
     name:"mek_sub_component_table",
-    props:["name","items","headers","flow","selectedIndices","pkey","multiplier","showHeaders"],
+    props:["name","items","headers","flow","selectedIndices","showHeaders","format"],
     /*
         name: String, title of the sub-component
         items: Array[Object], array of objects to display in the sub-component
@@ -64,6 +65,7 @@ export default
         selectedIndices: Array[Number], currently selected elements
         pkey: String, primary key for determining selected index/indices
         multiplier: Boolean, whether component is a cost multipler
+        format: String, how to format the output of item data comma-seperated tied to keys
      */
     mixins:[selected_item_mixin],
     components:{},
@@ -81,6 +83,25 @@ export default
         updateSelectedIndices(_index)
         {
             this.$emit("update-selected-indices",_index);
+        },
+        formatOutput(_data, _key)
+        {
+            if(typeof this.format==="undefined" || typeof this.format[_key]==="undefined")
+            {
+                return _data;
+            }
+            let formatArray=this.format[_key].split(",").map(el=>el.toLowerCase());
+            let outputData=_data;
+            if(formatArray.includes("percent"))
+            {
+                outputData=_data*100+"%";
+            }
+            if(formatArray.includes("multiplier"))
+            {
+                outputData="x"+outputData;
+            }
+
+            return outputData;
         }
     },
     computed:
@@ -150,6 +171,11 @@ export default
     text-align:right;
     border-right:1px solid black;
     margin-right:5px;
+}
+.head_row
+{
+    font-weight:bold; 
+    border-bottom:1px solid black;
 }
 .clickable1
 {

@@ -1,34 +1,8 @@
 <template>
-    <!--span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Features</div>
-                <table style="margin:auto;">
-                    <tr style="font-weight:bold; border-bottom:1px solid black;">
-                        <td>Feature</td>
-                        <td>Cost</td>
-                    </tr>
-                    <tr><td colspan=2 style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(feature,index) in filteredFeatureTable" :key="'projectile-feature-'+index"
-                        class="clickable"
-                        :class="selectedItemMultiple('selected_feature_index_array',index,'selected_item')"
-                        @click="select_feature(feature.feature)"
-                    >
-                        <td>{{feature.feature}}</td>
-                        <td>x{{feature.cost}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>{{invisible_pad(flat_feature_array)}}</td>
-                        <td>WWW</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span-->
     <mek-sub-component-table
         :items="filteredFeatureTable"
         :headers="{feature:'Feature',cost:'Cost'}"
-        :showHeaders="true"
+        :showHeaders="true" :format="{cost:'multiplier'}"
         :selected-indices="selected_feature_index_array"
         @update-selected-indices="select_feature"
         name="Features"

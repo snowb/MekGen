@@ -2,8 +2,7 @@
     <mek-sub-component-table
         :items="damage_table"
         :headers="{damage:'Damage',cost:'Cost',range:'Range'}"
-        name="Damage" flow="row" :multiplier="false"
-        pkey="damage"
+        name="Damage" flow="row" :showHeaders="true"
         :selectedIndices="damage_index"
         @update-selected-indices="select_damage"
     ></mek-sub-component-table>
