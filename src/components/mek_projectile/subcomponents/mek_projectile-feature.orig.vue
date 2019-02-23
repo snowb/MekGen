@@ -1,5 +1,5 @@
 <template>
-    <!--span class="mek-flex-col">
+    <span class="mek-flex-col">
         <div class="metallic_background_small">
             <div class="subsection_container">
                 <div class="subsection_header_small">Features</div>
@@ -24,31 +24,17 @@
                 </table>
             </div>
         </div>
-    </span-->
-    <mek-sub-component-table
-        :items="filteredFeatureTable"
-        :headers="{feature:'Feature',cost:'Cost'}"
-        :showHeaders="true"
-        :selected-indices="selected_feature_index_array"
-        @update-selected-indices="select_feature"
-        name="Features"
-        flow="col"
-    ></mek-sub-component-table>
+    </span>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_projectile_feature",
     props:["featureArray","burstValue"],
     mixins:[selected_item_mixin, utility_mixin],
-    components:
-    {
-        "mek-sub-component-table":mek_sub_component_table
-    },
     data:function()
     {
         let obj={};
@@ -73,22 +59,22 @@ export default
     },
     methods:
     {
-        select_feature:function(_selected_feature_index)
+        select_feature:function(_selected_feature)
         {
             this.burstValue;
-            let select_feature_name=this.feature_table[_selected_feature_index].feature;
-            let isExclusivePhalanx=this.is_exclusive_feature("exclusive_phalanx",select_feature_name);
-            let isExclusivePersonnel=this.is_exclusive_feature("exclusive_personnel",select_feature_name);
-            let featureClone=Object.assign({},this.filteredFeatureTable[_selected_feature_index]);
+            let isExclusivePhalanx=this.is_exclusive_feature("exclusive_phalanx",_selected_feature);
+            let isExclusivePersonnel=this.is_exclusive_feature("exclusive_personnel",_selected_feature);
+            let feature_index=this.find_feature_index(_selected_feature);
+            let featureClone=Object.assign({},this.filteredFeatureTable[feature_index]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
             {//filter out matching feature (toggle)
-                return _val.feature.toLowerCase()!=select_feature_name.toLowerCase();
+                return _val.feature.toLowerCase()!=_selected_feature.toLowerCase();
             });
 
             let togglefeature=this.selected_feature_array.some((_elem)=>
             {
-                return _elem.feature.toLowerCase()==select_feature_name.toLowerCase();
+                return _elem.feature.toLowerCase()==_selected_feature.toLowerCase();
             },this);
 
             if(isExclusivePhalanx && isExclusivePersonnel)
@@ -241,24 +227,10 @@ export default
             {
                 return this.feature_table.filter((_val)=>
                 {
-                    return !this.is_exclusive_feature("exclusive_phalanx",_val.feature);// || this.is_exclusive_feature("exclusive_personnel",_val.feature) ;
+                    return !this.is_exclusive_feature("exclusive_phalanx",_val.feature) || this.is_exclusive_feature("exclusive_personnel",_val.feature) ;
                 },this);
             }
             return this.feature_table;
-        }
-    },
-    watch:
-    {
-        "burstValue":function(_newval,_oldval)
-        {
-            if(_newval<=1 && _oldval>1)
-            {
-                let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
-                {//filter out phalanx selected features if changing from BV>1 to BV=1
-                    return !_val.exclusive_phalanx;
-                })
-                this.$emit("update-feature",temp_selected_feature_array);
-            }
         }
     }
 }

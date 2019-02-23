@@ -39,7 +39,9 @@
                         </td>
                     </tr>
                     <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>SERVO MOUNTED</td>
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -48,6 +50,7 @@
 </template>
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
+import utility_mixin from "../../mixins/utility_mixin";
 
 export default 
 {
@@ -98,6 +101,25 @@ export default
                 _newArray.push(obj);
                 return _newArray;
             },[]);
+        },
+        largestKeyValues()
+        {
+            return this.itemDisplayedKeys.reduce((_newObj,_elem)=>
+            {
+                for(let key in _elem)
+                {
+                    if(typeof _newObj[key]==="undefined")
+                    {
+                        _newObj[key]="";
+                    }
+                    let stringVal=(""+_elem[key]);
+                    if(_newObj[key].length < stringVal.length)
+                    {
+                        _newObj[key]="xx"+stringVal+"xx";
+                    }
+                }
+                return _newObj;
+            },{});
         }
     }
 }
