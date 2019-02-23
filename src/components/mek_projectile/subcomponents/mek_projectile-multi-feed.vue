@@ -1,43 +1,27 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small" style="white-space:nowrap;">Multi-Feed</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">Feeds</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(feed,index) in multi_feed_table" :key="'projectile-multi_feed-'+index"
-                            class="clickable"
-                            :class="selectedItem('multi_feed_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_multi_feed(feed)"
-                        >{{feed.feeds}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(feed,index) in multi_feed_table" :key="'projectile-feed-cost-'+index"
-                            class="clickable" 
-                            :class="selectedItem('multi_feed_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_multi_feed(feed)"
-                        >x{{feed.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="multi_feed_table"
+        :headers="{feeds:'Feeds',cost:'Cost'}"
+        name="Multi-Feed" flow="row" :multiplier="true"
+        pkey="feeds"
+        :selectedIndices="multi_feed_index"
+        @update-selected-indices="select_multi_feed"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_projectile_multi_feed",
     props:["multiFeed"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -50,15 +34,13 @@ export default
             {feeds:4,cost:1.6}
         ]
 
-        obj.selected_multi_feed={feeds:1,cost:1};
-
         return obj;
     },
     methods:
     {
-        select_multi_feed:function(_multi_feed)
+        select_multi_feed:function(_multi_feed_index)
         {
-            this.$emit("update-multi-feed",_multi_feed);
+            this.$emit("update-multi-feed", this.multi_feed_table[_multi_feed_index]);
         },
     },
     computed:
@@ -80,7 +62,7 @@ export default
             {
                 this.select_multi_feed(this.multi_feed_table[index]);
             }
-            return index;
+            return [index];
         }
     }
 }

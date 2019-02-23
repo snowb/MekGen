@@ -1,5 +1,5 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
+    <!--span class="mek-flex-col" style="align-self:baseline;">
         <div class="metallic_background_small">
             <div class="subsection_container">
                 <div class="subsection_header_small" style="white-space:nowrap;">Mount Type</div>
@@ -18,24 +18,39 @@
                 </table>
             </div>
         </div>
-    </span>
+    </span-->
+    <mek-sub-component-table
+        :items="mount_type_table"
+        :headers="{mount_type:'Mount Type'}"
+        :showHeaders="false"
+        :selected-indices="selected_mount_type_index"
+        @update-selected-indices="select_mount_type"
+        name="Mount Type"
+        flow="col"
+    ></mek-sub-component-table>
 </template>
 
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
+
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name: "mek_mount_type",
     props:["mountType"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={}
         obj.mount_type_table=
             [
-                {mount_type:"Servo-Mounted"},
-                {mount_type:"Handheld"},
+                {mount_type:"Servo-Mounted",cost:1},
+                {mount_type:"Handheld",cost:2},
             ];
         return obj;
     },
@@ -43,7 +58,7 @@ export default
     {
         select_mount_type:function(_mount_type)
         {
-            this.$emit("update-mount-type",_mount_type);
+            this.$emit("update-mount-type",this.mount_type_table[_mount_type]);
         }
     },
     computed:
@@ -61,7 +76,7 @@ export default
                 }
             },this);
             
-            return index;
+            return [index];
         }
     }
 }

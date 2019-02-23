@@ -1,47 +1,30 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small" style="white-space:nowrap;">Burst Value</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">BV</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(bv,index) in burst_value_table" :key="'projectile-burst_value-'+index"
-                            class="clickable"
-                            :class="selectedItem('burst_value_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_burst_value(bv)"
-                        >{{bv.burst_value}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(bv,index) in burst_value_table" :key="'projectile-burst-cost-'+index"
-                            class="clickable" 
-                            :class="selectedItem('burst_value_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_burst_value(bv)"
-                        >x{{bv.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="burst_value_table"
+        :headers="{burst_value:'BV',cost:'Cost'}"
+        name="Burst Value" flow="row" :multiplier="true"
+        pkey="burst_value"
+        :selectedIndices="burst_value_index"
+        @update-selected-indices="select_burst_value"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_projectile_burst_value",
     props:["burstValue"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
-
         obj.burst_value_table=
         [
             {burst_value:1,cost:1},
@@ -54,15 +37,13 @@ export default
             {burst_value:8,cost:4.5},
         ]
 
-        obj.selected_burst_value={feeds:1,cost:1};
-
         return obj;
     },
     methods:
     {
-        select_burst_value:function(_burst_value)
+        select_burst_value:function(_burst_value_index)
         {
-            this.$emit("update-burst-value",_burst_value);
+            this.$emit("update-burst-value",this.burst_value_table[_burst_value_index]);
         },
     },
     computed:
@@ -84,7 +65,7 @@ export default
             {
                 this.select_burst_value(this.burst_value_table[index]);
             }
-            return index;
+            return [index];
         }
     }
 }

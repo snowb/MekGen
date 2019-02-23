@@ -32,7 +32,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 
 export default 
 {
-    name:"mek_melee_feature",
+    name:"mek_projectile_feature",
     props:["featureArray","burstValue"],
     mixins:[selected_item_mixin, utility_mixin],
     data:function()
@@ -72,40 +72,45 @@ export default
                 return _val.feature.toLowerCase()!=_selected_feature.toLowerCase();
             });
 
-            let togglefeature=temp_selected_feature_array.length!=this.selected_feature_array.length;
+            let togglefeature=this.selected_feature_array.some((_elem)=>
+            {
+                return _elem.feature.toLowerCase()==_selected_feature.toLowerCase();
+            },this);
 
             if(isExclusivePhalanx && isExclusivePersonnel)
-            {
+            {//filter out exclusive phalanx and personnel
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.exclusive_phalanx && !_val.exclusive_personnel;
                 })
             }
             if(isExclusivePhalanx)
-            {
+            {//filter out exclusive phalanx
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.exclusive_phalanx;
                 })
             }
             if(isExclusivePersonnel)
-            {
+            {//filter out exclusive personnel
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.exclusive_personnel;
                 })
             }
 
-            this.$set(this,"selected_feature_array",temp_selected_feature_array);
-
             if(!togglefeature)
             {
-                this.selected_feature_array.push(featureClone);
+                temp_selected_feature_array.push(featureClone);
             }
+            
+            this.$set(this,"selected_feature_array",temp_selected_feature_array);
+            
             if(temp_selected_feature_array.length==0)
             {
                 this.$set(this,"selected_feature_array",[]);
             }
+
             this.$emit("update-feature",this.selected_feature_array);
         },
         find_feature_index:function(_feature)
@@ -172,7 +177,7 @@ export default
                 {
                     _prev.push(_val);
                     hasExclusivePhalanx=true;
-                    hasExclusivePhalanx=true;
+                    hasExclusivePersonnel=true;
                     feature_list.push(_val.feature.toLowerCase());
                 }
                 if(isPhalanx && !hasExclusivePhalanx)
@@ -205,6 +210,7 @@ export default
                 this.$emit("update-feature",this.selected_feature_array);
             }
             this.burstValue;
+
             return indices;
         },
         flat_feature_array:function()

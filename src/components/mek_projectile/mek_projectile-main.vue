@@ -4,44 +4,44 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
+        
         <div class="mek-inline-flex-row">
             <mek-projectile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-projectile-damage>
-            <div class="mek-inline-flex-col">
-                <mek-projectile-accuracy 
+            <mek-projectile-accuracy 
                     @update-accuracy="updateAccuracy" 
                     :accuracy="selected_accuracy"
                 ></mek-projectile-accuracy>
-                <mek-projectile-multi-feed 
-                    @update-multi-feed="updateMultiFeed" 
-                    :multi-feed="selected_multi_feed"
-                ></mek-projectile-multi-feed>
-                <mek-projectile-burst-value 
+            <mek-projectile-burst-value 
                     @update-burst-value="updateBurstValue" 
                     :burst-value="selected_burst_value"
                 ></mek-projectile-burst-value>
-                <mek-projectile-mount-type 
-                    @update-mount-type="updateMountType" 
-                    :mount-type="selected_mount_type"
-                ></mek-projectile-mount-type>
-            </div>
             <div class="mek-inline-flex-row">
+                <div class="mek-inline-flex-col">
+                    <mek-projectile-multi-feed 
+                        @update-multi-feed="updateMultiFeed" 
+                        :multi-feed="selected_multi_feed"
+                    ></mek-projectile-multi-feed>
+                    
+                    <mek-projectile-mount-type 
+                        @update-mount-type="updateMountType" 
+                        :mount-type="selected_mount_type"
+                    ></mek-projectile-mount-type>
+                </div>
                 <mek-projectile-range-mod style="align-self:baseline;"
                     @update-range-mod="updateRangeMod"
                     :range-mod="selected_range_mod"
                     :base-range="selected_damage.range"
                 ></mek-projectile-range-mod>
-                <div class="mek-inline-flex-col" style="align-self:baseline;">
-                    <mek-projectile-feature style="align-self:baseline;"
-                            @update-feature="updateFeature"
-                            :feature-array="feature_array"
-                            :burst-value="selected_burst_value.burst_value"
-                        ></mek-projectile-feature>
-                    <mek-space-efficiency style="align-self:baseline;"
-                        :space_efficiency="efficiencies.space"
-                        :raw_space="raw_space"
-                        @update-efficiencies="updateEfficiencies"
-                    ></mek-space-efficiency>
-                </div>
+                <mek-projectile-feature style="align-self:baseline;"
+                        @update-feature="updateFeature"
+                        :feature-array="feature_array"
+                        :burst-value="selected_burst_value.burst_value"
+                    ></mek-projectile-feature>
+                <mek-space-efficiency style="align-self:baseline;"
+                    :space_efficiency="efficiencies.space"
+                    :raw_space="raw_space"
+                    @update-efficiencies="updateEfficiencies"
+                ></mek-space-efficiency>
             </div>
             
                 
@@ -232,10 +232,10 @@ export default
             return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
             return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
-            return_data.range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
-            return_data.multi_feed=JSON.parse(JSON.stringify(this.selected_multi_feed));
-            return_data.burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
-            return_data.mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
+            return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
+            return_data.selected_multi_feed=JSON.parse(JSON.stringify(this.selected_multi_feed));
+            return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
+            return_data.selected_mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
 
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -325,7 +325,7 @@ export default
                     && selectedComponent.component_category=="equipment" 
                     && selectedComponent.component_type=="projectile")
                 {
-                    this.ingest_projectile_data(selectedComponent);
+                    this.ingest_data(selectedComponent);
                 }
                 return false;
             }

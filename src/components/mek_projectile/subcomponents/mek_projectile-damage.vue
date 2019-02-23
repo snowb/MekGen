@@ -1,38 +1,27 @@
 <template>
-    <span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Damage</div>
-                <table>
-                    <tr>
-                        <th>Kills</th>
-                        <th>Range</th>
-                        <th >Cost</th>
-                    </tr>
-                    <tr v-for="(dmg,index) in damage_table"
-                        :key="'emw-damage-'+index"
-                        @click="select_damage(dmg,index)"
-                        :class="selectedItem('damage_index',index,'selected_item')"
-                        class="clickable" 
-                    >
-                        <td id="left">{{dmg.damage}}</td>
-                        <td id="left">{{dmg.range}}</td>
-                        <td id="right">{{dmg.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="damage_table"
+        :headers="{damage:'Damage',cost:'Cost',range:'Range'}"
+        name="Damage" flow="row" :multiplier="false"
+        pkey="damage"
+        :selectedIndices="damage_index"
+        @update-selected-indices="select_damage"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_emw_damage",
     props:["damage"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -53,9 +42,9 @@ export default
     },
     methods:
     {
-        select_damage:function(_damage)
+        select_damage:function(_damage_index)
         {
-            this.$emit("update-damage",_damage);
+            this.$emit("update-damage", this.damage_table[_damage_index]);
         },
     },
     computed:
@@ -84,7 +73,7 @@ export default
             {   
                 this.select_damage(this.damage_table[damage_index]);
             }
-            return damage_index;
+            return [damage_index];
         }
     }
 }
