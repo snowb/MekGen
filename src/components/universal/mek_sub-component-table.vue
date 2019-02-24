@@ -17,13 +17,12 @@
                             @click="updateSelectedIndices(index)"
                         >
                             <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                                <!--{{prefix(key)}}{{item[key]}}-->
                                 {{formatOutput(item[key],key)}}
                             </div>
                         </td>
                     </tr>
                 </table>
-                <table style="margin:auto;" v-else>
+                <table style="margin:auto;" v-else-if="flow=='col'">
                     <tr v-if="showHeaders" class="head_row">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
                             {{header}}
@@ -36,11 +35,47 @@
                         @click="updateSelectedIndices(index)"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                            <!--{{prefix(key)}}{{item[key]}}-->
                             {{formatOutput(item[key],key)}}
                         </td>
                     </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
+                    <tr class="invisible_pad_row">
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
+                    </tr>
+                </table>
+                <table style="margin:auto;" v-if="flow=='dropdown'">
+                    <tr v-if="showHeaders" class="head_row">
+                        <th v-for="(header,key) in headers" :key="key+'-header-'+name">
+                            {{header}}
+                        </th>
+                    </tr>
+                    <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
+                    <tr class="pad selected_item1" @click="showDropdown=true"
+                        :style="hiddenDropDown"
+                    >
+                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
+                        >
+                            {{itemDisplayedKeys[selectedIndices[0]][key]}}
+                        </td>
+                    </tr>
+                    <tr class="invisible_pad_row">
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
+                    </tr>
+                </table>
+                <table class="dropdown-table" v-if="flow=='dropdown' && showDropdown">
+                    <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                        class="clickable1 pad"
+                        :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
+                        @click="updateSelectedIndices(index);showDropdown=false"
+                    >
+                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                            {{formatOutput(item[key],key)}}
+                        </td>
+                    </tr>
+                    <tr class="invisible_pad_row">
                         <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                             {{largestKeyValues[key]}}
                         </td>
@@ -72,6 +107,7 @@ export default
     data:()=>
     {
         let obj={};
+        obj.showDropdown=false;
         return obj;
     },
     methods:
@@ -134,18 +170,38 @@ export default
                         _newObj[key]="";
                     }
                     let stringVal=(""+_elem[key]);
-                    if(_newObj[key].length < stringVal.length)
+                    if(_newObj[key].length <= stringVal.length)
                     {
                         _newObj[key]="xx"+stringVal+"xx";
                     }
                 }
                 return _newObj;
             },{});
+        },
+        hiddenDropDown()
+        {
+            return this.showDropdown ? "visibility:hidden;" : "";
         }
     }
 }
 </script>
 <style scoped>
+.invisible_pad_row
+{
+    visibility:hidden;
+    height:0px;
+    line-height:0px;
+    font-weight:bold;
+}
+.dropdown-table
+{
+    margin:auto;
+    position:absolute;
+    background-color:#aaa;
+    top:37px;
+    border-radius: 7px;
+    box-shadow: #222 0px 0px 5px 2px;
+}
 .subsection_header_small1
 {
     font-weight: bold;

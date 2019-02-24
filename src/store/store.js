@@ -8,9 +8,19 @@ let store= new Vuex.Store(
         strict: process.env.NODE_ENV !== 'production',
         state:
         {
-            components:{},
-            component_list:{},
-            currentTab:"mek-projectile",
+            components:{
+                "00b21977-fa33-4f49-925b-5f766792384c":JSON.parse('{"uuid":"00b21977-fa33-4f49-925b-5f766792384c","component_category":"equipment","component_type":"projectile","component_name":"Gun","cost_multipliers":{"accuracy":1,"feature":1,"multi_feed":1,"burst_value":1,"range_mod":1.25},"efficiencies":{"space":{"cost":0,"modifier":0}},"selected_damage":{"damage":9,"cost":9,"range":9},"selected_accuracy":{"accuracy":0,"cost":1},"feature_array":[],"selected_range_mod":{"range_mod":1.5,"cost":1.25},"selected_multi_feed":{"feeds":1,"cost":1},"selected_burst_value":{"burst_value":1,"cost":1},"cost":11.25,"cost_multiplier":1.25,"weight":4.5,"damage_capacity":9}')
+            },
+            component_list:{
+                equipment:
+                {
+                    projectile:
+                    {
+                        "00b21977-fa33-4f49-925b-5f766792384c":"Gun"
+                    }
+                }
+            },
+            currentTab:"mek-magazine",
             selected_component:null,
             alert_message:""
         },
@@ -80,7 +90,16 @@ let store= new Vuex.Store(
             {
                 return _state.selected_component===null?null:_state.components[_state.selected_component];
             },
-            alertMessage:(_state)=>{return _state.alert_message}
+            alertMessage:(_state)=>{return _state.alert_message},
+            getComponentByType:(_state)=>(_category,_type)=>
+            {
+                if(typeof _state.component_list[_category]==="undefined" || typeof _state.component_list[_category][_type]==="undefined")
+                {
+                    return undefined;
+                }
+                
+                return _state.component_list[_category][_type];
+            }
         }
     });
 

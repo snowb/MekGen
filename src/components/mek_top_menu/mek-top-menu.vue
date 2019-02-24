@@ -26,6 +26,7 @@ export default
             {id:"mek-melee",name:"Melee Weapons"},
             {id:"mek-missile",name:"Missiles"},
             {id:"mek-projectile",name:"Projectile Weapons"},
+            {id:"mek-magazine",name:"Projectile Magazine"},
             {id:"mek-energy-pool",name:"Energy Pools"},
             {id:"mek-shield",name:"Shields"},
             {id:"mek-reflector",name:"Reflectors"},

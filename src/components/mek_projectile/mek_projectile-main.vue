@@ -21,11 +21,11 @@
                         @update-multi-feed="updateMultiFeed" 
                         :multi-feed="selected_multi_feed"
                     ></mek-projectile-multi-feed>
-                    
-                    <mek-projectile-mount-type 
+                    <!-- not using for now
+                    mek-projectile-mount-type 
                         @update-mount-type="updateMountType" 
                         :mount-type="selected_mount_type"
-                    ></mek-projectile-mount-type>
+                    ></mek-projectile-mount-type-->
                 </div>
                 <mek-projectile-range-mod style="align-self:baseline;"
                     @update-range-mod="updateRangeMod"
@@ -68,7 +68,7 @@ import mek_projectile_range_mod from "./subcomponents/mek_projectile-range-mod.v
 import mek_projectile_burst_value from "./subcomponents/mek_projectile-burst-value.vue";
 import mek_projectile_feature from "./subcomponents/mek_projectile-feature.vue";
 import mek_projectile_stats from "./subcomponents/mek_projectile-stats.vue";
-import mek_projectile_mount_type from "./subcomponents/mek_projectile-mount-type.vue";
+//import mek_projectile_mount_type from "./subcomponents/mek_projectile-mount-type.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -88,7 +88,7 @@ export default
         "mek-projectile-burst-value":mek_projectile_burst_value,
         "mek-projectile-feature":mek_projectile_feature,
         "mek-projectile-stats":mek_projectile_stats,
-        "mek-projectile-mount-type":mek_projectile_mount_type,
+        //"mek-projectile-mount-type":mek_projectile_mount_type,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -126,7 +126,7 @@ export default
         obj.cost_multipliers.burst_value=1;
         obj.cost_multipliers.range_mod=1;
 
-        obj.selected_mount_type={mount_type:"Servo-Mounted"};
+        //obj.selected_mount_type={mount_type:"Servo-Mounted"};
         return obj;
     },
     methods:
@@ -184,11 +184,11 @@ export default
             this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.projectile_name;
         },
-        updateMountType(_mountType)
+        /* updateMountType(_mountType)
         {
             this.$set(this,"selected_mount_type",_mountType);
             this.projectile_name;
-        },
+        }, */
         componentSaveReset:function(_action)
         {
             switch(_action)
@@ -211,7 +211,7 @@ export default
                     this.selected_range.range=1;
                     this.selected_multi_feed.feeds1;
                     this.selected_burst_value.burst_value=1;
-                    this.mount_type.mount_type="Servo-Mounted";
+                    //this.mount_type.mount_type="Servo-Mounted";
                     this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
                     break;
@@ -235,7 +235,7 @@ export default
             return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
             return_data.selected_multi_feed=JSON.parse(JSON.stringify(this.selected_multi_feed));
             return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
-            return_data.selected_mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
+            //return_data.selected_mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
 
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -340,7 +340,8 @@ export default
                 return _name+_val.feature+" ";
             },projectile_name);
 
-            projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
+            //projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
+            projectile_name=projectile_name.length>0?projectile_name+" Gun":"Gun";
 
             return projectile_name;
         }

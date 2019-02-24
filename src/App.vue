@@ -19,6 +19,7 @@ import mek_alert from "./components/universal/mek_alert.vue";
 import mek_servo from "./components/mek_servo/mek_servo-main.vue";
 import mek_melee from "./components/mek_melee/mek_melee-main.vue";
 import mek_projectile from "./components/mek_projectile/mek_projectile-main.vue";
+import mek_magazine from "./components/mek_magazine/mek_magazine-main.vue";
 import mek_missile from "./components/mek_missile/mek_missile-main.vue";
 import mek_emw from "./components/mek_emw/mek_emw-main.vue";
 import mek_beam from "./components/mek_beam/mek_beam-main.vue";
@@ -39,6 +40,7 @@ export default {
     "mek-servo":mek_servo,
     "mek-melee":mek_melee,
     "mek-projectile":mek_projectile,
+    "mek-magazine":mek_magazine,
     "mek-missile":mek_missile,
     "mek-emw":mek_emw,
     "mek-beam":mek_beam,
