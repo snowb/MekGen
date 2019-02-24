@@ -70,7 +70,7 @@ export default
             }
             if(update)
             {   
-                this.select_damage(this.damage_table[damage_index]);
+                this.select_damage(damage_index);
             }
             return [damage_index];
         }

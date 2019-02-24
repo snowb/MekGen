@@ -66,7 +66,7 @@ export default
             
             if(this.rangeMod.cost!=this.range_mod_table[index].cost)
             {
-                this.select_range_mod(this.range_mod_table[index]);
+                this.select_range_mod(index);
             }
             return [index];
         }

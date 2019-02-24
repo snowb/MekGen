@@ -62,7 +62,7 @@ export default
             },this);
             if(this.burst_value_table[index].cost!==this.burstValue.cost)
             {
-                this.select_burst_value(this.burst_value_table[index]);
+                this.select_burst_value(index);
             }
             return [index];
         }

@@ -4,30 +4,24 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
+        <mek-melee-damage @update-damage="updateDamage" :damage="selected_damage"
+        ></mek-melee-damage>
         <div class="mek-inline-flex-row">
-            <mek-melee-damage @update-damage="updateDamage" :damage="selected_damage"
-            ></mek-melee-damage>
-            <span class="mek-flex-col no-margin">
-                <mek-melee-accuracy @update-accuracy="updateAccuracy" :accuracy="selected_accuracy"
-                ></mek-melee-accuracy>
-                <mek-melee-feature style="align-self:baseline;"
+            <mek-melee-accuracy @update-accuracy="updateAccuracy" :accuracy="selected_accuracy"
+            ></mek-melee-accuracy>
+            <mek-melee-feature style="align-self:start;"
                     @update-feature="updateFeature" 
                     :feature-array="feature_array"
-                ></mek-melee-feature>
-            </span>
-            <span class="mek-flex-col no-margin">
-                <mek-melee-entangle-range v-if="isEntangle"
-                    :base_damage="selected_damage.damage" :range_modifier="entangle.range_modifier" :damage_modifier="entangle.damage_modifier"
-                    @update-damage-and-range="updateDamageAndRange"
-                ></mek-melee-entangle-range>
-            </span>
-            <span class="mek-flex-col no-margin">
-                <mek-space-efficiency
-                    :space_efficiency="efficiencies.space"
-                    :raw_space="raw_space"
-                    @update-efficiencies="updateEfficiencies"
-                ></mek-space-efficiency>
-            </span>
+            ></mek-melee-feature>
+            <mek-melee-entangle-range v-if="isEntangle" style="align-self:start"
+                :base_damage="selected_damage.damage" :range_modifier="entangle.range_modifier" :damage_modifier="entangle.damage_modifier"
+                @update-damage-and-range="updateDamageAndRange"
+            ></mek-melee-entangle-range>
+            <mek-space-efficiency style="align-self:start;"
+                :space_efficiency="efficiencies.space"
+                :raw_space="raw_space"
+                @update-efficiencies="updateEfficiencies"
+            ></mek-space-efficiency>
         </div>
         <div class="mek-inline-flex-row">
             <mek-melee-stats :damage="selected_damage" :accuracy="selected_accuracy"

@@ -1,5 +1,5 @@
 <template>
-    <span class="mek-flex-col">
+    <!--span class="mek-flex-col">
         <div class="metallic_background_small">
             <div class="subsection_container">
                 <div class="subsection_header_small">Accuracy</div>
@@ -27,17 +27,30 @@
                 </table>
             </div>
         </div>
-    </span>
+    </span-->
+    <mek-sub-component-table
+        :items="accuracy_table"
+        :headers="{accuracy:'WA',cost:'Cost'}"
+        name="Accuracy" flow="row" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="accuracy_index"
+        @update-selected-indices="select_accuracy"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_melee_accuracy",
     props:["accuracy"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -51,15 +64,13 @@ export default
             {accuracy:2,cost:2}
         ]
 
-        obj.selected_accuracy={accuracy:0,cost:1};
-
         return obj;
     },
     methods:
     {
-        select_accuracy:function(_accuracy)
+        select_accuracy:function(_accuracy_index)
         {
-            this.$emit("update-accuracy",_accuracy);
+            this.$emit("update-accuracy",this.accuracy_table[_accuracy_index]);
         },
     },
     computed:
@@ -79,9 +90,9 @@ export default
             },this);
             if(this.accuracy_table[index].cost!==this.cost)
             {
-                this.select_accuracy(this.accuracy_table[index]);
+                this.select_accuracy(index);
             }
-            return index;
+            return [index];
         }
     }
 }

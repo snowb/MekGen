@@ -59,7 +59,7 @@ export default
             },this);
             if(this.multi_feed_table[index].cost!==this.multiFeed.cost)
             {
-                this.select_multi_feed(this.multi_feed_table[index]);
+                this.select_multi_feed(index);
             }
             return [index];
         }

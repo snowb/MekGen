@@ -1,5 +1,5 @@
 <template>
-    <span class="mek-flex-col">
+    <!--span class="mek-flex-col">
         <div class="metallic_background_small">
             <div class="subsection_container">
                 <div class="subsection_header_small">Features</div>
@@ -24,17 +24,30 @@
                 </table>
             </div>
         </div>
-    </span>
+    </span-->
+    <mek-sub-component-table
+        :items="feature_table"
+        :headers="{feature:'Feature',cost:'Cost'}"
+        name="Features" flow="col" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_feature_index_array"
+        @update-selected-indices="select_feature"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_melee_feature",
     props:["featureArray"],
     mixins:[selected_item_mixin, utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -67,19 +80,22 @@ export default
     },
     methods:
     {
-        select_feature:function(_selected_feature)
+        select_feature:function(_selected_feature_index)
         {
-            let isExclusiveThrow=this.is_exclusive_feature("exclusive_throw",_selected_feature);
-            let isExclusiveShock=this.is_exclusive_feature("exclusive_shock",_selected_feature);
-            let feature_index=this.find_feature_index(_selected_feature);
-            let featureClone=Object.assign({},this.feature_table[feature_index]);
+            let select_feature_name=this.feature_table[_selected_feature_index].feature;
+            let isExclusiveThrow=this.is_exclusive_feature("exclusive_throw",select_feature_name);
+            let isExclusiveShock=this.is_exclusive_feature("exclusive_shock",select_feature_name);
+            let featureClone=Object.assign({},this.feature_table[_selected_feature_index]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
             {//filter out matching feature (toggle)
-                return _val.feature.toLowerCase()!=_selected_feature.toLowerCase();
+                return _val.feature.toLowerCase()!=select_feature_name.toLowerCase();
             });
 
-            let togglefeature=temp_selected_feature_array.length!=this.selected_feature_array.length;
+            let togglefeature=this.selected_feature_array.some((_elem)=>
+            {
+                return _elem.feature.toLowerCase()==select_feature_name.toLowerCase();
+            },this);
 
             if(isExclusiveThrow)
             {
@@ -96,12 +112,13 @@ export default
                 })
             }
 
-            this.$set(this,"selected_feature_array",temp_selected_feature_array);
-
             if(!togglefeature)
             {
-                this.selected_feature_array.push(featureClone);
+                temp_selected_feature_array.push(featureClone);
             }
+            
+            this.$set(this,"selected_feature_array",temp_selected_feature_array);
+
             if(temp_selected_feature_array.length==0)
             {
                 this.$set(this,"selected_feature_array",[]);

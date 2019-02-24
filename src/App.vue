@@ -72,8 +72,7 @@ export default {
     },
     ...mapGetters(
         {
-            targetTab:'targetTab',
-            currentComponent:'getCurrentComponent'
+            targetTab:'targetTab'
         })
   }
 }

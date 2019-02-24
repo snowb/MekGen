@@ -60,7 +60,7 @@ export default
 
             if(this.accuracy_table[index].cost!==this.accuracy.cost)
             {
-                this.select_accuracy(this.accuracy_table[index]);
+                this.select_accuracy(index);
             }
             return [index];
         }
