@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="class_list"
-        :headers="{name:'Name',stopping_power:'SP',cost:'Cost'}"
+        :headers="headers"
         name="Class" flow="col" :showHeaders="true"
         :selectedIndices="shield_class_index"
         @update-selected-indices="select_class"
@@ -113,10 +113,19 @@ export default
                     code:_val.code,
                     id:_val.id,
                     name:_val.name,
+                    kills:(_val.code+4)*5,
                     cost:this.calculate_cost(_val.code)
                 };
                 return newelement;
             },this);
+        },
+        headers()
+        {
+            if(this.is_ablative)
+            {
+                return {name:'Name',kills:'Kills',cost:'Cost'};
+            }
+            return {name:'Name',stopping_power:'SP',cost:'Cost'};
         }
     }
 }

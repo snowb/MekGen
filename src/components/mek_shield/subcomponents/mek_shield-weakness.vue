@@ -31,7 +31,7 @@
     <mek-sub-component-table
         :items="weakness_table"
         :headers="{weakness:'Weakness',monicker:'Monicker',cost:'Cost'}"
-        name="Features" flow="col" :showHeaders="true"
+        name="Weakness" flow="col" :showHeaders="true"
         :format="{cost:'multiplier'}"
         :selectedIndices="selected_weakness_index_array"
         @update-selected-indices="select_weakness"
