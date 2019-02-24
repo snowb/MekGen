@@ -1,42 +1,26 @@
 <template>
-    <span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Turns&nbsp;in&nbsp;Use</div>
-                <table>
-                    <tr>
-                        <td class="head_column">Turns</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(turns,index) in turns_table" :key="'emw-turns-turns-'+index"
-                            class="clickable"
-                            :class="selectedItem('selected_turns_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_turns(turns,index)"
-                        >{{turns.turns}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(turns,index) in turns_table" :key="'emw-turns-cost-'+index"
-                            class="clickable" 
-                            :class="selectedItem('selected_turns_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_turns(turns, index)"
-                        >x{{turns.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="turns_table"
+        :headers="{turns:'Turns',cost:'Cost'}"
+        name="Turns in Use" flow="row" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_turns_index"
+        @update-selected-indices="select_turns"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_emw_turns_in_use",
     props:["turnsInUse"],
     mixins:[selected_item_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -58,7 +42,7 @@ export default
     {
         select_turns:function(_selected_turns)
         {
-            this.$emit("update-turns-in-use",_selected_turns);
+            this.$emit("update-turns-in-use",this.turns_table[_selected_turns]);
         }
     },
     computed:
@@ -77,9 +61,9 @@ export default
             },this);
             if(this.turns_table[index].cost!==this.turnsInUse.cost)
             {
-                this.select_turns(this.turns_table[index]);
+                this.select_turns(index);
             }
-            return index;
+            return [index];
         }
     }
 }

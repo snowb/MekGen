@@ -86,7 +86,7 @@ export default
     },
     watch:
     {
-        base_stopping_power(_newval)
+        base_stopping_power()
         {
             this.update_binder_table();
         }

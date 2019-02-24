@@ -1,40 +1,27 @@
 <template>
-    <span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Features</div>
-                <table style="margin:auto;">
-                    <tr style="font-weight:bold; border-bottom:1px solid black;">
-                        <td>Feature</td>
-                        <td>Cost</td>
-                    </tr>
-                    <tr><td colspan=2 style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(feature,index) in filteredFeatureTable" :key="'emw-feature-'+index"
-                        class="clickable"
-                        :class="selectedItemMultiple('selected_feature_index_array',index,'selected_item')"
-                        @click="select_feature(feature.feature)"
-                    >
-                        <td>{{feature.feature}}</td>
-                        <td>x{{feature.cost}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>{{invisible_pad(flat_feature_array)}}</td>
-                        <td>WWW</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="filteredFeatureTable"
+        :headers="{feature:'Feature',cost:'Cost'}"
+        name="Features" flow="col" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_feature_index_array"
+        @update-selected-indices="select_feature"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_melee_feature",
     props:["featureArray","turnsInUse"],
     mixins:[selected_item_mixin, utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -58,16 +45,19 @@ export default
     {
         select_feature:function(_selected_feature)
         {
-            let isExclusiveBeam=this.is_exclusive_feature("exclusive_beam",_selected_feature);
-            let feature_index=this.find_feature_index(_selected_feature);
-            let featureClone=Object.assign({},this.filteredFeatureTable[feature_index]);
+            let selected_feature_name=this.filteredFeatureTable[_selected_feature].feature;
+            let isExclusiveBeam=this.is_exclusive_feature("exclusive_beam",selected_feature_name);
+            let featureClone=Object.assign({},this.filteredFeatureTable[_selected_feature]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
             {//filter out matching feature (toggle)
-                return _val.feature.toLowerCase()!=_selected_feature.toLowerCase();
+                return _val.feature.toLowerCase()!=selected_feature_name.toLowerCase();
             });
 
-            let togglefeature=temp_selected_feature_array.length!=this.selected_feature_array.length;
+            let togglefeature=this.selected_feature_array.some((_elem)=>
+            {
+                return _elem.feature.toLowerCase()==selected_feature_name.toLowerCase();
+            },this);
 
             if(isExclusiveBeam)
             {
@@ -180,6 +170,20 @@ export default
                 });
             }
             return this.feature_table;
+        }
+    },
+    watch:
+    {
+        "turnsInUse":function(_newval,_oldval)
+        {
+            if(_newval && !_oldval)
+            {
+                let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
+                {//filter out phalanx selected features if changing turnsInUse from false to true 
+                    return typeof _val!=="undefined" && _val.feature.toLowerCase()!="rechargeable";
+                })
+                this.$emit("update-feature",temp_selected_feature_array);
+            }
         }
     }
 }

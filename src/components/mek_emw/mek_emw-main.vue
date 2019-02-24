@@ -6,21 +6,23 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-emw-damage @update-damage="updateDamage" :damage="selected_damage"></mek-emw-damage>
+            <mek-emw-accuracy 
+                @update-accuracy="updateAccuracy" 
+                :accuracy="selected_accuracy"
+                :is-beam-shield="is_beam_shield"
+                :is-variable-beam-shield="is_variable_beam_shield"
+            ></mek-emw-accuracy>
+        </div>
+        <div class="mek-inline-flex-row">
             <div class="mek-inline-flex-col">
-                <mek-emw-accuracy 
-                    @update-accuracy="updateAccuracy" 
-                    :accuracy="selected_accuracy"
-                    :is-beam-shield="is_beam_shield"
-                    :is-variable-beam-shield="is_variable_beam_shield"
-                ></mek-emw-accuracy>
-                <mek-emw-attack-factor 
-                    @update-attack-factor="updateAttackFactor" 
-                    :attack-factor="selected_attack_factor"
-                ></mek-emw-attack-factor>
                 <mek-emw-turns-in-use 
                     @update-turns-in-use="updateTurnsInUse" 
                     :turns-in-use="selected_turns_in_use"
                 ></mek-emw-turns-in-use>
+                <mek-emw-attack-factor 
+                    @update-attack-factor="updateAttackFactor" 
+                    :attack-factor="selected_attack_factor"
+                ></mek-emw-attack-factor>
             </div>
             <mek-emw-feature style="align-self:baseline;"
                 @update-feature="updateFeature"
