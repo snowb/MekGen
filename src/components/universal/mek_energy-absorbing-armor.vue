@@ -1,47 +1,28 @@
 <template>
-    <!-- 
-        add Armor Type stuff
-        universal as it can apply to Servos and Shields
-     -->
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Energy&nbsp;Absorption</div>
-                <table style="margin:auto;">
-                    <tr style="font-weight:bold; border-bottom:1px solid black;">
-                        <td>Absorption</td>
-                        <td>SP Reduction</td>
-                        <td>Cost</td>
-                    </tr>
-                    <tr><td colspan=3 style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(absorption_type,index) in absorption_table" :key="'absorption-type-'+index"
-                        class="clickable"
-                        :class="selectedItem('selected_absorption_index',index,'selected_item')"
-                        @click="select_absorption_type(absorption_type)"
-                    >
-                        <td>{{absorption_type.absorption*100}}%</td>
-                        <td>{{absorption_type.armor_penalty*100}}%</td>
-                        <td>x{{decimalPad(absorption_type.cost)}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>ABSORPTION</td>
-                        <td>WWW</td>
-                        <td>WWWW</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="absorption_table"
+        :headers="{absorption:'Absorption',armor_penalty:'SP Reduction',cost:'Cost'}"
+        name="Energy Absorption" flow="col" :showHeaders="true"
+        :format="{absorption:'percent',armor_penalty:'percent',cost:'multiplier'}"
+        :selectedIndices="selected_absorption_index"
+        @update-selected-indices="select_absorption_type"
+    ></mek-sub-component-table>
 </template>
 
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
+
+import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
 {
     name: "mek_energy_absorbing_armor",
     props:["absorption"],
     mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={}
@@ -59,8 +40,7 @@ export default
     {
         select_absorption_type:function(_selected_absorption)
         {
-            let temp_obj=JSON.parse(JSON.stringify(_selected_absorption));
-            this.$emit("update-absorption",temp_obj);
+            this.$emit("update-absorption",this.absorption_table[_selected_absorption]);
         }
     },
     computed:
@@ -87,9 +67,9 @@ export default
             }
             if(update)
             {
-                this.select_absorption_type(this.absorption_table[index]);
+                this.select_absorption_type(index);
             }
-            return index;
+            return [index];
         }
     }
 }

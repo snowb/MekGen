@@ -344,6 +344,10 @@ export default
             let sp_modifier=this.absorption!==null ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
             return this.shield_class.stopping_power - (this.shield_class.stopping_power * sp_modifier);
         },
+        weighted_stopping_power()
+        {
+            return this.shield_class.stopping_power - (this.shield_class.stopping_power * this.binder.stopping_power_modifier);
+        },
         updateEfficiencies:function(_data)
         {
             this.efficiencies.space.cost=_data.cost;
@@ -501,8 +505,6 @@ export default
             multiplier*=this.cost_multipliers.reset_time;
             multiplier*=this.cost_multipliers.turns_in_use;
             multiplier*=this.cost_multipliers.weakness;
-            multiplier*=this.cost_multipliers.armor_type;
-            multiplier*=this.cost_multipliers.absorption;
 
             return this.round(multiplier,2);
         },
@@ -552,7 +554,8 @@ export default
         },
         weight:function()
         {
-            return (this.calculate_stopping_power(this.shield_class.code) / 2);
+            //must apply special consideration for armor types and RAM armor as they impact SP but not modify the Weight
+            return this.weighted_stopping_power(this.shield_class.code)/2;//(this.calculate_stopping_power(this.shield_class.code) / 2);
         },
         shield_name:function()
         {
