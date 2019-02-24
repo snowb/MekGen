@@ -5,28 +5,13 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <div class="mek-inline-flex-row">
-            <span class="mek-flex-col">
-                <div class="metallic_background_small">
-                    <div class="subsection_container">
-                        <div class="subsection_header_small">Quality</div>
-                        <table>
-                            <tr>
-                                <th>QV</th>
-                                <th >Cost</th>
-                            </tr>
-                            <tr v-for="(reflector,index) in reflector_table"
-                                :key="'reflector-'+index"
-                                @click="select_reflector(reflector,index)"
-                                :class="selectedItem('reflector_index',index,'selected_item')"
-                                class="clickable" 
-                            >
-                                <td id="left">{{reflector.quality_value}}</td>
-                                <td id="right">{{reflector.cost}}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </span>
+            <mek-sub-component-table
+                :items="reflector_table"
+                :headers="{quality_value:'QV',cost:'Cost'}"
+                name="Quality" flow="col" :showHeaders="true"
+                :selectedIndices="reflector_index"
+                @update-selected-indices="select_reflector"
+            ></mek-sub-component-table>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
                     :space_efficiency="efficiencies.space"
@@ -56,6 +41,7 @@ import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 
+import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_reflector",
@@ -66,7 +52,8 @@ export default
         "mek-reflector-stat":mek_reflector_stat,
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-sub-component-table":mek_sub_component_table
     },
     data()
     {
@@ -98,7 +85,7 @@ export default
     {
         select_reflector(_reflector)
         {
-            this.$set(this,"selected_reflector",_reflector);
+            this.$set(this,"selected_reflector",this.reflector_table[_reflector]);
             this.component_changed=true;
         },
         updateComponentName(_name)
@@ -215,10 +202,10 @@ export default
             }
             if(update)
             {   
-                this.select_reflector(this.reflector_table[reflector_index]);
+                this.select_reflector(reflector_index);
             }
 
-            return reflector_index;
+            return [reflector_index];
         },
         newComponent()
         {

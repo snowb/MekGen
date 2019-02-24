@@ -13,7 +13,7 @@
                         <td>&nbsp;</td>
                         <td v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
                             class="clickable1 pad"
-                            :class="selectedItemMultiple('selectedIndices',index,'selected_item')"
+                            :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
                             @click="updateSelectedIndices(index)"
                         >
                             <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
@@ -32,7 +32,7 @@
                     <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
                     <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
                         class="clickable1 pad"
-                        :class="selectedItemMultiple('selectedIndices',index,'selected_item')"
+                        :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
                         @click="updateSelectedIndices(index)"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
@@ -237,5 +237,29 @@ tr.clickable1:hover td:last-child
     height: 100%;
     width: 100%;
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+}
+.selected_item1
+{
+    background-color: #222 !important;
+    color: #fff !important;
+    font-weight:bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px white !important;
+    padding: 2px 5px;
+}
+tr.selected_item1 td
+{
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+tr.selected_item1 td:first-child
+{
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+tr.selected_item1 td:last-child
+{
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
 }
 </style>

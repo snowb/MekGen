@@ -1,26 +1,4 @@
 <template>
-    <!--span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Damage</div>
-                <table>
-                    <tr>
-                        <th>Kills</th>
-                        <th >Cost</th>
-                    </tr>
-                    <tr v-for="(dmg,index) in damage_table"
-                        :key="'melee-damage-'+index"
-                        @click="select_damage(dmg,index)"
-                        :class="selectedItem('damage_index',index,'selected_item')"
-                        class="clickable" 
-                    >
-                        <td id="left">{{dmg.damage}}</td>
-                        <td id="right">{{dmg.cost.toFixed(1)}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span-->
     <mek-sub-component-table
         :items="damage_table"
         :headers="{damage:'Damage',cost:'Cost'}"
