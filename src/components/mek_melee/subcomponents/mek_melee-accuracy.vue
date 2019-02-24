@@ -1,33 +1,4 @@
 <template>
-    <!--span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Accuracy</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">WA</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(acc,index) in accuracy_table" :key="'melee-accuracy-'+index"
-                            class="clickable"
-                            :class="selectedItem('accuracy_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_accuracy(acc)"
-                        >{{acc.accuracy}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(acc,index) in accuracy_table" :key="'melee-cost-'+index"
-                            class="clickable" 
-                            :class="selectedItem('accuracy_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_accuracy(acc)"
-                        >x{{acc.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span-->
     <mek-sub-component-table
         :items="accuracy_table"
         :headers="{accuracy:'WA',cost:'Cost'}"
