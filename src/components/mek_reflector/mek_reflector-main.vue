@@ -228,7 +228,7 @@ export default
         },
         weight()
         {
-            return (this.reflector_table[this.reflector_index].cost / 2);
+            return this.round((this.reflector_table[this.reflector_index].cost / 2),2);
         },
         space_cost()
         {

@@ -538,7 +538,7 @@ export default
             }
             else if(this.type.toLowerCase()=="reactive")
             {
-                return base_cost;
+                return this.round(base_cost,2);
             }
             return undefined;
         },
@@ -555,7 +555,7 @@ export default
         weight:function()
         {
             //must apply special consideration for armor types and RAM armor as they impact SP but not modify the Weight
-            return this.weighted_stopping_power(this.shield_class.code)/2;//(this.calculate_stopping_power(this.shield_class.code) / 2);
+            return this.round(this.weighted_stopping_power(this.shield_class.code)/2,2);//(this.calculate_stopping_power(this.shield_class.code) / 2);
         },
         shield_name:function()
         {

@@ -259,7 +259,7 @@ export default
     {
         raw_space()
         {
-            return this.selected_damage.cost * this.cost_multiplier;
+            return this.round(this.selected_damage.cost * this.cost_multiplier,2);
         },
         space_cost:function()
         {
@@ -272,7 +272,7 @@ export default
             {
                 cost_multiplier*=this.cost_multipliers[multi];
             }
-            return cost_multiplier;
+            return this.round(cost_multiplier,2);
         },
         total_cost:function()
         {
@@ -283,7 +283,7 @@ export default
         },
         weight:function()
         {
-            return (this.damage_capacity / 2);
+            return this.round((this.damage_capacity / 2),2);
         },
         newComponent()
         {
