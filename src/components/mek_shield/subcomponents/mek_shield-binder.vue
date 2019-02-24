@@ -1,77 +1,58 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Binder&nbsp;Space</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">-SP</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(binder,index) in binder_table" :key="'binder-sp-'+index"
-                            class="clickable"
-                            :class="selectedItem('selected_binder_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_binder(binder,index)"
-                        >{{binder.stopping_power_modifier*100}}%</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">+Space</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(binder,index) in binder_table" :key="'binder-space-'+index"
-                            class="clickable" 
-                            :class="selectedItem('selected_binder_index',index,'selected_item_mid')"
-                            style="padding:2px 5px;"
-                            @click="select_binder(binder,index)"
-                        >{{Math.round(calculate_extra_space(binder.stopping_power_modifier)*10)/10}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(binder,index) in binder_table" :key="'binder-cost-'+index" 
-                            class="clickable" 
-                            :class="selectedItem('selected_binder_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_binder(binder,index)"
-                        >x{{binder.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="binder_table"
+        :headers="{stopping_power_modifier:'-SP',space:'+Space',cost:'Cost'}"
+        name="Binder" flow="row" :showHeaders="true"
+        :format="{stopping_power_modifier:'percent',cost:'multiplier'}"
+        :selectedIndices="selected_binder_index"
+        @update-selected-indices="select_binder"
+    ></mek-sub-component-table>
 </template>
 
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
+import utility_mixin from "../../../mixins/utility_mixin.js";
+
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name: "mek_shield_binder",
     props:["binder","base_stopping_power"],
-    mixins:[selected_item_mixin],
+    mixins:[selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={}
         obj.binder_table=
             [
-                {stopping_power_modifier:0,cost:1},
-                {stopping_power_modifier:0.25,cost:1.1},
-                {stopping_power_modifier:0.33,cost:1.2},
-                {stopping_power_modifier:0.50,cost:1.3},
-                {stopping_power_modifier:0.66,cost:1.2},
-                {stopping_power_modifier:0.75,cost:1.1}
+                {stopping_power_modifier:0,cost:1,space:0},
+                {stopping_power_modifier:0.25,cost:1.1,space:0},
+                {stopping_power_modifier:0.33,cost:1.2,space:0},
+                {stopping_power_modifier:0.50,cost:1.3,space:0},
+                {stopping_power_modifier:0.66,cost:1.2,space:0},
+                {stopping_power_modifier:0.75,cost:1.1,space:0}
             ];
         return obj;
     },
     methods:
     {
-        select_binder:function(_selected_binder, _index)
+        select_binder:function(_selected_binder_index)
         {
-            let temp_obj=JSON.parse(JSON.stringify(_selected_binder));
-            temp_obj.space=this.calculate_extra_space(this.binder_table[_index].stopping_power_modifier);
-            this.$emit("update-binder",temp_obj);
+            this.$emit("update-binder",this.binder_table[_selected_binder_index]);
         },
         calculate_extra_space:function(_stopping_power_mod)
         {
             return (this.base_stopping_power*_stopping_power_mod) * 2;
+        },
+        update_binder_table()
+        {
+            this.binder_table.forEach((_elem)=>
+            {
+                _elem.space=this.round((this.base_stopping_power*_elem.stopping_power_modifier) * 2,1);
+            },this);
         }
     },
     computed:
@@ -98,10 +79,21 @@ export default
 
             if(update)
             {
-                this.select_binder(this.binder_table[index], index);
+                this.select_binder(index);
             }
-            return index;
+            return [index];
         }
+    },
+    watch:
+    {
+        base_stopping_power(_newval)
+        {
+            this.update_binder_table();
+        }
+    },
+    mounted()
+    {
+        this.update_binder_table();
     }
 }
 </script>

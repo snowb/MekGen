@@ -1,45 +1,27 @@
 <template>
-    <span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Class</div>
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th v-if="is_ablative">Kills</th>
-                        <th v-else>SP</th>
-                        <th >Cost</th>
-                    </tr>
-                    <tr v-for="(servo_class,index) in class_list" :key="'shield-class-2'+index"
-                        class="clickable" 
-                        @click="select_class(servo_class, index)"
-                        :class="selectedItem('shield_class_index',index,'selected_item')"
-                    >
-                        <td>{{servo_class.name}}</td>
-                        <td v-if="is_ablative">{{calculate_stopping_power(servo_class.code)*5}}</td>
-                        <td v-else>{{calculate_stopping_power(servo_class.code)}}</td>
-                        <td id="no-pad" v-if="type=='active'">{{calculate_cost(servo_class.code).toFixed(1)}}</td>
-                        <td id="no-pad" v-else>{{calculate_cost(servo_class.code)}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>{{invisible_pad(flat_name_array)}}</td>
-                        <td class="td-right">WW</td>
-                        <td class="td-right">WW</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="class_list"
+        :headers="{name:'Name',stopping_power:'SP',cost:'Cost'}"
+        name="Class" flow="col" :showHeaders="true"
+        :selectedIndices="shield_class_index"
+        @update-selected-indices="select_class"
+    ></mek-sub-component-table>
 </template>
 <script>
 import servo_classes_mixin from "../../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
+
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_class",
     props:["type","shield_class","is_ablative"],
     mixins:[servo_classes_mixin,selected_item_mixin,utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -49,7 +31,7 @@ export default
     {
         select_class:function(_class_code)
         {
-            this.$emit("update-class-code",_class_code);
+            this.$emit("update-class-code",this.class_list[_class_code]);
         },
         find_class_code_index:function(_class_code)
         {
@@ -108,9 +90,9 @@ export default
             }
             if(update)
             {   
-                this.select_class(this.class_list[class_index]);
+                this.select_class(class_index);
             }
-            return class_index;
+            return [class_index];
         },
         flat_name_array:function()
         {

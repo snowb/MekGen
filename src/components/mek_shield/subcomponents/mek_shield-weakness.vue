@@ -1,5 +1,5 @@
 <template>
-    <span class="mek-flex-col">
+    <!--span class="mek-flex-col">
         <div class="metallic_background_small">
             <div class="subsection_container">
                 <div class="subsection_header_small">Weakness</div>
@@ -27,17 +27,30 @@
                 </table>
             </div>
         </div>
-    </span>
+    </span-->
+    <mek-sub-component-table
+        :items="weakness_table"
+        :headers="{weakness:'Weakness',monicker:'Monicker',cost:'Cost'}"
+        name="Features" flow="col" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_weakness_index_array"
+        @update-selected-indices="select_weakness"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_weakness",
     props:["weaknessArray"],
     mixins:[selected_item_mixin, utility_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -61,9 +74,10 @@ export default
     {
         select_weakness:function(_selected_weakness)
         {
-            let isAllWeakness=_selected_weakness.toLowerCase()=="all";
+            let select_weakness_name=this.weakness_table[_selected_weakness].weakness;
+            let isAllWeakness=select_weakness_name.toLowerCase()=="all";
             let currentIsAll=this.selected_weakness_array[0].weakness.toLowerCase()=="all";
-            let weakness_index=this.find_weakness_index(_selected_weakness);
+            let weakness_index=this.find_weakness_index(select_weakness_name);
             let weaknessClone=Object.assign({},this.weakness_table[weakness_index]);
             if(isAllWeakness || currentIsAll)
             {
@@ -71,21 +85,24 @@ export default
             }
             else
             {
-                let isExclusive=this.is_exclusive_weakness(_selected_weakness);
+                let isExclusive=this.is_exclusive_weakness(select_weakness_name);
 
                 let temp_selected_weakness_array=this.selected_weakness_array.filter((_val)=>
                 {//filter out matching weaknesses (toggle)
-                    return _val.weakness.toLowerCase()!=_selected_weakness.toLowerCase();
+                    return _val.weakness.toLowerCase()!=select_weakness_name.toLowerCase();
                 });
 
-                let toggleWeakness=temp_selected_weakness_array.length!=this.selected_weakness_array.length;
+                let togglefeature=this.selected_weakness_array.some((_elem)=>
+                {
+                    return _elem.weakness.toLowerCase()==select_weakness_name.toLowerCase();
+                },this);
 
                 temp_selected_weakness_array=isExclusive ? temp_selected_weakness_array.filter((_val)=>{return typeof _val.exclusive==="undefined"}) : temp_selected_weakness_array;
                 //if selected weakness is exclusive, filter out other exclusives
 
                 this.$set(this,"selected_weakness_array",temp_selected_weakness_array);
 
-                if(!toggleWeakness)
+                if(!togglefeature)
                 {
                     this.selected_weakness_array.push(weaknessClone);
                 }

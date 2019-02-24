@@ -1,42 +1,26 @@
 <template>
-    <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Defense&nbsp;Ability</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">DA</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(da,index) in da_table" :key="'shield-da-da-'+index"
-                            class="clickable"
-                            :class="selectedItem('selected_da_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_da(da)"
-                        >{{da.da}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(da,index) in da_table" :key="'shield-da-cost'+index"
-                            class="clickable" 
-                            :class="selectedItem('selected_da_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_da(da)"
-                        >x{{da.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="da_table"
+        :headers="{da:'DA',cost:'Cost'}"
+        name="Defense Ability" flow="row" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_da_index"
+        @update-selected-indices="select_da"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_defense_ability",
     props:["defense_ability","cost"],
     mixins:[selected_item_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -54,7 +38,7 @@ export default
     {
         select_da:function(_selected_da)
         {
-            this.$emit("update-defense-ability",_selected_da);
+            this.$emit("update-defense-ability",this.da_table[_selected_da]);
         }
     },
     computed:
@@ -73,9 +57,9 @@ export default
             },this);
             if(this.da_table[index].cost!==this.cost)
             {
-                this.select_da(this.da_table[index]);
+                this.select_da(index);
             }
-            return index;
+            return [index];
         }
     }
 }

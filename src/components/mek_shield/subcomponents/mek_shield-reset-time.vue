@@ -1,42 +1,26 @@
 <template>
-    <span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Reset&nbsp;Time</div>
-                <table style="margin:auto;">
-                    <tr>
-                        <td class="head_column">Rounds</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(reset,index) in reset_table" :key="'shield-reset-rounds-'+index"
-                            class="clickable"
-                            :class="selectedItem('selected_reset_index',index,'selected_item_top')"
-                            style="padding:2px 5px;"
-                            @click="select_reset(reset,index)"
-                        >{{reset.time}}</td>
-                    </tr>
-                    <tr>
-                        <td class="head_column">Cost</td>
-                        <td>&nbsp;</td>
-                        <td v-for="(reset,index) in reset_table" :key="'shield-reset-cost-'+index"
-                            class="clickable" 
-                            :class="selectedItem('selected_reset_index',index,'selected_item_bottom')"
-                            style="padding:2px 5px;"
-                            @click="select_reset(reset,index)"
-                        >x{{reset.cost}}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span>
+    <mek-sub-component-table
+        :items="reset_table"
+        :headers="{time:'Rounds',cost:'Cost'}"
+        name="Reset Time" flow="row" :showHeaders="true"
+        :format="{cost:'multiplier'}"
+        :selectedIndices="selected_reset_index"
+        @update-selected-indices="select_reset"
+    ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 
+import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_reset_time",
     props:["resetTime"],
     mixins:[selected_item_mixin],
+    components:
+    {
+        "mek-sub-component-table":mek_sub_component_table
+    },
     data:function()
     {
         let obj={};
@@ -54,7 +38,7 @@ export default
     {
         select_reset:function(_selected_reset_obj)
         {
-            this.$emit("update-reset-time",_selected_reset_obj);
+            this.$emit("update-reset-time",this.reset_table[_selected_reset_obj]);
         }
     },
     computed:
@@ -73,9 +57,9 @@ export default
             },this);
             if(this.reset_table[index].cost!==this.resetTime.cost)
             {
-                this.select_reset(this.reset_table[index]);
+                this.select_reset(index);
             }
-            return index;
+            return [index];
         }
     }
 }
