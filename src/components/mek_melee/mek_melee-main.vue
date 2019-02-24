@@ -4,12 +4,14 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
-        <mek-melee-damage @update-damage="updateDamage" :damage="selected_damage"
-        ></mek-melee-damage>
         <div class="mek-inline-flex-row">
+            <mek-melee-damage @update-damage="updateDamage" :damage="selected_damage"
+            ></mek-melee-damage>
             <mek-melee-accuracy @update-accuracy="updateAccuracy" :accuracy="selected_accuracy"
             ></mek-melee-accuracy>
-            <mek-melee-feature style="align-self:start;"
+        </div>
+        <div class="mek-inline-flex-row">
+            <mek-melee-feature
                     @update-feature="updateFeature" 
                     :feature-array="feature_array"
             ></mek-melee-feature>

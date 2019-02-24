@@ -12,19 +12,17 @@
                 :is-beam-shield="is_beam_shield"
                 :is-variable-beam-shield="is_variable_beam_shield"
             ></mek-emw-accuracy>
+            <mek-emw-attack-factor 
+                @update-attack-factor="updateAttackFactor" 
+                :attack-factor="selected_attack_factor"
+            ></mek-emw-attack-factor>
         </div>
         <div class="mek-inline-flex-row">
-            <div class="mek-inline-flex-col">
-                <mek-emw-turns-in-use 
-                    @update-turns-in-use="updateTurnsInUse" 
-                    :turns-in-use="selected_turns_in_use"
-                ></mek-emw-turns-in-use>
-                <mek-emw-attack-factor 
-                    @update-attack-factor="updateAttackFactor" 
-                    :attack-factor="selected_attack_factor"
-                ></mek-emw-attack-factor>
-            </div>
-            <mek-emw-feature style="align-self:baseline;"
+            <mek-emw-turns-in-use 
+                @update-turns-in-use="updateTurnsInUse" 
+                :turns-in-use="selected_turns_in_use"
+            ></mek-emw-turns-in-use>
+            <mek-emw-feature style="align-self:start;"
                 @update-feature="updateFeature"
                 :feature-array="feature_array"
                 :turns-in-use="selected_turns_in_use.turns!='X'"
