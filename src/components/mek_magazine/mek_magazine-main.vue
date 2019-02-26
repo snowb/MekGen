@@ -27,7 +27,6 @@ import mek_magazine_ammo_list from "./subcomponents/mek_magazine-ammo-list.vue";
 import mek_magazine_shots from "./subcomponents/mek_magazine-shots.vue";
 import mek_magazine_stats from "./subcomponents/mek_magazine-stats.vue";
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 
@@ -41,13 +40,8 @@ export default
         "mek-magazine-select-gun":mek_magazine_select_gun,
         "mek-magazine-ammo-list":mek_magazine_ammo_list,
         "mek-magazine-shots":mek_magazine_shots,
-        //"mek-projectile-range-mod":mek_projectile_range_mod,
-        //"mek-projectile-burst-value":mek_projectile_burst_value,
-        //"mek-projectile-feature":mek_projectile_feature,
         "mek-magazine-stats":mek_magazine_stats,
-        //"mek-projectile-mount-type":mek_projectile_mount_type,
 
-        "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
         "mek-save-reset-component":mek_save_reset_component
     },
