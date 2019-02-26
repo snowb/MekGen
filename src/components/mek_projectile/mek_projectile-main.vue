@@ -208,7 +208,7 @@ export default
                     this.component_name=null;
                     this.selected_damage.damage=1;
                     this.selected_accuracy.accuracy=1;
-                    this.selected_range.range=1;
+                    this.selected_range_mod.range_mod=1;
                     this.selected_multi_feed.feeds1;
                     this.selected_burst_value.burst_value=1;
                     //this.mount_type.mount_type="Servo-Mounted";

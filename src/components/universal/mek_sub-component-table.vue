@@ -201,6 +201,7 @@ export default
     top:37px;
     border-radius: 7px;
     box-shadow: #222 0px 0px 5px 2px;
+    z-index:100;
 }
 .subsection_header_small1
 {
