@@ -24,7 +24,7 @@
             <mek-reflector-stat
                 :reflector="selected_reflector"
                 :space_cost="space_cost" :weight="weight"
-                :total_cost="total_cost" :raw_space="raw_space"
+                :total_cost="cost" :raw_space="raw_space"
             ></mek-reflector-stat>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
@@ -106,7 +106,7 @@ export default
 
             return_data.selected_reflector=JSON.parse(JSON.stringify(this.selected_reflector));
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
 
             return_data.weight=this.weight;
 
@@ -114,41 +114,10 @@ export default
 
             return return_data;
         },
-        ingest_reflector_data(_reflector_object)
+        ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_reflector_object);//store a copy as a JSON object for 'reset' purposes
-            if(_reflector_object===null)
-            {
-                this.componentSaveReset("clear");
-                this.$store.commit("alertMessage","Reflector is not valid, resetting.");
-            }
-
-            for(let _property in _reflector_object)
-            {
-                if(["weight","cost"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _reflector_object[_property]==="object" && !Array.isArray(_reflector_object[_property]))
-                {
-                    for(let _sub_property in _reflector_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_reflector_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_reflector_object[_property]))
-                {
-                    this.$set(this,_property,_reflector_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_reflector_object[_property]);
-                }
-                if(this.component_name=="Reflector")
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+            let alertMessage="Reflector is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)
@@ -161,7 +130,7 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
-                        this.ingest_reflector_data(JSON.parse(this.original_component));
+                        this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
                 case "clear":
@@ -216,7 +185,7 @@ export default
                     && selectedComponent.component_category=="equipment" 
                     && selectedComponent.component_type=="reflector")
                 {
-                    this.ingest_reflector_data(selectedComponent);
+                    this.ingest_data(selectedComponent);
                 }
                 return false;
             }
@@ -234,7 +203,7 @@ export default
         {
             return this.selected_reflector.cost - this.efficiencies.space.modifier;
         },
-        total_cost:function()
+        cost:function()
         {
             return this.selected_reflector.cost + this.efficiencies.space.cost;
         }

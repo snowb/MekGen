@@ -28,9 +28,9 @@ export default
     },
     methods:
     {
-        select_gun:function(_gun_index)
+        select_gun:function(_gun_index,_gun_name_change)
         {
-            this.$emit("update-gun", this.gun_table[_gun_index]);
+            this.$emit("update-gun", this.gun_table[_gun_index], _gun_name_change);
         },
     },
     computed:
@@ -47,6 +47,16 @@ export default
                 }
                 return false;
             },this);
+
+            switch(true)
+            {
+                case this.selectedGun.name!=this.gun_table[index].name:
+                    this.select_gun(index,true);
+                    break;
+                case this.selectedGun.cost!=this.gun_table[index].cost:
+                    this.select_gun(index,false);
+                    break;
+            }
             return [index];
         },
         gun_table()

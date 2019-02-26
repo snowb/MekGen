@@ -28,7 +28,7 @@
         <div class="mek-inline-flex-row">
             <mek-melee-stats :damage="selected_damage" :accuracy="selected_accuracy"
                 :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="total_cost"
+                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
                 :damage-modifier="entangle.damage_modifier" :range-modifier="entangle.range_modifier"
             ></mek-melee-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
@@ -159,7 +159,7 @@ export default
             return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
@@ -176,41 +176,10 @@ export default
 
             return return_data;
         },
-        ingest_melee_data(_melee_object)
+        ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_melee_object);//store a copy as a JSON object for 'reset' purposes
-            if(_melee_object===null)
-            {
-                this.componentSaveReset("clear");
-                this.$store.commit("alertMessage","Melee is not valid, resetting.");
-            }
-
-            for(let _property in _melee_object)
-            {
-                if(["weight","cost","cost_multiplier","final_damage"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _melee_object[_property]==="object" && !Array.isArray(_melee_object[_property]))
-                {
-                    for(let _sub_property in _melee_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_melee_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_melee_object[_property]))
-                {
-                    this.$set(this,_property,_melee_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_melee_object[_property]);
-                }
-                if(this.component_name==this.melee_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+            let alertMessage="Melee is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)
@@ -223,7 +192,7 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
-                        this.ingest_melee_data(JSON.parse(this.original_component));
+                        this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
                 case "clear":
@@ -263,7 +232,7 @@ export default
             }
             return this.round(cost_multiplier,2);
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
@@ -284,7 +253,7 @@ export default
                     && selectedComponent.component_category=="equipment" 
                     && selectedComponent.component_type=="melee")
                 {
-                    this.ingest_melee_data(selectedComponent);
+                    this.ingest_data(selectedComponent);
                 }
                 return false;
             }

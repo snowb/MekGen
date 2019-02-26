@@ -49,7 +49,7 @@
         <div class="mek-inline-flex-row">
             <mek-projectile-stats :damage="selected_damage" :accuracy="selected_accuracy"
                 :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="total_cost"
+                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
                 :damage_capacity="damage_capacity"
             ></mek-projectile-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
@@ -237,7 +237,7 @@ export default
             return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
             //return_data.selected_mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
@@ -249,39 +249,8 @@ export default
         },
         ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_data_object);//store a copy as a JSON object for 'reset' purposes
-            if(_data_object===null)
-            {
-                this.componentSaveReset("clear");
-                this.$store.commit("alertMessage","Projectile is not valid, resetting.");
-            }
-
-            for(let _property in _data_object)
-            {
-                if(["weight","cost","cost_multiplier","final_damage"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _data_object[_property]==="object" && !Array.isArray(_data_object[_property]))
-                {
-                    for(let _sub_property in _data_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_data_object[_property]))
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                if(this.component_name==this.melee_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+            let alertMessage="Projectile is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
     },
@@ -304,7 +273,7 @@ export default
             }
             return this.round(cost_multiplier,2);
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
@@ -343,7 +312,7 @@ export default
             //projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
             projectile_name=projectile_name.length>0?projectile_name+" Gun":"Gun";
 
-            return projectile_name;
+            return projectile_name.replace(/\s+/g," ");
         }
     }
 };

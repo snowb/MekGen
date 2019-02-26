@@ -38,7 +38,7 @@
         <div class="mek-inline-flex-row">
             <mek-emw-stats :damage="selected_damage" :accuracy="selected_accuracy"
                 :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="total_cost"
+                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
                 :beam_shield="beam_shield" :damage_capacity="damage_capacity"
                 :is-beam-shield="is_beam_shield" :is-variable-beam-shield="is_variable_beam_shield"
             ></mek-emw-stats>
@@ -176,7 +176,7 @@ export default
             return_data.selected_attack_factor=JSON.parse(JSON.stringify(this.selected_attack_factor));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
@@ -191,41 +191,10 @@ export default
 
             return return_data;
         },
-        ingest_emw_data(_emw_object)
+        ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_emw_object);//store a copy as a JSON object for 'reset' purposes
-            if(_emw_object===null)
-            {
-                this.componentSaveReset("clear");
-                this.$store.commit("alertMessage","EMW is not valid, resetting.");
-            }
-
-            for(let _property in _emw_object)
-            {
-                if(["weight","cost","cost_multiplier","final_damage","beam_shield"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _emw_object[_property]==="object" && !Array.isArray(_emw_object[_property]))
-                {
-                    for(let _sub_property in _emw_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_emw_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_emw_object[_property]))
-                {
-                    this.$set(this,_property,_emw_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_emw_object[_property]);
-                }
-                if(this.component_name==this.emw_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+            let alertMessage="EMW is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)
@@ -238,7 +207,7 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
-                        this.ingest_emw_data(JSON.parse(this.original_component));
+                        this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
                 case "clear":
@@ -274,7 +243,7 @@ export default
             }
             return this.round(cost_multiplier,2);
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
@@ -295,7 +264,7 @@ export default
                     && selectedComponent.component_category=="equipment" 
                     && selectedComponent.component_type=="emw")
                 {
-                    this.ingest_emw_data(selectedComponent);
+                    this.ingest_data(selectedComponent);
                 }
                 return false;
             }

@@ -62,7 +62,7 @@
                 :turns_in_use="turns_in_use" :binder="binder" :defense_ability="defense_ability"
                 :weakness_array="weakness_array" :type="type" :stopping_power="calculate_stopping_power()"
                 :cost_multiplier="cost_multiplier" :space_cost="space_cost" :weight="weight"
-                :total_cost="total_cost" :surge_damage="surge_damage" :raw_space="raw_space"
+                :total_cost="cost" :surge_damage="surge_damage" :raw_space="raw_space"
                 :armor_type="armor_type" :absorption="absorption"
                 >
             </mek-shield-stats>
@@ -354,46 +354,10 @@ export default
             this.efficiencies.space.modifier=_data.modifier;
             this.component_changed=true
         },
-        ingest_shield_data:function(_shield_object)
+        ingest_data:function(_data_object)
         {
-            this.original_component=JSON.stringify(_shield_object);//store a copy as a JSON object for 'reset' purposes
-            if(typeof _shield_object.type==="undefined")
-            {
-                this.componentSaveReset("clear");
-                this.$store.commit("alertMessage","Shield Has No Type, resetting to 'standard' shield.");
-            }
-            else
-            {
-                this.select_type(_shield_object.type);
-            }
-
-            for(let _property in _shield_object)
-            {
-                if(["weight","cost_multiplier","ablative","cost","surge_damage"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _shield_object[_property]==="object" && !Array.isArray(_shield_object[_property]))
-                {
-                    for(let _sub_property in _shield_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_shield_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_shield_object[_property]))
-                {
-                    this.$set(this,_property,_shield_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_shield_object[_property]);
-                }
-                if(this.component_name==this.shield_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                    this.shield_name;
-                }
-            }
+            let alertMessage="Shield Has No Type, resetting to 'standard' shield.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
         output_shield_data:function()
@@ -409,9 +373,9 @@ export default
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
             
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
-            return_data.ablative=this.is_ablative;
+            return_data.is_ablative=this.is_ablative;
             return_data.weight=this.weight;
 
             switch(this.type.toLowerCase())
@@ -444,7 +408,7 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
-                        this.ingest_shield_data(JSON.parse(this.original_component));
+                        this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
                 case "clear":
@@ -542,7 +506,7 @@ export default
             }
             return undefined;
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.shield_class.cost * this.cost_multiplier;
             subtotal_cost *= this.cost_multipliers.armor_type;
@@ -604,7 +568,7 @@ export default
                     && selectedComponent.component_category=="equipment" 
                     && selectedComponent.component_type=="shield")
                 {
-                    this.ingest_shield_data(selectedComponent);
+                    this.ingest_data(selectedComponent);
                 }
                 return false;
             }

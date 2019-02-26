@@ -9,7 +9,7 @@
             <mek-magazine-ammo-list :ammo-array="selected_ammo" @update-ammo="updateAmmo" :has-blast="hasBlast"></mek-magazine-ammo-list>
             <span class="mek-flex-col no-margin">
                 <mek-magazine-shots :shots="selected_shots" @update-shots="updateShots" style="align-self:baseline;"></mek-magazine-shots>
-                <mek-magazine-stats :total-cost="total_cost" :ammo-list="selected_ammo" :cost="base_cost"
+                <mek-magazine-stats :total-cost="cost" :ammo-list="selected_ammo" :cost="base_cost"
                     :weight="weight" :space-cost="space_cost" :cost-multiplier="cost_multiplier" :shots="selected_shots"
                 ></mek-magazine-stats>
                 <mek-save-reset-component style="align-self:baseline;" @save-reset-component="componentSaveReset"></mek-save-reset-component>
@@ -74,17 +74,22 @@ export default
             this.component_name=_name;
             this.component_changed=true;
         },
-        updateGun(_selected_gun)
+        updateGun(_selected_gun,_gun_name_change)
         {
             this.$set(this,"selected_gun",_selected_gun);
+            this.magazine_name;
+            this.component_changed=true;
+            this.gun_name_change=_gun_name_change;
         },
         updateAmmo(_selected_ammo)
         {
             this.$set(this,"selected_ammo",_selected_ammo);
+            this.component_changed=true;
         },
         updateShots(_selected_shots)
         {
             this.selected_shots=+_selected_shots;
+            this.component_changed=true;
         },
         /* generic updateProp method 
         updateProperty(_property)
@@ -132,7 +137,7 @@ export default
             return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
             return_data.hasBlast=JSON.parse(JSON.stringify(this.hasBlast));
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.base_cost=this.base_cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
@@ -144,41 +149,20 @@ export default
         },
         ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_data_object);//store a copy as a JSON object for 'reset' purposes
-            if(_data_object===null)
-            {
-                this.componentSaveReset("clear");
-                //generic error comment
-                this.$store.commit("alertMessage","Magazine is not valid, resetting.");
-            }
-
-            for(let _property in _data_object)
-            {//exclude computed properties that are auto updated
-                if(["weight","cost","base_cost","cost_multiplier","damage_capacity","hasBlast"].includes(_property))
+            let alertMessage="Magazine is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
+            this.$nextTick(()=>
                 {
-                    continue;
-                }
-                if(typeof _data_object[_property]==="object" && !Array.isArray(_data_object[_property]))
-                {
-                    for(let _sub_property in _data_object[_property])
+                    if(this.gun_name_change)
                     {
-                        this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
+                        this.component_changed=true;
                     }
-                }
-                else if(Array.isArray(_data_object[_property]))
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                if(this.component_name==this.melee_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
-            this.$nextTick(()=>{this.component_changed=false;});
+                    else
+                    {
+                        this.component_changed=false;
+                    }
+                    
+                });
         },
     },
     computed:
@@ -204,7 +188,7 @@ export default
         {
             return this.round(this.selected_gun.cost*0.01*this.selected_shots,2);
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.base_cost * this.cost_multiplier;
 
@@ -236,14 +220,16 @@ export default
         },
         magazine_name()
         {
+            this.selected_gun;
             let magazine_name=this.selected_ammo.reduce((_name,_val)=>
             {
                 return _name+_val.type+" ";
             },"");
             magazine_name=magazine_name.trim();
             let gun_name=this.selected_gun.name==""?"":this.selected_gun.name+" - ";
+            magazine_name=gun_name+" "+magazine_name+" Ammo ("+this.selected_shots+")";
 
-            return gun_name+" "+magazine_name+" Ammo";
+            return magazine_name.replace(/\s+/," ");
         },
         hasBlast()
         {
