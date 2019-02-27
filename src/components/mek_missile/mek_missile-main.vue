@@ -14,6 +14,7 @@ import utility_mixin from "../../mixins/utility_mixin";
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
@@ -33,7 +34,8 @@ export default
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
