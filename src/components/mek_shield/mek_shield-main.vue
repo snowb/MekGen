@@ -58,14 +58,26 @@
             </span>
         </div>
         <div class="mek-inline-flex-row">
-            <mek-shield-stats :shield_class="shield_class" :reset_time="reset_time"
-                :turns_in_use="turns_in_use" :binder="binder" :defense_ability="defense_ability"
-                :weakness_array="weakness_array" :type="type" :stopping_power="calculate_stopping_power()"
-                :cost_multiplier="cost_multiplier" :space_cost="space_cost" :weight="weight"
-                :total_cost="cost" :surge_damage="surge_damage" :raw_space="raw_space"
-                :armor_type="armor_type" :absorption="absorption"
-                >
-            </mek-shield-stats>
+            <mek-component-stats :cols="4" :rows="5">
+                <div slot="col1-row1" v-if="shield_class.kills!==null">Kills: {{shield_class.kills}}</div>
+                <div slot="col1-row1" v-else>Base Stopping Power: {{round(shield_class.stopping_power,2)}}
+                    <br>Final Stopping Power: {{round(calculate_stopping_power(),2)}}
+                </div>
+                <div slot="col1-row2" v-if="armor_type!==null">Armor Type: {{armor_type.type}}</div>
+                <div slot="col1-row3" v-if="armor_type!==null" style="padding-left:10px;">Damage Coefficient: {{armor_type.damage_coefficient}}</div>
+                <div slot="col1-row4" v-if="absorption!==null">Absorption: {{absorption.absorption*100}}%</div>
+                <div slot="col2-row1" v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
+                <div slot="col2-row1" v-if="type.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{weakness_list}}</div></div>
+                <div slot="col2-row2" v-if="type.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
+                <div slot="col2-row3" v-if="type.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time}}</div>
+                <div slot="col2-row4" v-if="type.toLowerCase()=='reactive'">Surge Damage: {{surge_damage}}</div>
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                <div slot="col4-row1">Base Cost: {{shield_class.cost}}</div>
+                <div slot="col4-row1">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row1" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
             <!--mek-reset-component></mek-reset-component-->
         </div>
@@ -84,13 +96,13 @@ import mek_shield_binder from "./subcomponents/mek_shield-binder.vue";
 import mek_shield_reset_time from "./subcomponents/mek_shield-reset-time.vue";
 import mek_shield_turns_in_use from "./subcomponents/mek_shield-turns-in-use.vue";
 import mek_shield_weakness from "./subcomponents/mek_shield-weakness.vue";
-import mek_shield_stats from "./subcomponents/mek-shield-stats.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_armor_type from "../universal/mek_armor-type.vue";
 import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
@@ -105,12 +117,13 @@ export default
         "mekshield-reset-time":mek_shield_reset_time,
         "mekshield-turns-in-use":mek_shield_turns_in_use,
         "mekshield-weakness":mek_shield_weakness,
-        "mek-shield-stats":mek_shield_stats,
+        
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
         "mek-save-reset-component":mek_save_reset_component,
         "mek-armor-type":mek_armor_type,
-        "mek-energy-absorbing-armor":mek_energy_absorbing_armor
+        "mek-energy-absorbing-armor":mek_energy_absorbing_armor,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
@@ -573,6 +586,15 @@ export default
                 return false;
             }
             return true;
+        },
+        weakness_list:function()
+        {
+            return this.weakness_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.weakness;
+                return _string;
+            },"");
         }
     }
 }

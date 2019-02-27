@@ -36,12 +36,25 @@
             </span>
         </div>
         <div class="mek-inline-flex-row">
-            <mek-emw-stats :damage="selected_damage" :accuracy="selected_accuracy"
-                :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
-                :beam_shield="beam_shield" :damage_capacity="damage_capacity"
-                :is-beam-shield="is_beam_shield" :is-variable-beam-shield="is_variable_beam_shield"
-            ></mek-emw-stats>
+            <mek-component-stats :cols="4" :rows="3">
+                <div slot="col1-row1">{{is_beam_shield && !is_variable_beam_shield?"Base":""}} Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2" v-if="is_beam_shield">
+                    <div>Beam Shield Kills: {{beam_shield.damage}} K</div>
+                    <div>Stopping Power: {{beam_shield.stopping_power}} K</div>
+                    <div>Defense Accuracy: {{beam_shield.defense_accuracy}}</div>
+                </div>
+                <div slot="col1-row3">Damage Capacity: {{damage_capacity}} K</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+
+                <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
@@ -56,11 +69,11 @@ import mek_emw_accuracy from "./subcomponents/mek_emw-accuracy.vue";
 import mek_emw_attack_factor from "./subcomponents/mek_emw-attack-factor.vue";
 import mek_emw_turns_in_use from "./subcomponents/mek_emw-turns-in-use.vue";
 import mek_emw_feature from "./subcomponents/mek_emw-feature.vue";
-import mek_emw_stats from "./subcomponents/mek_emw-stats.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 export default
 {
     name:"mek_emw",
@@ -73,11 +86,11 @@ export default
         "mek-emw-attack-factor":mek_emw_attack_factor,
         "mek-emw-turns-in-use":mek_emw_turns_in_use,
         "mek-emw-feature":mek_emw_feature,
-        "mek-emw-stats":mek_emw_stats,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
@@ -308,6 +321,15 @@ export default
             emw_name=this.is_beam_shield ? emw_name.replace(/ $/,"") : emw_name+"EMW";
 
             return emw_name;
+        },
+        feature_list:function()
+        {
+            return this.feature_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.feature;
+                return _string;
+            },"");
         }
     }
 };

@@ -21,11 +21,16 @@
             </span>
         </div>
         <div class="mek-inline-flex-row">
-            <mek-reflector-stat
-                :reflector="selected_reflector"
-                :space_cost="space_cost" :weight="weight"
-                :total_cost="cost" :raw_space="raw_space"
-            ></mek-reflector-stat>
+            <mek-component-stats :cols="3" :rows="3">
+                <div slot="col1-row1">Quality Value: {{selected_reflector.quality_value}}</div>
+
+                <div slot="col2-row1">Base Space: {{raw_space}}</div>
+                <div slot="col2-row2">Space: {{space_cost}}</div>
+                <div slot="col2-row3">Weight: {{round(weight,2)}} tons</div> 
+
+                <div slot="col3-row1">Base Cost: {{selected_reflector.cost}}</div>
+                <div slot="col3-row2" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
@@ -35,11 +40,10 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import mek_reflector_stat from "./subcomponents/mek_reflector-stat.vue";
-
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
@@ -49,10 +53,11 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-reflector-stat":mek_reflector_stat,
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
         "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats,
+
         "mek-sub-component-table":mek_sub_component_table
     },
     data()

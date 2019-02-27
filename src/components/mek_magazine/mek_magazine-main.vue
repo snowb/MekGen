@@ -9,9 +9,15 @@
             <mek-magazine-ammo-list :ammo-array="selected_ammo" @update-ammo="updateAmmo" :has-blast="hasBlast"></mek-magazine-ammo-list>
             <span class="mek-flex-col no-margin">
                 <mek-magazine-shots :shots="selected_shots" @update-shots="updateShots" style="align-self:baseline;"></mek-magazine-shots>
-                <mek-magazine-stats :total-cost="cost" :ammo-list="selected_ammo" :cost="base_cost"
-                    :weight="weight" :space-cost="space_cost" :cost-multiplier="cost_multiplier" :shots="selected_shots"
-                ></mek-magazine-stats>
+                <mek-component-stats :cols="3" :rows="3">
+                    <div slot="col1-row1">Shots: {{selected_shots}}</div>
+                    <div slot="col1-row1">Ammo Type(s):<div style="max-width:150px;margin-left:10px;">{{ammo_list}}</div></div>
+                    <div slot="col2-row1">Space: {{space_cost}}</div>
+                    <div slot="col2-row2">Weight: {{round(weight,2)}} tons</div>
+                    <div slot="col3-row1">Base Cost: {{cost}}</div>
+                    <div slot="col3-row2">Multiplier: x{{cost_multiplier}}</div>
+                    <div slot="col3-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+                </mek-component-stats>
                 <mek-save-reset-component style="align-self:baseline;" @save-reset-component="componentSaveReset"></mek-save-reset-component>
             </span>
         </span>
@@ -25,10 +31,10 @@ import utility_mixin from "../../mixins/utility_mixin";
 import mek_magazine_select_gun from "./subcomponents/mek_magazine-select-gun.vue";
 import mek_magazine_ammo_list from "./subcomponents/mek_magazine-ammo-list.vue";
 import mek_magazine_shots from "./subcomponents/mek_magazine-shots.vue";
-import mek_magazine_stats from "./subcomponents/mek_magazine-stats.vue";
 
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
@@ -40,10 +46,10 @@ export default
         "mek-magazine-select-gun":mek_magazine_select_gun,
         "mek-magazine-ammo-list":mek_magazine_ammo_list,
         "mek-magazine-shots":mek_magazine_shots,
-        "mek-magazine-stats":mek_magazine_stats,
 
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
@@ -231,6 +237,15 @@ export default
             {
                 return /blast/gi.test(_val.type);
             });
+        },
+        ammo_list()
+        {
+            return this.selected_ammo.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.type;
+                return _string;
+            },"");
         }
     }
 };

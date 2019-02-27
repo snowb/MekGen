@@ -47,11 +47,22 @@
                 
         </div>
         <div class="mek-inline-flex-row">
-            <mek-projectile-stats :damage="selected_damage" :accuracy="selected_accuracy"
-                :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
-                :damage_capacity="damage_capacity"
-            ></mek-projectile-stats>
+            <mek-component-stats :cols="4" :rows="5">
+                <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                <div slot="col3-row4">&nbsp;</div>
+                <div slot="col3-row5">Standard Ammo Cost: {{cost*0.01}}/shot</div>
+
+                <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
@@ -67,12 +78,12 @@ import mek_projectile_multi_feed from "./subcomponents/mek_projectile-multi-feed
 import mek_projectile_range_mod from "./subcomponents/mek_projectile-range-mod.vue";
 import mek_projectile_burst_value from "./subcomponents/mek_projectile-burst-value.vue";
 import mek_projectile_feature from "./subcomponents/mek_projectile-feature.vue";
-import mek_projectile_stats from "./subcomponents/mek_projectile-stats.vue";
 //import mek_projectile_mount_type from "./subcomponents/mek_projectile-mount-type.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
@@ -87,12 +98,12 @@ export default
         "mek-projectile-range-mod":mek_projectile_range_mod,
         "mek-projectile-burst-value":mek_projectile_burst_value,
         "mek-projectile-feature":mek_projectile_feature,
-        "mek-projectile-stats":mek_projectile_stats,
         //"mek-projectile-mount-type":mek_projectile_mount_type,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
@@ -313,6 +324,15 @@ export default
             projectile_name=projectile_name.length>0?projectile_name+" Gun":"Gun";
 
             return projectile_name.replace(/\s+/g," ");
+        },
+        feature_list:function()
+        {
+            return this.feature_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.feature;
+                return _string;
+            },"");
         }
     }
 };

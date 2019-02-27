@@ -26,11 +26,22 @@
             ></mek-space-efficiency>
         </div>
         <div class="mek-inline-flex-row">
-            <mek-melee-stats :damage="selected_damage" :accuracy="selected_accuracy"
-                :cost-multiplier="cost_multiplier" :feature-array="feature_array" :weight="weight"
-                :space-cost="space_cost" :raw-space="raw_space" :total-cost="cost"
-                :damage-modifier="entangle.damage_modifier" :range-modifier="entangle.range_modifier"
-            ></mek-melee-stats>
+            <mek-component-stats :cols="4" :rows="4">
+                <div slot="col1-row1">{{entangle.damage_modifier!=0?"Base":""}} Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2" v-if="entangle.damage_modifier!=0">Kills: {{selected_damage.damage - entangle.damage_modifier}} K</div>
+                <div slot="col1-row3" v-if="entangle.range_modifier!=0">Range: {{entangle.range_modifier}} hex</div>
+                <div slot="col1-row4">Damage Capacity: {{damage_capacity}} K</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+
+                <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
@@ -43,12 +54,12 @@ import utility_mixin from "../../mixins/utility_mixin";
 import mek_melee_damage from "./subcomponents/mek_melee-damage.vue";
 import mek_melee_accuracy from "./subcomponents/mek_melee-accuracy.vue";
 import mek_melee_feature from "./subcomponents/mek_melee-feature.vue";
-import mek_melee_stats from "./subcomponents/mek_melee-stats.vue";
 import mek_melee_entangle_range from "./subcomponents/mek_melee-entangle-range.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
@@ -60,12 +71,12 @@ export default
         "mek-melee-damage":mek_melee_damage,
         "mek-melee-accuracy":mek_melee_accuracy,
         "mek-melee-feature":mek_melee_feature,
-        "mek-melee-stats":mek_melee_stats,
         "mek-melee-entangle-range":mek_melee_entangle_range,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component
+        "mek-save-reset-component":mek_save_reset_component,
+        "mek-component-stats":mek_component_stats
     },
     data:function()
     {
@@ -274,6 +285,15 @@ export default
                 return _name;
             },"");
             return name+"Melee";
+        },
+        feature_list:function()
+        {
+            return this.feature_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.feature;
+                return _string;
+            },"");
         }
     }
 };

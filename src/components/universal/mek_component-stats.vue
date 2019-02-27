@@ -1,32 +1,20 @@
 <template>
     <div class="outer-container">
-        <span class="mek-inline-flex-row subsection_container" style="text-align:left;">
-            <span class="padding-10px">
-                <slot name="col1-row1"></slot>
-                <slot name="col1-row2"></slot>
-                <slot name="col1-row3"></slot>
-            </span>
-            <span class="padding-10px">
-                <slot name="col2-row1"></slot>
-                <slot name="col2-row2"></slot>
-                <slot name="col2-row3"></slot>             
-            </span>
-            <span class="padding-10px">
-                <slot name="col3-row1"></slot>
-                <slot name="col3-row2"></slot>
-                <slot name="col3-row3"></slot>
+        <span class="mek-inline-flex-row subsection_container1">
+            <span v-for="(col) in cols" class="padding-10px" :key="'outercol-'+col">
+                <slot v-for="(row) in rows" :name="'col'+col+'-row'+row"></slot>
             </span>
         </span>
     </div>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import utility_mixin from "../../mixins/utility_mixin.js";
 
 export default
 {
-    name:"mek_magazine_stats",
+    name:"mek_component_stats",
     mixins:[utility_mixin],
-    props:[],
+    props:["cols","rows"],
     data:function()
     {
         let obj={};
@@ -53,5 +41,15 @@ export default
     font-size:120%;
     color:#222;
 }
-
+.subsection_container1
+{
+    position: relative;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: rgb(170, 170, 170);
+    height: 100%;
+    width: 100%;
+    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+    text-align: left;
+}
 </style>
