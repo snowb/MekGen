@@ -8,9 +8,9 @@
         <div class="mek-inline-flex-row">
             <mek-projectile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-projectile-damage>
             <mek-projectile-accuracy 
-                    @update-accuracy="updateAccuracy" 
-                    :accuracy="selected_accuracy"
-                ></mek-projectile-accuracy>
+                @update-accuracy="updateAccuracy" 
+                :accuracy="selected_accuracy"
+            ></mek-projectile-accuracy>
             <mek-projectile-burst-value 
                     @update-burst-value="updateBurstValue" 
                     :burst-value="selected_burst_value"
@@ -42,9 +42,7 @@
                     :raw_space="raw_space"
                     @update-efficiencies="updateEfficiencies"
                 ></mek-space-efficiency>
-            </div>
-            
-                
+            </div>                
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="5">
