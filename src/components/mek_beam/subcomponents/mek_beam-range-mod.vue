@@ -28,16 +28,16 @@ export default
         let obj={}
         obj.range_mod_table=
             [
-                {range_mod:0.25,cost:0.62,range:0.25*3},
-                {range_mod:0.5,cost:0.75,range:0.5*3},
-                {range_mod:0.75,cost:0.88,range:0.75*3},
-                {range_mod:1,cost:1,range:1*3},
-                {range_mod:1.25,cost:1.12,range:1.25*3},
-                {range_mod:1.5,cost:1.25,range:1.5*3},
-                {range_mod:1.75,cost:1.38,range:1.75*3},
-                {range_mod:2,cost:1.5,range:2*3},
-                {range_mod:2.5,cost:1.75,range:2.5*3},
-                {range_mod:3,cost:2,range:3*3},
+                {range_mod:0.25,cost:0.62,range:0.25*4},
+                {range_mod:0.5,cost:0.75,range:0.5*4},
+                {range_mod:0.75,cost:0.88,range:0.75*4},
+                {range_mod:1,cost:1,range:1*4},
+                {range_mod:1.25,cost:1.12,range:1.25*4},
+                {range_mod:1.5,cost:1.25,range:1.5*4},
+                {range_mod:1.75,cost:1.38,range:1.75*4},
+                {range_mod:2,cost:1.5,range:2*4},
+                {range_mod:2.5,cost:1.75,range:2.5*4},
+                {range_mod:3,cost:2,range:3*4},
             ];
         return obj;
     },
