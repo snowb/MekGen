@@ -48,6 +48,7 @@
             <mek-component-stats :cols="4" :rows="5">
                 <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+                <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
 
                 <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
 
