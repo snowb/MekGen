@@ -184,7 +184,7 @@ export default
             }
             return cost_multiplier;
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
