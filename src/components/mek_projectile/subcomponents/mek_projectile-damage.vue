@@ -14,7 +14,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
-    name:"mek_emw_damage",
+    name:"mek_beam_damage",
     props:["damage"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
