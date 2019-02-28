@@ -59,7 +59,6 @@ export default
                     case _val.shots==15 && this.shots.shots==Infinity:
                     case _val.shots==Infinity && this.shots.shots==15:
                         index=_index;
-                        console.log(index)
                         return true;
                 }
             },this);
