@@ -1,7 +1,73 @@
 <template>
     <span class="mek-inline-flex-col" style="width:100%;">
-        <div style="align-self:flex-start;">
-        beam
+        <mek-component-name :new-component="newComponent" :component-name="component_name||beam_name"
+            :component-changed="component_changed"
+            @update-component-name="updateComponentName"
+        ></mek-component-name>
+        <div class="mek-inline-flex-row">
+            <mek-beam-damage @update-damage="updateDamage" :damage="selected_damage"></mek-beam-damage>
+            <mek-beam-accuracy 
+                @update-accuracy="updateAccuracy" 
+                :accuracy="selected_accuracy"
+            ></mek-beam-accuracy>
+        </div>
+        <div class="mek-inline-flex-row">
+            <div class="mek-flex-col no-margin">
+                <mek-beam-burst-value 
+                    @update-burst-value="updateBurstValue" 
+                    :burst-value="selected_burst_value"
+                ></mek-beam-burst-value>
+                <mek-beam-shots 
+                    @update-shots="updateShots" 
+                    :shots="selected_shots"
+                ></mek-beam-shots>
+            </div>
+            <mek-beam-range-mod style="align-self:start;"
+                @update-range-mod="updateRangeMod"
+                :range-mod="selected_range_mod"
+                :base-range="selected_damage.range"
+            ></mek-beam-range-mod>
+            <div class="mek-inline-flex-col">
+                <mek-beam-warm-up-time
+                    @update-warm-up-time="updateWarmUpTime"
+                    :warm-up-time="selected_warm_up_time"
+                ></mek-beam-warm-up-time>
+                <mek-beam-wide-angle
+                    @update-wide-angle="updateWideAngle"
+                    :wide-angle="selected_wide_angle"
+                ></mek-beam-wide-angle>
+            </div>
+            <!--div class="mek-inline-flex-row">           
+                <mek-beam-feature style="align-self:baseline;"
+                        @update-feature="updateFeature"
+                        :feature-array="feature_array"
+                        :burst-value="selected_burst_value.burst_value"
+                    ></mek-beam-feature>
+                <mek-space-efficiency style="align-self:baseline;"
+                    :space_efficiency="efficiencies.space"
+                    :raw_space="raw_space"
+                    @update-efficiencies="updateEfficiencies"
+                ></mek-space-efficiency>
+            </div-->                
+        </div>
+        <div class="mek-inline-flex-row">
+            <!--mek-component-stats :cols="4" :rows="5">
+                <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                <div slot="col3-row4">&nbsp;</div>
+                <div slot="col3-row5">Standard Ammo Cost: {{cost*0.01}}/shot</div>
+
+                <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats-->
+            <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
 </template>
@@ -10,6 +76,15 @@
 import servo_classes_mixin from "../../mixins/servo_classes_mixin";
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+
+import mek_beam_damage from "./subcomponents/mek_beam-damage.vue";
+import mek_beam_accuracy from "./subcomponents/mek_beam-accuracy.vue";
+import mek_beam_burst_value from "./subcomponents/mek_beam-burst-value.vue";
+import mek_beam_range_mod from "./subcomponents/mek_beam-range-mod.vue";
+import mek_beam_shots from "./subcomponents/mek_beam-shots.vue";
+import mek_beam_warm_up_time from "./subcomponents/mek_beam-warm-up-time.vue";
+import mek_beam_wide_angle from "./subcomponents/mek_beam-wide-angle.vue";
+//import mek_beam_feature from "./subcomponents/mek_beam-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -23,14 +98,14 @@ export default
     mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
     components:
     {
-        //"mek-projectile-damage":mek_projectile_damage,
-        //"mek-projectile-accuracy":mek_projectile_accuracy,
-        //"mek-projectile-multi-feed":mek_projectile_multi_feed,
-        //"mek-projectile-range-mod":mek_projectile_range_mod,
-        //"mek-projectile-burst-value":mek_projectile_burst_value,
-        //"mek-projectile-feature":mek_projectile_feature,
-        //"mek-projectile-stats":mek_projectile_stats,
-        //"mek-projectile-mount-type":mek_projectile_mount_type,
+        "mek-beam-damage":mek_beam_damage,
+        "mek-beam-accuracy":mek_beam_accuracy,
+        "mek-beam-burst-value":mek_beam_burst_value,
+        "mek-beam-range-mod":mek_beam_range_mod,
+        "mek-beam-shots":mek_beam_shots,
+        "mek-beam-warm-up-time":mek_beam_warm_up_time,
+        "mek-beam-wide-angle":mek_beam_wide_angle,
+        //"mek-beam-feature":mek_beam_feature,,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -48,6 +123,28 @@ export default
         obj.component_changed=true;
 
         obj.damage_capacity=1;//varies by equipment
+
+        obj.selected_damage={damage:1,cost:1.5,range:4};
+        obj.selected_accuracy={accuracy:1,cost:1};
+        obj.selected_burst_value={burst_value:1,cost:1};
+        obj.selected_range_mod={range_mod:1,cost:1};
+        obj.selected_shots={shots:Infinity,cost:1};
+        obj.selected_warm_up_time={time:0,cost:1.0};
+        obj.selected_wide_angle={angle:0,cost:1.0};
+        
+        obj.feature_array=[];
+
+        obj.efficiencies={};
+        obj.efficiencies.space={};
+        obj.efficiencies.space.cost=0;
+        obj.efficiencies.space.modifier=0;
+
+        obj.cost_multipliers={};
+        obj.cost_multipliers.accuracy=1;
+        obj.cost_multipliers.feature=1;
+        obj.cost_multipliers.shots=1;
+        obj.cost_multipliers.burst_value=1;
+        obj.cost_multipliers.range_mod=1;
 
         return obj;
     },
@@ -73,6 +170,62 @@ export default
             this.component_changed=true;
             this.damage_capacity=_damage.damage;
         }, */
+        updateDamage(_damage)
+        {
+            this.selected_damage.damage=_damage.damage;
+            this.selected_damage.cost=_damage.cost;
+            this.selected_damage.range=_damage.range;
+            this.component_changed=true;
+            this.damage_capacity=_damage.damage;
+        },
+        updateAccuracy(_accuracy)
+        {
+            this.selected_accuracy.accuracy=_accuracy.accuracy;
+            this.selected_accuracy.cost=_accuracy.cost;
+            this.cost_multipliers.accuracy=_accuracy.cost;
+            this.component_changed=true;
+        },
+        updateBurstValue(_burst_value)
+        {
+            this.selected_burst_value.burst_value=_burst_value.burst_value;
+            this.selected_burst_value.cost=_burst_value.cost;
+            this.cost_multipliers.burst_value=_burst_value.cost;
+            this.component_changed=true;
+        },
+        updateRangeMod(_range_mod)
+        {
+            this.selected_range_mod.range_mod=_range_mod.range_mod;
+            this.selected_range_mod.cost=_range_mod.cost;
+            this.cost_multipliers.range_mod=_range_mod.cost;
+            this.component_changed=true;
+        },
+        updateShots(_shots)
+        {
+            this.selected_shots.shots=_shots.shots;
+            this.selected_shots.cost=_shots.cost;
+            this.cost_multipliers.shots=_shots.cost;
+            this.component_changed=true;
+        },
+        updateWarmUpTime(_warm_up_time)
+        {
+            this.selected_warm_up_time.time=_warm_up_time.time;
+            this.selected_warm_up_time.cost=_warm_up_time.cost;
+            this.cost_multipliers.warm_up_time=_warm_up_time.cost;
+            this.component_changed=true;
+        },
+        updateWideAngle(_wide_angle)
+        {
+            this.selected_wide_angle.angle=_wide_angle.angle;
+            this.selected_wide_angle.cost=_wide_angle.cost;
+            this.cost_multipliers.wide_angle=_wide_angle.cost;
+            this.component_changed=true;
+        },
+        updateFeature(_featureArray)
+        {
+            this.$set(this,"feature_array",_featureArray);
+            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.projectile_name;
+        },
         componentSaveReset:function(_action)
         {
             switch(_action)
@@ -105,7 +258,7 @@ export default
             return_data.uuid=this.uuid;
             return_data.component_category="equipment";
             return_data.component_type="beam";//specific equipment type
-            return_data.component_name=this.component_name===null?this.projectile_name:this.component_name;
+            return_data.component_name=this.component_name===null?this.beam_name:this.component_name;
 
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
@@ -211,21 +364,25 @@ export default
             }
             return true;
         },
-        energy_pool_name()
+        beam_name()
         {
             /* method to dynamically generate appropriate 'default' equipment name
-            let projectile_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
+            let beam_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
 
-            projectile_name=this.feature_array.reduce((_name,_val)=>
+            beam_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.feature+" ";
-            },projectile_name);
+            },beam_name);
 
-            projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
+            beam_name=beam_name+" "+this.selected_mount_type.mount_type+" Gun";
 
-            return projectile_name; 
+            return beam_name; 
             */
            return "Beam";
+        },
+        feature_list()
+        {
+
         }
     }
 };
