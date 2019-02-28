@@ -24,11 +24,11 @@
             </div>
             <mek-beam-range-mod style="align-self:start;"
                 @update-range-mod="updateRangeMod"
-                :range-mod="selected_range_mod"
+                :range-mod="selected_range_mod" :anti-missile="anti_missile"
                 :base-range="selected_damage.range"
             ></mek-beam-range-mod>
             <div class="mek-inline-flex-col">
-                <mek-beam-warm-up-time
+                <mek-beam-warm-up-time v-if="show_warm_up_time"
                     @update-warm-up-time="updateWarmUpTime"
                     :warm-up-time="selected_warm_up_time"
                 ></mek-beam-warm-up-time>
@@ -52,7 +52,7 @@
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="4">
-                <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row1">Kills: {{fragile? 1 :selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
                 <div slot="col1-row3" v-if="selected_shots.shots==0">Shutdown: {{selected_damage.damage}} turns</div>
                 <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
@@ -405,7 +405,31 @@ export default
                 {
                     return true;
                 }
-            },"");
+            });
+        },
+        show_warm_up_time()
+        {
+            return !this.mag_fed && this.selected_shots.shots==Infinity;
+        },
+        anti_missile()
+        {
+            return this.feature_array.some(function(_val)
+            {
+                if(_val.feature.toLowerCase()=="anti-missile")
+                {
+                    return true;
+                }
+            });
+        },
+        fragile()
+        {
+            return this.feature_array.some(function(_val)
+            {
+                if(_val.feature.toLowerCase()=="fragile")
+                {
+                    return true;
+                }
+            });
         }
     }
 };
