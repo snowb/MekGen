@@ -122,10 +122,15 @@ export default
         },
         formatOutput(_data, _key)
         {
+            if(_data===Infinity)
+            {
+                return "\u221E"
+            }
             if(typeof this.format==="undefined" || typeof this.format[_key]==="undefined")
             {
                 return _data;
             }
+
             let formatArray=this.format[_key].split(",").map(el=>el.toLowerCase());
             let outputData=_data;
             if(formatArray.includes("percent"))
@@ -136,7 +141,20 @@ export default
             {
                 outputData="x"+outputData;
             }
-
+            if(formatArray.includes("wide-angle"))
+            {
+                switch(_data)
+                {
+                    case 0:
+                        outputData="\u00D8";
+                        break;
+                    case 1:
+                        outputData="Hex";
+                        break;
+                    default:
+                        outputData=_data+"\u00B0";
+                }
+            }
             return outputData;
         }
     },
