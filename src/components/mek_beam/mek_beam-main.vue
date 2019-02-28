@@ -19,7 +19,7 @@
                 ></mek-beam-burst-value>
                 <mek-beam-shots 
                     @update-shots="updateShots" 
-                    :shots="selected_shots"
+                    :shots="selected_shots" :mag-fed="mag_fed"
                 ></mek-beam-shots>
             </div>
             <mek-beam-range-mod style="align-self:start;"
@@ -36,37 +36,38 @@
                     @update-wide-angle="updateWideAngle"
                     :wide-angle="selected_wide_angle"
                 ></mek-beam-wide-angle>
-            </div>
-            <!--div class="mek-inline-flex-row">           
-                <mek-beam-feature style="align-self:baseline;"
-                        @update-feature="updateFeature"
-                        :feature-array="feature_array"
-                        :burst-value="selected_burst_value.burst_value"
-                    ></mek-beam-feature>
                 <mek-space-efficiency style="align-self:baseline;"
                     :space_efficiency="efficiencies.space"
                     :raw_space="raw_space"
                     @update-efficiencies="updateEfficiencies"
                 ></mek-space-efficiency>
-            </div-->                
+            </div>
+            <div class="mek-inline-flex-row">           
+                <mek-beam-feature style="align-self:baseline;"
+                        @update-feature="updateFeature"
+                        :feature-array="feature_array"
+                        :burst-value="selected_burst_value.burst_value"
+                    ></mek-beam-feature>
+            </div>
         </div>
         <div class="mek-inline-flex-row">
-            <!--mek-component-stats :cols="4" :rows="5">
+            <mek-component-stats :cols="4" :rows="4">
                 <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+                <div slot="col1-row3" v-if="selected_shots.shots==0">Shutdown: {{selected_damage.damage}} turns</div>
+                <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
 
                 <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
 
-                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row1">Base Space: {{round(raw_space,2)}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
                 <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
-                <div slot="col3-row4">&nbsp;</div>
-                <div slot="col3-row5">Standard Ammo Cost: {{cost*0.01}}/shot</div>
+                <div slot="col3-row4" v-if="mag_fed">E-Mag: +1CP, +1SP</div>
 
                 <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
-                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row2">Multiplier: x{{round(cost_multiplier,2)}}</div>
                 <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
-            </mek-component-stats-->
+            </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
@@ -84,7 +85,7 @@ import mek_beam_range_mod from "./subcomponents/mek_beam-range-mod.vue";
 import mek_beam_shots from "./subcomponents/mek_beam-shots.vue";
 import mek_beam_warm_up_time from "./subcomponents/mek_beam-warm-up-time.vue";
 import mek_beam_wide_angle from "./subcomponents/mek_beam-wide-angle.vue";
-//import mek_beam_feature from "./subcomponents/mek_beam-feature.vue";
+import mek_beam_feature from "./subcomponents/mek_beam-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -105,7 +106,7 @@ export default
         "mek-beam-shots":mek_beam_shots,
         "mek-beam-warm-up-time":mek_beam_warm_up_time,
         "mek-beam-wide-angle":mek_beam_wide_angle,
-        //"mek-beam-feature":mek_beam_feature,,
+        "mek-beam-feature":mek_beam_feature,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -125,9 +126,9 @@ export default
         obj.damage_capacity=1;//varies by equipment
 
         obj.selected_damage={damage:1,cost:1.5,range:4};
-        obj.selected_accuracy={accuracy:1,cost:1};
         obj.selected_burst_value={burst_value:1,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1};
+        obj.selected_range_mod={range_mod:1,cost:1,range:4};
+        obj.selected_accuracy={accuracy:1,cost:1};
         obj.selected_shots={shots:Infinity,cost:1};
         obj.selected_warm_up_time={time:0,cost:1.0};
         obj.selected_wide_angle={angle:0,cost:1.0};
@@ -143,8 +144,9 @@ export default
         obj.cost_multipliers.accuracy=1;
         obj.cost_multipliers.feature=1;
         obj.cost_multipliers.shots=1;
+        obj.cost_multipliers.wide_angle=1;
+        obj.cost_multipliers.warm_up_time=1;
         obj.cost_multipliers.burst_value=1;
-        obj.cost_multipliers.range_mod=1;
 
         return obj;
     },
@@ -243,10 +245,14 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    //generic props and key values to reset
-                    //this.selected_property1.keyProp=1;
-                    //this.selected_property2.keyProp=1;
-                    //this.$set(this,"feature_array",[]);
+                    this.$set(this,"feature_array",[]);
+                    this.selected_damage.damage=1;
+                    this.selected_burst_value.burst_value=1;
+                    this.selected_range_mod.range_mod=1;
+                    this.selected_accuracy.accuracy=1;
+                    this.selected_shots.shots=Infinity;
+                    this.selected_warm_up_time.time=0;
+                    this.selected_wide_angle.angle=0;
                     this.$store.commit("saveComponent",null);
                     break;
             }
@@ -322,11 +328,12 @@ export default
         raw_space()
         {
             //core cost prop
-            //return this.selected_property1.cost * this.cost_multiplier;
+            return this.selected_damage.cost * this.cost_multiplier;
         },
         space_cost:function()
         {
-            return this.raw_space - this.efficiencies.space.modifier;
+            let mag_fed=this.mag_fed?1:0;
+            return (this.raw_space - this.efficiencies.space.modifier) + mag_fed;
         },
         cost_multiplier()
         {
@@ -337,10 +344,11 @@ export default
             }
             return cost_multiplier;
         },
-        total_cost:function()
+        cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
+            subtotal_cost += this.mag_fed?1:0;
 
             return this.round(subtotal_cost,2);
         },
@@ -380,9 +388,24 @@ export default
             */
            return "Beam";
         },
-        feature_list()
+        feature_list:function()
         {
-
+            return this.feature_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.feature;
+                return _string;
+            },"");
+        },
+        mag_fed()
+        {
+            return this.feature_array.some(function(_val)
+            {
+                if(_val.feature.toLowerCase()=="mag-fed")
+                {
+                    return true;
+                }
+            },"");
         }
     }
 };
