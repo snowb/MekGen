@@ -10,7 +10,7 @@
             <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
                 style="align-self:flex-end;"
             ></mek-missile-pack-size>
-            <mek-missile-accuracy 
+            <mek-missile-accuracy v-if="!is_mine"
                 @update-accuracy="updateAccuracy" 
                 :accuracy="selected_accuracy"
             ></mek-missile-accuracy>
@@ -36,9 +36,9 @@
             <mek-component-stats :cols="4" :rows="5">
                 <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
-                <!--div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
+                <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
 
-                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+                <!--div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
 
                 <div slot="col3-row1">Base Space: {{raw_space}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
@@ -101,7 +101,7 @@ export default
         obj.selected_damage={damage:1,cost:0.1,range:4};
         obj.selected_pack_size=1;
         obj.selected_accuracy={accuracy:0,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1};
+        obj.selected_range_mod={range_mod:1,cost:1,type:""};
         obj.selected_smart={smart:0,cost:1};
         obj.selected_skill={skill:6,cost:1};
 
@@ -162,6 +162,12 @@ export default
             this.selected_range_mod.range_mod=_range_mod.range_mod;
             this.selected_range_mod.cost=_range_mod.cost;
             this.cost_multipliers.range_mod=_range_mod.cost;
+            this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : "";
+
+            if(this.is_mine)
+            {
+                this.updateAccuracy({accuracy:0,cost:1});
+            }
             this.component_changed=true;
         },
         /* generic updateProp method 
@@ -292,7 +298,15 @@ export default
             return missile_name; 
             */
            return missile_name+" ("+this.selected_pack_size+")";
-        }
+        },
+        is_bomb()
+        {
+            return typeof this.selected_range_mod.type!=="undefined" && this.selected_range_mod.type.toLowerCase()=="bomb";
+        },
+        is_mine()
+        {
+            return typeof this.selected_range_mod.type!=="undefined" && this.selected_range_mod.type.toLowerCase()=="mine";
+        },
     }
 };
 </script>
