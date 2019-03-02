@@ -155,6 +155,13 @@ export default
                         outputData=_data+"\u00B0";
                 }
             }
+            if(formatArray.includes("nullzero"))
+            {
+                if(_data===0)
+                {
+                    outputData="\u00D8";
+                }
+            }
             return outputData;
         }
     },
