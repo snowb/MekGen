@@ -1,10 +1,10 @@
 <template>
     <mek-sub-component-table
-        :items="accuracy_table"
-        :headers="{accuracy:'WA',cost:'Cost'}" :showHeaders="true"
-        name="Accuracy" flow="row" :format="{cost:'multiplier'}"
-        :selectedIndices="accuracy_index"
-        @update-selected-indices="select_accuracy"
+        :items="blast_radius_table"
+        :headers="{blast_radius:'Radius (hex)',cost:'Cost'}" :showHeaders="true"
+        name="Blast Radius" flow="col" :format="{cost:'multiplier',blast_radius:'nullzero'}"
+        :selectedIndices="blast_radius_index"
+        @update-selected-indices="select_blast_radius"
     ></mek-sub-component-table>
 </template>
 <script>
@@ -14,8 +14,8 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
-    name:"mek_beam_accuracy",
-    props:["accuracy"],
+    name:"mek_missile_blast_radius",
+    props:["blast_radius"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
     {
@@ -25,33 +25,39 @@ export default
     {
         let obj={};
 
-        obj.accuracy_table=
+        obj.blast_radius_table=
         [
-            {accuracy:-2,cost:0.6},
-            {accuracy:-1,cost:0.8},
-            {accuracy:0,cost:0.9},
-            {accuracy:1,cost:1.0},
-            {accuracy:2,cost:1.5},
-            {accuracy:3,cost:2.0},
+            {blast_radius:0,cost:1},
+            {blast_radius:1,cost:3},
+            {blast_radius:2,cost:4},
+            {blast_radius:3,cost:5},
+            {blast_radius:4,cost:6},
+            {blast_radius:5,cost:7},
+            {blast_radius:6,cost:7.5},
+            {blast_radius:7,cost:8},
+            {blast_radius:8,cost:8.5},
+            {blast_radius:9,cost:9},
+            {blast_radius:10,cost:10},
+            {blast_radius:20,cost:20},
         ];
         return obj;
     },
     methods:
     {
-        select_accuracy:function(_accuracy_index)
+        select_blast_radius:function(_blast_radius_index)
         {
-            this.$emit("update-accuracy",this.accuracy_table[_accuracy_index]);
+            this.$emit("update-blast-radius",this.blast_radius_table[_blast_radius_index]);
         },
     },
     computed:
     {
-        accuracy_index:function()
+        blast_radius_index:function()
         {
-            let index=2;
-            this.accuracy;
-            this.accuracy_table.some(function(_val,_index)
+            let index=0;
+            this.blast_radius;
+            this.blast_radius_table.some(function(_val,_index)
             {
-                if(_val.accuracy==this.accuracy.accuracy)
+                if(_val.blast_radius==this.blast_radius.blast_radius)
                 {
                     index=_index;
                     return true;
@@ -59,9 +65,9 @@ export default
                 return false;
             },this);
 
-            if(this.accuracy_table[index].cost!==this.accuracy.cost)
+            if(this.blast_radius_table[index].cost!==this.blast_radius.cost)
             {
-                this.select_accuracy(index);
+                this.select_blast_radius(index);
             }
             return [index];
         }

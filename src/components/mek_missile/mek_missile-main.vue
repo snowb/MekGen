@@ -28,6 +28,9 @@
                         @update-skill="updateSkill"
                     ></mek-missile-skill>
                 </div>
+                <mek-missile-blast-radius :blast_radius="selected_blast_radius"
+                    @update-blast-radius="updateBlastRadius"
+                ></mek-missile-blast-radius>
                 <!--mek-missile-feature style="align-self:baseline;"
                         @update-feature="updateFeature"
                         :feature-array="feature_array"
@@ -73,6 +76,7 @@ import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
 import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
 import mek_missile_smart from "./subcomponents/mek_missile-smart.vue";
 import mek_missile_skill from "./subcomponents/mek_missile-skill.vue";
+import mek_missile_blast_radius from "./subcomponents/mek_missile-blast-radius.vue";
 //import mek_missile_feature from "./subcomponents/mek_missile-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
@@ -93,6 +97,7 @@ export default
         "mek-missile-range-mod":mek_missile_range_mod,
         "mek-missile-smart":mek_missile_smart,
         "mek-missile-skill":mek_missile_skill,
+        "mek-missile-blast-radius":mek_missile_blast_radius,
         //"mek-missile-feature":mek_missile_feature,
 
         "mek-space-efficiency":mek_space_efficiency,
@@ -116,6 +121,7 @@ export default
         obj.selected_range_mod={range_mod:1,cost:1,type:""};
         obj.selected_smart={smart:0,cost:1};
         obj.selected_skill={skill:6,cost:1};
+        obj.selected_blast_radius={blast_radius:0,cost:1};
 
         obj.damage_capacity=this.round(1/15,2);
 
@@ -132,6 +138,7 @@ export default
         obj.cost_multipliers.smart=1;
         obj.cost_multipliers.skill=1;
         obj.cost_multipliers.range_mod=1;
+        obj.cost_multipliers.blast_radius=1;
 
         return obj;
     },
@@ -194,6 +201,13 @@ export default
             this.selected_skill.skill=_skill.skill;
             this.selected_skill.cost=_skill.cost;
             this.cost_multipliers.smart=_skill.cost;
+            this.component_changed=true;
+        },
+        updateBlastRadius(_blast)
+        {
+            this.selected_blast_radius.blast_radius=_blast.blast_radius;
+            this.selected_blast_radius.cost=_blast.cost;
+            this.cost_multipliers.blast_radius=_blast.cost;
             this.component_changed=true;
         },
         /* generic updateProp method 
