@@ -30,12 +30,12 @@ export default
          obj.damage_table.forEach((_el,_index)=>
         {
             let damage=_index+1;
-            let cost=damage*1.5;
-            let range=Math.round(Math.sqrt(damage)*4);
+            let cost=this.round(damage*0.1,1);
+            let range=Math.round(Math.sqrt(damage)*3.5);
             obj.damage_table[_index]={damage:damage,cost:cost,range:range};
         },this);
 
-        obj.selected_damage={damage:1,cost:1.5,range:4};
+        obj.selected_damage={damage:1,cost:0.1,range:4};
 
         return obj;
     },
