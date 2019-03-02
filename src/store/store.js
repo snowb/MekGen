@@ -20,7 +20,7 @@ let store= new Vuex.Store(
                     }
                 }
             },
-            currentTab:"mek-beam",
+            currentTab:"mek-missile",
             selected_component:null,
             alert_message:""
         },
