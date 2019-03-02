@@ -324,7 +324,7 @@ export default
 
             return projectile_name.replace(/\s+/g," ");
         },
-        feature_list:function()
+        feature_list()
         {
             return this.feature_array.reduce(function(_string, _val, _index)
             {
