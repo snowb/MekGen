@@ -1,7 +1,56 @@
 <template>
     <span class="mek-inline-flex-col" style="width:100%;">
-        <div style="align-self:flex-start;">
-        missile
+        <mek-component-name :new-component="newComponent" :component-name="component_name||missile_name"
+            :component-changed="component_changed"
+            @update-component-name="updateComponentName"
+        ></mek-component-name>
+        
+        <div class="mek-inline-flex-row">
+            <mek-missile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-missile-damage>
+            <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
+                style="align-self:flex-end;"
+            ></mek-missile-pack-size>
+            <!--mek-missile-accuracy 
+                @update-accuracy="updateAccuracy" 
+                :accuracy="selected_accuracy"
+            ></mek-missile-accuracy-->
+            <div class="mek-inline-flex-row">
+                <!--mek-missile-range-mod style="align-self:baseline;"
+                    @update-range-mod="updateRangeMod"
+                    :range-mod="selected_range_mod"
+                    :base-range="selected_damage.range"
+                ></mek-missile-range-mod>
+                <mek-missile-feature style="align-self:baseline;"
+                        @update-feature="updateFeature"
+                        :feature-array="feature_array"
+                        :burst-value="selected_burst_value.burst_value"
+                    ></mek-missile-feature-->
+                <mek-space-efficiency style="align-self:baseline;"
+                    :space_efficiency="efficiencies.space"
+                    :raw_space="raw_space"
+                    @update-efficiencies="updateEfficiencies"
+                ></mek-space-efficiency>
+            </div>                
+        </div>
+        <div class="mek-inline-flex-row">
+            <mek-component-stats :cols="4" :rows="5">
+                <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+                <!--div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                <div slot="col3-row4">&nbsp;</div>
+                <div slot="col3-row5">Standard Ammo Cost: {{cost*0.01}}/shot</div-->
+
+                <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
+            <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
 </template>
@@ -9,6 +58,14 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+
+import mek_missile_damage from "./subcomponents/mek_missile-damage.vue";
+import mek_missile_pack_size from "./subcomponents/mek_missile-pack-size.vue";
+//import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
+//import mek_missile_multi_feed from "./subcomponents/mek_missile-multi-feed.vue";
+//import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
+//import mek_missile_burst_value from "./subcomponents/mek_missile-burst-value.vue";
+//import mek_missile_feature from "./subcomponents/mek_missile-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -22,14 +79,14 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        //"mek-projectile-damage":mek_projectile_damage,
-        //"mek-projectile-accuracy":mek_projectile_accuracy,
-        //"mek-projectile-multi-feed":mek_projectile_multi_feed,
-        //"mek-projectile-range-mod":mek_projectile_range_mod,
-        //"mek-projectile-burst-value":mek_projectile_burst_value,
-        //"mek-projectile-feature":mek_projectile_feature,
-        //"mek-projectile-stats":mek_projectile_stats,
-        //"mek-projectile-mount-type":mek_projectile_mount_type,
+        "mek-missile-damage":mek_missile_damage,
+        "mek-missile-pack-size":mek_missile_pack_size,
+        //"mek-missile-accuracy":mek_missile_accuracy,
+        //"mek-missile-multi-feed":mek_missile_multi_feed,
+        //"mek-missile-range-mod":mek_missile_range_mod,
+        //"mek-missile-burst-value":mek_missile_burst_value,
+        //"mek-missile-feature":mek_missile_feature,
+        //"mek-missile-stats":mek_missile_stats,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -46,7 +103,28 @@ export default
         obj.original_component=null;
         obj.component_changed=true;
 
-        obj.damage_capacity=1;//varies by equipment
+        obj.selected_damage={damage:1,cost:0.1,range:4};
+        obj.selected_pack_size=1;
+        obj.selected_accuracy={accuracy:0,cost:1};
+        obj.selected_range_mod={range_mod:1,cost:1};
+        obj.selected_smart={smart:0,cost:1};
+        obj.selected_skill={skill:6,cost:1};
+
+        obj.damage_capacity=this.round(1/15,2);
+
+        obj.feature_array=[];
+
+        obj.efficiencies={};
+        obj.efficiencies.space={};
+        obj.efficiencies.space.cost=0;
+        obj.efficiencies.space.modifier=0;
+
+        obj.cost_multipliers={};
+        obj.cost_multipliers.accuracy=1;
+        obj.cost_multipliers.feature=1;
+        obj.cost_multipliers.multi_feed=1;
+        obj.cost_multipliers.burst_value=1;
+        obj.cost_multipliers.range_mod=1;
 
         return obj;
     },
@@ -62,6 +140,20 @@ export default
             this.efficiencies.space.cost=_data.cost;
             this.efficiencies.space.modifier=_data.modifier;
             this.component_changed=true;
+        },
+        updateDamage(_damage)
+        {
+            this.selected_damage.damage=_damage.damage;
+            this.selected_damage.cost=_damage.cost;
+            this.component_changed=true;
+            this.damage_capacity=_damage.damage/15;
+        },
+        updatePackSize(_missiles)
+        {
+            let size=_missiles>0 ? _missiles : 1;
+            this.$set(this,"selected_pack_size",size);
+            this.component_changed=true;
+            this.damage_capacity=this.round((this.selected_damage.damage*_missiles)/15,1);
         },
         /* generic updateProp method 
         updateProperty(_property)
@@ -104,7 +196,7 @@ export default
             return_data.uuid=this.uuid;
             return_data.component_category="equipment";
             return_data.component_type="missile";//specific equipment type
-            return_data.component_name=this.component_name===null?this.projectile_name:this.component_name;
+            return_data.component_name=this.component_name===null?this.missile_name:this.component_name;
 
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
@@ -180,19 +272,17 @@ export default
         },
         missile_name()
         {
-            /* method to dynamically generate appropriate 'default' equipment name
-            let projectile_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
-
-            projectile_name=this.feature_array.reduce((_name,_val)=>
+            let missile_name="Missile Pack";
+            /*missile_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.feature+" ";
-            },projectile_name);
+            },missile_name);
 
-            projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
+            missile_name=missile_name+" "+this.selected_mount_type.mount_type+" Gun";
 
-            return projectile_name; 
+            return missile_name; 
             */
-           return "Missile";
+           return missile_name+" ("+this.selected_pack_size+")";
         }
     }
 };
