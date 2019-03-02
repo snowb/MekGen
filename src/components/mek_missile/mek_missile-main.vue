@@ -10,17 +10,17 @@
             <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
                 style="align-self:flex-end;"
             ></mek-missile-pack-size>
-            <!--mek-missile-accuracy 
+            <mek-missile-accuracy 
                 @update-accuracy="updateAccuracy" 
                 :accuracy="selected_accuracy"
-            ></mek-missile-accuracy-->
+            ></mek-missile-accuracy>
             <div class="mek-inline-flex-row">
-                <!--mek-missile-range-mod style="align-self:baseline;"
+                <mek-missile-range-mod style="align-self:baseline;"
                     @update-range-mod="updateRangeMod"
                     :range-mod="selected_range_mod"
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
-                <mek-missile-feature style="align-self:baseline;"
+                <!--mek-missile-feature style="align-self:baseline;"
                         @update-feature="updateFeature"
                         :feature-array="feature_array"
                         :burst-value="selected_burst_value.burst_value"
@@ -61,10 +61,8 @@ import utility_mixin from "../../mixins/utility_mixin";
 
 import mek_missile_damage from "./subcomponents/mek_missile-damage.vue";
 import mek_missile_pack_size from "./subcomponents/mek_missile-pack-size.vue";
-//import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
-//import mek_missile_multi_feed from "./subcomponents/mek_missile-multi-feed.vue";
-//import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
-//import mek_missile_burst_value from "./subcomponents/mek_missile-burst-value.vue";
+import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
+import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
 //import mek_missile_feature from "./subcomponents/mek_missile-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
@@ -81,12 +79,9 @@ export default
     {
         "mek-missile-damage":mek_missile_damage,
         "mek-missile-pack-size":mek_missile_pack_size,
-        //"mek-missile-accuracy":mek_missile_accuracy,
-        //"mek-missile-multi-feed":mek_missile_multi_feed,
-        //"mek-missile-range-mod":mek_missile_range_mod,
-        //"mek-missile-burst-value":mek_missile_burst_value,
+        "mek-missile-accuracy":mek_missile_accuracy,
+        "mek-missile-range-mod":mek_missile_range_mod,
         //"mek-missile-feature":mek_missile_feature,
-        //"mek-missile-stats":mek_missile_stats,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -154,6 +149,20 @@ export default
             this.$set(this,"selected_pack_size",size);
             this.component_changed=true;
             this.damage_capacity=this.round((this.selected_damage.damage*_missiles)/15,1);
+        },
+        updateAccuracy(_accuracy)
+        {
+            this.selected_accuracy.accuracy=_accuracy.accuracy;
+            this.selected_accuracy.cost=_accuracy.cost;
+            this.cost_multipliers.accuracy=_accuracy.cost;
+            this.component_changed=true;
+        },
+        updateRangeMod(_range_mod)
+        {
+            this.selected_range_mod.range_mod=_range_mod.range_mod;
+            this.selected_range_mod.cost=_range_mod.cost;
+            this.cost_multipliers.range_mod=_range_mod.cost;
+            this.component_changed=true;
         },
         /* generic updateProp method 
         updateProperty(_property)
