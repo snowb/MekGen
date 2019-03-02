@@ -163,15 +163,6 @@ export default
             this.efficiencies.space.modifier=_data.modifier;
             this.component_changed=true;
         },
-        /* generic updateProp method 
-        updateProperty(_property)
-        {
-            this.selected_property1.prop1=_property.prop1;
-            this.selected_property1.prop2=_property.prop2;
-            this.selected_property1.prop3=_property.prop3;
-            this.component_changed=true;
-            this.damage_capacity=_damage.damage;
-        }, */
         updateDamage(_damage)
         {
             this.selected_damage.damage=_damage.damage;
@@ -269,11 +260,16 @@ export default
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
 
-            /* generic prop saves 
-            return_data.selected_property1=JSON.parse(JSON.stringify(this.selected_property1));
-            return_data.selected_property2=JSON.parse(JSON.stringify(this.selected_property2));
+            return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
+            return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
+            return_data.selected_burst_value.burst_value=this.selected_burst_value.burst_value===Infinity?"Infinity":this.selected_burst_value.burst_value;
+            return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
+            return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
+            return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
+            return_data.selected_warm_up_time=JSON.parse(JSON.stringify(this.selected_warm_up_time));
+            return_data.selected_wide_angle=JSON.parse(JSON.stringify(this.selected_wide_angle));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
-            */
+
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
@@ -285,41 +281,9 @@ export default
             return return_data;
         },
         ingest_data(_data_object)
-        {
-            this.original_component=JSON.stringify(_data_object);//store a copy as a JSON object for 'reset' purposes
-            if(_data_object===null)
-            {
-                this.componentSaveReset("clear");
-                //generic error comment
-                this.$store.commit("alertMessage","Beam is not valid, resetting.");
-            }
-
-            for(let _property in _data_object)
-            {//exclude computed properties that are auto updated
-                if(["weight","cost","cost_multiplier","final_damage"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _data_object[_property]==="object" && !Array.isArray(_data_object[_property]))
-                {
-                    for(let _sub_property in _data_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_data_object[_property]))
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                if(this.component_name==this.melee_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+        {console.log(_data_object)
+            let alertMessage="Beam is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
     },
@@ -374,19 +338,38 @@ export default
         },
         beam_name()
         {
-            /* method to dynamically generate appropriate 'default' equipment name
-            let beam_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
+            let isInfiniteBurst=this.selected_burst_value.burst_value===Infinity;
+            let isBurst=this.selected_burst_value.burst_value>1 && !isInfiniteBurst;
+            let beam_name=  isBurst?"Burst-"+this.selected_burst_value.burst_value+" ":
+                            isInfiniteBurst?"Infinite-Burst ":
+                            "";
+            beam_name+=this.selected_wide_angle.angle>0?"Wide-Angle ":"";
 
+            let isHydro=false;
+            let isMegaBeam=false;
             beam_name=this.feature_array.reduce((_name,_val)=>
             {
+                switch(_val.feature.toLowerCase())
+                {
+                    case "hydro":
+                        isHydro=true;
+                        return _name;
+                    case "mega-beam":
+                        isMegaBeam=true;
+                        return _name;
+                }
                 return _name+_val.feature+" ";
             },beam_name);
 
-            beam_name=beam_name+" "+this.selected_mount_type.mount_type+" Gun";
+            beam_name+= isHydro?" Hydro":
+                        isMegaBeam?" Mega-Beam":
+                        " Beam";
+            beam_name=beam_name.trim();
+            beam_name=beam_name.replace(/\s+/g," ");
 
             return beam_name; 
-            */
-           return "Beam";
+            
+           return beam_name;
         },
         feature_list:function()
         {
