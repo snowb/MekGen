@@ -75,8 +75,8 @@ export default
             set(_value)
             {
                 this.shots;
-                this.selected_shots=+_value.replace(/[^0-9]/g,"");//clear all none numeric characters
-                this.select_shots(this.selected_shots);
+                let shots=+_value.replace(/[^0-9]/g,"");//clear all none numeric characters
+                this.select_shots(shots);
             }
         }
     }
