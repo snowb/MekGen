@@ -2,7 +2,7 @@
     <mek-sub-component-table
         :items="smart_table"
         :headers="{smart:'Rounds',cost:'Cost'}" :showHeaders="true"
-        name="Smart" flow="row" :format="{cost:'multiplier'}"
+        name="Smart" flow="row" :format="{cost:'multiplier',smart:'nullzero'}"
         :selectedIndices="smart_index"
         @update-selected-indices="select_smart"
     ></mek-sub-component-table>
