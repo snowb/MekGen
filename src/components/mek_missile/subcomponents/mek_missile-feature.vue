@@ -1,6 +1,6 @@
 <template>
     <mek-sub-component-table
-        :items="feature_table"
+        :items="filteredFeatureTable"
         :headers="{feature:'Feature',cost:'Cost'}"
         :showHeaders="true" :format="{cost:'multiplier'}"
         :selected-indices="selected_feature_index_array"
@@ -17,7 +17,7 @@ import mek_sub_component_table from "../../universal/mek_sub-component-table.vue
 export default 
 {
     name:"mek_beam_feature",
-    props:["featureArray","burstValue"],
+    props:["featureArray","blastRadius"],
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
@@ -28,23 +28,22 @@ export default
         let obj={};
         obj.feature_table=
             [
-                {feature:"Mag-Fed",cost:0.9},
-                {feature:"Anti-Missile",cost:1,exclusive_anti_missile:true},
-                {feature:"Variable Anti-Missile",cost:1.8,exclusive_anti_missile:true},
-                {feature:"Anti-Personnel",cost:1.0,exclusive_personnel:true},
-                {feature:"Variable Anti-Personnel",cost:1.8,exclusive_personnel:true},
-                {feature:"Anti-Missile & Personnel",cost:1.6,exclusive_personnel:true,exclusive_anti_missile:true},
-                {feature:"All Purpose",cost:2.6,exclusive_personnel:true,exclusive_anti_missile:true},
-                {feature:"Fragile",cost:1},
                 {feature:"Long Range",cost:1.33},
-                {feature:"Hydro",cost:0.2},
-                {feature:"Mega-Beam",cost:10},
-                {feature:"Disruptor",cost:2},
+                {feature:"Hypervelocity",cost:1.25},
+                {feature:"Fuse",cost:1.1},
+                {feature:"Foam",cost:1.33},
+                {feature:"Flare",cost:0.5},
+                {feature:"Smoke",cost:0.5},
+                {feature:"Scatter",cost:0.5},
+                {feature:"Countermissile",cost:1, exclusive_counter:true},
+                {feature:"Variable Countermissile",cost:1.8, exclusive_counter:true},
+                {feature:"Smoke-Scatter",cost:1},
+                {feature:"Nuclear",cost:1000},
 
             ];
 
-        obj.exclusive_anti_missile=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_anti_missile!=="undefined";});
-        obj.exclusive_personnel=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_personnel!=="undefined";});
+        obj.exclusive_counter=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_counter!=="undefined";});
+        //obj.exclusive_personnel=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_personnel!=="undefined";});
 
         obj.selected_feature_array=[];
         return obj;
@@ -53,10 +52,9 @@ export default
     {
         select_feature:function(_selected_feature_index)
         {
-            this.burstValue;
+            this.blastRadius;
             let select_feature_name=this.feature_table[_selected_feature_index].feature;
-            let isExclusivePhalanx=this.is_exclusive_feature("exclusive_anti_missile",select_feature_name);
-            let isExclusivePersonnel=this.is_exclusive_feature("exclusive_personnel",select_feature_name);
+            let isExclusiveCounter=this.is_exclusive_feature("exclusive_counter",select_feature_name);
             let featureClone=Object.assign({},this.feature_table[_selected_feature_index]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
@@ -69,25 +67,11 @@ export default
                 return _elem.feature.toLowerCase()==select_feature_name.toLowerCase();
             },this);
 
-            if(isExclusivePhalanx && isExclusivePersonnel)
-            {//filter out exclusive phalanx and personnel
-                temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
-                {
-                    return !_val.exclusive_anti_missile && !_val.exclusive_personnel;
-                })
-            }
-            if(isExclusivePhalanx)
+            if(isExclusiveCounter)
             {//filter out exclusive phalanx
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
-                    return !_val.exclusive_anti_missile;
-                })
-            }
-            if(isExclusivePersonnel)
-            {//filter out exclusive personnel
-                temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
-                {
-                    return !_val.exclusive_personnel;
+                    return !_val.exclusive_counter;
                 })
             }
 
@@ -130,18 +114,6 @@ export default
                 }
                 return false;
             });
-        },
-        exclusive_indices:function()
-        {
-            let foundIndices=this.selected_feature_array.reduce(function(_indices,_val,_index)
-            {
-                if(_val.exclusive)
-                {
-                    _indices.push(_index);
-                }
-                return _indices;
-            },[]);
-            return foundIndices;
         }
     },
     computed:
@@ -152,36 +124,21 @@ export default
 
             if(this.featureArray.length==1)
             {
-                this.selected_feature_array=[this.feature_table[this.find_feature_index(this.featureArray[0].feature)]];
+                this.selected_feature_array=[this.filteredFeatureTable[this.find_feature_index(this.featureArray[0].feature)]];
                 return [this.find_feature_index(this.featureArray[0].feature)];
             }
 
-            let hasExclusivePhalanx=false;
-            let hasExclusivePersonnel=false;
+            let hasExclusiveCounter=false;
             let self=this;
             let feature_list=[];
 
             this.selected_feature_array=this.featureArray.reduceRight(function(_prev, _val)
             {
-                let isPhalanx=self.is_exclusive_feature("exclusive_anti_missile",_val.feature);
-                let isPersonnel=self.is_exclusive_feature("exclusive_personnel",_val.feature);
-                if( isPhalanx && !hasExclusivePhalanx && isPersonnel && !hasExclusivePersonnel)
+                let isCounter=self.is_exclusive_feature("exclusive_counter",_val.feature);
+                if(isCounter && !hasExclusiveCounter)
                 {
                     _prev.push(_val);
-                    hasExclusivePhalanx=true;
-                    hasExclusivePersonnel=true;
-                    feature_list.push(_val.feature.toLowerCase());
-                }
-                if(isPhalanx && !hasExclusivePhalanx)
-                {
-                    _prev.push(_val);
-                    hasExclusivePhalanx=true;
-                    feature_list.push(_val.feature.toLowerCase());
-                }
-                if(isPersonnel && !hasExclusivePersonnel)
-                {
-                    _prev.push(_val);
-                    hasExclusivePersonnel=true;
+                    hasExclusiveCounter=true;
                     feature_list.push(_val.feature.toLowerCase());
                 }
                 if(!feature_list.includes(_val.feature.toLowerCase()))
@@ -201,7 +158,7 @@ export default
             {
                 this.$emit("update-feature",this.selected_feature_array);
             }
-            this.burstValue;
+            this.blastRadius;
 
             return indices;
         },
@@ -213,17 +170,31 @@ export default
                 return _array;
             },[]);
         },
-        /* filteredFeatureTable()
+        filteredFeatureTable()
         {
-            if(this.burstValue<=1)
+            if(this.blastRadius==0)
             {
                 return this.feature_table.filter((_val)=>
                 {
-                    return !this.is_exclusive_feature("exclusive_anti_missile",_val.feature);// || this.is_exclusive_feature("exclusive_personnel",_val.feature) ;
+                    return _val.feature.toLowerCase()!="nuclear";
                 },this);
             }
-             return this.feature_table;
-        }*/
+            return this.feature_table;
+        }
     },
+    watch:
+    {
+        "blastRadius":function(_newval,_oldval)
+        {
+            if(_newval<=0 && _oldval>0)
+            {
+                let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
+                {//filter out phalanx selected features if changing from BV>1 to BV=1
+                    return _val.feature.toLowerCase()!="nuclear";
+                })
+                this.$emit("update-feature",temp_selected_feature_array);
+            }
+        }
+    }
 }
 </script>
