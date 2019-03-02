@@ -368,8 +368,6 @@ export default
             beam_name=beam_name.replace(/\s+/g," ");
 
             return beam_name; 
-            
-           return beam_name;
         },
         feature_list:function()
         {
