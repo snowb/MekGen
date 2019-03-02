@@ -20,6 +20,14 @@
                     :range-mod="selected_range_mod"
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
+                <div class="mek-inline-flex-col">
+                    <mek-missile-smart :smart="selected_smart"
+                        @update-smart="updateSmart"
+                    ></mek-missile-smart>
+                    <mek-missile-skill v-if="selected_smart.smart>0" :skill="selected_skill"
+                        @update-skill="updateSkill"
+                    ></mek-missile-skill>
+                </div>
                 <!--mek-missile-feature style="align-self:baseline;"
                         @update-feature="updateFeature"
                         :feature-array="feature_array"
@@ -63,6 +71,8 @@ import mek_missile_damage from "./subcomponents/mek_missile-damage.vue";
 import mek_missile_pack_size from "./subcomponents/mek_missile-pack-size.vue";
 import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
 import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
+import mek_missile_smart from "./subcomponents/mek_missile-smart.vue";
+import mek_missile_skill from "./subcomponents/mek_missile-skill.vue";
 //import mek_missile_feature from "./subcomponents/mek_missile-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
@@ -81,6 +91,8 @@ export default
         "mek-missile-pack-size":mek_missile_pack_size,
         "mek-missile-accuracy":mek_missile_accuracy,
         "mek-missile-range-mod":mek_missile_range_mod,
+        "mek-missile-smart":mek_missile_smart,
+        "mek-missile-skill":mek_missile_skill,
         //"mek-missile-feature":mek_missile_feature,
 
         "mek-space-efficiency":mek_space_efficiency,
@@ -117,8 +129,8 @@ export default
         obj.cost_multipliers={};
         obj.cost_multipliers.accuracy=1;
         obj.cost_multipliers.feature=1;
-        obj.cost_multipliers.multi_feed=1;
-        obj.cost_multipliers.burst_value=1;
+        obj.cost_multipliers.smart=1;
+        obj.cost_multipliers.skill=1;
         obj.cost_multipliers.range_mod=1;
 
         return obj;
@@ -168,6 +180,20 @@ export default
             {
                 this.updateAccuracy({accuracy:0,cost:1});
             }
+            this.component_changed=true;
+        },
+        updateSmart(_smart)
+        {
+            this.selected_smart.smart=_smart.smart;
+            this.selected_smart.cost=_smart.cost;
+            this.cost_multipliers.smart=_smart.cost;
+            this.component_changed=true;
+        },
+        updateSkill(_skill)
+        {
+            this.selected_skill.skill=_skill.skill;
+            this.selected_skill.cost=_skill.cost;
+            this.cost_multipliers.smart=_skill.cost;
             this.component_changed=true;
         },
         /* generic updateProp method 
@@ -263,7 +289,7 @@ export default
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
 
-            return this.round(subtotal_cost,2);
+            return this.round(subtotal_cost * this.selected_pack_size,2);
         },
         weight:function()
         {

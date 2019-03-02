@@ -1,10 +1,10 @@
 <template>
     <mek-sub-component-table
-        :items="accuracy_table"
-        :headers="{accuracy:'WA',cost:'Cost'}" :showHeaders="true"
-        name="Accuracy" flow="row" :format="{cost:'multiplier'}"
-        :selectedIndices="accuracy_index"
-        @update-selected-indices="select_accuracy"
+        :items="skill_table"
+        :headers="{skill:'Skill',cost:'Cost'}" :showHeaders="true"
+        name="Smart Skill" flow="row" :format="{cost:'multiplier'}"
+        :selectedIndices="skill_index"
+        @update-selected-indices="select_skill"
     ></mek-sub-component-table>
 </template>
 <script>
@@ -14,8 +14,8 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
-    name:"mek_beam_accuracy",
-    props:["accuracy"],
+    name:"mek_missile_skill",
+    props:["skill"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
     {
@@ -25,33 +25,33 @@ export default
     {
         let obj={};
 
-        obj.accuracy_table=
+        obj.skill_table=
         [
-            {accuracy:-2,cost:0.6},
-            {accuracy:-1,cost:0.8},
-            {accuracy:0,cost:0.9},
-            {accuracy:1,cost:1.0},
-            {accuracy:2,cost:1.5},
-            {accuracy:3,cost:2.0},
+            {skill:6,cost:1},
+            {skill:9,cost:1.3},
+            {skill:12,cost:1.6},
+            {skill:15,cost:1.9},
+            {skill:18,cost:2.2},
+            {skill:20,cost:2.5},
         ];
         return obj;
     },
     methods:
     {
-        select_accuracy:function(_accuracy_index)
+        select_skill:function(_skill_index)
         {
-            this.$emit("update-accuracy",this.accuracy_table[_accuracy_index]);
+            this.$emit("update-skill",this.skill_table[_skill_index]);
         },
     },
     computed:
     {
-        accuracy_index:function()
+        skill_index:function()
         {
-            let index=2;
-            this.accuracy;
-            this.accuracy_table.some(function(_val,_index)
+            let index=0;
+            this.skill;
+            this.skill_table.some(function(_val,_index)
             {
-                if(_val.accuracy==this.accuracy.accuracy)
+                if(_val.skill==this.skill.skill)
                 {
                     index=_index;
                     return true;
@@ -59,9 +59,9 @@ export default
                 return false;
             },this);
 
-            if(this.accuracy_table[index].cost!==this.accuracy.cost)
+            if(this.skill_table[index].cost!==this.skill.cost)
             {
-                this.select_accuracy(index);
+                this.select_skill(index);
             }
             return [index];
         }
