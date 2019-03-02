@@ -281,7 +281,7 @@ export default
             return return_data;
         },
         ingest_data(_data_object)
-        {console.log(_data_object)
+        {
             let alertMessage="Beam is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
