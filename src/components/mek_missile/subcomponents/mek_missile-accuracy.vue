@@ -14,7 +14,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
-    name:"mek_beam_accuracy",
+    name:"mek_missile_accuracy",
     props:["accuracy"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
@@ -29,9 +29,9 @@ export default
         [
             {accuracy:-2,cost:0.6},
             {accuracy:-1,cost:0.8},
-            {accuracy:0,cost:0.9},
-            {accuracy:1,cost:1.0},
-            {accuracy:2,cost:1.5},
+            {accuracy:0,cost:1},
+            {accuracy:1,cost:1.3},
+            {accuracy:2,cost:1.6},
             {accuracy:3,cost:2.0},
         ];
         return obj;
