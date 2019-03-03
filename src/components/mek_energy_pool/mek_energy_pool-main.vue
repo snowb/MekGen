@@ -1,7 +1,67 @@
 <template>
     <span class="mek-inline-flex-col" style="width:100%;">
-        <div style="align-self:flex-start;">
-        energy pool
+        <mek-component-name :new-component="newComponent" :component-name="component_name||energy_pool_name"
+            :component-changed="component_changed"
+            @update-component-name="updateComponentName"
+        ></mek-component-name>
+        <mek-energy-pool-pool :energy-pool="selected_energy_pool"
+            @update-energy-pool="updateEnergyPool"
+        ></mek-energy-pool-pool>
+        <div class="mek-inline-flex-row">
+            <!--mek-missile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-missile-damage>
+            <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
+                style="align-self:flex-end;"
+            ></mek-missile-pack-size>
+            <mek-missile-accuracy v-if="!is_mine"
+                @update-accuracy="updateAccuracy" 
+                :accuracy="selected_accuracy"
+            ></mek-missile-accuracy>
+            <div class="mek-inline-flex-row">
+                <mek-missile-range-mod style="align-self:baseline;"
+                    @update-range-mod="updateRangeMod"
+                    :range-mod="selected_range_mod" :anti-missile="has_feature('countermissile')"
+                    :base-range="selected_damage.range"
+                ></mek-missile-range-mod>
+                {{has_feature('countermissile')}}
+                <div class="mek-inline-flex-col">
+                    <mek-missile-smart :smart="selected_smart"
+                        @update-smart="updateSmart"
+                    ></mek-missile-smart>
+                    <mek-missile-skill v-if="selected_smart.smart>0" :skill="selected_skill"
+                        @update-skill="updateSkill"
+                    ></mek-missile-skill>
+                </div>
+                <mek-missile-blast-radius :blast_radius="selected_blast_radius"
+                    @update-blast-radius="updateBlastRadius"
+                ></mek-missile-blast-radius>
+                <mek-missile-feature style="align-self:baseline;"
+                    @update-feature="updateFeature"
+                    :feature-array="feature_array"
+                    :blast-radius="selected_blast_radius.blast_radius"
+                ></mek-missile-feature>
+            </div-->
+            <mek-space-efficiency style="align-self:baseline;"
+                :space_efficiency="efficiencies.space"
+                :raw_space="raw_space"
+                @update-efficiencies="updateEfficiencies"
+            ></mek-space-efficiency>          
+        </div>
+        <div class="mek-inline-flex-row">
+            <mek-component-stats :cols="4" :rows="5">
+                <!--div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+                <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
+                <div slot="col1-row4" v-if="has_duration">Duration: {{smoke_scatter_duration}} rounds</div-->
+
+                <div slot="col3-row1">Base Space: {{raw_space}}</div>
+                <div slot="col3-row2">Space: {{space_cost}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+
+                <div slot="col4-row1">Base Cost: {{selected_energy_pool.cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
+            <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
         </div>
     </span>
 </template>
@@ -10,6 +70,8 @@
 import servo_classes_mixin from "../../mixins/servo_classes_mixin";
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+
+import mek_energy_pool_pool from "./subcomponents/mek_energy_pool-pool.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -23,14 +85,9 @@ export default
     mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
     components:
     {
-        //"mek-projectile-damage":mek_projectile_damage,
-        //"mek-projectile-accuracy":mek_projectile_accuracy,
-        //"mek-projectile-multi-feed":mek_projectile_multi_feed,
-        //"mek-projectile-range-mod":mek_projectile_range_mod,
-        //"mek-projectile-burst-value":mek_projectile_burst_value,
-        //"mek-projectile-feature":mek_projectile_feature,
-        //"mek-projectile-stats":mek_projectile_stats,
-        //"mek-projectile-mount-type":mek_projectile_mount_type,
+        "mek-energy-pool-pool":mek_energy_pool_pool,
+        //"mek-energy-pool-size":mek_energy_pool_size,
+        //"mek-energy-pool-morphable":mek_energy_pool_morphable,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -47,7 +104,20 @@ export default
         obj.original_component=null;
         obj.component_changed=true;
 
-        obj.damage_capacity=1;//varies by equipment
+        obj.damage_capacity=5;
+
+        obj.selected_energy_pool={cost:10,power_available:0,max_power:50,damage_capacity:5};
+        obj.selected_portfolio_size={size:3,cost:1};
+        obj.selected_morphable=false;
+
+        obj.efficiencies={};
+        obj.efficiencies.space={};
+        obj.efficiencies.space.cost=0;
+        obj.efficiencies.space.modifier=0;
+
+        obj.cost_multipliers={};
+        obj.cost_multipliers.portfolio_size=1;
+        obj.cost_multipliers.morphable=1;
 
         return obj;
     },
@@ -64,15 +134,26 @@ export default
             this.efficiencies.space.modifier=_data.modifier;
             this.component_changed=true;
         },
-        /* generic updateProp method 
-        updateProperty(_property)
+        updateEnergyPool(_energy_pool)
         {
-            this.selected_property1.prop1=_property.prop1;
-            this.selected_property1.prop2=_property.prop2;
-            this.selected_property1.prop3=_property.prop3;
+            this.selected_energy_pool.cost=_energy_pool.cost;
+            this.selected_energy_pool.power_available=_energy_pool.power_available;
+            this.selected_energy_pool.max_power=_energy_pool.max_power;
+            this.selected_energy_pool.damage_capacity=_energy_pool.damage_capacity;
             this.component_changed=true;
-            this.damage_capacity=_damage.damage;
-        }, */
+            this.damage_capacity=_energy_pool.damage_capacity;
+        },
+        updatePortfolioSize(_size)
+        {
+            this.selected_portfolio_size.cost=_size.cost;
+            this.selected_portfolio_size.size=_size.size;
+            this.component_changed=true;
+        },
+        updateMorphable(_morphable)
+        {
+            this.selected_morphable=_morphable;
+            this.component_changed=true;
+        },
         componentSaveReset:function(_action)
         {
             switch(_action)
@@ -90,10 +171,9 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    //generic props and key values to reset
-                    //this.selected_property1.keyProp=1;
-                    //this.selected_property2.keyProp=1;
-                    //this.$set(this,"feature_array",[]);
+                    this.selected_energy_pool.cost=1;
+                    this.selected_portfolio_size.size=3;
+                    this.selected_morphablee=false;
                     this.$store.commit("saveComponent",null);
                     break;
             }
@@ -105,20 +185,18 @@ export default
             return_data.uuid=this.uuid;
             return_data.component_category="equipment";
             return_data.component_type="energy_pool";//specific equipment type
-            return_data.component_name=this.component_name===null?this.projectile_name:this.component_name;
+            return_data.component_name=this.component_name===null?this.energy_pool_name:this.component_name;
 
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
 
-            /* generic prop saves 
-            return_data.selected_property1=JSON.parse(JSON.stringify(this.selected_property1));
-            return_data.selected_property2=JSON.parse(JSON.stringify(this.selected_property2));
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
-            */
+            return_data.selected_energy_pool=JSON.parse(JSON.stringify(this.selected_energy_pool));
+            return_data.selected_portfolio_size=JSON.parse(JSON.stringify(this.selected_portfolio_size));
+            return_data.selected_morphable=this.selected_morphable
+
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
-            return_data.final_damage=this.final_damage;
             return_data.damage_capacity=this.damage_capacity;
 
             this.$nextTick(()=>{this.component_changed=false;});
@@ -127,40 +205,8 @@ export default
         },
         ingest_data(_data_object)
         {
-            this.original_component=JSON.stringify(_data_object);//store a copy as a JSON object for 'reset' purposes
-            if(_data_object===null)
-            {
-                this.componentSaveReset("clear");
-                //generic error comment
-                this.$store.commit("alertMessage","Energy Pool is not valid, resetting.");
-            }
-
-            for(let _property in _data_object)
-            {//exclude computed properties that are auto updated
-                if(["weight","cost","cost_multiplier","final_damage"].includes(_property))
-                {
-                    continue;
-                }
-                if(typeof _data_object[_property]==="object" && !Array.isArray(_data_object[_property]))
-                {
-                    for(let _sub_property in _data_object[_property])
-                    {
-                        this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
-                    }
-                }
-                else if(Array.isArray(_data_object[_property]))
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                else
-                {
-                    this.$set(this,_property,_data_object[_property]);
-                }
-                if(this.component_name==this.melee_name)
-                {//reset component_name if component generated
-                    this.$set(this,"component_name",null);
-                }
-            }
+            let alertMessage="Energy Pool is not valid, resetting.";
+            this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
     },
@@ -169,7 +215,7 @@ export default
         raw_space()
         {
             //core cost prop
-            //return this.selected_property1.cost * this.cost_multiplier;
+            return this.selected_energy_pool.cost * this.cost_multiplier;
         },
         space_cost:function()
         {
@@ -186,7 +232,7 @@ export default
         },
         cost:function()
         {
-            let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
+            let subtotal_cost=this.selected_energy_pool.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
 
             return this.round(subtotal_cost,2);
@@ -214,16 +260,16 @@ export default
         energy_pool_name()
         {
             /* method to dynamically generate appropriate 'default' equipment name
-            let projectile_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
+            let energy_pool_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
 
-            projectile_name=this.feature_array.reduce((_name,_val)=>
+            energy_pool_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.feature+" ";
-            },projectile_name);
+            },energy_pool_name);
 
-            projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
+            energy_pool_name=energy_pool_name+" "+this.selected_mount_type.mount_type+" Gun";
 
-            return projectile_name; 
+            return energy_pool_name; 
             */
            return "Energy Pool";
         }
