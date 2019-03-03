@@ -8,42 +8,16 @@
             <mek-energy-pool-pool :energy-pool="selected_energy_pool" style="align-self:flex-start;"
                 @update-energy-pool="updateEnergyPool"
             ></mek-energy-pool-pool>
-            <mek-energy-pool-size :portfolio-size="selected_portfolio_size"
-                @update-portfolio-size="updatePortfolioSize"
-            ></mek-energy-pool-size>
-            <!--mek-missile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-missile-damage>
-            <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
-                style="align-self:flex-end;"
-            ></mek-missile-pack-size>
-            <mek-missile-accuracy v-if="!is_mine"
-                @update-accuracy="updateAccuracy" 
-                :accuracy="selected_accuracy"
-            ></mek-missile-accuracy>
-            <div class="mek-inline-flex-row">
-                <mek-missile-range-mod style="align-self:baseline;"
-                    @update-range-mod="updateRangeMod"
-                    :range-mod="selected_range_mod" :anti-missile="has_feature('countermissile')"
-                    :base-range="selected_damage.range"
-                ></mek-missile-range-mod>
-                {{has_feature('countermissile')}}
-                <div class="mek-inline-flex-col">
-                    <mek-missile-smart :smart="selected_smart"
-                        @update-smart="updateSmart"
-                    ></mek-missile-smart>
-                    <mek-missile-skill v-if="selected_smart.smart>0" :skill="selected_skill"
-                        @update-skill="updateSkill"
-                    ></mek-missile-skill>
-                </div>
-                <mek-missile-blast-radius :blast_radius="selected_blast_radius"
-                    @update-blast-radius="updateBlastRadius"
-                ></mek-missile-blast-radius>
-                <mek-missile-feature style="align-self:baseline;"
+            <div class="mek-inline-flex-col">
+                <mek-energy-pool-size :portfolio-size="selected_portfolio_size"
+                    @update-portfolio-size="updatePortfolioSize"
+                ></mek-energy-pool-size>
+                <mek-energy-pool-feature style="align-self:flex-start;"
                     @update-feature="updateFeature"
                     :feature-array="feature_array"
-                    :blast-radius="selected_blast_radius.blast_radius"
-                ></mek-missile-feature>
-            </div-->
-            <mek-space-efficiency style="align-self:baseline;"
+                ></mek-energy-pool-feature>
+            </div>
+            <mek-space-efficiency style="align-self:flex-start;"
                 :space_efficiency="efficiencies.space"
                 :raw_space="raw_space"
                 @update-efficiencies="updateEfficiencies"
@@ -51,8 +25,10 @@
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="5">
-                <div slot="col1-row1">Size: {{selected_portfolio_size.size}}</div>
+                <div slot="col1-row1">Portfolio Size: {{infinite_size ? "Infinite" : selected_portfolio_size.size}}</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
+
+                <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
 
                 <div slot="col3-row1">Base Space: {{raw_space}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
@@ -74,6 +50,7 @@ import utility_mixin from "../../mixins/utility_mixin";
 
 import mek_energy_pool_pool from "./subcomponents/mek_energy_pool-pool.vue";
 import mek_energy_pool_size from "./subcomponents/mek_energy_pool-size.vue";
+import mek_energy_pool_feature from "./subcomponents/mek_energy_pool-feature.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -89,7 +66,7 @@ export default
     {
         "mek-energy-pool-pool":mek_energy_pool_pool,
         "mek-energy-pool-size":mek_energy_pool_size,
-        //"mek-energy-pool-feature":mek_energy_pool_feature,
+        "mek-energy-pool-feature":mek_energy_pool_feature,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -121,7 +98,7 @@ export default
 
         obj.cost_multipliers={};
         obj.cost_multipliers.portfolio_size=1;
-        obj.cost_multipliers.morphable=1;
+        obj.cost_multipliers.feature=1;
 
         return obj;
     },
@@ -154,11 +131,12 @@ export default
             this.cost_multipliers.portfolio_size=_size.cost;
             this.component_changed=true;
         },
-        updateMorphable(_morphable)
+        updateFeature(_featureArray)
         {
-            this.selected_morphable=_morphable;
-            this.cost_multipliers.morphable=_morphable ? 1.25 : 1;
-            this.component_changed=true;
+            this.$set(this,"feature_array",_featureArray);
+            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.projectile_name;
+            this.damage_capacity=this.fragile ? 1 : this.selected_energy_pool.damage_capacity;
         },
         componentSaveReset:function(_action)
         {
@@ -190,7 +168,7 @@ export default
             this.uuid=this.uuid===null ? this.create_uuid() : this.uuid;
             return_data.uuid=this.uuid;
             return_data.component_category="equipment";
-            return_data.component_type="energy_pool";//specific equipment type
+            return_data.component_type="energy-pool";//specific equipment type
             return_data.component_name=this.component_name===null?this.energy_pool_name:this.component_name;
 
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
@@ -257,7 +235,7 @@ export default
             {
                 if(selectedComponent.uuid!==this.uuid 
                     && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="energy_pool")
+                    && selectedComponent.component_type=="energy-pool")
                 {//needs specific equipment type
                     this.ingest_data(selectedComponent);
                 }
@@ -267,19 +245,16 @@ export default
         },
         energy_pool_name()
         {
-            /* method to dynamically generate appropriate 'default' equipment name
-            let energy_pool_name=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
-
+            let energy_pool_name="";
             energy_pool_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.feature+" ";
             },energy_pool_name);
 
-            energy_pool_name=energy_pool_name+" "+this.selected_mount_type.mount_type+" Gun";
+            //energy_pool_name+=this.selected_burst_value.burst_value>1?"Burst-"+this.selected_burst_value.burst_value+" ":"";
+            energy_pool_name+=this.infinite_size?"Infinite-Portfolio ":"Portfolio-"+this.selected_portfolio_size.size+" ";
 
-            return energy_pool_name; 
-            */
-           return "Energy Pool";
+            return energy_pool_name+" Energy Pool"; 
         },
         feature_list:function()
         {
@@ -290,6 +265,20 @@ export default
                 return _string;
             },"");
         },
+        fragile()
+        {
+            return this.feature_array.some(function(_val)
+            {
+                if(_val.feature.toLowerCase()=="fragile")
+                {
+                    return true;
+                }
+            });
+        },
+        infinite_size()
+        {
+            return this.selected_portfolio_size.size===Infinity;
+        }
     }
 };
 </script>

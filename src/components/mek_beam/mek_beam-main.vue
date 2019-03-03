@@ -52,7 +52,7 @@
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="4">
-                <div slot="col1-row1">Kills: {{fragile? 1 :selected_damage.damage}} K</div>
+                <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
                 <div slot="col1-row3" v-if="selected_shots.shots==0">Shutdown: {{selected_damage.damage}} turns</div>
                 <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
@@ -218,6 +218,7 @@ export default
             this.$set(this,"feature_array",_featureArray);
             this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.projectile_name;
+            this.damage_capacity=this.fragile ? 1 : this.selected_wide_angle.damage;
         },
         componentSaveReset:function(_action)
         {
