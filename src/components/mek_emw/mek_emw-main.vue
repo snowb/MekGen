@@ -64,16 +64,16 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
-import mek_emw_damage from "./subcomponents/mek_emw-damage.vue";
+/* import mek_emw_damage from "./subcomponents/mek_emw-damage.vue";
 import mek_emw_accuracy from "./subcomponents/mek_emw-accuracy.vue";
 import mek_emw_attack_factor from "./subcomponents/mek_emw-attack-factor.vue";
 import mek_emw_turns_in_use from "./subcomponents/mek_emw-turns-in-use.vue";
-import mek_emw_feature from "./subcomponents/mek_emw-feature.vue";
+import mek_emw_feature from "./subcomponents/mek_emw-feature.vue"; */
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue"; */
 export default
 {
     name:"mek_emw",
@@ -81,16 +81,16 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-emw-damage":mek_emw_damage,
-        "mek-emw-accuracy":mek_emw_accuracy,
-        "mek-emw-attack-factor":mek_emw_attack_factor,
-        "mek-emw-turns-in-use":mek_emw_turns_in_use,
-        "mek-emw-feature":mek_emw_feature,
+        "mek-emw-damage":()=>import("./subcomponents/mek_emw-damage.vue"),
+        "mek-emw-accuracy":()=>import("./subcomponents/mek_emw-accuracy.vue"),
+        "mek-emw-attack-factor":()=>import("./subcomponents/mek_emw-attack-factor.vue"),
+        "mek-emw-turns-in-use":()=>import("./subcomponents/mek_emw-turns-in-use.vue"),
+        "mek-emw-feature":()=>import("./subcomponents/mek_emw-feature.vue"),
 
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
     },
     data:function()
     {

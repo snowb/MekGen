@@ -78,20 +78,20 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin";
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
-import mek_beam_damage from "./subcomponents/mek_beam-damage.vue";
+/* import mek_beam_damage from "./subcomponents/mek_beam-damage.vue";
 import mek_beam_accuracy from "./subcomponents/mek_beam-accuracy.vue";
 import mek_beam_burst_value from "./subcomponents/mek_beam-burst-value.vue";
 import mek_beam_range_mod from "./subcomponents/mek_beam-range-mod.vue";
 import mek_beam_shots from "./subcomponents/mek_beam-shots.vue";
 import mek_beam_warm_up_time from "./subcomponents/mek_beam-warm-up-time.vue";
 import mek_beam_wide_angle from "./subcomponents/mek_beam-wide-angle.vue";
-import mek_beam_feature from "./subcomponents/mek_beam-feature.vue";
+import mek_beam_feature from "./subcomponents/mek_beam-feature.vue"; */
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_component_stats from "../universal/mek_component-stats.vue";
-
+ */
 export default
 {
     name:"mek_beam",
@@ -99,19 +99,19 @@ export default
     mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-beam-damage":mek_beam_damage,
-        "mek-beam-accuracy":mek_beam_accuracy,
-        "mek-beam-burst-value":mek_beam_burst_value,
-        "mek-beam-range-mod":mek_beam_range_mod,
-        "mek-beam-shots":mek_beam_shots,
-        "mek-beam-warm-up-time":mek_beam_warm_up_time,
-        "mek-beam-wide-angle":mek_beam_wide_angle,
-        "mek-beam-feature":mek_beam_feature,
+        "mek-beam-damage":()=>import("./subcomponents/mek_beam-damage.vue"),
+        "mek-beam-accuracy":()=>import("./subcomponents/mek_beam-accuracy.vue"),
+        "mek-beam-burst-value":()=>import("./subcomponents/mek_beam-burst-value.vue"),
+        "mek-beam-range-mod":()=>import("./subcomponents/mek_beam-range-mod.vue"),
+        "mek-beam-shots":()=>import("./subcomponents/mek_beam-shots.vue"),
+        "mek-beam-warm-up-time":()=>import("./subcomponents/mek_beam-warm-up-time.vue"),
+        "mek-beam-wide-angle":()=>import("./subcomponents/mek_beam-wide-angle.vue"),
+        "mek-beam-feature":()=>import("./subcomponents/mek_beam-feature.vue"),
 
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
     },
     data:function()
     {

@@ -51,16 +51,16 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
-import mek_melee_damage from "./subcomponents/mek_melee-damage.vue";
+/* import mek_melee_damage from "./subcomponents/mek_melee-damage.vue";
 import mek_melee_accuracy from "./subcomponents/mek_melee-accuracy.vue";
 import mek_melee_feature from "./subcomponents/mek_melee-feature.vue";
-import mek_melee_entangle_range from "./subcomponents/mek_melee-entangle-range.vue";
+import mek_melee_entangle_range from "./subcomponents/mek_melee-entangle-range.vue"; */
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_component_stats from "../universal/mek_component-stats.vue";
-
+ */
 export default
 {
     name:"mek_melee",
@@ -68,15 +68,15 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-melee-damage":mek_melee_damage,
-        "mek-melee-accuracy":mek_melee_accuracy,
-        "mek-melee-feature":mek_melee_feature,
-        "mek-melee-entangle-range":mek_melee_entangle_range,
+        "mek-melee-damage":()=>import("./subcomponents/mek_melee-damage.vue"),
+        "mek-melee-accuracy":()=>import("./subcomponents/mek_melee-accuracy.vue"),
+        "mek-melee-feature":()=>import("./subcomponents/mek_melee-feature.vue"),
+        "mek-melee-entangle-range":()=>import("./subcomponents/mek_melee-entangle-range.vue"),
 
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
     },
     data:function()
     {

@@ -40,11 +40,11 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_component_stats from "../universal/mek_component-stats.vue";
-
+ */
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
 {
@@ -53,10 +53,10 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats,
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
 
         "mek-sub-component-table":mek_sub_component_table
     },

@@ -28,14 +28,14 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
-import mek_magazine_select_gun from "./subcomponents/mek_magazine-select-gun.vue";
+/* import mek_magazine_select_gun from "./subcomponents/mek_magazine-select-gun.vue";
 import mek_magazine_ammo_list from "./subcomponents/mek_magazine-ammo-list.vue";
-import mek_magazine_shots from "./subcomponents/mek_magazine-shots.vue";
+import mek_magazine_shots from "./subcomponents/mek_magazine-shots.vue"; */
 
-import mek_component_name from "../universal/mek-component-name.vue";
+/* import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_component_stats from "../universal/mek_component-stats.vue";
-
+ */
 export default
 {
     name:"mek_magazine",
@@ -43,13 +43,13 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-magazine-select-gun":mek_magazine_select_gun,
-        "mek-magazine-ammo-list":mek_magazine_ammo_list,
-        "mek-magazine-shots":mek_magazine_shots,
+        "mek-magazine-select-gun":()=>import("./subcomponents/mek_magazine-select-gun.vue"),
+        "mek-magazine-ammo-list":()=>import("./subcomponents/mek_magazine-ammo-list.vue"),
+        "mek-magazine-shots":()=>import("./subcomponents/mek_magazine-shots.vue"),
 
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
     },
     data:function()
     {

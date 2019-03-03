@@ -89,20 +89,23 @@
 import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
-import mek_shield_type from "./subcomponents/mek_shield-type.vue";
+
+/* import mek_shield_type from "./subcomponents/mek_shield-type.vue";
 import mek_shield_class from "./subcomponents/mek_shield-class.vue";
 import mek_shield_defense_ability from "./subcomponents/mek_shield-defense-ability.vue";
 import mek_shield_binder from "./subcomponents/mek_shield-binder.vue";
 import mek_shield_reset_time from "./subcomponents/mek_shield-reset-time.vue";
 import mek_shield_turns_in_use from "./subcomponents/mek_shield-turns-in-use.vue";
 import mek_shield_weakness from "./subcomponents/mek_shield-weakness.vue";
-
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+ */
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
+import mek_component_stats from "../universal/mek_component-stats.vue";
+ */
 import mek_armor_type from "../universal/mek_armor-type.vue";
 import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
+
 
 export default
 {
@@ -110,20 +113,21 @@ export default
     mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
     components:
     {
-        "mekshield-type":mek_shield_type,
-        "mekshield-class":mek_shield_class,
-        "mekshield-defense-ability":mek_shield_defense_ability,
-        "mekshield-binder":mek_shield_binder,
-        "mekshield-reset-time":mek_shield_reset_time,
-        "mekshield-turns-in-use":mek_shield_turns_in_use,
-        "mekshield-weakness":mek_shield_weakness,
+        "mekshield-type":()=>import("./subcomponents/mek_shield-type.vue"),
+        "mekshield-class":()=>import("./subcomponents/mek_shield-class.vue"),
+        "mekshield-defense-ability":()=>import("./subcomponents/mek_shield-defense-ability.vue"),
+        "mekshield-binder":()=>import("./subcomponents/mek_shield-binder.vue"),
+        "mekshield-reset-time":()=>import("./subcomponents/mek_shield-reset-time.vue"),
+        "mekshield-turns-in-use":()=>import("./subcomponents/mek_shield-turns-in-use.vue"),
+        "mekshield-weakness":()=>import("./subcomponents/mek_shield-weakness.vue"),
         
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
+
         "mek-armor-type":mek_armor_type,
         "mek-energy-absorbing-armor":mek_energy_absorbing_armor,
-        "mek-component-stats":mek_component_stats
     },
     data:function()
     {

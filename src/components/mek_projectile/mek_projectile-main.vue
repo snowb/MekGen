@@ -71,19 +71,19 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
-import mek_projectile_damage from "./subcomponents/mek_projectile-damage.vue";
+/* import mek_projectile_damage from "./subcomponents/mek_projectile-damage.vue";
 import mek_projectile_accuracy from "./subcomponents/mek_projectile-accuracy.vue";
 import mek_projectile_multi_feed from "./subcomponents/mek_projectile-multi-feed.vue";
 import mek_projectile_range_mod from "./subcomponents/mek_projectile-range-mod.vue";
 import mek_projectile_burst_value from "./subcomponents/mek_projectile-burst-value.vue";
-import mek_projectile_feature from "./subcomponents/mek_projectile-feature.vue";
+import mek_projectile_feature from "./subcomponents/mek_projectile-feature.vue"; */
 //import mek_projectile_mount_type from "./subcomponents/mek_projectile-mount-type.vue";
 
-import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
+/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
 import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
 import mek_component_stats from "../universal/mek_component-stats.vue";
-
+ */
 export default
 {
     name:"mek_projectile",
@@ -91,18 +91,18 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-projectile-damage":mek_projectile_damage,
-        "mek-projectile-accuracy":mek_projectile_accuracy,
-        "mek-projectile-multi-feed":mek_projectile_multi_feed,
-        "mek-projectile-range-mod":mek_projectile_range_mod,
-        "mek-projectile-burst-value":mek_projectile_burst_value,
-        "mek-projectile-feature":mek_projectile_feature,
+        "mek-projectile-damage":()=>import("./subcomponents/mek_projectile-damage.vue"),
+        "mek-projectile-accuracy":()=>import("./subcomponents/mek_projectile-accuracy.vue"),
+        "mek-projectile-multi-feed":()=>import("./subcomponents/mek_projectile-multi-feed.vue"),
+        "mek-projectile-range-mod":()=>import("./subcomponents/mek_projectile-range-mod.vue"),
+        "mek-projectile-burst-value":()=>import("./subcomponents/mek_projectile-burst-value.vue"),
+        "mek-projectile-feature":()=>import("./subcomponents/mek_projectile-feature.vue"),
         //"mek-projectile-mount-type":mek_projectile_mount_type,
 
-        "mek-space-efficiency":mek_space_efficiency,
-        "mek-component-name":mek_component_name,
-        "mek-save-reset-component":mek_save_reset_component,
-        "mek-component-stats":mek_component_stats
+        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
     },
     data:function()
     {

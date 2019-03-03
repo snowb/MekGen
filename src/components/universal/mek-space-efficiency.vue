@@ -87,10 +87,8 @@ export default
                 {
                     return this.raw_space - this.space_efficiency.modifier;
                 }
-                else if(this.selected_method=="by_space")
-                {
-                    return this.space_efficiency.modifier;
-                }
+
+                return this.space_efficiency.modifier;
             },
             set(_value)
             {
