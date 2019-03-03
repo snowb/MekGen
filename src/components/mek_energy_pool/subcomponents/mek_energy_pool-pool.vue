@@ -54,7 +54,7 @@ export default
             let energy_pool_index=0;
             this.energy_pool_table.some((_val,_index)=>
             {
-                if(this.energyPool.cost==_val.cost)
+                if(this.energyPool.power_available==_val.power_available)
                 {
                     energy_pool_index=_index;
                     return true;
@@ -64,7 +64,7 @@ export default
             let update=false;
             switch(true)
             {
-                case this.energyPool.power_available!=this.energy_pool_table[energy_pool_index].power_available:
+                case this.energyPool.cost!=this.energy_pool_table[energy_pool_index].cost:
                 case this.energyPool.max_power!=this.energy_pool_table[energy_pool_index].max_power:
                 case this.energyPool.damage_capacity!=this.energy_pool_table[energy_pool_index].damage_capacity:
                     update=true;       
