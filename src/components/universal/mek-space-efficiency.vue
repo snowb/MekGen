@@ -68,17 +68,13 @@ export default
         select_efficiency(_modifier)
         {
             this.selected_modifier=_modifier>=this.raw_space ? 0 : _modifier;
-            this.selected_cost=_modifier/2;
+            this.selected_cost=this.selected_modifier/2;
             this.selectMethod(this.selected_method);
             this.$emit("update-efficiencies",{modifier:this.selected_modifier,cost:this.selected_cost});
-            console.log({modifier:this.selected_modifier,cost:this.selected_cost})
         },
         clean_space_efficiency:function(_value)
         {
-            if(_value=="")
-            {
-                this.display_space_efficiency=-1;
-            }
+            this.display_space_efficiency=+_value;
         }
     },
     computed:
@@ -86,54 +82,47 @@ export default
         display_space_efficiency:
         {
             get()
-            {console.log('s_e.m',this.space_efficiency.modifier,'s_m',this.selected_modifier)
-                if(this.space_efficiency.modifier!=this.selected_modifier)
+            {
+                if(this.selected_method=="to_space")
                 {
-                    this.select_efficiency(this.space_efficiency.modifier);
+                    return this.raw_space - this.space_efficiency.modifier;
                 }
-                return this.selected_value;
+                else if(this.selected_method=="by_space")
+                {
+                    return this.space_efficiency.modifier;
+                }
             },
             set(_value)
             {
                 this.space_efficiency;
                 this.raw_space;
                 let efficiency=this.isNumeric(_value) ? +_value : +_value.replace(/[^0-9.]/g,"");//clear all none numeric characters
+                let update=false;
+                let inwork=/[0-9]+\.$/g.test(_value);
                 switch(true)
                 {
+                    case inwork:
+                        //is a number with trailing decimal, do nothing
+                        break;
                     case efficiency<0:
                         efficiency=0;
+                        update=true;
                         break;
                     case this.selected_method=="to_space":
                         efficiency=this.raw_space - efficiency;
+                        update=true;
                         break;
                     case this.selected_method=="by_space":
-                        //nothing to do
+                        update=true;
                         break;
                 }
-                this.select_efficiency(efficiency);
+                if(update)
+                {
+                    this.select_efficiency(efficiency);
+                }
             }
         }
     },
-    watch:
-    {
-        raw_space(_new,_old)
-        {
-            if(_new!=_old)
-            {
-                this.display_space_efficiency=this.selected_modifier;
-            }
-        },
-        /* space_efficiency(_new, _old)
-        {
-            if(_new!=_old)
-            {
-                let prevMethod=this.selected_method;
-                this.selectMethod("by_space");
-                //this.display_space_efficiency=_new.modifier;
-                this.selectMethod(prevMethod);
-            }
-        } */
-    }
 }
 /**************** 
  * 
