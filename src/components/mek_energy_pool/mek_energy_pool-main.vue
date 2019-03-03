@@ -111,7 +111,7 @@ export default
         },
         updateEfficiencies(_data)
         {
-            this.$set(this.efficiencies,"space",_data)
+            this.$set(this.efficiencies,"space",_data);
             this.component_changed=true;
         },
         updateEnergyPool(_energy_pool)

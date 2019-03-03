@@ -71,6 +71,7 @@ export default
             this.selected_cost=_modifier/2;
             this.selectMethod(this.selected_method);
             this.$emit("update-efficiencies",{modifier:this.selected_modifier,cost:this.selected_cost});
+            console.log({modifier:this.selected_modifier,cost:this.selected_cost})
         },
         clean_space_efficiency:function(_value)
         {
@@ -85,7 +86,7 @@ export default
         display_space_efficiency:
         {
             get()
-            {
+            {console.log('s_e.m',this.space_efficiency.modifier,'s_m',this.selected_modifier)
                 if(this.space_efficiency.modifier!=this.selected_modifier)
                 {
                     this.select_efficiency(this.space_efficiency.modifier);

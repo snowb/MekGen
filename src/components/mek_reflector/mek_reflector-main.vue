@@ -148,8 +148,7 @@ export default
         },
         updateEfficiencies:function(_data)
         {
-            this.efficiencies.space.cost=_data.cost;
-            this.efficiencies.space.modifier=_data.modifier;
+            this.$set(this.efficiencies,"space",_data);
             this.component_changed=true;
         },
     },
