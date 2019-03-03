@@ -134,7 +134,7 @@ export default
         {
             this.$set(this,"feature_array",_featureArray);
             this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
-            this.projectile_name;
+            this.energy_pool_name;
             this.damage_capacity=this.fragile ? 1 : this.selected_energy_pool.damage_capacity;
         },
         componentSaveReset:function(_action)
@@ -176,6 +176,7 @@ export default
             return_data.selected_energy_pool=JSON.parse(JSON.stringify(this.selected_energy_pool));
             return_data.selected_portfolio_size=JSON.parse(JSON.stringify(this.selected_portfolio_size));
             return_data.selected_portfolio_size.size=this.selected_portfolio_size.size===Infinity?"Infinity":this.selected_portfolio_size.size;
+            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
 
             return_data.selected_morphable=this.selected_morphable
 

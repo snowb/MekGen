@@ -116,7 +116,6 @@ export default
             {
                 this.$emit("update-feature",this.selected_feature_array);
             }
-            this.burstValue;
 
             return indices;
         },
