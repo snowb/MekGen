@@ -4,10 +4,13 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
-        <mek-energy-pool-pool :energy-pool="selected_energy_pool"
-            @update-energy-pool="updateEnergyPool"
-        ></mek-energy-pool-pool>
         <div class="mek-inline-flex-row">
+            <mek-energy-pool-pool :energy-pool="selected_energy_pool" style="align-self:flex-start;"
+                @update-energy-pool="updateEnergyPool"
+            ></mek-energy-pool-pool>
+            <mek-energy-pool-size :portfolio-size="selected_portfolio_size"
+                @update-portfolio-size="updatePortfolioSize"
+            ></mek-energy-pool-size>
             <!--mek-missile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-missile-damage>
             <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
                 style="align-self:flex-end;"
@@ -48,10 +51,8 @@
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="5">
-                <!--div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
+                <div slot="col1-row1">Size: {{selected_portfolio_size.size}}</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
-                <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
-                <div slot="col1-row4" v-if="has_duration">Duration: {{smoke_scatter_duration}} rounds</div-->
 
                 <div slot="col3-row1">Base Space: {{raw_space}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
@@ -72,6 +73,7 @@ import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
 import mek_energy_pool_pool from "./subcomponents/mek_energy_pool-pool.vue";
+import mek_energy_pool_size from "./subcomponents/mek_energy_pool-size.vue";
 
 import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
 import mek_component_name from "../universal/mek-component-name.vue";
@@ -86,8 +88,8 @@ export default
     components:
     {
         "mek-energy-pool-pool":mek_energy_pool_pool,
-        //"mek-energy-pool-size":mek_energy_pool_size,
-        //"mek-energy-pool-morphable":mek_energy_pool_morphable,
+        "mek-energy-pool-size":mek_energy_pool_size,
+        //"mek-energy-pool-feature":mek_energy_pool_feature,
 
         "mek-space-efficiency":mek_space_efficiency,
         "mek-component-name":mek_component_name,
@@ -109,6 +111,8 @@ export default
         obj.selected_energy_pool={cost:10,power_available:0,max_power:50,damage_capacity:5};
         obj.selected_portfolio_size={size:3,cost:1};
         obj.selected_morphable=false;
+
+        obj.feature_array=[];
 
         obj.efficiencies={};
         obj.efficiencies.space={};
@@ -147,11 +151,13 @@ export default
         {
             this.selected_portfolio_size.cost=_size.cost;
             this.selected_portfolio_size.size=_size.size;
+            this.cost_multipliers.portfolio_size=_size.cost;
             this.component_changed=true;
         },
         updateMorphable(_morphable)
         {
             this.selected_morphable=_morphable;
+            this.cost_multipliers.morphable=_morphable ? 1.25 : 1;
             this.component_changed=true;
         },
         componentSaveReset:function(_action)
@@ -192,6 +198,8 @@ export default
 
             return_data.selected_energy_pool=JSON.parse(JSON.stringify(this.selected_energy_pool));
             return_data.selected_portfolio_size=JSON.parse(JSON.stringify(this.selected_portfolio_size));
+            return_data.selected_portfolio_size.size=this.selected_portfolio_size.size===Infinity?"Infinity":this.selected_portfolio_size.size;
+
             return_data.selected_morphable=this.selected_morphable
 
             return_data.cost=this.total_cost;
@@ -272,7 +280,16 @@ export default
             return energy_pool_name; 
             */
            return "Energy Pool";
-        }
+        },
+        feature_list:function()
+        {
+            return this.feature_array.reduce(function(_string, _val, _index)
+            {
+                _string+=_index>0 ? ", " : "";
+                _string+=_val.feature;
+                return _string;
+            },"");
+        },
     }
 };
 </script>
