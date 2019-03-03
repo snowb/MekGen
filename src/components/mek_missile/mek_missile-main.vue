@@ -48,6 +48,7 @@
                 <div slot="col1-row1">Kills: {{selected_damage.damage}} K</div>
                 <div slot="col1-row2">Damage Capacity: {{damage_capacity}} K</div>
                 <div slot="col1-row3">Final Range: {{selected_damage.range * selected_range_mod.range_mod}}</div>
+                <div slot="col1-row4" v-if="has_duration">Duration: {{smoke_scatter_duration}} rounds</div>
 
                 <div slot="col2-row1">Feature(s):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
 
@@ -65,6 +66,12 @@
 </template>
 
 <script>
+/*******
+
+THINGS TO DO FIX
+countermissile range (100%, x1)
+
+ */
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 
@@ -120,6 +127,7 @@ export default
         obj.selected_smart={smart:0,cost:1};
         obj.selected_skill={skill:6,cost:1};
         obj.selected_blast_radius={blast_radius:0,cost:1};
+        obj.smoke_scatter_duration=null;
 
         obj.damage_capacity=this.round(1/15,2);
 
@@ -158,7 +166,12 @@ export default
             this.selected_damage.damage=_damage.damage;
             this.selected_damage.cost=_damage.cost;
             this.component_changed=true;
-            this.damage_capacity=this.round(_damage.damage/15,2);
+            this.damage_capacity=this.round(this.selected_pack_size*_damage.damage/15,2);
+
+            if(this.has_duration)
+            {
+                this.$set(this,"smoke_scatter_duration",this.round(this.selected_damage.damage/2,0));
+            }
         },
         updatePackSize(_missiles)
         {
@@ -212,7 +225,12 @@ export default
         {
             this.$set(this,"feature_array",_featureArray);
             this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
-            this.projectile_name;
+            this.missile_name;
+
+            if(this.has_duration)
+            {
+                this.$set(this,"smoke_scatter_duration",this.round(this.selected_damage.damage/2,0));
+            }
         },
         /* generic updateProp method 
         updateProperty(_property)
@@ -281,13 +299,20 @@ export default
             this.universal_ingest_data(_data_object,alertMessage);
             this.$nextTick(()=>{this.component_changed=false;});
         },
+        has_feature(_feature)
+        {
+            return this.feature_array.some((_val)=>
+            {
+                return _val.feature.toLowerCase()==_feature;
+            });
+        }
     },
     computed:
     {
         raw_space()
         {
             //core cost prop
-            let cost_multiplier=this.is_nuclear ? this.cost_multiplier/1000 : this.cost_multiplier;
+            let cost_multiplier=this.has_feature("nuclear") ? this.cost_multiplier/1000 : this.cost_multiplier;
 
             return this.round(this.selected_damage.cost * cost_multiplier,2);
         },
@@ -333,7 +358,7 @@ export default
         },
         missile_name()
         {
-            let missile_name=this.is_nuclear ? "Nuclear ":"";
+            let missile_name=this.has_feature("nuclear") ? "Nuclear ":"";
 
             missile_name=this.feature_array.reduce((_name,_val)=>
             {
@@ -360,13 +385,6 @@ export default
         {
             return typeof this.selected_range_mod.type!=="undefined" && this.selected_range_mod.type.toLowerCase()=="mine";
         },
-        is_nuclear()
-        {
-            return this.feature_array.some((_val)=>
-            {
-                return _val.feature.toLowerCase()=="nuclear";
-            });
-        },
         feature_list()
         {
             return this.feature_array.reduce(function(_string, _val, _index)
@@ -375,6 +393,11 @@ export default
                 _string+=_val.feature;
                 return _string;
             },"");
+        },
+        has_duration()
+        {
+            let has_duration=this.has_feature("smoke") || this.has_feature("scatter") || this.has_feature("smoke-scatter");
+            return has_duration
         }
     }
 };

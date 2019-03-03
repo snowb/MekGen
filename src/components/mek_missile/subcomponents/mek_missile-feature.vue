@@ -176,7 +176,7 @@ export default
             {
                 return this.feature_table.filter((_val)=>
                 {
-                    return _val.feature.toLowerCase()!="nuclear";
+                    return !["nuclear","scatter","smoke","smoke-scatter"].includes(_val.feature.toLowerCase());
                 },this);
             }
             return this.feature_table;
