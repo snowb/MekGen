@@ -14,7 +14,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
-    name:"mek_beam_damage",
+    name:"mek_energy_pool_pool",
     props:["energyPool"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
