@@ -50,7 +50,7 @@ export default
         select_feature:function(_selected_feature_index)
         {
             this.burstValue;
-            let select_feature_name=this.feature_table[_selected_feature_index].feature;
+            let select_feature_name=this.filteredFeatureTable[_selected_feature_index].feature;
             let isExclusivePhalanx=this.is_exclusive_feature("exclusive_phalanx",select_feature_name);
             let isExclusivePersonnel=this.is_exclusive_feature("exclusive_personnel",select_feature_name);
             let featureClone=Object.assign({},this.filteredFeatureTable[_selected_feature_index]);

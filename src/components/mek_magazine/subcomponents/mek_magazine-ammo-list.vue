@@ -56,10 +56,10 @@ export default
     {
         select_ammo:function(_ammo_index)
         {
-            let select_feature_name=this.ammo_table[_ammo_index].type;
+            let select_feature_name=this.filteredAmmoArray[_ammo_index].type;
             let isExclusiveShock=this.is_exclusive_feature("shock_exclusive",select_feature_name);
             let isExclusiveBlast=this.is_exclusive_feature("blast_exclusive",select_feature_name);
-            let featureClone=Object.assign({},this.ammo_table[_ammo_index]);
+            let featureClone=Object.assign({},this.filteredAmmoArray[_ammo_index]);
 
             let temp_selected_feature_array=this.selected_ammo_array.filter((_val)=>
             {//filter out matching feature (toggle)
