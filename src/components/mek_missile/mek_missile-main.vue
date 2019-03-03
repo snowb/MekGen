@@ -67,12 +67,6 @@
 </template>
 
 <script>
-/*******
-
-THINGS TO DO FIX
-countermissile range (100%, x1)
-
- */
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 

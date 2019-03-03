@@ -33,17 +33,17 @@ export default
                 {feature:"Fuse",cost:1.1},
                 {feature:"Foam",cost:1.33},
                 {feature:"Flare",cost:0.5},
-                {feature:"Smoke",cost:0.5},
-                {feature:"Scatter",cost:0.5},
+                {feature:"Smoke",cost:0.5, exclusive_smoke_scatter:true},
+                {feature:"Scatter",cost:0.5, exclusive_smoke_scatter:true},
                 {feature:"Countermissile",cost:1, exclusive_counter:true},
                 {feature:"Variable Countermissile",cost:1.8, exclusive_counter:true},
-                {feature:"Smoke-Scatter",cost:1},
+                {feature:"Smoke-Scatter",cost:1,exclusive_smoke:true, exclusive_smoke_scatter:true},
                 {feature:"Nuclear",cost:1000},
 
             ];
 
         obj.exclusive_counter=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_counter!=="undefined";});
-        //obj.exclusive_personnel=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_personnel!=="undefined";});
+        obj.exclusive_smoke_scatter=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_smoke_scatter!=="undefined";});
 
         obj.selected_feature_array=[];
         return obj;
@@ -55,6 +55,7 @@ export default
             this.blastRadius;
             let select_feature_name=this.filteredFeatureTable[_selected_feature_index].feature;
             let isExclusiveCounter=this.is_exclusive_feature("exclusive_counter",select_feature_name);
+            let isExclusiveSmokeScatter=this.is_exclusive_feature("exclusive_smoke_scatter",select_feature_name);
             let featureClone=Object.assign({},this.filteredFeatureTable[_selected_feature_index]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
@@ -72,6 +73,13 @@ export default
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.exclusive_counter;
+                })
+            }
+            if(isExclusiveSmokeScatter)
+            {//filter out exclusive smoke
+                temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
+                {
+                    return !_val.exclusive_smoke_scatter;
                 })
             }
 
