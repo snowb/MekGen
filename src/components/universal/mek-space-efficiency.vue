@@ -65,6 +65,13 @@ export default
                 this.selected_value=this.raw_space-this.selected_modifier;
             }
         },
+        select_efficiency(_modifier)
+        {
+            this.selected_modifier=_modifier>=this.raw_space ? 0 : _modifier;
+            this.selected_cost=_modifier/2;
+            this.selectMethod(this.selected_method);
+            this.$emit("update-efficiencies",{modifier:this.selected_modifier,cost:this.selected_cost});
+        },
         clean_space_efficiency:function(_value)
         {
             if(_value=="")
@@ -75,94 +82,56 @@ export default
     },
     computed:
     {
-        space_integer:function()
-        {
-            return this.floor(this.raw_space,0);
-        },
-        space_fraction:function()
-        {
-            return this.raw_space - this.space_integer;
-        },
         display_space_efficiency:
         {
-            get:function()
+            get()
             {
+                if(this.space_efficiency.modifier!=this.selected_modifier)
+                {
+                    this.select_efficiency(this.space_efficiency.modifier);
+                }
                 return this.selected_value;
             },
-            set:function(_value)
+            set(_value)
             {
-                let raw_space=this.raw_space;
-                let emitUpdate=false;
+                this.space_efficiency;
+                this.raw_space;
+                let efficiency=this.isNumeric(_value) ? +_value : +_value.replace(/[^0-9.]/g,"");//clear all none numeric characters
                 switch(true)
                 {
-                    case _value==="":
-                    case _value===".":
-                    case this.selected_method=="to_space" && _value===0:
-                        //do nothing on blank or 0 (for 0.x inputs)
-                        break;
-                    case !this.isNumeric(_value) && _value!=="" && this.selected_method=="to_space":
-                    case this.isNumeric(_value) && this.selected_method=="to_space" && _value>raw_space:
-                    case this.isNumeric(_value) && this.selected_method=="to_space" && _value<0.1:
-                        this.selected_value=raw_space;
-                        this.selected_modifier=0;
-                        this.selected_cost=0;
-                        emitUpdate=true;
-                        break;
-                    case !this.isNumeric(_value) && _value!=="" && this.selected_method=="by_space":
-                    case this.isNumeric(_value) && this.selected_method=="by_space" && _value<0:
-                    case this.isNumeric(_value) && this.selected_method=="by_space" && (raw_space-_value)<0.09:
-                        this.selected_value=0;
-                        this.selected_modifier=0;
-                        this.selected_cost=0;
-                        emitUpdate=true;
+                    case efficiency<0:
+                        efficiency=0;
                         break;
                     case this.selected_method=="to_space":
-                        this.selected_value=_value;
-                        this.selected_modifier=raw_space-_value;
-                        this.selected_cost=this.selected_modifier/2;
-                        emitUpdate=true;
+                        efficiency=this.raw_space - efficiency;
                         break;
                     case this.selected_method=="by_space":
-                        this.selected_value=_value;
-                        this.selected_modifier=_value;
-                        this.selected_cost=this.selected_modifier/2;
-                        emitUpdate=true;
+                        //nothing to do
                         break;
                 }
-                if(emitUpdate)
-                {
-                    this.$forceUpdate();
-                    this.$emit("update-efficiencies",{cost:this.selected_cost,modifier:this.selected_modifier});
-                }
+                this.select_efficiency(efficiency);
             }
         }
     },
     watch:
     {
-        raw_space:function(_newval,_oldval)
+        raw_space(_new,_old)
         {
-            if(_newval!=_oldval)
+            if(_new!=_old)
+            {
+                this.display_space_efficiency=this.selected_modifier;
+            }
+        },
+        /* space_efficiency(_new, _old)
+        {
+            if(_new!=_old)
             {
                 let prevMethod=this.selected_method;
                 this.selectMethod("by_space");
-                this.display_space_efficiency=this.space_efficiency.modifier;
+                //this.display_space_efficiency=_new.modifier;
                 this.selectMethod(prevMethod);
             }
-        },
-        /*"space_efficiency.modifier":function(_newmodifier,_oldmodifier)
-        {
-            if(this.isNumeric(_newmodifier) && _newmodifier>=0 && (this.raw_space - _newmodifier)>=0.1)
-            {
-                this.selected_modifier=_newmodifier;
-                this.selected_cost=_newmodifier/2;
-            }
-            else
-            {
-                this.selected_modifier=0;
-                this.selected_cost=0;
-            }
-            console.log(this.space_efficiency)
-        }*/
+        } */
     }
 }
 /**************** 
