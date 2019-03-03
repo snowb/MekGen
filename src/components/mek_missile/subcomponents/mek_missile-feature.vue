@@ -53,9 +53,9 @@ export default
         select_feature:function(_selected_feature_index)
         {
             this.blastRadius;
-            let select_feature_name=this.feature_table[_selected_feature_index].feature;
+            let select_feature_name=this.filteredFeatureTable[_selected_feature_index].feature;
             let isExclusiveCounter=this.is_exclusive_feature("exclusive_counter",select_feature_name);
-            let featureClone=Object.assign({},this.feature_table[_selected_feature_index]);
+            let featureClone=Object.assign({},this.filteredFeatureTable[_selected_feature_index]);
 
             let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
             {//filter out matching feature (toggle)
@@ -68,7 +68,7 @@ export default
             },this);
 
             if(isExclusiveCounter)
-            {//filter out exclusive phalanx
+            {//filter out exclusive counter
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.exclusive_counter;
@@ -92,7 +92,7 @@ export default
         find_feature_index:function(_feature)
         {
             let found_index;
-            this.feature_table.some(function(_val, _index)
+            this.filteredFeatureTable.some(function(_val, _index)
             {
                 if(_val.feature.toLowerCase() == _feature.toLowerCase())
                 {

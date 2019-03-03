@@ -17,9 +17,10 @@
             <div class="mek-inline-flex-row">
                 <mek-missile-range-mod style="align-self:baseline;"
                     @update-range-mod="updateRangeMod"
-                    :range-mod="selected_range_mod"
+                    :range-mod="selected_range_mod" :anti-missile="has_feature('countermissile')"
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
+                {{has_feature('countermissile')}}
                 <div class="mek-inline-flex-col">
                     <mek-missile-smart :smart="selected_smart"
                         @update-smart="updateSmart"
@@ -91,7 +92,7 @@ import mek_component_stats from "../universal/mek_component-stats.vue";
 
 export default
 {
-    name:"mek_energy_pool",
+    name:"mek_missile",
     props:[],
     mixins:[selected_item_mixin, utility_mixin],
     components:
@@ -303,7 +304,7 @@ export default
         {
             return this.feature_array.some((_val)=>
             {
-                return _val.feature.toLowerCase()==_feature;
+                return _val.feature.toLowerCase()==_feature.toLowerCase();
             });
         }
     },

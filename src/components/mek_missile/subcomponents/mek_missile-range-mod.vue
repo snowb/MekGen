@@ -17,7 +17,7 @@ import mek_sub_component_table from "../../universal/mek_sub-component-table.vue
 export default 
 {
     name: "mek_missile_range_mod",
-    props:["rangeMod","baseRange"],
+    props:["rangeMod","baseRange","antiMissile"],
     mixins:[selected_item_mixin,utility_mixin],
     components:
     {
@@ -61,6 +61,15 @@ export default
 
             this.range_mod_table.some((_val, _index)=>
             {
+                if(this.antiMissile)
+                {
+                    if(_val.cost==1)
+                    {
+                        index=_index;
+                        return true;
+                    }
+                    return false;
+                }
                 if(typeof _val.type!=="undefined")
                 {
                     if(_val.type==this.rangeMod.type)
