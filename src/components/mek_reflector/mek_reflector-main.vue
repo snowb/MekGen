@@ -116,7 +116,7 @@ export default
             return_data.weight=this.weight;
 
             this.$nextTick(()=>{this.component_changed=false;});
-
+            this.original_component=JSON.stringify(return_data);
             return return_data;
         },
         ingest_data(_data_object)

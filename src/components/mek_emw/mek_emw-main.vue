@@ -202,7 +202,7 @@ export default
             }
 
             this.$nextTick(()=>{this.component_changed=false;});
-
+            this.original_component=JSON.stringify(return_data);
             return return_data;
         },
         ingest_data(_data_object)
@@ -216,7 +216,8 @@ export default
             switch(_action)
             {
                 case "save":
-                    this.$store.commit('saveComponent',this.output_emw_data());
+                    this.$store.commit('saveComponent',this.output_shield_data());
+                    this.original_component=JSON.stringify(this.output_shield_data())
                     break;
                 case "reset":
                     if(this.original_component!==null)

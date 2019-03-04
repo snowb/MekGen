@@ -412,6 +412,7 @@ export default
                     break;
             }
             this.$nextTick(()=>{this.component_changed=false;});
+            this.original_component=JSON.stringify(return_data);
             return return_data;
         },
         componentSaveReset:function(_action)
@@ -424,7 +425,6 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
-                        console.log(this.original_component)
                         this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
