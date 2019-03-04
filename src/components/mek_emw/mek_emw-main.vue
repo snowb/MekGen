@@ -25,7 +25,7 @@
             <mek-emw-feature style="align-self:start;"
                 @update-feature="updateFeature"
                 :feature-array="feature_array"
-                :turns-in-use="selected_turns_in_use.turns!='X'"
+                :turns-in-use="selected_turns_in_use.turns!='\u221E'"
             ></mek-emw-feature>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
@@ -104,8 +104,8 @@ export default
 
         obj.selected_damage={damage:1,cost:1};
         obj.selected_accuracy={accuracy:1,cost:1};
-        obj.selected_attack_factor={attack_factor:"X",cost:1};
-        obj.selected_turns_in_use={turns:"X",cost:1};
+        obj.selected_attack_factor={attack_factor:"\u221E",cost:1};
+        obj.selected_turns_in_use={turns:"\u221E",cost:1};
 
         obj.damage_capacity=0.25;
 
