@@ -1,6 +1,6 @@
 <template>
     <span class="mek-inline-flex-col">
-        <mek-component-name :new-component="newComponent" :component-name="component_name||'Reflector'"
+        <mek-component-name :new-component="newComponent" :component-name="component_name||reflector_name"
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
@@ -105,7 +105,7 @@ export default
             return_data.uuid=this.uuid;
             return_data.component_category="equipment";
             return_data.component_type="reflector";
-            return_data.component_name=this.component_name===null?"Reflector":this.component_name;
+            return_data.component_name=this.component_name===null?this.reflector_name:this.component_name;
 
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
 
@@ -210,6 +210,10 @@ export default
         cost:function()
         {
             return this.selected_reflector.cost + this.efficiencies.space.cost;
+        },
+        reflector_name()
+        {
+            return "QV-"+this.selected_reflector.quality_value+" Reflector";
         }
     }
 }
