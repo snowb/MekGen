@@ -112,10 +112,6 @@ export default
     },
     methods:
     {
-        prefix(_key)
-        {
-            return _key.toLowerCase()=="cost" && this.multiplier ? "x" : "";
-        },
         updateSelectedIndices(_index)
         {
             this.$emit("update-selected-indices",_index);
