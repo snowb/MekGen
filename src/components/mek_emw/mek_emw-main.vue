@@ -25,7 +25,7 @@
             <mek-emw-feature style="align-self:start;"
                 @update-feature="updateFeature"
                 :feature-array="feature_array"
-                :turns-in-use="selected_turns_in_use.turns!='\u221E'"
+                :turns-in-use="selected_turns_in_use.turns!=Infinity"
             ></mek-emw-feature>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
@@ -104,8 +104,8 @@ export default
 
         obj.selected_damage={damage:1,cost:1};
         obj.selected_accuracy={accuracy:1,cost:1};
-        obj.selected_attack_factor={attack_factor:"\u221E",cost:1};
-        obj.selected_turns_in_use={turns:"\u221E",cost:1};
+        obj.selected_attack_factor={attack_factor:Infinity,cost:1};
+        obj.selected_turns_in_use={turns:Infinity,cost:1};
 
         obj.damage_capacity=0.25;
 
@@ -185,6 +185,8 @@ export default
             return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
             return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
             return_data.selected_turns_in_use=JSON.parse(JSON.stringify(this.selected_turns_in_use));
+            return_data.selected_turns_in_use.turns=this.selected_turns_in_use.turns===Infinity?"Infinity":this.selected_turns_in_use.turns;
+
             return_data.selected_attack_factor=JSON.parse(JSON.stringify(this.selected_attack_factor));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
 

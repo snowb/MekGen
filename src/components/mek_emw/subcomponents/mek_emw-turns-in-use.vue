@@ -33,7 +33,7 @@ export default
                 {turns:5,cost:0.7},
                 {turns:7,cost:0.8},
                 {turns:10,cost:0.9},
-                {turns:"\u221E",cost:1.0}
+                {turns:Infinity,cost:1.0}
             ];
 
         return obj;
