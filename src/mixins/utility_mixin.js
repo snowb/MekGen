@@ -68,7 +68,6 @@ export default
                     {
                         this[_property]={};
                     }
-                    console.log(_property,this[_property])
                     for(let _sub_property in _data_object[_property])
                     {
                         this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
