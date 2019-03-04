@@ -3,7 +3,7 @@
         :items="attack_factor_table"
         :headers="{attack_factor:'AF',cost:'Cost'}"
         name="Attack Factor" flow="row" :showHeaders="true"
-        :format="{cost:'multiplier'}"
+        :format="{cost:'multiplier',attack_factor:'nullzero'}"
         :selectedIndices="attack_factor_index"
         @update-selected-indices="select_attack_factor"
     ></mek-sub-component-table>
@@ -28,7 +28,7 @@ export default
 
         obj.attack_factor_table=
         [
-            {attack_factor:"\u00D8",cost:1},
+            {attack_factor:0,cost:1},
             {attack_factor:1,cost:1.5},
             {attack_factor:2,cost:2},
             {attack_factor:3,cost:2.5},

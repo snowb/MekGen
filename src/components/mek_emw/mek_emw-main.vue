@@ -104,7 +104,7 @@ export default
 
         obj.selected_damage={damage:1,cost:1};
         obj.selected_accuracy={accuracy:1,cost:1};
-        obj.selected_attack_factor={attack_factor:Infinity,cost:1};
+        obj.selected_attack_factor={attack_factor:0,cost:1};
         obj.selected_turns_in_use={turns:Infinity,cost:1};
 
         obj.damage_capacity=0.25;
@@ -230,8 +230,8 @@ export default
                     this.component_name=null;
                     this.selected_damage.damage=1;
                     this.selected_accuracy.accuracy=1;
-                    this.selected_attack_factor=0;
-                    this.selected_turns_in_use=0;
+                    this.selected_attack_factor.attack_factor=0;
+                    this.selected_turns_in_use.turns=0;
                     this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
                     break;
@@ -312,7 +312,7 @@ export default
         },
         emw_name()
         {
-            let emw_name=this.selected_attack_factor.attack_factor!="X"?"Automated ":"";
+            let emw_name=this.selected_attack_factor.attack_factor!=0?"Automated ":"";
 
             emw_name=this.feature_array.reduce((_name,_val)=>
             {
