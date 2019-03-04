@@ -83,6 +83,11 @@ export default
         {
             get()
             {
+                if(this.space_efficiency.modifier>=this.raw_space)
+                {
+                    this.select_efficiency(0);
+                    return 0;
+                }
                 if(this.selected_method=="to_space")
                 {
                     return this.raw_space - this.space_efficiency.modifier;
