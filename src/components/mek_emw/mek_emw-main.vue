@@ -216,8 +216,7 @@ export default
             switch(_action)
             {
                 case "save":
-                    this.$store.commit('saveComponent',this.output_shield_data());
-                    this.original_component=JSON.stringify(this.output_shield_data())
+                    this.$store.commit('saveComponent',this.output_emw_data());
                     break;
                 case "reset":
                     if(this.original_component!==null)
