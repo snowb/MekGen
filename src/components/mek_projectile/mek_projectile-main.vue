@@ -56,7 +56,7 @@
                 <div slot="col3-row2">Space: {{space_cost}}</div>
                 <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
                 <div slot="col3-row4">&nbsp;</div>
-                <div slot="col3-row5">Standard Ammo Cost: {{cost*0.01}}/shot</div>
+                <div slot="col3-row5">Standard Ammo Cost: {{round(cost*0.01,2)}}/shot</div>
 
                 <div slot="col4-row1">Base Cost: {{selected_damage.cost}}</div>
                 <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
