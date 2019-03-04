@@ -64,6 +64,11 @@ export default
                 }
                 if(typeof _data_object[_property]==="object" && !Array.isArray(_data_object[_property]))
                 {
+                    if(typeof this[_property]!=="object" || this[_property]===null)
+                    {
+                        this[_property]={};
+                    }
+                    console.log(_property,this[_property])
                     for(let _sub_property in _data_object[_property])
                     {
                         this.$set(this[_property],[_sub_property],_data_object[_property][_sub_property]);
@@ -82,6 +87,7 @@ export default
                     this.$set(this,"component_name",null);
                 }
             }
+            this.$forceUpdate();
         }
     }
 };
