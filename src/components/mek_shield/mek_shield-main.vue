@@ -343,12 +343,12 @@ export default
         },
         select_armor_type(_armor_type)
         {
-            this.$set(this,"armor_type",_armor_type);
+            this.$set(this,"armor_type",JSON.parse(JSON.stringify(_armor_type)));
             this.cost_multipliers.armor_type=this.armor_type.cost;
         },
         select_absorption(_absorption)
         {
-            this.$set(this,"absorption",_absorption);
+            this.$set(this,"absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.absorption.cost;
         },
         updateComponentName:function(_name)
@@ -424,6 +424,7 @@ export default
                 case "reset":
                     if(this.original_component!==null)
                     {
+                        console.log(this.original_component)
                         this.ingest_data(JSON.parse(this.original_component));
                     }
                     break;
@@ -434,6 +435,8 @@ export default
                     this.defense_ability=-2;
                     this.binder.stopping_power_modifier=0;
                     this.efficiencies.space.modifier=0;
+                    this.armor_type.type="Standard";
+                    this.absorption.absorption=0;
                     this.component_name=null;
                     this.shield_name;//must call to force recompute
                     this.$store.commit("saveComponent",null);
