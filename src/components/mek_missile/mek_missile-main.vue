@@ -20,7 +20,6 @@
                     :range-mod="selected_range_mod" :anti-missile="has_feature('countermissile')"
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
-                {{has_feature('countermissile')}}
                 <div class="mek-inline-flex-col">
                     <mek-missile-smart :smart="selected_smart"
                         @update-smart="updateSmart"
