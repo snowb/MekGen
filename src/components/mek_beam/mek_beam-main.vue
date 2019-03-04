@@ -217,7 +217,7 @@ export default
             this.$set(this,"feature_array",_featureArray);
             this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.projectile_name;
-            this.damage_capacity=this.fragile ? 1 : this.selected_wide_angle.damage;
+            this.damage_capacity=this.fragile ? 1 : this.selected_damage.damage;
         },
         componentSaveReset:function(_action)
         {
@@ -297,7 +297,7 @@ export default
         space_cost:function()
         {
             let mag_fed=this.mag_fed?1:0;
-            return (this.raw_space - this.efficiencies.space.modifier) + mag_fed;
+            return this.round((this.raw_space - this.efficiencies.space.modifier) + mag_fed,2);
         },
         cost_multiplier()
         {
