@@ -67,7 +67,7 @@
                 <div slot="col1-row3" v-if="armor_type!==null" style="padding-left:10px;">Damage Coefficient: {{armor_type.damage_coefficient}}</div>
                 <div slot="col1-row4" v-if="absorption!==null">Absorption: {{absorption.absorption*100}}%</div>
                 <div slot="col2-row1" v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
-                <div slot="col2-row1" v-if="type.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{weakness_list}}</div></div>
+                <div slot="col2-row1" v-if="type.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
                 <div slot="col2-row2" v-if="type.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
                 <div slot="col2-row3" v-if="type.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time}}</div>
                 <div slot="col2-row4" v-if="type.toLowerCase()=='reactive'">Surge Damage: {{surge_damage}}</div>
@@ -90,6 +90,7 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
 
 import mek_armor_type from "../universal/mek_armor-type.vue";
 import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.vue";
@@ -98,7 +99,7 @@ import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.
 export default
 {
     name:"mek_shield",
-    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin, component_methods_mixin],
+    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin, component_methods_mixin, component_computed_mixin],
     components:
     {
         "mekshield-type":()=>import("./subcomponents/mek_shield-type.vue"),
@@ -361,7 +362,6 @@ export default
         ingest_data:function(_data_object)
         {
             let alertMessage="Shield Has No Type, resetting to 'standard' shield.";
-
             this.universal_ingest_data(_data_object,alertMessage);
             if(this.component_name==this.shield_name)
                 {//reset component_name if component generated
@@ -474,7 +474,7 @@ export default
             return isSurge ? this.shield_class.stopping_power : null;
         },
         cost_multiplier:function()
-        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
+        {
             let multiplier=1;
             multiplier*=this.cost_multipliers.defense_ability;
             multiplier*=this.cost_multipliers.binder;
@@ -483,23 +483,6 @@ export default
             multiplier*=this.cost_multipliers.weakness;
 
             return this.round(multiplier,2);
-        },
-        space_cost:function()
-        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
-            if(this.type.toLowerCase()=="standard")
-            {
-                return 1 - this.efficiencies.space.modifier;
-            }
-            let base_cost=this.shield_class.cost * this.cost_multiplier;
-            if(this.type.toLowerCase()=="active")
-            {
-                return this.round((base_cost/2)-this.efficiencies.space.modifier, 2);
-            }
-            else if(this.type.toLowerCase()=="reactive")
-            {
-                return this.round((base_cost - this.efficiencies.space.modifier), 2);
-            }
-            return undefined;
         },
         raw_space:function()
         {
@@ -528,10 +511,9 @@ export default
 
             return this.round(subtotal_cost,2);
         },
-        weight:function()
-        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
-            //must apply special consideration for armor types and RAM armor as they impact SP but not modify the Weight
-            return this.round(this.weighted_stopping_power(this.shield_class.code)/2,2);//(this.calculate_stopping_power(this.shield_class.code) / 2);
+        damage_capacity()
+        {
+            return this.round(this.weighted_stopping_power(this.shield_class.code)/2,2);
         },
         shield_name:function()
         {
@@ -570,31 +552,6 @@ export default
             fullname=fullname.replace(/\s+/g," ");
             return fullname;
         },
-        newComponent()
-        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category==this.component_category
-                    && selectedComponent.component_type==this.component_type)
-                {
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
-        },
-        weakness_list:function()
-        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
-            return this.weakness_array.reduce(function(_string, _val, _index)
-            {
-                _string+=_index>0 ? ", " : "";
-                _string+=_val.weakness;
-                return _string;
-            },"");
-        }
     }
 }
 </script>
