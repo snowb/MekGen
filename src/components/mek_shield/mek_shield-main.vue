@@ -99,7 +99,14 @@ import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.
 export default
 {
     name:"mek_shield",
-    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin, component_methods_mixin, component_computed_mixin],
+    mixins:
+        [
+            servo_classes_mixin, 
+            selected_item_mixin, 
+            utility_mixin, 
+            component_methods_mixin, 
+            component_computed_mixin
+        ],
     components:
     {
         "mekshield-type":()=>import("./subcomponents/mek_shield-type.vue"),
@@ -115,8 +122,8 @@ export default
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
 
-        "mek-armor-type":mek_armor_type,
-        "mek-energy-absorbing-armor":mek_energy_absorbing_armor,
+        "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
+        "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue")
     },
     data:function()
     {
