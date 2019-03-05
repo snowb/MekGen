@@ -14,7 +14,7 @@ import utility_mixin from "../../mixins/utility_mixin";
 export default
 {
     name:"mek_servo",
-    props:["component-active"],
+    props:[],
     mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
     data:function()
     {
