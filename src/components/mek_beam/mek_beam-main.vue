@@ -74,9 +74,9 @@
 </template>
 
 <script>
-import servo_classes_mixin from "../../mixins/servo_classes_mixin";
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
 
 /* import mek_beam_damage from "./subcomponents/mek_beam-damage.vue";
 import mek_beam_accuracy from "./subcomponents/mek_beam-accuracy.vue";
@@ -96,7 +96,7 @@ export default
 {
     name:"mek_beam",
     props:[],
-    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
     components:
     {
         "mek-beam-damage":()=>import("./subcomponents/mek_beam-damage.vue"),
@@ -118,8 +118,8 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
-        obj.component_category=null;
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="beam";
         obj.original_component=null;
         obj.component_changed=true;
 
@@ -294,20 +294,6 @@ export default
             //core cost prop
             return this.selected_damage.cost * this.cost_multiplier;
         },
-        space_cost:function()
-        {
-            let mag_fed=this.mag_fed?1:0;
-            return this.round((this.raw_space - this.efficiencies.space.modifier) + mag_fed,2);
-        },
-        cost_multiplier()
-        {
-            let cost_multiplier=1;
-            for(let multi in this.cost_multipliers)
-            {
-                cost_multiplier*=this.cost_multipliers[multi];
-            }
-            return cost_multiplier;
-        },
         cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
@@ -315,26 +301,6 @@ export default
             subtotal_cost += this.mag_fed?1:0;
 
             return this.round(subtotal_cost,2);
-        },
-        weight:function()
-        {
-            return (this.damage_capacity / 2);
-        },
-        newComponent()
-        {
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="beam")
-                {//needs specific equipment type
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
         },
         beam_name()
         {
@@ -368,15 +334,6 @@ export default
             beam_name=beam_name.replace(/\s+/g," ");
 
             return beam_name; 
-        },
-        feature_list:function()
-        {
-            return this.feature_array.reduce(function(_string, _val, _index)
-            {
-                _string+=_index>0 ? ", " : "";
-                _string+=_val.feature;
-                return _string;
-            },"");
         },
         mag_fed()
         {

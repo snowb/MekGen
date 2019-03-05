@@ -135,8 +135,8 @@ export default
         obj.uuid=null;
         obj.type="standard";
         obj.component_name=null;
-        obj.component_category=null;
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="shield";
         obj.original_component=null;
         obj.component_changed=true;
 
@@ -481,7 +481,7 @@ export default
             return isSurge ? this.shield_class.stopping_power : null;
         },
         cost_multiplier:function()
-        {
+        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
             let multiplier=1;
             multiplier*=this.cost_multipliers.defense_ability;
             multiplier*=this.cost_multipliers.binder;
@@ -492,7 +492,7 @@ export default
             return this.round(multiplier,2);
         },
         space_cost:function()
-        {
+        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
             if(this.type.toLowerCase()=="standard")
             {
                 return 1 - this.efficiencies.space.modifier;
@@ -536,7 +536,7 @@ export default
             return this.round(subtotal_cost,2);
         },
         weight:function()
-        {
+        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
             //must apply special consideration for armor types and RAM armor as they impact SP but not modify the Weight
             return this.round(this.weighted_stopping_power(this.shield_class.code)/2,2);//(this.calculate_stopping_power(this.shield_class.code) / 2);
         },
@@ -578,14 +578,14 @@ export default
             return fullname;
         },
         newComponent()
-        {
+        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
             let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
             
             if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
             {
                 if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="shield")
+                    && selectedComponent.component_category==this.component_category
+                    && selectedComponent.component_type==this.component_type)
                 {
                     this.ingest_data(selectedComponent);
                 }
@@ -594,7 +594,7 @@ export default
             return true;
         },
         weakness_list:function()
-        {
+        {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
             return this.weakness_array.reduce(function(_string, _val, _index)
             {
                 _string+=_index>0 ? ", " : "";

@@ -74,8 +74,8 @@ export default
 
         obj.uuid=null;
         obj.component_name=null;
-        obj.component_category="reflector";
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="reflector";
         obj.original_component=null;
         obj.component_changed=true;
         obj.selected_reflector={quality_value:1, cost:1};
@@ -153,7 +153,8 @@ export default
         },
     },
     computed:
-    {
+    {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
+    //is quite 'cut down' compared to other components
         reflector_index()
         {
             let reflector_index=0;
@@ -186,8 +187,8 @@ export default
             if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
             {
                 if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="reflector")
+                    && selectedComponent.component_category==this.component_category
+                    && selectedComponent.component_type==this.component_type)
                 {
                     this.ingest_data(selectedComponent);
                 }

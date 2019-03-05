@@ -6,7 +6,7 @@
         ></mek-component-name>
         <mek-magazine-select-gun :selected-gun="selected_gun" @update-gun="updateGun"></mek-magazine-select-gun>
         <span class="mek-flex-row">
-            <mek-magazine-ammo-list :ammo-array="selected_ammo" @update-ammo="updateAmmo" :has-blast="hasBlast"></mek-magazine-ammo-list>
+            <mek-magazine-ammo-list :ammo-array="feature_array" @update-ammo="updateAmmo" :has-blast="hasBlast"></mek-magazine-ammo-list>
             <span class="mek-flex-col no-margin">
                 <mek-magazine-shots :shots="selected_shots" @update-shots="updateShots" style="align-self:baseline;"></mek-magazine-shots>
                 <mek-component-stats :cols="3" :rows="3">
@@ -27,6 +27,7 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
 
 /* import mek_magazine_select_gun from "./subcomponents/mek_magazine-select-gun.vue";
 import mek_magazine_ammo_list from "./subcomponents/mek_magazine-ammo-list.vue";
@@ -40,7 +41,7 @@ export default
 {
     name:"mek_magazine",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
     components:
     {
         "mek-magazine-select-gun":()=>import("./subcomponents/mek_magazine-select-gun.vue"),
@@ -56,13 +57,22 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
-        obj.component_category=null;
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="magazine";
         obj.original_component=null;
         obj.component_changed=true;
 
         obj.selected_gun={name:"",cost:1,uuid:null};
         obj.selected_ammo=[{type:"High-Ex",cost:1}];
+        obj.feature_array=[{type:"High-Ex",cost:1}];
+
+        obj.cost_multipliers={};
+        obj.cost_multipliers["High-Ex"]=1;
+
+        obj.efficiencies={};
+        obj.efficiencies.space={};
+        obj.efficiencies.space.modifier=0;//have to set to use universal component_computed_mixin
+
         obj.selected_shots=1;
 
         return obj;
@@ -83,7 +93,13 @@ export default
         },
         updateAmmo(_selected_ammo)
         {
-            this.$set(this,"selected_ammo",_selected_ammo);
+            this.$set(this,"feature_array",_selected_ammo);
+            let cost_multiplier=_selected_ammo.reduce((_newobj,_val)=>
+            {
+                _newobj[_val.type]=_val.cost;
+                return _newobj;
+            },{});
+            this.$set(this,"cost_multipliers",cost_multiplier);
             this.component_changed=true;
         },
         updateShots(_selected_shots)
@@ -117,7 +133,7 @@ export default
                     this.uuid=null;
                     this.component_name=null;
                     this.$set(this,"selected_gun",{name:"",cost:1,uuid:null})
-                    this.$set(this,"selected_ammo",[{type:"High-Ex",cost:1}]);
+                    this.$set(this,"feature_array",[{type:"High-Ex",cost:1}]);
                     this.$set(this,"selected_shots",1);
                     this.$store.commit("saveComponent",null);
                     break;
@@ -133,7 +149,7 @@ export default
             return_data.component_name=this.component_name===null?this.magazine_name:this.component_name;
 
             return_data.selected_gun=JSON.parse(JSON.stringify(this.selected_gun));
-            return_data.selected_ammo=JSON.parse(JSON.stringify(this.selected_ammo));
+            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
             return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
             return_data.hasBlast=JSON.parse(JSON.stringify(this.hasBlast));
 
@@ -171,22 +187,13 @@ export default
         {
             return this.$store.getters.getComponentByType("equipment","projectile");
         },
-        space_cost:function()
-        {
-            return this.round(this.base_cost,2);
-        },
-        cost_multiplier()
-        {
-            let cost_multiplier=1;
-            for(let multi in this.selected_ammo)
-            {
-                cost_multiplier*=this.selected_ammo[multi].cost;
-            }
-            return cost_multiplier;
-        },
         base_cost()
         {
             return this.round(this.selected_gun.cost*0.01*this.selected_shots,2);
+        },
+        raw_space()
+        {
+            return this.base_cost;
         },
         cost:function()
         {
@@ -198,30 +205,10 @@ export default
         {
             return this.space_cost;
         },
-        weight:function()
-        {
-            return (this.damage_capacity / 2);
-        },
-        newComponent()
-        {
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="magazine")
-                {//needs specific equipment type
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
-        },
         magazine_name()
         {
             this.selected_gun;
-            let magazine_name=this.selected_ammo.reduce((_name,_val)=>
+            let magazine_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.type+" ";
             },"");
@@ -233,14 +220,14 @@ export default
         },
         hasBlast()
         {
-            return this.selected_ammo.some((_val)=>
+            return this.feature_array.some((_val)=>
             {
                 return /blast/gi.test(_val.type);
             });
         },
         ammo_list()
         {
-            return this.selected_ammo.reduce(function(_string, _val, _index)
+            return this.feature_array.reduce(function(_string, _val, _index)
             {
                 _string+=_index>0 ? ", " : "";
                 _string+=_val.type;

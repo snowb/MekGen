@@ -63,6 +63,7 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
 
 /* import mek_emw_damage from "./subcomponents/mek_emw-damage.vue";
 import mek_emw_accuracy from "./subcomponents/mek_emw-accuracy.vue";
@@ -78,7 +79,7 @@ export default
 {
     name:"mek_emw",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
     components:
     {
         "mek-emw-damage":()=>import("./subcomponents/mek_emw-damage.vue"),
@@ -97,8 +98,8 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
-        obj.component_category=null;
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="emw";
         obj.original_component=null;
         obj.component_changed=true;
 
@@ -244,19 +245,6 @@ export default
         {
             return this.round(this.selected_damage.cost * this.cost_multiplier,2);
         },
-        space_cost:function()
-        {
-            return this.raw_space - this.efficiencies.space.modifier;
-        },
-        cost_multiplier()
-        {
-            let cost_multiplier=1;
-            for(let multi in this.cost_multipliers)
-            {
-                cost_multiplier*=this.cost_multipliers[multi];
-            }
-            return this.round(cost_multiplier,2);
-        },
         cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
@@ -267,22 +255,6 @@ export default
         weight:function()
         {
             return this.round((this.damage_capacity / 2),2);
-        },
-        newComponent()
-        {
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="emw")
-                {
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
         },
         is_beam_shield()
         {
@@ -323,15 +295,6 @@ export default
 
             return emw_name;
         },
-        feature_list:function()
-        {
-            return this.feature_array.reduce(function(_string, _val, _index)
-            {
-                _string+=_index>0 ? ", " : "";
-                _string+=_val.feature;
-                return _string;
-            },"");
-        }
     }
 };
 </script>
