@@ -4,7 +4,7 @@ export default
     {
         space_cost()
         {
-            return this.raw_space - this.efficiencies.space.modifier;
+            return this.round(this.raw_space - this.efficiencies.space.modifier,2);
         },
         cost_multiplier()
         {
