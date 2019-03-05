@@ -68,6 +68,8 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
+import { constants } from 'fs';
 
 /* import mek_missile_damage from "./subcomponents/mek_missile-damage.vue";
 import mek_missile_pack_size from "./subcomponents/mek_missile-pack-size.vue";
@@ -87,7 +89,7 @@ export default
 {
     name:"mek_missile",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
     components:
     {
         "mek-missile-damage":()=>import("./subcomponents/mek_missile-damage.vue"),
@@ -109,15 +111,15 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
-        obj.component_category=null;
-        obj.component_type=null;
+        obj.component_category="equipment";
+        obj.component_type="missile";
         obj.original_component=null;
         obj.component_changed=true;
 
         obj.selected_damage={damage:1,cost:0.1,range:4};
         obj.selected_pack_size=1;
         obj.selected_accuracy={accuracy:0,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1,type:""};
+        obj.selected_range_mod={range_mod:1,cost:1,type:null};
         obj.selected_smart={smart:0,cost:1};
         obj.selected_skill={skill:6,cost:1};
         obj.selected_blast_radius={blast_radius:0,cost:1};
@@ -185,7 +187,7 @@ export default
             this.selected_range_mod.range_mod=_range_mod.range_mod;
             this.selected_range_mod.cost=_range_mod.cost;
             this.cost_multipliers.range_mod=_range_mod.cost;
-            this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : "";
+            this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : null;
 
             if(this.is_mine)
             {
@@ -255,6 +257,15 @@ export default
                     //this.selected_property1.keyProp=1;
                     //this.selected_property2.keyProp=1;
                     //this.$set(this,"feature_array",[]);
+                    this.selected_damage.damage=1;
+                    this.selected_pack_size=1;
+                    this.selected_accuracy.accuracy=0;
+                    this.selected_range_mod.range_mod=1;
+                    this.selected_smart.smart=0;
+                    this.selected_skill.skill=6;
+                    this.selected_blast_radius.blast_radius=0;
+                    this.smoke_scatter_duration=null;
+                    this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
                     break;
             }
@@ -276,6 +287,15 @@ export default
             return_data.selected_property2=JSON.parse(JSON.stringify(this.selected_property2));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
             */
+            return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
+            return_data.selected_pack_size=this.selected_pack_size;
+            return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
+            return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
+            return_data.selected_smart=JSON.parse(JSON.stringify(this.selected_smart));
+            return_data.selected_skill=JSON.parse(JSON.stringify(this.selected_skill));
+            return_data.selected_blast_radius=JSON.parse(JSON.stringify(this.selected_blast_radius));
+            return_data.selected_blast_radius=JSON.parse(JSON.stringify(this.selected_blast_radius));
+
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
@@ -307,20 +327,7 @@ export default
             //core cost prop
             let cost_multiplier=this.has_feature("nuclear") ? this.cost_multiplier/1000 : this.cost_multiplier;
 
-            return this.round(this.selected_damage.cost * cost_multiplier,2);
-        },
-        space_cost:function()
-        {
-            return this.raw_space - this.efficiencies.space.modifier;
-        },
-        cost_multiplier()
-        {
-            let cost_multiplier=1;
-            for(let multi in this.cost_multipliers)
-            {
-                cost_multiplier*=this.cost_multipliers[multi];
-            }
-            return this.round(cost_multiplier,2);
+            return this.round(this.selected_damage.cost * cost_multiplier * this.selected_pack_size,2);
         },
         cost:function()
         {
@@ -328,26 +335,6 @@ export default
             subtotal_cost += this.efficiencies.space.cost;
 
             return this.round(subtotal_cost * this.selected_pack_size,2);
-        },
-        weight:function()
-        {
-            return (this.damage_capacity / 2);
-        },
-        newComponent()
-        {
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category=="equipment" 
-                    && selectedComponent.component_type=="missile")
-                {//needs specific equipment type
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
         },
         missile_name()
         {
@@ -372,20 +359,15 @@ export default
         },
         is_bomb()
         {
-            return typeof this.selected_range_mod.type!=="undefined" && this.selected_range_mod.type.toLowerCase()=="bomb";
+            return typeof this.selected_range_mod.type!=="undefined" &&
+                            this.selected_range_mod.type!==null && 
+                            this.selected_range_mod.type.toLowerCase()=="bomb";
         },
         is_mine()
         {
-            return typeof this.selected_range_mod.type!=="undefined" && this.selected_range_mod.type.toLowerCase()=="mine";
-        },
-        feature_list()
-        {
-            return this.feature_array.reduce(function(_string, _val, _index)
-            {
-                _string+=_index>0 ? ", " : "";
-                _string+=_val.feature;
-                return _string;
-            },"");
+            return typeof this.selected_range_mod.type!=="undefined" && 
+                            this.selected_range_mod.type!==null && 
+                            this.selected_range_mod.type.toLowerCase()=="mine";
         },
         has_duration()
         {
