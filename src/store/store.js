@@ -34,7 +34,8 @@ let store= new Vuex.Store(
                 }
                 else
                 {
-                    let copyComponent=JSON.parse(JSON.stringify(_component));//make deep copy
+                    //let copyComponent=JSON.parse(JSON.stringify(_component));//make deep copy
+                    let copyComponent=_component;//make deep copy
                     copyComponent=this.cleanComponent(copyComponent);//clean values: ^[\w\d-_. ]+$ else null'd 
                     let category=copyComponent.component_category;
                     let type=copyComponent.component_type;
@@ -113,7 +114,7 @@ store.cleanComponent=function(_component)
             {
                 _element=store.cleanComponent(_element);
             }
-            else if(!/^[\w\d-_.() ]+$/.test(_element))
+            else if(!/^[\w\d-_.() ]+$/.test(_element) || _element==="")
             {
                 _element=null;
             }
@@ -127,13 +128,13 @@ store.cleanComponent=function(_component)
             {
                 _component[prop]=store.cleanComponent(_component[prop]);
             }
-            else if(!/^[\w\d-_.() ]+$/.test(_component[prop]))
+            else if(!/^[\w\d-_.() ]+$/.test(_component[prop]) || _component[prop]==="")
             {
                 _component[prop]=null;
             }
         }
     }
-    else if(!/^[\w\d-_.() ]+$/.test(_component))
+    else if(!/^[\w\d-_.() ]+$/.test(_component) || _component==="")
     {
         _component=null;
     }
