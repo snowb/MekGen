@@ -129,7 +129,10 @@ export default
         selected_feature_index_array:function()
         {
             let indices=[];
-
+            if(this.featureArray.length==0)
+            {
+                this.selected_feature_array=[];
+            }
             if(this.featureArray.length==1)
             {
                 this.selected_feature_array=[this.filteredFeatureTable[this.find_feature_index(this.featureArray[0].feature)]];

@@ -145,7 +145,10 @@ export default
         {
             let indices=[];
             this.ammoArray;
-
+            if(this.ammoArray.length==0)
+            {
+                this.selected_ammo_array=[this.find_feature_index("High-Ex")];
+            }
             if(this.ammoArray.length==1)
             {
                 this.selected_ammo_array=[this.filteredAmmoArray[this.find_feature_index(this.ammoArray[0].type)]];
