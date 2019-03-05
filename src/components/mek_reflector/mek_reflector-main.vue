@@ -123,6 +123,10 @@ export default
         {
             let alertMessage="Reflector is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.reflector_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)

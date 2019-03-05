@@ -64,22 +64,13 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 
-/* import mek_emw_damage from "./subcomponents/mek_emw-damage.vue";
-import mek_emw_accuracy from "./subcomponents/mek_emw-accuracy.vue";
-import mek_emw_attack_factor from "./subcomponents/mek_emw-attack-factor.vue";
-import mek_emw_turns_in_use from "./subcomponents/mek_emw-turns-in-use.vue";
-import mek_emw_feature from "./subcomponents/mek_emw-feature.vue"; */
-
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue"; */
 export default
 {
     name:"mek_emw",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
         "mek-emw-damage":()=>import("./subcomponents/mek_emw-damage.vue"),
@@ -210,6 +201,10 @@ export default
         {
             let alertMessage="EMW is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.emw_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)

@@ -51,22 +51,13 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 
-/* import mek_melee_damage from "./subcomponents/mek_melee-damage.vue";
-import mek_melee_accuracy from "./subcomponents/mek_melee-accuracy.vue";
-import mek_melee_feature from "./subcomponents/mek_melee-feature.vue";
-import mek_melee_entangle_range from "./subcomponents/mek_melee-entangle-range.vue"; */
-
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
- */
 export default
 {
     name:"mek_melee",
     props:[""],
-    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
         "mek-melee-damage":()=>import("./subcomponents/mek_melee-damage.vue"),
@@ -191,6 +182,10 @@ export default
         {
             let alertMessage="Melee is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.melee_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
         componentSaveReset:function(_action)

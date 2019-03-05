@@ -77,26 +77,13 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 
-/* import mek_beam_damage from "./subcomponents/mek_beam-damage.vue";
-import mek_beam_accuracy from "./subcomponents/mek_beam-accuracy.vue";
-import mek_beam_burst_value from "./subcomponents/mek_beam-burst-value.vue";
-import mek_beam_range_mod from "./subcomponents/mek_beam-range-mod.vue";
-import mek_beam_shots from "./subcomponents/mek_beam-shots.vue";
-import mek_beam_warm_up_time from "./subcomponents/mek_beam-warm-up-time.vue";
-import mek_beam_wide_angle from "./subcomponents/mek_beam-wide-angle.vue";
-import mek_beam_feature from "./subcomponents/mek_beam-feature.vue"; */
-
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
- */
 export default
 {
     name:"mek_beam",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
         "mek-beam-damage":()=>import("./subcomponents/mek_beam-damage.vue"),
@@ -284,6 +271,10 @@ export default
         {
             let alertMessage="Beam is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.beam_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
     },

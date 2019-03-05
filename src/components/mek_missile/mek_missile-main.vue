@@ -69,27 +69,13 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
-import { constants } from 'fs';
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 
-/* import mek_missile_damage from "./subcomponents/mek_missile-damage.vue";
-import mek_missile_pack_size from "./subcomponents/mek_missile-pack-size.vue";
-import mek_missile_accuracy from "./subcomponents/mek_missile-accuracy.vue";
-import mek_missile_range_mod from "./subcomponents/mek_missile-range-mod.vue";
-import mek_missile_smart from "./subcomponents/mek_missile-smart.vue";
-import mek_missile_skill from "./subcomponents/mek_missile-skill.vue";
-import mek_missile_blast_radius from "./subcomponents/mek_missile-blast-radius.vue";
-import mek_missile_feature from "./subcomponents/mek_missile-feature.vue"; */
-
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
- */
 export default
 {
     name:"mek_missile",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
         "mek-missile-damage":()=>import("./subcomponents/mek_missile-damage.vue"),
@@ -310,6 +296,10 @@ export default
         {
             let alertMessage="Missile is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.missile_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
         has_feature(_feature)

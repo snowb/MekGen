@@ -89,20 +89,8 @@
 import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 
-/* import mek_shield_type from "./subcomponents/mek_shield-type.vue";
-import mek_shield_class from "./subcomponents/mek_shield-class.vue";
-import mek_shield_defense_ability from "./subcomponents/mek_shield-defense-ability.vue";
-import mek_shield_binder from "./subcomponents/mek_shield-binder.vue";
-import mek_shield_reset_time from "./subcomponents/mek_shield-reset-time.vue";
-import mek_shield_turns_in_use from "./subcomponents/mek_shield-turns-in-use.vue";
-import mek_shield_weakness from "./subcomponents/mek_shield-weakness.vue";
- */
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
- */
 import mek_armor_type from "../universal/mek_armor-type.vue";
 import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.vue";
 
@@ -110,7 +98,7 @@ import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.
 export default
 {
     name:"mek_shield",
-    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin],
+    mixins:[servo_classes_mixin, selected_item_mixin, utility_mixin, component_methods_mixin],
     components:
     {
         "mekshield-type":()=>import("./subcomponents/mek_shield-type.vue"),
@@ -373,7 +361,12 @@ export default
         ingest_data:function(_data_object)
         {
             let alertMessage="Shield Has No Type, resetting to 'standard' shield.";
+
             this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.shield_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
             this.$nextTick(()=>{this.component_changed=false;});
         },
         output_shield_data:function()
