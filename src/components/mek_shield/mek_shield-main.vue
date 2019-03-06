@@ -91,10 +91,6 @@ import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 
-import mek_armor_type from "../universal/mek_armor-type.vue";
-import mek_energy_absorbing_armor from "../universal/mek_energy-absorbing-armor.vue";
-
-
 export default
 {
     name:"mek_shield",
