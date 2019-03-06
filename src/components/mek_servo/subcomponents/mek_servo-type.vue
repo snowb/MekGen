@@ -28,7 +28,8 @@ export default
             {type:"Head"},
             {type:"Arm"},
             {type:"Leg"},
-            {type:"Wing/Tail"},
+            {type:"Wing"},
+            {type:"Tail"},
             {type:"Pod"},
         ];
 
