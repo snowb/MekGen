@@ -65,12 +65,15 @@ export default
         },
         armor_table()
         {
-            return this.servo_classes.map((_val)=>
+            let armor_table=[{name:"None",cost:0,stopping_power:0}];
+            let mapped_armor_table=this.servo_classes.map((_val)=>
             {
                  return {
                     name: _val.name, cost: _val.code, stopping_power: _val.code
                 };
             });
+
+            return armor_table.concat(mapped_armor_table);
         }
     }
 }
