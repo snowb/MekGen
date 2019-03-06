@@ -63,15 +63,6 @@ export default {
   },
   computed:
   {
-    total_cost:function()
-    {
-      let headtotal=this.headservos.reduce((_total, _el)=>
-      {
-        return _total+_el.cost;
-      },0);
-
-      return 0+headtotal;
-    },
     ...mapGetters(
         {
             targetTab:'targetTab'
