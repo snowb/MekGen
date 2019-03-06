@@ -23,7 +23,6 @@ export default
     data:()=>
     {
         let obj={};
-
         return obj;
     },
     methods:
