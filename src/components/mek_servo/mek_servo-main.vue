@@ -133,7 +133,7 @@ export default
             this.cost_multipliers.absorption=this.selected_absorption.cost;
         },
         ingest_data(_data_object)
-        {console.log(_data_object)
+        {
             let alertMessage="Torso bad, resetting to 'standard' shield.";
             this.universal_ingest_data(_data_object,alertMessage);
             if(this.component_name==this.shield_name)
