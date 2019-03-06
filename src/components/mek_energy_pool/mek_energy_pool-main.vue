@@ -131,7 +131,7 @@ export default
         },
         componentSaveReset:function(_action)
         {
-            let action=this.original_component!==null?_action:"clear";
+            let action=_action=="reset" && this.original_component==null?"clear":_action;
             switch(action)
             {
                 case "save":
