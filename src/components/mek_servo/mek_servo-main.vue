@@ -69,7 +69,6 @@ export default
         "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
         "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
 
-        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>import("../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
