@@ -10,6 +10,9 @@
             <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
+            <mek-armor :armor="selected_armor"
+                @update-armor="updateArmor"
+            ></mek-armor>
             <mek-armor-type :armor-type="selected_armor_type"
                 @update-armor-type="updateArmorType"
             ></mek-armor-type>
@@ -49,6 +52,7 @@ export default
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
 
+        "mek-armor":()=>import("../universal/mek_armor.vue"),
         "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
         "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue")
     },
@@ -68,6 +72,8 @@ export default
 
         obj.cost_multipliers={};
 
+        obj.selected_armor={cost:1};
+        
         obj.selected_armor_type={type:"Standard",damage_coefficient:1,cost:1};
         obj.cost_multipliers.armor_type=1;
 
@@ -86,6 +92,10 @@ export default
         updateServoClass(_servo_class)
         {
             this.$set(this,"selected_servo_class",_servo_class)
+        },
+        updateArmor(_armor)
+        {
+            this.$set(this,"selected_armor",_armor)
         },
         updateArmorType(_armor_type)
         {
