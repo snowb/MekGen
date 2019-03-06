@@ -8,20 +8,40 @@
             <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
                 style="align-self:flex-start;"
             ></mek-servo-type>
+            <!--- ADD STO_PO FOR SPACE CONVERTER --->
             <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
             <mek-armor :armor="selected_armor"
                 @update-armor="updateArmor"
             ></mek-armor>
-            <mek-armor-type :armor-type="selected_armor_type"
+            <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
                 @update-armor-type="updateArmorType"
             ></mek-armor-type>
-            <mek-energy-absorbing-armor :absorption="selected_absorption"
+            <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
                 @update-absorption="updateAbsorption"
             ></mek-energy-absorbing-armor>
         </span>
-        <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
+        <div class="mek-inline-flex-row">
+            <mek-component-stats :cols="4" :rows="5">
+                <div slot="col1-row1">Torso Kills: {{selected_servo_class.kills}}</div>
+                <div slot="col1-row2" v-if="selected_armor.cost!=0">Base Armor Stopping Power: {{round(selected_armor.stopping_power,2)}}
+                    <br>Final Stopping Power: {{round(final_stopping_power,2)}}
+                </div>
+                <div slot="col1-row3" v-if="selected_armor.cost!=0">Armor Type: {{selected_armor_type.type}}</div>
+                <div slot="col1-row4" v-if="selected_armor.cost!=0" style="padding-left:10px;">Damage Coefficient: {{selected_armor_type.damage_coefficient}}</div>
+                <div slot="col1-row5" v-if="selected_absorption.cost!=1">Absorption: {{selected_absorption.absorption*100}}%</div>
+
+                <div slot="col3-row1">Base Space: {{selected_servo_class.space}}</div>
+                <div slot="col3-row2">Available Space: {{available_space}}</div>
+                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                
+                <div slot="col4-row1">Base Cost: {{base_cost}}</div>
+                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
+            </mek-component-stats>
+            <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
+        </div>
     </span>
 </template>
 
@@ -70,7 +90,7 @@ export default
         obj.component_changed=true;
 
         obj.selected_servo_type={type:"Torso"};
-        obj.selected_servo_class={code:1};
+        obj.selected_servo_class={code:1,name:"Superlight",space:2,cost:2,kills:2};
 
         obj.cost_multipliers={};
 
@@ -81,6 +101,10 @@ export default
 
         obj.selected_absorption={absorption:0,cost:1,armor_penalty:1};
         obj.cost_multipliers.absorption=1;
+
+        obj.extra_space={};
+        obj.extra_space.space=0;
+        obj.extra_space.stopping_power=0;
 
         return obj;
     },
@@ -149,7 +173,7 @@ export default
                 case "clear":
                     this.uuid=null;
                     this.selected_servo_type.type="Torso";
-                    this.selected_servo_class.code=1;
+                    this.$set(this,"selected_servo_class",{code:1,name:"Superlight",space:2,cost:2,kills:2})
                     this.$set(this,"selected_armor",{name:"None",cost:0,stopping_power:0});
                     this.$set(this,"selected_armor_type",{type:"Standard",damage_coefficient:1,cost:1});
                     this.cost_multipliers.armor_type=1;
@@ -165,6 +189,28 @@ export default
         servo_name()
         {
             return this.selected_servo_type.type;
+        },
+        base_cost()
+        {
+            return this.selected_servo_class.cost + this.selected_armor.cost;
+        },
+        cost()
+        {
+            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier);
+        },
+        available_space()
+        {
+            return this.selected_servo_class.space - this.extra_space.space;
+        },
+        damage_capacity()
+        {
+            let servo_kills=this.selected_servo_class.kills;
+            let extra_space_sp_loss=this.extra_space.stopping_power;
+            return servo_kills + this.final_stopping_power - extra_space_sp_loss;
+        },
+        final_stopping_power()
+        {
+            return this.selected_armor.stopping_power-(this.selected_armor.stopping_power*this.selected_absorption.armor_penalty);
         }
     }
 };
