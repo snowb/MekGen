@@ -82,10 +82,9 @@ export default
     {
         let obj={};
         obj.uuid=null;
-        obj.type="standard";
         obj.component_name=null;
-        obj.component_category="servo";
-        obj.component_type="";
+        obj.component_category="equipment";
+        obj.component_type="servo";
         obj.original_component=null;
         obj.component_changed=true;
 
@@ -133,7 +132,17 @@ export default
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.selected_absorption.cost;
         },
-        output_data:function()
+        ingest_data(_data_object)
+        {console.log(_data_object)
+            let alertMessage="Torso bad, resetting to 'standard' shield.";
+            this.universal_ingest_data(_data_object,alertMessage);
+            if(this.component_name==this.shield_name)
+                {//reset component_name if component generated
+                    this.$set(this,"component_name",null);
+                }
+            this.$nextTick(()=>{this.component_changed=false;});
+        },
+        output_data()
         {
             let return_data={};
             this.uuid=this.uuid===null ? this.create_uuid() : this.uuid;
