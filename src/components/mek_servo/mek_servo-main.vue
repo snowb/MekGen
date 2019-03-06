@@ -1,7 +1,12 @@
 <template>
     <span class="mek-inline-flex-col" style="width:100%;">
-        <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
-        ></mek-servo-type>
+        <span class="mek-inline-flex-row" style="width:100%;">
+            <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+            ></mek-servo-type>
+            <mek-servo-class @update-servo-class="updateServoClass"
+                :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
+            ></mek-servo-class>
+        </span>
     </span>
 </template>
 
@@ -27,6 +32,7 @@ export default
     components:
     {
         "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
+        "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
 
         "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
         "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue")
@@ -43,6 +49,7 @@ export default
         obj.component_changed=true;
 
         obj.selected_servo_type={type:"Torso"};
+        obj.selected_servo_class={code:1};
 
         return obj;
     },
@@ -52,6 +59,10 @@ export default
         {   
             this.component_type=_servo_type.type;
             this.$set(this,"selected_servo_type",_servo_type)
+        },
+        updateServoClass(_servo_class)
+        {
+            this.$set(this,"selected_servo_class",_servo_class)
         }
     }
 };
