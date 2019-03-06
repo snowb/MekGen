@@ -39,6 +39,11 @@ export default
                 }
             }
             this.$forceUpdate();
-        }
+        },
+        updateComponentName:function(_name)
+        {
+            this.component_name=_name;
+            this.component_changed=true;
+        },
     }
 }
