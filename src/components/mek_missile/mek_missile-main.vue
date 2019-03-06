@@ -224,7 +224,8 @@ export default
         }, */
         componentSaveReset:function(_action)
         {
-            switch(_action)
+            let action=this.original_component!==null?_action:"clear";
+            switch(action)
             {
                 case "save":
                     this.$store.commit('saveComponent',this.output_data());
