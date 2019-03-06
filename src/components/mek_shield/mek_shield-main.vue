@@ -79,7 +79,6 @@
                 <div slot="col4-row1" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
-            <!--mek-reset-component></mek-reset-component-->
         </div>
     </span>
 </template>
