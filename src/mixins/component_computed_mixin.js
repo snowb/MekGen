@@ -35,7 +35,7 @@ export default
         newComponent()
         {//responsible for ingesting data from the store
             let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            
+
             if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
             {
                 if(selectedComponent.uuid!==this.uuid 
