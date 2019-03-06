@@ -6,6 +6,7 @@
         ></mek-component-name>
         <span class="mek-inline-flex-row" style="width:100%;">
             <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+                style="align-self:flex-start;"
             ></mek-servo-type>
             <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
@@ -20,6 +21,7 @@
                 @update-absorption="updateAbsorption"
             ></mek-energy-absorbing-armor>
         </span>
+        <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
     </span>
 </template>
 
@@ -72,7 +74,7 @@ export default
 
         obj.cost_multipliers={};
 
-        obj.selected_armor={cost:1};
+        obj.selected_armor={name:"None",cost:0,stopping_power:0};
         
         obj.selected_armor_type={type:"Standard",damage_coefficient:1,cost:1};
         obj.cost_multipliers.armor_type=1;
@@ -107,6 +109,55 @@ export default
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.selected_absorption.cost;
         },
+        output_data:function()
+        {
+            let return_data={};
+            this.uuid=this.uuid===null ? this.create_uuid() : this.uuid;
+            return_data.uuid=this.uuid;
+            return_data.component_category="equipment";
+            return_data.component_type="servo";
+            return_data.component_name=this.component_name===null?this.servo_name:this.component_name;
+            return_data.selected_servo_type=JSON.parse(JSON.stringify(this.selected_servo_type));
+            return_data.selected_servo_class=JSON.parse(JSON.stringify(this.selected_servo_class));
+            return_data.selected_armor=JSON.parse(JSON.stringify(this.selected_armor));
+            return_data.selected_armor_type=JSON.parse(JSON.stringify(this.selected_armor_type));
+            return_data.selected_absorption=JSON.parse(JSON.stringify(this.selected_absorption));
+            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
+            
+            return_data.cost=this.cost;
+            return_data.cost_multiplier=this.cost_multiplier;
+            return_data.weight=this.weight;
+
+            this.$nextTick(()=>{this.component_changed=false;});
+            this.original_component=JSON.stringify(return_data);
+            return return_data;
+        },
+        componentSaveReset:function(_action)
+        {
+            switch(_action)
+            {
+                case "save":
+                    this.$store.commit('saveComponent',this.output_data());
+                    break;
+                case "reset":
+                    if(this.original_component!==null)
+                    {
+                        this.ingest_data(JSON.parse(this.original_component));
+                    }
+                    break;
+                case "reset":
+                    this.uuid=null;
+                    this.selected_servo_type.type="Torso";
+                    this.selected_servo_class.code=1;
+                    this.$set(this,"selected_armor",{name:"None",cost:0,stopping_power:0});
+                    this.$set(this,"selected_armor_type",{type:"Standard",damage_coefficient:1,cost:1});
+                    this.cost_multipliers.armor_type=1;
+                    this.$set(this,"selected_absorption",{absorption:0,cost:1,armor_penalty:1});
+                    this.cost_multipliers.absorption=1;
+                    this.$store.commit("saveComponent",null);
+                    break;
+            }
+        }
     },
     computed:
     {
