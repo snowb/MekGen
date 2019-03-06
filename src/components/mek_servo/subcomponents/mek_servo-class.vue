@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="class_table" :headers="class_table_headers"
-        name="Class" flow="col" :showHeaders="true"
+        name="Servo Class" flow="col" :showHeaders="true"
         :selectedIndices="class_index"
         @update-selected-indices="select_class"
     ></mek-sub-component-table>
