@@ -3,6 +3,7 @@
         <div class="metallic_background_small1">
             <div class="subsection_container1">
                 <div class="subsection_header_small1">{{name}}</div>
+                <div class="subsection_hidden_header">{{name}}</div>
                 <table style="margin:auto;" v-if="flow=='row'">
                     <tr>
                         <td class="head_column1 pad" v-if="showHeaders">
@@ -241,6 +242,16 @@ export default
     text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
     background-color: rgba(0,0,0,0.2);
     white-space: nowrap;
+}
+.subsection_hidden_header
+{
+    font-weight: bold;
+    font-family: Arial Black, sans-serif;
+    font-size: 110%;
+    white-space: nowrap;
+    visibility: hidden;
+    line-height: 0px;
+    height:0px;
 }
 .head_column1
 {
