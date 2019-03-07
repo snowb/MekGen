@@ -32,6 +32,9 @@
                 <div slot="col1-row4" v-if="selected_armor.cost!=0" style="padding-left:10px;">Damage Coefficient: {{selected_armor_type.damage_coefficient}}</div>
                 <div slot="col1-row5" v-if="selected_absorption.cost!=1">Absorption: {{selected_absorption.absorption*100}}%</div>
 
+                <div slot="col2-row1" v-if="is_arm | is_leg">Damage Bonus: {{selected_servo_class.damage_bonus}}</div>
+                <div slot="col2-row2" v-if="is_arm">Thrown Bonus: {{selected_servo_class.throw}}</div>
+
                 <div slot="col3-row1">Base Space: {{selected_servo_class.space}}</div>
                 <div slot="col3-row2">Available Space: {{available_space}}</div>
                 <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
@@ -219,6 +222,14 @@ export default
         final_stopping_power()
         {
             return this.selected_armor.stopping_power-(this.selected_armor.stopping_power*this.selected_absorption.armor_penalty);
+        },
+        is_arm()
+        {
+            return this.selected_servo_type.type.toLowerCase()=="arm";
+        },
+        is_leg()
+        {
+            return this.selected_servo_type.type.toLowerCase()=="leg";
         }
     }
 };
