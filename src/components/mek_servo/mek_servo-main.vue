@@ -5,10 +5,10 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <span class="mek-inline-flex-row">
+            <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+                style="align-self:flex-start;"
+            ></mek-servo-type>
             <span class="mek-inline-flex-col">
-                <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
-                    style="align-self:flex-start;"
-                ></mek-servo-type>
                 <mek-servo-kills-space style="align-self:baseline;"
                     :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
                     :space_modifier="extra_space.space_modifier"
@@ -47,7 +47,7 @@
 
                 <div slot="col3-row1">Base Space: {{selected_servo_class.space}}</div>
                 <div slot="col3-row2">Available Space: {{available_space}}</div>
-                <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
+                <div slot="col3-row3">Weight: {{weight}} tons</div>
                 
                 <div slot="col4-row1">Base Cost: {{base_cost}}</div>
                 <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
@@ -119,6 +119,10 @@ export default
         obj.extra_space.space_modifier=0;
         obj.extra_space.kills_modifier=0;
 
+        obj.extra_kills={};
+        obj.extra_kills.kills=0;
+        obj.extra_kills.cost=0;
+
         return obj;
     },
     methods:
@@ -175,6 +179,7 @@ export default
             return_data.selected_armor_type=JSON.parse(JSON.stringify(this.selected_armor_type));
             return_data.selected_absorption=JSON.parse(JSON.stringify(this.selected_absorption));
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
+            return_data.extra_space=JSON.parse(JSON.stringify(this.extra_space));
             
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -224,17 +229,21 @@ export default
         },
         cost()
         {
-            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier);
+            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier) + this.extra_kills.cost;
         },
         available_space()
         {
-            return this.selected_servo_class.space - this.extra_space.space;
+            return this.selected_servo_class.space - this.extra_space.space_modifier;
         },
         damage_capacity()
         {
             let servo_kills=this.selected_servo_class.kills;
-            let extra_space_sp_loss=this.extra_space.kills;
+            let extra_space_sp_loss=this.extra_space.kills_modifier;
             return servo_kills + this.final_stopping_power - extra_space_sp_loss;
+        },
+        weight()
+        {
+            return this.round(this.damage_capacity/2,2);
         },
         final_stopping_power()
         {
