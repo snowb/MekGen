@@ -9,11 +9,16 @@
                 style="align-self:flex-start;"
             ></mek-servo-type>
             <span class="mek-inline-flex-col">
-                <mek-servo-kills-space style="align-self:baseline;"
+                <mek-servo-extra-space style="align-self:baseline;"
                     :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
                     :space_modifier="extra_space.space_modifier"
                     @update-extra-space="updateExtraSpace"
-                ></mek-servo-kills-space>
+                ></mek-servo-extra-space>
+                <mek-servo-extra-kills style="align-self:baseline;"
+                    :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
+                    :space_modifier="extra_space.space_modifier"
+                    @update-extra-space="updateExtraSpace"
+                ></mek-servo-extra-kills>
                 <!--- ADD KILLS FOR SPACE CONVERTER --->
                 <!--- add reinforcing component --->
             </span>
@@ -81,7 +86,8 @@ export default
     {
         "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
         "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
-        "mek-servo-kills-space":()=>import("./subcomponents/mek_servo-extra-space.vue"),
+        "mek-servo-extra-space":()=>import("./subcomponents/mek_servo-extra-space.vue"),
+        "mek-servo-extra-kills":()=>import("./subcomponents/mek_servo-extra-kills.vue"),
 
         "mek-component-name":()=>import("../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
