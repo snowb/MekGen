@@ -49,8 +49,8 @@ export default
 
             let matchingDamageBonus=typeof this.class_table[index].damage_bonus!=="undefined" && typeof this.servoClass.damage_bonus==="undefined";
             matchingDamageBonus=matchingDamageBonus && this.class_table[index].damage_bonus==this.servoClass.damage_bonus;
-            let matchingThrow=typeof this.class_table[index].throw!=="undefined" && typeof this.servoClass.throw==="undefined";
-            matchingThrow=matchingDamageBonus && this.class_table[index].throw==this.servoClass.throw;
+            let matchingThrow=typeof this.class_table[index].throw_range!=="undefined" && typeof this.servoClass.throw_range==="undefined";
+            matchingThrow=matchingDamageBonus && this.class_table[index].throw_range==this.servoClass.throw_range;
 
 
             switch(true)
@@ -82,7 +82,7 @@ export default
                 obj.damage_bonus="DMG+";
                 if(isArm)
                 {
-                    obj.throw="Throw";
+                    obj.throw_range="Throw";
                 }
             }
             return obj;
@@ -140,7 +140,7 @@ export default
                     obj.damage_bonus=isLeg ? Math.ceil(obj.code/2)-1 : Math.ceil(obj.code/3)-1;
                     if(isArm)
                     {
-                        obj.throw=Math.ceil((obj.code-1)/2);
+                        obj.throw_range=Math.floor(obj.code/2)+1;
                     }
                 }
                 return obj;
