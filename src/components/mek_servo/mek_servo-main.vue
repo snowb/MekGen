@@ -5,17 +5,25 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <span class="mek-inline-flex-row">
-            <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
-                style="align-self:flex-start;"
-            ></mek-servo-type>
-            <!--- ADD STO_PO FOR SPACE CONVERTER --->
+            <span class="mek-inline-flex-col">
+                <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+                    style="align-self:flex-start;"
+                ></mek-servo-type>
+                <mek-servo-kills-space style="align-self:baseline;"
+                    :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
+                    :space_modifier="extra_space.space_modifier"
+                    @update-extra-space="updateExtraSpace"
+                ></mek-servo-kills-space>
+                <!--- ADD KILLS FOR SPACE CONVERTER --->
+                <!--- add reinforcing component --->
+            </span>
             <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
             <mek-armor :armor="selected_armor"
                 @update-armor="updateArmor"
             ></mek-armor>
-            <span class="mek-inline-flex.col">
+            <span class="mek-inline-flex-col">
                 <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
                     @update-armor-type="updateArmorType"
                 ></mek-armor-type>
@@ -73,6 +81,7 @@ export default
     {
         "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
         "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
+        "mek-servo-kills-space":()=>import("./subcomponents/mek_servo-extra-space.vue"),
 
         "mek-component-name":()=>import("../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
@@ -80,7 +89,8 @@ export default
 
         "mek-armor":()=>import("../universal/mek_armor.vue"),
         "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
-        "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue")
+        "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue"),
+        
     },
     data:function()
     {
@@ -106,8 +116,8 @@ export default
         obj.cost_multipliers.absorption=1;
 
         obj.extra_space={};
-        obj.extra_space.space=0;
-        obj.extra_space.stopping_power=0;
+        obj.extra_space.space_modifier=0;
+        obj.extra_space.kills_modifier=0;
 
         return obj;
     },
@@ -135,6 +145,11 @@ export default
         {
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.selected_absorption.cost;
+        },
+        updateExtraSpace(_extra_space)
+        {
+            this.extra_space.space_modifier=_extra_space.space;
+            this.extra_space.kills_modifier=_extra_space.kills;
         },
         ingest_data(_data_object)
         {
@@ -218,7 +233,7 @@ export default
         damage_capacity()
         {
             let servo_kills=this.selected_servo_class.kills;
-            let extra_space_sp_loss=this.extra_space.stopping_power;
+            let extra_space_sp_loss=this.extra_space.kills;
             return servo_kills + this.final_stopping_power - extra_space_sp_loss;
         },
         final_stopping_power()
