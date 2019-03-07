@@ -33,7 +33,7 @@
                 <div slot="col1-row5" v-if="selected_absorption.cost!=1">Absorption: {{selected_absorption.absorption*100}}%</div>
 
                 <div slot="col2-row1" v-if="is_arm | is_leg">Damage Bonus: {{selected_servo_class.damage_bonus}}</div>
-                <div slot="col2-row2" v-if="is_arm">Thrown Bonus: {{selected_servo_class.throw}}</div>
+                <div slot="col2-row2" v-if="is_arm">Throw Range: {{selected_servo_class.throw_range}}</div>
 
                 <div slot="col3-row1">Base Space: {{selected_servo_class.space}}</div>
                 <div slot="col3-row2">Available Space: {{available_space}}</div>
