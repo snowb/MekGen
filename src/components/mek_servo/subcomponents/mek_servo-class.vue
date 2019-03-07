@@ -47,6 +47,23 @@ export default
                 }
             },this);
 
+            let matchingDamageBonus=typeof this.class_table[index].damage_bonus!=="undefined" && typeof this.servoClass.damage_bonus==="undefined";
+            matchingDamageBonus=matchingDamageBonus && this.class_table[index].damage_bonus==this.servoClass.damage_bonus;
+            let matchingThrow=typeof this.class_table[index].throw!=="undefined" && typeof this.servoClass.throw==="undefined";
+            matchingThrow=matchingDamageBonus && this.class_table[index].throw==this.servoClass.throw;
+
+
+            switch(true)
+            {
+                case this.servoClass.name!=this.class_table[index].name:
+                case this.servoClass.cost!=this.class_table[index].cost:
+                case this.servoClass.space!=this.class_table[index].space:
+                case this.servoClass.kills!=this.class_table[index].kills:
+                case !matchingDamageBonus:
+                case !matchingThrow:
+                    this.select_class(index);
+            }
+
             return [index];
         },
         class_table_headers()
@@ -120,7 +137,7 @@ export default
                 obj.kills=(_val.code*type_kills_multiplier)+type_kills_modifier;
                 if(isArm || isLeg)
                 {
-                    obj.damage_bonus=isLeg ? Math.floor(obj.code/2)-1 : Math.floor(obj.code/3)-1;
+                    obj.damage_bonus=isLeg ? Math.ceil(obj.code/2)-1 : Math.ceil(obj.code/3)-1;
                     if(isArm)
                     {
                         obj.throw=Math.ceil((obj.code-1)/2);
