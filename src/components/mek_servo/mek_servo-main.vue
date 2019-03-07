@@ -4,7 +4,7 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
-        <span class="mek-inline-flex-row" style="width:100%;">
+        <span class="mek-inline-flex-row">
             <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
                 style="align-self:flex-start;"
             ></mek-servo-type>
@@ -15,12 +15,14 @@
             <mek-armor :armor="selected_armor"
                 @update-armor="updateArmor"
             ></mek-armor>
-            <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
-                @update-armor-type="updateArmorType"
-            ></mek-armor-type>
-            <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
-                @update-absorption="updateAbsorption"
-            ></mek-energy-absorbing-armor>
+            <span class="mek-inline-flex.col">
+                <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
+                    @update-armor-type="updateArmorType"
+                ></mek-armor-type>
+                <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
+                    @update-absorption="updateAbsorption"
+                ></mek-energy-absorbing-armor>
+            </span>
         </span>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="5">
