@@ -9,16 +9,11 @@
                 style="align-self:flex-start;"
             ></mek-servo-type>
             <span class="mek-inline-flex-col">
-                <mek-servo-extra-space style="align-self:baseline;"
-                    :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
-                    :space_modifier="extra_space.space_modifier"
+                <mek-servo-kills-space-trade style="align-self:baseline;"
+                    :base_kills="selected_servo_class.kills" :kills_modifier="kills_space_trade.kills_modifier" 
+                    :space_modifier="kills_space_trade.space_modifier" :base_space="selected_servo_class.space"
                     @update-extra-space="updateExtraSpace"
-                ></mek-servo-extra-space>
-                <mek-servo-extra-kills style="align-self:baseline;"
-                    :base_kills="selected_servo_class.kills" :kills_modifier="extra_space.kills_modifier" 
-                    :space_modifier="extra_space.space_modifier"
-                    @update-extra-space="updateExtraSpace"
-                ></mek-servo-extra-kills>
+                ></mek-servo-kills-space-trade>
                 <!--- ADD KILLS FOR SPACE CONVERTER --->
                 <!--- add reinforcing component --->
             </span>
@@ -69,6 +64,7 @@ import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
+import { constants } from 'fs';
 
 export default
 {
@@ -86,8 +82,7 @@ export default
     {
         "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
         "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
-        "mek-servo-extra-space":()=>import("./subcomponents/mek_servo-extra-space.vue"),
-        "mek-servo-extra-kills":()=>import("./subcomponents/mek_servo-extra-kills.vue"),
+        "mek-servo-kills-space-trade":()=>import("./subcomponents/mek_servo-kills-space-trade.vue"),
 
         "mek-component-name":()=>import("../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
@@ -121,9 +116,10 @@ export default
         obj.selected_absorption={absorption:0,cost:1,armor_penalty:1};
         obj.cost_multipliers.absorption=1;
 
-        obj.extra_space={};
-        obj.extra_space.space_modifier=0;
-        obj.extra_space.kills_modifier=0;
+        obj.kills_space_trade={};
+        obj.kills_space_trade.space_modifier=0;
+        obj.kills_space_trade.kills_modifier=0;
+        obj.kills_space_trade.cost=0;
 
         obj.extra_kills={};
         obj.extra_kills.kills=0;
@@ -156,10 +152,11 @@ export default
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.selected_absorption.cost;
         },
-        updateExtraSpace(_extra_space)
+        updateExtraSpace(_kills_space_trade)
         {
-            this.extra_space.space_modifier=_extra_space.space;
-            this.extra_space.kills_modifier=_extra_space.kills;
+            this.kills_space_trade.space_modifier=_kills_space_trade.space;
+            this.kills_space_trade.kills_modifier=_kills_space_trade.kills;
+            this.kills_space_trade.cost=_kills_space_trade.cost;
         },
         ingest_data(_data_object)
         {
@@ -185,7 +182,7 @@ export default
             return_data.selected_armor_type=JSON.parse(JSON.stringify(this.selected_armor_type));
             return_data.selected_absorption=JSON.parse(JSON.stringify(this.selected_absorption));
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.extra_space=JSON.parse(JSON.stringify(this.extra_space));
+            return_data.kills_space_trade=JSON.parse(JSON.stringify(this.kills_space_trade));
             
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -231,7 +228,7 @@ export default
         },
         base_cost()
         {
-            return this.selected_servo_class.cost + this.selected_armor.cost;
+            return this.selected_servo_class.cost + this.selected_armor.cost + this.kills_space_trade.cost;
         },
         cost()
         {
@@ -239,13 +236,13 @@ export default
         },
         available_space()
         {
-            return this.selected_servo_class.space - this.extra_space.space_modifier;
+            return this.selected_servo_class.space - this.kills_space_trade.space_modifier;
         },
         damage_capacity()
         {
             let servo_kills=this.selected_servo_class.kills;
-            let extra_space_sp_loss=this.extra_space.kills_modifier;
-            return servo_kills + this.final_stopping_power - extra_space_sp_loss;
+            let kills_space_trade_sp_loss=this.kills_space_trade.kills_modifier;
+            return servo_kills + this.final_stopping_power - kills_space_trade_sp_loss;
         },
         weight()
         {
