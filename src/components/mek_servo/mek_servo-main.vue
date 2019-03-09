@@ -20,12 +20,12 @@
             <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
-            <mek-armor :armor="selected_armor"
+            <mek-armor :armor="selected_armor"  :max-armor="selected_servo_class.code+2"
                 @update-armor="updateArmor"
             ></mek-armor>
             <span class="mek-inline-flex-col">
                 <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
-                    @update-armor-type="updateArmorType" :max-armor="selected_servo_class.code+2"
+                    @update-armor-type="updateArmorType"
                 ></mek-armor-type>
                 <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
                     @update-absorption="updateAbsorption"
@@ -65,7 +65,6 @@ import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
-import { constants } from 'fs';
 
 export default
 {
