@@ -38,7 +38,7 @@
                 ></mek-missile-blast-radius>
                 <mek-missile-feature style="align-self:baseline;"
                     @update-feature="updateFeature"
-                    :feature-array="feature_array"
+                    :feature-array="feature_array" :smart-missile="selected_smart.smart>0"
                     :blast-radius="selected_blast_radius.blast_radius"
                 ></mek-missile-feature>
             </div>                
