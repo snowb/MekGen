@@ -2,8 +2,8 @@
     <span class="mek-flex-col">
         <div class="metallic_background_small1">
             <div class="subsection_container1" @mousedown="$event.preventDefault()">
-                <div class="subsection_header_small1">Extra Space</div>
-                <div class="subsection_hidden_header">Extra Space</div>
+                <div class="subsection_header_small1">{{title}}</div>
+                <div class="subsection_hidden_header">{{title}}</div>
                 <div>
                     <span @click="incrementProperty('kills')" style="vertical-align:middle;">
                         <v-icon name="plus-square"></v-icon>
@@ -11,6 +11,7 @@
                     Kills: {{checked_modifiers.kills}} | Space{{checked_modifiers.space>1?'s':''}}: {{checked_modifiers.space}}
                     <span @click="incrementProperty('space')" style="vertical-align:middle;">
                         <v-icon name="plus-square"></v-icon>
+                        <!-- ADD COST DISPLAY -->
                     </span>
                 </div>
             </div>
@@ -102,6 +103,17 @@ export default
         new_space()
         {
             return this.base_space + this.selected_modifier.space;
+        },
+        title()
+        {
+            switch(true)
+            {
+                case this.selected_modifier.kills<0:
+                    return "Extra Space";
+                case this.selected_modifier.kills>0:
+                    return "Reinforced Servo"
+            }
+            return "Kill/Space Trade";
         }
     }
 }
