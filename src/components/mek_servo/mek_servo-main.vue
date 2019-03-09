@@ -5,10 +5,10 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <span class="mek-inline-flex-row">
-            <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
-                style="align-self:flex-start;"
-            ></mek-servo-type>
             <span class="mek-inline-flex-col">
+                <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+                    style="align-self:flex-start;"
+                ></mek-servo-type>
                 <mek-servo-kills-space-trade style="align-self:baseline;"
                     :base_kills="selected_servo_class.kills" :kills_modifier="kills_space_trade.kills_modifier" 
                     :space_modifier="kills_space_trade.space_modifier" :base_space="selected_servo_class.space"
@@ -33,14 +33,15 @@
             </span>
         </span>
         <div class="mek-inline-flex-row">
-            <mek-component-stats :cols="4" :rows="5">
-                <div slot="col1-row1">Torso Kills: {{selected_servo_class.kills}}</div>
-                <div slot="col1-row2" v-if="selected_armor.cost!=0">Base Armor Stopping Power: {{round(selected_armor.stopping_power,2)}}
+            <mek-component-stats :cols="4" :rows="6">
+                <div slot="col1-row1">Base Kills: {{selected_servo_class.kills}}</div>
+                <div slot="col1-row2">Total Kills: {{total_kills}}</div>
+                <div slot="col1-row3" v-if="selected_armor.cost!=0">Base Armor Stopping Power: {{round(selected_armor.stopping_power,2)}}
                     <br>Final Stopping Power: {{round(final_stopping_power,2)}}
                 </div>
-                <div slot="col1-row3" v-if="selected_armor.cost!=0">Armor Type: {{selected_armor_type.type}}</div>
-                <div slot="col1-row4" v-if="selected_armor.cost!=0" style="padding-left:10px;">Damage Coefficient: {{selected_armor_type.damage_coefficient}}</div>
-                <div slot="col1-row5" v-if="selected_absorption.cost!=1">Absorption: {{selected_absorption.absorption*100}}%</div>
+                <div slot="col1-row4" v-if="selected_armor.cost!=0">Armor Type: {{selected_armor_type.type}}</div>
+                <div slot="col1-row5" v-if="selected_armor.cost!=0" style="padding-left:10px;">Damage Coefficient: {{selected_armor_type.damage_coefficient}}</div>
+                <div slot="col1-row6" v-if="selected_absorption.cost!=1">Absorption: {{selected_absorption.absorption*100}}%</div>
 
                 <div slot="col2-row1" v-if="is_arm | is_leg">Damage Bonus: {{selected_servo_class.damage_bonus}}</div>
                 <div slot="col2-row2" v-if="is_arm">Throw Range: {{selected_servo_class.throw_range}}</div>
@@ -187,6 +188,8 @@ export default
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
+            return_data.total_kills=this.total_kills;
+            return_data.available_space=this.available_space;
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
@@ -236,13 +239,17 @@ export default
         },
         available_space()
         {
-            return this.selected_servo_class.space - this.kills_space_trade.space_modifier;
+            return this.selected_servo_class.space + this.kills_space_trade.space_modifier;
         },
         damage_capacity()
         {
             let servo_kills=this.selected_servo_class.kills;
             let kills_space_trade_sp_loss=this.kills_space_trade.kills_modifier;
-            return servo_kills + this.final_stopping_power - kills_space_trade_sp_loss;
+            return servo_kills + this.final_stopping_power + kills_space_trade_sp_loss;
+        },
+        total_kills()
+        {
+            return this.selected_servo_class.kills + this.kills_space_trade.kills_modifier;
         },
         weight()
         {
