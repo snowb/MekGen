@@ -17,7 +17,7 @@ import mek_sub_component_table from "../../universal/mek_sub-component-table.vue
 export default 
 {
     name:"mek_beam_feature",
-    props:["featureArray","blastRadius"],
+    props:["featureArray","blastRadius","smartMissile"],
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
@@ -30,6 +30,8 @@ export default
             [
                 {feature:"Long Range",cost:1.33},
                 {feature:"Hypervelocity",cost:1.25},
+                {feature:"Tunneling",cost:1.3},
+                {feature:"Home On Jam",cost:2},
                 {feature:"Fuse",cost:1.1},
                 {feature:"Foam",cost:1.33},
                 {feature:"Flare",cost:0.5},
@@ -183,14 +185,18 @@ export default
         },
         filteredFeatureTable()
         {
-            if(this.blastRadius==0)
+            return this.feature_table.filter((_val)=>
             {
-                return this.feature_table.filter((_val)=>
-                {
-                    return !["nuclear","scatter","smoke","smoke-scatter"].includes(_val.feature.toLowerCase());
-                },this);
-            }
-            return this.feature_table;
+                if(this.blastRadius==0 && ["nuclear","scatter","smoke","smoke-scatter"].includes(_val.feature.toLowerCase()))
+                {//filter out some features if no blast radius
+                    return false;
+                }
+                if(!this.smartMissile && _val.feature.toLowerCase()=="home on jam")
+                {//filtered out home-on-jam for dumb missiles
+                    return false;
+                }
+                return true;
+            },this);
         }
     },
     watch:
