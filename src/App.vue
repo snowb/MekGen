@@ -12,41 +12,26 @@
 </template>
 
 <script>
-import mek_top_menu from "./components/mek_top_menu/mek-top-menu.vue";
-import mek_side_menu from "./components/mek_side_menu/mek-side-menu.vue";
-import mek_alert from "./components/universal/mek_alert.vue";
-
-import mek_servo from "./components/mek_servo/mek_servo-main.vue";
-import mek_melee from "./components/mek_melee/mek_melee-main.vue";
-import mek_projectile from "./components/mek_projectile/mek_projectile-main.vue";
-import mek_magazine from "./components/mek_magazine/mek_magazine-main.vue";
-import mek_missile from "./components/mek_missile/mek_missile-main.vue";
-import mek_emw from "./components/mek_emw/mek_emw-main.vue";
-import mek_beam from "./components/mek_beam/mek_beam-main.vue";
-import mek_energy_pool from "./components/mek_energy_pool/mek_energy_pool-main.vue";
-import mek_shield from "./components/mek_shield/mek_shield-main.vue";
-import mek_reflector from "./components/mek_reflector/mek_reflector-main.vue";
-
 import {mapGetters} from 'vuex';
 
 export default {
   name: 'app',
   components:
   {
-    "mek-top-menu":mek_top_menu,
-    "mek-side-menu":mek_side_menu,
-    "mek-alert":mek_alert,
+    "mek-top-menu":()=>import("./components/mek_top_menu/mek-top-menu.vue"),
+    "mek-side-menu":()=>import("./components/mek_side_menu/mek-side-menu.vue"),
+    "mek-alert":()=>import("./components/universal/mek_alert.vue"),
 
-    "mek-servo":mek_servo,
-    "mek-melee":mek_melee,
-    "mek-projectile":mek_projectile,
-    "mek-magazine":mek_magazine,
-    "mek-missile":mek_missile,
-    "mek-emw":mek_emw,
-    "mek-beam":mek_beam,
-    "mek-energy-pool":mek_energy_pool,
-    "mek-shield":mek_shield,
-    "mek-reflector":mek_reflector
+    "mek-servo":()=>import("./components/mek_servo/mek_servo-main.vue"),
+    "mek-melee":()=>import("./components/mek_melee/mek_melee-main.vue"),
+    "mek-projectile":()=>import("./components/mek_projectile/mek_projectile-main.vue"),
+    "mek-magazine":()=>import("./components/mek_magazine/mek_magazine-main.vue"),
+    "mek-missile":()=>import("./components/mek_missile/mek_missile-main.vue"),
+    "mek-emw":()=>import("./components/mek_emw/mek_emw-main.vue"),
+    "mek-beam":()=>import("./components/mek_beam/mek_beam-main.vue"),
+    "mek-energy-pool":()=>import("./components/mek_energy_pool/mek_energy_pool-main.vue"),
+    "mek-shield":()=>import("./components/mek_shield/mek_shield-main.vue"),
+    "mek-reflector":()=>import("./components/mek_reflector/mek_reflector-main.vue")
   },
   data:function()
   {
