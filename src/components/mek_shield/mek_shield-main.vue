@@ -34,7 +34,7 @@
             </span>
             <span class="mek-flex-col no-margin">
                 <mek-armor-type v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
-                    :armor-type="armor_type" :max-armor="shileld_class.code"
+                    :armor-type="armor_type"
                     @update-armor-type="select_armor_type"
                 ></mek-armor-type>
                 <mek-energy-absorbing-armor
