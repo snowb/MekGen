@@ -64,17 +64,19 @@ export default
             return [index];
         },
         armor_table()
-        {//MAX ARMOR LIMITED TO SERVO +2, need to add maxArmor prop
-        //applies to standard/active shields too
+        {
             let armor_table=[{name:"None",cost:0,stopping_power:0}];
-            let mapped_armor_table=this.servo_classes.map((_val)=>
+
+            let maxArmor=this.maxArmor;
+            let new_armor_table=this.servo_classes.reduce((_newTable,_val)=>
             {
-                return {
-                    name: _val.name, cost: _val.code, stopping_power: _val.code
-                };
-            },this);
-        ///NEED A REDUCER FOR NEW armor_table
-            return armor_table.concat(mapped_armor_table);
+                if(_val.code<=maxArmor)
+                {
+                    _newTable.push({name: _val.name, cost: _val.code, stopping_power: _val.code});
+                }
+                return _newTable;
+            },armor_table);
+            return new_armor_table;
         }
     }
 }
