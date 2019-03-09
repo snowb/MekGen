@@ -1,8 +1,4 @@
 <template>
-    <span>
-        <span v-if="!mounted">
-            NOT MOUNTED
-        </span>
         <span class="mek-inline-flex-col" style="width:100%;" v-if="mounted">
             <mek-component-name :new-component="newComponent" :component-name="component_name||beam_name"
                 :component-changed="component_changed"
@@ -75,7 +71,6 @@
                 <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
             </div>
         </span>
-    </span>
 </template>
 
 <script>
