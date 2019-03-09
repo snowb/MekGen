@@ -25,7 +25,7 @@
             ></mek-armor>
             <span class="mek-inline-flex-col">
                 <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
-                    @update-armor-type="updateArmorType"
+                    @update-armor-type="updateArmorType" :max-armor="selected_servo_class.code+2"
                 ></mek-armor-type>
                 <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
                     @update-absorption="updateAbsorption"

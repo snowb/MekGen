@@ -17,7 +17,7 @@ import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
 {
     name: "mek_armor",
-    props:["armor"],
+    props:["armor","maxArmor"],
     mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin],
     components:
     {
@@ -64,15 +64,16 @@ export default
             return [index];
         },
         armor_table()
-        {
+        {//MAX ARMOR LIMITED TO SERVO +2, need to add maxArmor prop
+        //applies to standard/active shields too
             let armor_table=[{name:"None",cost:0,stopping_power:0}];
             let mapped_armor_table=this.servo_classes.map((_val)=>
             {
-                 return {
+                return {
                     name: _val.name, cost: _val.code, stopping_power: _val.code
                 };
-            });
-
+            },this);
+        ///NEED A REDUCER FOR NEW armor_table
             return armor_table.concat(mapped_armor_table);
         }
     }
