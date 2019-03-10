@@ -225,11 +225,12 @@ export default
             let type=this.selected_servo_type.type;
             let reinforced=this.kills_space_trade.kills_modifier>0 ? " Reinforced " : "";
             let armor_type=this.selected_armor_type.type;
-            let armor=this.selected_armor.cost>0 && this.selected_armor_type.cost==0 ? " Armored " :
-                        this.selected_armor.cost>0 && this.selected_armor_type.cost!=0 ? " "+armor_type+"-Armored " :
+            let armor=this.selected_armor.cost>0 && this.selected_armor_type.cost==1 ? " Armored " :
+                        this.selected_armor.cost>0 && this.selected_armor_type.cost!=1 ? " "+armor_type+"-Armored " :
                         "";
+            let absorbing=this.selected_absorption.cost>1 ? " Absorbing ":"";
             let additional=reinforced!=""||this.selected_armor.cost>0 ? " - " : "";
-            let name=type+" Servo"+additional+reinforced+armor;
+            let name=type+" Servo"+additional+reinforced+absorbing+armor;
             name=name.trim();
             name=name.replace(/\s+/gi," ");
             return name;
