@@ -52,17 +52,6 @@ export default
                 }
             },this);
             
-            /* let update=false;
-            switch(true)
-            {
-                case this.armor.name!=this.armor_table[index].name:
-                case this.armor.stopping_power!=this.armor_table[index].stopping_power:
-                    update=true;
-            }
-            if(update)
-            {
-                this.select_armor(index);
-            } */
             if(!validate(this.armor))
             {
                 this.select_armor(index);
@@ -72,18 +61,6 @@ export default
         },
         armor_table()
         {
-            /* let armor_table=[{name:"None",cost:0,stopping_power:0}];
-
-            let maxArmor=this.maxArmor;
-            let new_armor_table=this.servo_classes.reduce((_newTable,_val)=>
-            {
-                if(_val.code<=maxArmor)
-                {
-                    _newTable.push({name: _val.name, cost: _val.code, stopping_power: _val.code});
-                }
-                return _newTable;
-            },armor_table); */
-
             let new_armor_table=armor_data_table.filter((_val)=>
             {
                 return _val.code<=this.maxArmor;
