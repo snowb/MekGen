@@ -13,6 +13,8 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
+import {armor_data_table, validate} from "../data_table_mixins/mek_armor-data-table.js"
+
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
 {
@@ -50,7 +52,7 @@ export default
                 }
             },this);
             
-            let update=false;
+            /* let update=false;
             switch(true)
             {
                 case this.armor.name!=this.armor_table[index].name:
@@ -60,12 +62,17 @@ export default
             if(update)
             {
                 this.select_armor(index);
+            } */
+            if(!validate(this.armor))
+            {
+                this.select_armor(index);
             }
+
             return [index];
         },
         armor_table()
         {
-            let armor_table=[{name:"None",cost:0,stopping_power:0}];
+            /* let armor_table=[{name:"None",cost:0,stopping_power:0}];
 
             let maxArmor=this.maxArmor;
             let new_armor_table=this.servo_classes.reduce((_newTable,_val)=>
@@ -75,7 +82,12 @@ export default
                     _newTable.push({name: _val.name, cost: _val.code, stopping_power: _val.code});
                 }
                 return _newTable;
-            },armor_table);
+            },armor_table); */
+
+            let new_armor_table=armor_data_table.filter((_val)=>
+            {
+                return _val.code<=this.maxArmor;
+            },this);
             return new_armor_table;
         }
     }
