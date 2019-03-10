@@ -158,7 +158,7 @@ export default
         {
             let alertMessage="Torso bad, resetting to 'standard' shield.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.shield_name)
+            if(this.component_name==this.servo_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
