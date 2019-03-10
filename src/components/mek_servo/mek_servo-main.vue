@@ -121,10 +121,6 @@ export default
         obj.kills_space_trade.kills_modifier=0;
         obj.kills_space_trade.cost=0;
 
-        obj.extra_kills={};
-        obj.extra_kills.kills=0;
-        obj.extra_kills.cost=0;
-
         return obj;
     },
     methods:
@@ -226,7 +222,17 @@ export default
     {
         servo_name()
         {
-            return this.selected_servo_type.type;
+            let type=this.selected_servo_type.type;
+            let reinforced=this.kills_space_trade.kills_modifier>0 ? " Reinforced " : "";
+            let armor_type=this.selected_armor_type.type;
+            let armor=this.selected_armor.cost>0 && this.selected_armor_type.cost==0 ? " Armored " :
+                        this.selected_armor.cost>0 && this.selected_armor_type.cost!=0 ? " "+armor_type+"-Armored " :
+                        "";
+            let additional=reinforced!=""||this.selected_armor.cost>0 ? " - " : "";
+            let name=type+" Servo"+additional+reinforced+armor;
+            name=name.trim();
+            name=name.replace(/\s+/gi," ");
+            return name;
         },
         base_cost()
         {
@@ -234,7 +240,7 @@ export default
         },
         cost()
         {
-            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier) + this.extra_kills.cost;
+            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier) + this.kills_space_trade.cost;
         },
         available_space()
         {
