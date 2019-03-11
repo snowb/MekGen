@@ -113,7 +113,9 @@ export default
             this.ammoArray;
             if(this.ammoArray.length==0)
             {
-                this.selected_ammo_array=[this.find_feature_index("High-Ex")];
+                let high_ex_index=this.find_feature_index("High-Ex");
+                this.selected_ammo_array=[this.filteredAmmoArray[high_ex_index]];
+                return [high_ex_index];
             }
             if(this.ammoArray.length==1)
             {
