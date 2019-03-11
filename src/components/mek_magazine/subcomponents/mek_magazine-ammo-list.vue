@@ -209,20 +209,6 @@ export default
                 return _elem.type.toLowerCase()!="nuclear";
             });
         }
-    },
-    watch:
-    {
-        "hasBlast":function(_newval,_oldval)
-        {
-            if(_newval && !_oldval)
-            {
-                let temp_selected_ammo_array=this.selected_ammo_array.filter((_val)=>
-                {//filter out nuclear selected ammo if changing hasBlast from false to true 
-                    return typeof _val!=="undefined" && _val.type.toLowerCase()!="nuclear";
-                })
-                this.$emit("update-ammo",temp_selected_ammo_array);
-            }
-        }
     }
 }
 </script>
