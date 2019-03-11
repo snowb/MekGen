@@ -1,6 +1,6 @@
 //data table module, raw data output for re-use in non-vue-component formats
 
-//create new armor_type_data_table based servo_classes_data
+//create new armor_type_data_table
 let armor_type_data_table=
 [
     {type:"Ablative",damage_coefficient:0,cost:0.5},
