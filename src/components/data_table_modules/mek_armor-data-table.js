@@ -11,7 +11,7 @@ let new_armor_table=servo_classes_data.map((_val)=>
 let armor_data_table=armor_table.concat(new_armor_table);
 
 //data validator for armor_table
-let validate=(_data)=>
+let armor_validate=(_data)=>
 {
     if(typeof _data==="undefined")
     {
@@ -27,4 +27,4 @@ let validate=(_data)=>
     return valid;
 }
 
-export {armor_data_table, validate};
+export {armor_data_table, armor_validate};
