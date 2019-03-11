@@ -39,18 +39,17 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
+import component_methods_mixin from "../../mixins/component_methods_mixin";
+import component_computed_mixin from "../../mixins/component_computed_mixin";
 
-/* import mek_space_efficiency from "../universal/mek-space-efficiency.vue";
-import mek_component_name from "../universal/mek-component-name.vue";
-import mek_save_reset_component from "../universal/mek-save-reset-component.vue";
-import mek_component_stats from "../universal/mek_component-stats.vue";
- */
+import {reflector_table, reflector_validate, reflector_data_table} from "../data_table_modules/mek_reflector-data-module.js";
+
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_reflector",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_methods_mixin, component_computed_mixin],
     components:
     {
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
@@ -63,14 +62,6 @@ export default
     data()
     {
         let obj={}
-        obj.reflector_table=Array.apply({}, Array(10));
-        
-         obj.reflector_table.forEach((_el,_index)=>
-        {
-            let quality_value=_index+1;
-            let cost=quality_value * quality_value;
-            obj.reflector_table[_index]={quality_value:quality_value,cost:cost};
-        },this);
 
         obj.uuid=null;
         obj.component_name=null;
@@ -93,11 +84,6 @@ export default
             this.$set(this,"selected_reflector",this.reflector_table[_reflector]);
             this.component_changed=true;
         },
-        updateComponentName(_name)
-        {
-            this.component_name=_name;
-            this.component_changed=true;
-        },
         output_reflector_data()
         {
             let return_data={};
@@ -110,6 +96,7 @@ export default
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
 
             return_data.selected_reflector=JSON.parse(JSON.stringify(this.selected_reflector));
+            return_data.damage_capacity=JSON.parse(JSON.stringify(this.damage_capacity));
 
             return_data.cost=this.cost;
 
@@ -172,46 +159,24 @@ export default
                 }
             });
 
-            let update=false;
-            switch(true)
-            {
-                case this.selected_reflector.quality_value!=this.reflector_table[reflector_index].quality_value:
-                case this.selected_reflector.cost!=this.reflector_table[reflector_index].cost:
-                    update=true;       
-            }
-            if(update)
+            if(!reflector_validate(this.selected_reflector))
             {   
                 this.select_reflector(reflector_index);
             }
 
             return [reflector_index];
         },
-        newComponent()
-        {
-            let selectedComponent=JSON.parse(JSON.stringify(this.$store.getters.selectedComponent));
-            if(typeof selectedComponent!=="undefined" && selectedComponent!==null)
-            {
-                if(selectedComponent.uuid!==this.uuid 
-                    && selectedComponent.component_category==this.component_category
-                    && selectedComponent.component_type==this.component_type)
-                {
-                    this.ingest_data(selectedComponent);
-                }
-                return false;
-            }
-            return true;
-        },
         raw_space()
         {
-            return this.reflector_table[this.reflector_index].cost;
+            return this.selected_reflector.cost;
         },
         weight()
         {
             return this.round((this.reflector_table[this.reflector_index].cost / 2),2);
         },
-        space_cost()
+        damage_capacity()
         {
-            return this.selected_reflector.cost - this.efficiencies.space.modifier;
+            return this.selected_reflector.quality_value;
         },
         cost:function()
         {
@@ -220,6 +185,10 @@ export default
         reflector_name()
         {
             return "QV-"+this.selected_reflector.quality_value+" Reflector";
+        },
+        reflector_table()
+        {
+            return reflector_data_table;
         }
     }
 }
