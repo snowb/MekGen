@@ -13,6 +13,8 @@
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
+import {armor_type_data_table, armor_type_validate} from "../data_table_modules/mek_armor-type-data-table.js"
+
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
 {
@@ -26,14 +28,6 @@ export default
     data:function()
     {
         let obj={}
-        obj.armor_type_table=
-            [
-                {type:"Ablative",damage_coefficient:0,cost:0.5},
-                {type:"Standard",damage_coefficient:1,cost:1},
-                {type:"Alpha",damage_coefficient:2,cost:1.25},
-                {type:"Beta",damage_coefficient:4,cost:1.5},
-                {type:"Gamma",damage_coefficient:8,cost:2},
-            ];
         return obj;
     },
     methods:
@@ -58,18 +52,15 @@ export default
                 }
             },this);
             
-            let update=false;
-            switch(true)
-            {
-                case this.armorType.cost!=this.armor_type_table[index].cost:
-                case this.armorType.damage_coefficient!=this.armor_type_table[index].damage_coefficient:
-                    update=true;
-            }
-            if(update)
+            if(!armor_type_validate(this.armorType))
             {
                 this.select_armor_type(index);
             }
             return [index];
+        },
+        armor_type_table()
+        {
+            return armor_type_data_table;
         }
     }
 }
