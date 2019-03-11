@@ -80,17 +80,17 @@ export default
         ],
     components:
     {
-        "mek-servo-type":()=>import("./subcomponents/mek_servo-type.vue"),
-        "mek-servo-class":()=>import("./subcomponents/mek_servo-class.vue"),
-        "mek-servo-kills-space-trade":()=>import("./subcomponents/mek_servo-kills-space-trade.vue"),
+        "mek-servo-type":()=>import(/* webpackChunkName: "mek_servo-type" */"./subcomponents/mek_servo-type.vue"),
+        "mek-servo-class":()=>import(/* webpackChunkName: "mek_servo-class" */"./subcomponents/mek_servo-class.vue"),
+        "mek-servo-kills-space-trade":()=>import(/* webpackChunkName: "mek_servo-kills-space-trade" */"./subcomponents/mek_servo-kills-space-trade.vue"),
 
-        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import("../universal/mek_component-stats.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
 
-        "mek-armor":()=>import("../universal/mek_armor.vue"),
-        "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
-        "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue"),
+        "mek-armor":()=>import(/* webpackChunkName: "mek_armor" */"../universal/mek_armor.vue"),
+        "mek-armor-type":()=>import(/* webpackChunkName: "mek_armor-type" */"../universal/mek_armor-type.vue"),
+        "mek-energy-absorbing-armor":()=>import(/* webpackChunkName: "mek_energy-absorbing-armor" */"../universal/mek_energy-absorbing-armor.vue"),
         
     },
     data:function()

@@ -65,10 +65,11 @@ export default
         "mek-melee-feature":()=>import("./subcomponents/mek_melee-feature.vue"),
         "mek-melee-entangle-range":()=>import("./subcomponents/mek_melee-entangle-range.vue"),
 
-        "mek-space-efficiency":()=>import("../universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
+        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
+
     },
     data:function()
     {

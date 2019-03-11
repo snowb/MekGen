@@ -41,9 +41,10 @@ export default
         "mek-magazine-ammo-list":()=>import("./subcomponents/mek_magazine-ammo-list.vue"),
         "mek-magazine-shots":()=>import("./subcomponents/mek_magazine-shots.vue"),
 
-        "mek-component-name":()=>import("../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import("../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import("../universal/mek_component-stats.vue")
+        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
+
     },
     data:function()
     {
