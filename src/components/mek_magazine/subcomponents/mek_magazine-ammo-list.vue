@@ -12,6 +12,8 @@
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
+import {ammo_data_table, ammo_validate, shock_exclusive, blast_exclusive} from "../../data_table_modules/mek_ammo-list-data-module.js";
+
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
@@ -25,30 +27,6 @@ export default
     data:function()
     {
         let obj={};
-        obj.ammo_table=
-        [
-            {type:"Paintball",cost:0.5,effect:"Practice Rounds"},
-            {type:"Foam",cost:0.5,effect:"Firefighting"},
-            {type:"High-Ex",cost:1,effect:"Standard"},
-            {type:"Tracer",cost:3,effect:"+1 to WA"},
-            {type:"Kinetic",cost:3,effect:"More Knockback"},
-            {type:"Tangler",cost:3,effect:"Grappling Attack"},
-            {type:"Armor Piercing",cost:4,effect:"1/2 SP vs Armor"},
-            {type:"Disruptor",cost:4,effect:"1/2 SP vs Energy"},
-            {type:"Incendiary",cost:4,effect:"Flamethrower"},
-            {type:"Shock (only)",cost:4,effect:"Stun Effect",shock_exclusive:true},
-            {type:"Shock (add)",cost:6,effect:"Stun & Damage",shock_exclusive:true},
-            {type:"Scattershot",cost:5,effect:"Shotgun Effect"},
-            {type:"Blast I",cost:6,effect:"1-Hex Radius",blast_exclusive:true},
-            {type:"Blast II",cost:8,effect:"2-Hex Radius",blast_exclusive:true},
-            {type:"Blast III",cost:10,effect:"3-Hex Radius",blast_exclusive:true},
-            {type:"Blast IV",cost:12,effect:"4-Hex Radius",blast_exclusive:true},
-            {type:"Blast V",cost:14,effect:"5-Hex Radius",blast_exclusive:true},
-            {type:"Nuclear",cost:1000,effect:"Atomic Ammo"},
-        ];
-        obj.shock_exclusive=obj.ammo_table.filter((_el)=>{return typeof _el.shock_exclusive!=="undefined";});
-        obj.blast_exclusive=obj.ammo_table.filter((_el)=>{return typeof _el.blast_exclusive!=="undefined";});
-
         obj.selected_ammo_array=[];
         return obj;
     },
@@ -103,7 +81,7 @@ export default
         find_feature_index:function(_feature)
         {
             let found_index;
-            this.ammo_table.some(function(_val, _index)
+            ammo_data_table.some(function(_val, _index)
             {
                 if(_val.type.toLowerCase() == _feature.toLowerCase())
                 {
@@ -125,18 +103,6 @@ export default
                 }
                 return false;
             });
-        },
-        exclusive_indices:function()
-        {
-            let foundIndices=this.selected_ammo_array.reduce(function(_indices,_val,_index)
-            {
-                if(_val.exclusive)
-                {
-                    _indices.push(_index);
-                }
-                return _indices;
-            },[]);
-            return foundIndices;
         }
     },
     computed:
@@ -159,8 +125,9 @@ export default
             let hasExclusiveBlast=false;
             let self=this;
             let feature_list=[];
+            let update_index=null;
 
-            this.selected_ammo_array=this.ammoArray.reduceRight(function(_prev, _val)
+            this.selected_ammo_array=this.ammoArray.reduceRight(function(_prev, _val, _index)
             {
                 let isShock=self.is_exclusive_feature("shock_exclusive",_val.type);
                 let isBlast=self.is_exclusive_feature("blast_exclusive",_val.type);
@@ -183,8 +150,17 @@ export default
                     _prev.push(_val);
                     feature_list.push(_val.type.toLowerCase());
                 }
+                update_index=!ammo_validate(_val) && update_index===null ? _index : update_index;
+                //if invalid and update_index not set, set idndex
+
                 return _prev;
             },[]);
+
+            if(update_index)
+            {
+                this.select_ammo(update_index);
+                return update_index;//early return as correction loop begins
+            }
 
             indices=this.selected_ammo_array.reduce(function(_indices,_val)
             {
@@ -202,13 +178,15 @@ export default
         {
             if(this.hasBlast)
             {
-                return this.ammo_table;
+                return ammo_data_table;
             }
-            return this.ammo_table.filter((_elem)=>
+            return ammo_data_table.filter((_elem)=>
             {
                 return _elem.type.toLowerCase()!="nuclear";
             });
-        }
+        },
+        shock_exclusive(){return shock_exclusive;},
+        blast_exclusive(){return blast_exclusive;}
     }
 }
 </script>
