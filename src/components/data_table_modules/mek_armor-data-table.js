@@ -1,3 +1,5 @@
+//data table module, raw data output for re-use in non-vue-component formats
+
 import servo_classes_data from "./servo_classes_data.js";
 
 //create new armor_table based servo_classes_data
