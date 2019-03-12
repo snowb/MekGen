@@ -6,11 +6,10 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-sub-component-table
-                :items="reflector_table"
+                :items="reflector_table" pkey="quality_value" :selectedKeys="selected_keys"
                 :headers="{quality_value:'QV',cost:'Cost'}"
-                name="Quality" flow="col" :showHeaders="true"
-                :selectedIndices="reflector_index"
-                @update-selected-indices="select_reflector"
+                name="Quality" flow="pkey-col" :showHeaders="true"
+                @update-selected-data="select_reflector"
             ></mek-sub-component-table>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
@@ -81,7 +80,7 @@ export default
     {
         select_reflector(_reflector)
         {
-            this.$set(this,"selected_reflector",this.reflector_table[_reflector]);
+            this.$set(this,"selected_reflector",JSON.parse(JSON.stringify(_reflector)));
             this.component_changed=true;
         },
         output_reflector_data()
@@ -189,6 +188,27 @@ export default
         reflector_table()
         {
             return reflector_data_table;
+        },
+        selected_keys()
+        {
+            let key_list=[];
+            let data=null;
+
+            this.reflector_table.some((_val, _index)=>
+            {
+                if(_val.quality_value==this.selected_reflector.quality_value)
+                {
+                    key_list.push(this.selected_reflector.quality_value);
+                    data=_val;
+                    return true;
+                }
+            },this);
+
+            if(!reflector_validate(this.selected_reflector))
+            {
+                this.select_reflector(data);
+            }
+            return key_list;
         }
     }
 }
