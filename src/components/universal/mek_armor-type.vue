@@ -1,11 +1,10 @@
 <template>
     <mek-sub-component-table
-        :items="armor_type_table"
+        :items="armor_type_table" :selectedKeys="selected_keys" pkey="damage_coefficient"
         :headers="{type:'Type',damage_coefficient:'DC',cost:'Cost'}"
-        name="Armor Type" flow="col" :showHeaders="true"
+        name="Armor Type" flow="pkey-col" :showHeaders="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_armor_type_index"
-        @update-selected-indices="select_armor_type"
+        @update-selected-data="select_armor_type"
     ></mek-sub-component-table>
 </template>
 
@@ -34,33 +33,35 @@ export default
     {
         select_armor_type:function(_selected_armor_type)
         {
-            this.$emit("update-armor-type",this.armor_type_table[_selected_armor_type]);
+            this.$emit("update-armor-type",JSON.parse(JSON.stringify(_selected_armor_type)));
         }
     },
     computed:
     {
-        selected_armor_type_index:function()
-        {
-            let index=1;
-
-            this.armor_type_table.some((_val, _index)=>
-            {
-                if(_val.type.toLowerCase()==this.armorType.type.toLowerCase())
-                {
-                    index=_index;
-                    return true;
-                }
-            },this);
-            
-            if(!armor_type_validate(this.armorType))
-            {
-                this.select_armor_type(index);
-            }
-            return [index];
-        },
         armor_type_table()
         {
             return armor_type_data_table;
+        },
+        selected_keys()
+        {
+            let key_list=[];
+            let data=null;
+
+            this.armor_type_table.some((_val, _index)=>
+            {
+                if(_val.damage_coefficient==this.armorType.damage_coefficient)
+                {
+                    key_list.push(this.armorType.damage_coefficient);
+                    data=_val;
+                    return true;
+                }
+            },this);
+
+            if(!armor_type_validate(this.armorType))
+            {
+                this.select_armor_type(data);
+            }
+            return key_list;
         }
     }
 }
