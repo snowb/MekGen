@@ -1,10 +1,9 @@
 <template>
     <mek-sub-component-table
-        :items="armor_table"
+        :items="armor_table" :selectedKeys="selected_keys" pkey="cost"
         :headers="{name:'Name',stopping_power:'SP',cost:'Cost'}"
-        name="Armor" flow="col" :showHeaders="true"
-        :selectedIndices="selected_armor_index"
-        @update-selected-indices="select_armor"
+        name="Armor" flow="pkey-col" :showHeaders="true"
+        @update-selected-data="select_armor"
     ></mek-sub-component-table>
 </template>
 
@@ -34,7 +33,7 @@ export default
     {
         select_armor:function(_selected_armor)
         {
-            this.$emit("update-armor",this.armor_table[_selected_armor]);
+            this.$emit("update-armor",_selected_armor);
         }
     },
     computed:
@@ -66,6 +65,27 @@ export default
                 return _val.code<=this.maxArmor;
             },this);
             return new_armor_table;
+        },
+        selected_keys()
+        {
+            let key_list=[];
+            let data=null;
+
+            this.armor_table.some((_val, _index)=>
+            {
+                if(_val.cost==this.armor.cost)
+                {
+                    key_list.push(this.armor.cost);
+                    data=_val;
+                    return true;
+                }
+            },this);
+
+            if(!armor_validate(this.armor))
+            {
+                this.select_armor(data);
+            }
+            return key_list;
         }
     }
 }
