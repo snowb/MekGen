@@ -128,31 +128,37 @@ export default
         updateServoType(_servo_type)
         {   
             this.component_type=_servo_type.type;
-            this.$set(this,"selected_servo_type",_servo_type)
+            this.$set(this,"selected_servo_type",_servo_type);
+            this.component_changed=true;
         },
         updateServoClass(_servo_class)
         {
-            this.$set(this,"selected_servo_class",_servo_class)
+            this.$set(this,"selected_servo_class",_servo_class);
+            this.component_changed=true;
         },
         updateArmor(_armor)
         {
-            this.$set(this,"selected_armor",_armor)
+            this.$set(this,"selected_armor",_armor);
+            this.component_changed=true;
         },
         updateArmorType(_armor_type)
         {
             this.$set(this,"selected_armor_type",JSON.parse(JSON.stringify(_armor_type)));
             this.cost_multipliers.armor_type=this.selected_armor_type.cost;
+            this.component_changed=true;
         },
         updateAbsorption(_absorption)
         {
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
             this.cost_multipliers.absorption=this.selected_absorption.cost;
+            this.component_changed=true;
         },
         updateExtraSpace(_kills_space_trade)
         {
             this.kills_space_trade.space_modifier=_kills_space_trade.space;
             this.kills_space_trade.kills_modifier=_kills_space_trade.kills;
             this.kills_space_trade.cost=_kills_space_trade.cost;
+            this.component_changed=true;
         },
         ingest_data(_data_object)
         {
@@ -213,6 +219,8 @@ export default
                     this.cost_multipliers.armor_type=1;
                     this.$set(this,"selected_absorption",{absorption:0,cost:1,armor_penalty:1});
                     this.cost_multipliers.absorption=1;
+                    this.$set(this,"kills_space_trade",{space_modifier:0,kills_modifier:0,cost:0});
+                    this.component_name=null;
                     this.$store.commit("saveComponent",null);
                     break;
             }
