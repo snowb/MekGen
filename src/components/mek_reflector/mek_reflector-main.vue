@@ -41,7 +41,7 @@ import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 
-import {reflector_table, reflector_validate, reflector_data_table} from "../data_table_modules/mek_reflector-data-module.js";
+import {reflector_data_table, reflector_validate} from "../data_table_modules/mek_reflector-data-module.js";
 
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
