@@ -38,26 +38,6 @@ export default
     },
     computed:
     {
-        selected_armor_index:function()
-        {
-            let index=1;
-
-            this.armor_table.some((_val, _index)=>
-            {
-                if(_val.cost==this.armor.cost)
-                {
-                    index=_index;
-                    return true;
-                }
-            },this);
-            
-            if(!armor_validate(this.armor))
-            {
-                this.select_armor(index);
-            }
-
-            return [index];
-        },
         armor_table()
         {
             let new_armor_table=armor_data_table.filter((_val)=>
