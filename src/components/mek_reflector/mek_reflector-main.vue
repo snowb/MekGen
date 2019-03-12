@@ -146,32 +146,13 @@ export default
     computed:
     {//unique nature of shields component (3-in-1), cannot use universal component_computed_mixin
     //is quite 'cut down' compared to other components
-        reflector_index()
-        {
-            let reflector_index=0;
-            this.reflector_table.some((_val,_index)=>
-            {
-                if(this.selected_reflector.quality_value==_val.quality_value)
-                {
-                    reflector_index=_index;
-                    return true;
-                }
-            });
-
-            if(!reflector_validate(this.selected_reflector))
-            {   
-                this.select_reflector(reflector_index);
-            }
-
-            return [reflector_index];
-        },
         raw_space()
         {
             return this.selected_reflector.cost;
         },
         weight()
         {
-            return this.round((this.reflector_table[this.reflector_index].cost / 2),2);
+            return this.round((this.selected_reflector.cost / 2),2);
         },
         damage_capacity()
         {
