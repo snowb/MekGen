@@ -45,6 +45,48 @@
                         </td>
                     </tr>
                 </table>
+                <!-- re-design for selection by primary key (pkey)-->
+                <table style="margin:auto;" v-else-if="flow=='pkey-col'">
+                    <tr v-if="showHeaders" class="head_row">
+                        <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
+                            {{header}}
+                        </th>
+                    </tr>
+                    <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
+                    <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                        class="clickable1 pad"
+                        :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item1')"
+                        @click="updateSelectedData(items[index])"
+                    >
+                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                            {{formatOutput(item[key],key)}}
+                        </td>
+                    </tr>
+                    <tr class="invisible_pad_row">
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
+                    </tr>
+                </table>
+                <table style="margin:auto;" v-else-if="flow=='pkey-row'">
+                    <tr>
+                        <td class="head_column1 pad" v-if="showHeaders">
+                            <div v-for="(header,key) in headers" :key="key+'-header-'+name">
+                                {{header}}
+                            </div>
+                        </td>
+                        <td>&nbsp;</td>
+                        <td v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                            class="clickable1 pad"
+                            :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item1')"
+                            @click="updateSelectedData(items[index])"
+                        >
+                            <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                                {{formatOutput(item[key],key)}}
+                            </div>
+                        </td>
+                    </tr>
+                </table>
                 <table style="margin:auto;" v-if="flow=='dropdown'">
                     <tr v-if="showHeaders" class="head_row">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name">
@@ -92,16 +134,17 @@ import selected_item_mixin from "../../mixins/selected_item_mixin";
 export default 
 {
     name:"mek_sub_component_table",
-    props:["name","items","headers","flow","selectedIndices","showHeaders","format"],
+    props:["name","items","headers","flow","selectedIndices","showHeaders","format","pkey","selectedKeys"],
     /*
         name: String, title of the sub-component
         items: Array[Object], array of objects to display in the sub-component
         headers: Object, simple map of element key to header display string and which keys to display
         flow: String, "row" or "col", direction of data display
         selectedIndices: Array[Number], currently selected elements
-        pkey: String, primary key for determining selected index/indices
-        multiplier: Boolean, whether component is a cost multipler
+        showHeaders: Bool, whether to show table headers or not
         format: String, how to format the output of item data comma-seperated tied to keys
+        pkey: String, primary of data table for comparing
+        selectedKeys: primary keys of selected elements
      */
     mixins:[selected_item_mixin],
     components:{},
@@ -116,6 +159,10 @@ export default
         updateSelectedIndices(_index)
         {
             this.$emit("update-selected-indices",_index);
+        },
+        updateSelectedData(_data)
+        {
+            this.$emit("update-selected-data",_data);
         },
         formatOutput(_data, _key)
         {
