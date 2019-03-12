@@ -33,7 +33,7 @@ export default
     {
         select_armor:function(_selected_armor)
         {
-            this.$emit("update-armor",_selected_armor);
+            this.$emit("update-armor",JSON.parse(JSON.stringify(_selected_armor)));
         }
     },
     computed:
