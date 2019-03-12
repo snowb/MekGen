@@ -4,6 +4,7 @@ import servo_classes_data from "./servo_classes_data.js";
 
 //create new armor_table based on servo_classes_data
 let armor_table=[{name:"None",cost:0,stopping_power:0,code:0}];
+
 let new_armor_table=servo_classes_data.map((_val)=>
 {
     return {name: _val.name, cost: _val.code, stopping_power: _val.code, code:_val.code};
@@ -17,7 +18,7 @@ let armor_validate=(_data)=>
     {
         return false;
     }
-    let valid=armor_table.some((_val)=>
+    let valid=armor_data_table.some((_val)=>
     {
         return _val.name==_data.name
                 && _val.cost==_data.cost
