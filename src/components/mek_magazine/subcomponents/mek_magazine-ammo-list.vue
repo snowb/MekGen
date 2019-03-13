@@ -1,11 +1,9 @@
 <template>
     <mek-sub-component-table
-        :items="filteredAmmoArray"
+        :items="filteredAmmoArray" :selectedKeys="selected_keys" :pkey="pkey"
         :headers="{type:'Type',cost:'Cost',effect:'Effect'}" :showHeaders="true"
-        :format="{cost:'multiplier'}"
-        name="Ammo Table" flow="col"
-        :selectedIndices="selected_ammo_index_array"
-        @update-selected-indices="select_ammo"
+        :format="{cost:'multiplier'}" name="Ammo Table" flow="pkey-col"
+        @update-selected-data="select_ammo"
     ></mek-sub-component-table>
 </template>
 <script>
@@ -28,25 +26,27 @@ export default
     {
         let obj={};
         obj.selected_ammo_array=[];
+        obj.pkey="type";
         return obj;
     },
     methods:
     {
-        select_ammo:function(_ammo_index)
-        {
-            let select_feature_name=this.filteredAmmoArray[_ammo_index].type;
-            let isExclusiveShock=this.is_exclusive_feature("shock_exclusive",select_feature_name);
-            let isExclusiveBlast=this.is_exclusive_feature("blast_exclusive",select_feature_name);
-            let featureClone=Object.assign({},this.filteredAmmoArray[_ammo_index]);
+        select_ammo:function(_selected_ammo)
+        {//refactor to pkey selector
+
+            let selected_pkey=_selected_ammo[this.pkey];
+            let isExclusiveShock=this.is_exclusive_feature("shock_exclusive",selected_pkey);
+            let isExclusiveBlast=this.is_exclusive_feature("blast_exclusive",selected_pkey);
+            let featureClone=JSON.parse(JSON.stringify(_selected_ammo));
 
             let temp_selected_feature_array=this.selected_ammo_array.filter((_val)=>
             {//filter out matching feature (toggle)
-                return _val.type.toLowerCase()!=select_feature_name.toLowerCase();
-            });
+                return _val[this.pkey].toLowerCase()!=selected_pkey.toLowerCase();
+            },this);
 
             let togglefeature=this.selected_ammo_array.some((_elem)=>
             {
-                return _elem.type.toLowerCase()==select_feature_name.toLowerCase();
+                return _elem[this.pkey].toLowerCase()==selected_pkey.toLowerCase();
             },this);
 
             if(isExclusiveShock)
@@ -54,14 +54,14 @@ export default
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.shock_exclusive;
-                })
+                });
             }
             if(isExclusiveBlast)
             {//filter out exclusive phalanx
                 temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
                 {
                     return !_val.blast_exclusive;
-                })
+                });
             }
 
             if(!togglefeature)
@@ -69,113 +69,42 @@ export default
                 temp_selected_feature_array.push(featureClone);
             }
             
-            this.$set(this,"selected_ammo_array",temp_selected_feature_array);
+            this.$set(this,"selected_ammo_array",JSON.parse(JSON.stringify(temp_selected_feature_array)));
             
             if(temp_selected_feature_array.length==0)
             {
                 this.$set(this,"selected_ammo_array",[]);
             }
 
-            this.$emit("update-ammo",this.selected_ammo_array);
+            this.$emit("update-ammo",JSON.parse(JSON.stringify(this.selected_ammo_array)));
         },
-        find_feature_index:function(_feature)
+        get_feature(_pkey_value)
         {
-            let found_index;
-            ammo_data_table.some(function(_val, _index)
+            let found_feature=null;
+            ammo_data_table.some((_val)=>
             {
-                if(_val.type.toLowerCase() == _feature.toLowerCase())
+                if(_val[this.pkey]==_pkey_value)
                 {
-                    found_index=_index;
+                    found_feature=_val;
                     return true;
                 }
-                return false;
-            });
-
-            return found_index;
+            },this);
+            return found_feature;
         },
         is_exclusive_feature:function(_target_array,_feature)
         {
             return this[_target_array].some(function(_val)
             {
-                if(_val.type.toLowerCase() == _feature.toLowerCase())
+                if(_val[this.pkey].toLowerCase() == _feature.toLowerCase())
                 {
                     return true;
                 }
                 return false;
-            });
+            },this);
         }
     },
     computed:
     {
-        selected_ammo_index_array:function()
-        {
-            let indices=[];
-            this.ammoArray;
-            if(this.ammoArray.length==0)
-            {
-                let high_ex_index=this.find_feature_index("High-Ex");
-                this.selected_ammo_array=[this.filteredAmmoArray[high_ex_index]];
-                return [high_ex_index];
-            }
-            if(this.ammoArray.length==1)
-            {
-                this.selected_ammo_array=[this.filteredAmmoArray[this.find_feature_index(this.ammoArray[0].type)]];
-                return [this.find_feature_index(this.ammoArray[0].type)];
-            }
-
-            let hasExclusiveShock=false;
-            let hasExclusiveBlast=false;
-            let self=this;
-            let feature_list=[];
-            let update_index=null;
-
-            this.selected_ammo_array=this.ammoArray.reduceRight(function(_prev, _val, _index)
-            {
-                let isShock=self.is_exclusive_feature("shock_exclusive",_val.type);
-                let isBlast=self.is_exclusive_feature("blast_exclusive",_val.type);
-
-                if(isShock && !hasExclusiveShock)
-                {
-                    _prev.push(_val);
-                    hasExclusiveShock=true;
-                    feature_list.push(_val.type.toLowerCase());
-                }
-                if(isBlast && !hasExclusiveBlast)
-                {
-                    _prev.push(_val);
-                    hasExclusiveBlast=true;
-                    feature_list.push(_val.type.toLowerCase());
-                }
-
-                if(!feature_list.includes(_val.type.toLowerCase()))
-                {
-                    _prev.push(_val);
-                    feature_list.push(_val.type.toLowerCase());
-                }
-                update_index=!ammo_validate(_val) && update_index===null ? _index : update_index;
-                //if invalid and update_index not set, set idndex
-
-                return _prev;
-            },[]);
-
-            if(update_index)
-            {
-                this.select_ammo(update_index);
-                return update_index;//early return as correction loop begins
-            }
-
-            indices=this.selected_ammo_array.reduce(function(_indices,_val)
-            {
-                _indices.push(self.find_feature_index(_val.type));
-                return _indices;
-            },[]);
-            if(this.ammoArray.length!=this.selected_ammo_array.length)
-            {
-                this.$emit("update-ammo",this.selected_ammo_array);
-            }
-
-            return indices;
-        },
         filteredAmmoArray()
         {
             if(this.hasBlast)
@@ -188,7 +117,70 @@ export default
             });
         },
         shock_exclusive(){return shock_exclusive;},
-        blast_exclusive(){return blast_exclusive;}
+        blast_exclusive(){return blast_exclusive;},
+        selected_keys()
+        {
+            if(this.ammoArray.length==0)
+            {
+                let feature_clone=JSON.parse(JSON.stringify(this.get_feature("High-Ex")));
+                this.$set(this,"selected_ammo_array",[feature_clone]);
+                return ["High-Ex"];
+            }
+            if(this.ammoArray.length==1)
+            {
+                let pkey_value=this.ammoArray[0][this.pkey];
+                let feature_clone=JSON.parse(JSON.stringify(this.get_feature(pkey_value)));
+
+                if(!ammo_validate(this.ammoArray[0]))
+                {
+                    this.$emit("update-ammo",[feature_clone]);
+                }
+                this.$set(this,"selected_ammo_array",[feature_clone]);
+                return [pkey_value];
+            }
+
+            let key_list=[];
+            let hasExclusiveShock=false;
+            let hasExclusiveBlast=false;
+            let self=this;
+            let update_data=false;
+
+            let temp_selected_feature_array=this.ammoArray.reduceRight((_cleaned_array, _val)=>
+            {
+                let isShock=self.is_exclusive_feature("shock_exclusive",_val[self.pkey]);
+                let isBlast=self.is_exclusive_feature("blast_exclusive",_val[self.pkey]);
+
+                if(isShock && !hasExclusiveShock)
+                {
+                    _cleaned_array.push(_val);
+                    hasExclusiveShock=true;
+                    key_list.push(_val[self.pkey]);
+                }
+                if(isBlast && !hasExclusiveBlast)
+                {
+                    _cleaned_array.push(_val);
+                    hasExclusiveBlast=true;
+                    key_list.push(_val[self.pkey]);
+                }
+
+                if(!key_list.includes(_val[self.pkey]))
+                {
+                    _cleaned_array.push(_val);
+                    key_list.push(_val[self.pkey]);
+                }
+                update_data=!ammo_validate(_val) && update_data===null ? true : update_data;
+                //if invalid and update_data not set, set data
+
+                return _cleaned_array;
+            },[]);
+
+            if(update_data)
+            {
+                this.$emit("update-ammo",JSON.parse(JSON.stringify(temp_selected_feature_array)));
+            }
+
+            return key_list;
+        }
     }
 }
 </script>

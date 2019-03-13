@@ -36,6 +36,8 @@ let ammo_validate=(_data)=>
     {
         return _val.type==_data.type
                 && _val.cost==_data.cost
+                && _val.shock_exclusive==_data.shock_exclusive
+                && _val.blast_exclusive==_data.blast_exclusive;
     });
     return valid;
 }
