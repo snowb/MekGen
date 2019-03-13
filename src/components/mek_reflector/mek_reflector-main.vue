@@ -175,7 +175,7 @@ export default
             let key_list=[];
             let data=null;
 
-            this.reflector_table.some((_val, _index)=>
+            this.reflector_table.some((_val)=>
             {
                 if(_val.quality_value==this.selected_reflector.quality_value)
                 {
