@@ -47,7 +47,7 @@ export default
             let key_list=[];
             let data=null;
 
-            this.armor_type_table.some((_val, _index)=>
+            this.armor_type_table.some((_val)=>
             {
                 if(_val.damage_coefficient==this.armorType.damage_coefficient)
                 {

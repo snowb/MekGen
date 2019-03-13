@@ -51,7 +51,7 @@ export default
             let key_list=[];
             let data=null;
 
-            this.armor_table.some((_val, _index)=>
+            this.armor_table.some((_val)=>
             {
                 if(_val.cost==this.armor.cost)
                 {
