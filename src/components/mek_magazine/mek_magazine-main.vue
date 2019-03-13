@@ -6,7 +6,10 @@
         ></mek-component-name>
         <mek-magazine-select-gun :selected-gun="selected_gun" @update-gun="updateGun"></mek-magazine-select-gun>
         <span class="mek-flex-row">
-            <mek-magazine-ammo-list :ammo-array="feature_array" @update-ammo="updateAmmo" :has-blast="hasBlast"></mek-magazine-ammo-list>
+            <mek-magazine-ammo-list :ammo-array="feature_array" @update-ammo="updateAmmo" 
+                :has-blast="hasBlast"
+            >
+            </mek-magazine-ammo-list>
             <span class="mek-flex-col no-margin">
                 <mek-magazine-shots :shots="selected_shots" @update-shots="updateShots" style="align-self:baseline;"></mek-magazine-shots>
                 <mek-component-stats :cols="3" :rows="3">
