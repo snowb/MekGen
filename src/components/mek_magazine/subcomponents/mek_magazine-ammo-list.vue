@@ -168,7 +168,7 @@ export default
                     _cleaned_array.push(_val);
                     key_list.push(_val[self.pkey]);
                 }
-                update_data=!ammo_validate(_val) && update_data===null ? _index : update_data;
+                update_data=!ammo_validate(_val) && update_data===null ? true : update_data;
                 //if invalid and update_data not set, set data
 
                 return _cleaned_array;
