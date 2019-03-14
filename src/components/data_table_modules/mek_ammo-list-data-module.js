@@ -42,4 +42,12 @@ let ammo_validate=(_data)=>
     return valid;
 }
 
-export {ammo_data_table, ammo_validate, shock_exclusive, blast_exclusive};
+let has_feature=(_key, _val)=>
+{
+    return ammo_data_table.some((_data)=>
+    {
+        return _data[_key]!==undefined && _data[_key]==_val;
+    });
+};
+
+export {ammo_data_table, ammo_validate, has_feature, shock_exclusive, blast_exclusive};
