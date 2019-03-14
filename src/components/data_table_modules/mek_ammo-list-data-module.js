@@ -50,4 +50,21 @@ let has_feature=(_key, _val)=>
     });
 };
 
-export {ammo_data_table, ammo_validate, has_feature, shock_exclusive, blast_exclusive};
+let get_feature=(_key, _val)=>
+{
+    if(has_feature(_key,_val))
+    {
+        let found_feature=null;
+        ammo_data_table.some((_table_val)=>
+        {
+            if(_table_val[_key]==_val)
+            {
+                found_feature=_table_val;
+                return true;
+            }
+        },this);
+        return found_feature;
+    }
+}
+
+export {ammo_data_table, ammo_validate, has_feature, get_feature, shock_exclusive, blast_exclusive};
