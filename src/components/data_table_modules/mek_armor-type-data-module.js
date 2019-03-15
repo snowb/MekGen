@@ -26,4 +26,29 @@ let armor_type_validate=(_data)=>
     return valid;
 }
 
-export {armor_type_data_table, armor_type_validate};
+let has_feature=(_key, _val)=>
+{
+    return armor_type_data_table.some((_data)=>
+    {
+        return _data[_key]!==undefined && _data[_key]==_val;
+    });
+};
+
+let get_feature=(_key, _val)=>
+{
+    if(has_feature(_key,_val))
+    {
+        let found_feature=null;
+        armor_type_data_table.some((_table_val)=>
+        {
+            if(_table_val[_key]==_val)
+            {
+                found_feature=_table_val;
+                return true;
+            }
+        },this);
+        return found_feature;
+    }
+}
+
+export {armor_type_data_table, armor_type_validate, has_feature, get_feature};
