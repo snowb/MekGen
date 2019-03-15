@@ -25,4 +25,13 @@ let reflector_validate=(_data)=>
     return valid;
 }
 
+/* 
+presently:
+
+does not need has_feature function
+
+does not need get_feature function
+
+*/
+
 export {reflector_data_table, reflector_validate};
