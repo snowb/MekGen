@@ -60,8 +60,7 @@ export default
         obj.component_changed=true;
 
         obj.selected_gun={name:"",cost:1,uuid:null};
-        obj.selected_ammo=[{type:"High-Ex",cost:1}];
-        obj.feature_array=[{type:"High-Ex",cost:1}];
+        obj.feature_array=[{type:"High-Ex",cost:1,effect:"Standard"}];
 
         obj.cost_multipliers={};
         obj.cost_multipliers["High-Ex"]=1;
