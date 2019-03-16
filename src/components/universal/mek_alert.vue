@@ -4,7 +4,12 @@
             <div class="metallic_background">
                 <div class="subsection_container">
                     <div class="subsection_header">Alert</div>
-                    <div>
+                    <div v-if="Array.isArray(alertMessage)">
+                        <span v-for="(msg,index) in alertMessage" :key="'msg'+index" style="display:block;">
+                            {{alertMessage[index]}}
+                        </span>
+                    </div>
+                    <div v-else>
                         {{alertMessage}}
                     </div>
                 </div>
