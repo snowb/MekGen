@@ -27,6 +27,7 @@ export default
         let obj={};
         obj.selected_ammo_array=[];
         obj.pkey="type";
+        obj.alerts=[];
         return obj;
     },
     methods:
@@ -35,6 +36,7 @@ export default
         {//refactor to external ammo array cleaner
             let new_selected_ammo_array=this.toggleFeature(this.selected_ammo_array,_selected_ammo);
             new_selected_ammo_array=this.cleanFeatureArray(new_selected_ammo_array).cleaned_array;
+            this.publishAlerts();
             this.$set(this,"selected_ammo_array",new_selected_ammo_array);
             this.$emit("update-ammo",new_selected_ammo_array);
         },
@@ -48,19 +50,24 @@ export default
 
             let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
             {
-                if(!has_feature(self.pkey,_val[self.pkey]))
+                if(_val[self.pkey]===undefined)
                 {//if feature with pkey doesn't exist in data table, ignore
+                    self.addAlert("Mek_Magazine: "+JSON.stringify(_val));
+                    self.addAlert("**** Missing primary key. Ignoring. ****");
                     return _cleaned_array;
                 }
                 let clean_feature=_val;
                 if(!ammo_validate(_val))
                 {//invalid data
-                    clean_feature=get_feature(_val[self.pkey]);
+                    self.addAlert("Mek_Magazine: "+JSON.stringify(_val))
+                    self.addAlert("**** Invalid data, attempting to reset. ****")
+                    clean_feature=get_feature(self.pkey,_val[self.pkey]);
                     update=true;
                     //attempt to set to corrected feature
                 }
                 if(clean_feature===null)
                 {//no matching feature
+                    self.addAlert("**** Unable to reset. No matching data. ****")
                     update=true;
                     return _cleaned_array;
                     //ignore element
@@ -77,6 +84,8 @@ export default
                 }
                 else if(isShock && hasExclusiveShock)
                 {
+                    self.addAlert("Mek_Magazine: "+_val);
+                    self.addAlert("**** Duplicate exclusive shock data. Ignoring. ****");
                     update=true;
                     return _cleaned_array;
                 }
@@ -90,6 +99,8 @@ export default
                 }
                 else if(isBlast && hasExclusiveBlast)
                 {
+                    self.addAlert("Mek_Magazine: "+_val);
+                    self.addAlert("**** Duplicate exclusive blast radius data. Ignoring. ****");
                     update=true;
                     return _cleaned_array;
                 }
@@ -130,6 +141,18 @@ export default
             //otherwise add feature and return
             return feature_array;
         },
+        addAlert(_alert_string)
+        {
+            this.alerts.push(_alert_string);
+        },
+        publishAlerts()
+        {
+            if(this.alerts.length>0)
+            {   
+                this.$store.commit("alertMessage",this.alerts);
+            }
+            this.$set(this,"alerts",[]);
+        },
         is_exclusive_feature:function(_target_array,_feature)
         {
             return this[_target_array].some(function(_val)
@@ -161,20 +184,33 @@ export default
         {
             if(this.ammoArray.length==0)
             {
-                let feature_clone=JSON.parse(JSON.stringify(get_feature("High-Ex")));
-                this.$set(this,"selected_ammo_array",[feature_clone]);
+                let feature_clone=JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")));
+                //this.$set(this,"selected_ammo_array",[feature_clone]);
+                this.select_ammo(feature_clone);
                 return ["High-Ex"];
             }
             if(this.ammoArray.length==1)
             {
                 let pkey_value=this.ammoArray[0][this.pkey];
-                let feature_clone=JSON.parse(JSON.stringify(get_feature(pkey_value)));
-
-                if(!ammo_validate(this.ammoArray[0]))
+                if(pkey_value===undefined || !has_feature(this.pkey,pkey_value))
                 {
-                    this.$emit("update-ammo",[feature_clone]);
+                    let json_data=JSON.stringify(this.ammoArray[0]);
+                    this.addAlert("Mek_Magazine: "+json_data);
+                    this.addAlert("**** Invalid data. Reseting to default. ****");
+                    this.publishAlerts();
+                    let default_data=JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")));
+                    this.select_ammo(default_data);
+                    return ["High-Ex"];
                 }
-                this.$set(this,"selected_ammo_array",[feature_clone]);
+                else if(has_feature(this.pkey,pkey_value) && !ammo_validate(this.ammoArray[0]))
+                {
+                    let json_data=JSON.stringify(get_feature(this.pkey,pkey_value));
+                    let feature_clone=JSON.parse(json_data);
+                    this.addAlert("Mek_Magazine: "+json_data);
+                    this.addAlert("**** Invalid data. Reseting. ****");
+                    this.publishAlerts();
+                    this.select_ammo(feature_clone);
+                }
                 return [pkey_value];
             }
 
@@ -182,6 +218,7 @@ export default
 
             if(cleaned_array.update)
             {
+                this.$set(this,"selected_ammo_array",cleaned_array.cleaned_array);
                 this.$emit("update-ammo",cleaned_array.cleaned_array);
             }
 
