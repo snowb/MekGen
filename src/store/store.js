@@ -81,7 +81,7 @@ let store= new Vuex.Store(
             },
             alertMessage(_state, _message)
             {
-                if(typeof _message==="string")
+                if(typeof _message==="string" || Array.isArray(_message))
                 {
                     Vue.set(_state,"alert_message",_message);
                 }
