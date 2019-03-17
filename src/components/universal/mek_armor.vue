@@ -28,7 +28,7 @@ export default
     data:function()
     {
         let obj={}
-        obj.pkey="name";
+        obj.pkey="stopping_power";
         obj.alerts=[];
         return obj;
     },
