@@ -1,6 +1,6 @@
 <template>
     <mek-sub-component-table
-        :items="armor_table" :selectedKeys="selected_keys" pkey="name"
+        :items="armor_table" :selectedKeys="selected_keys" :pkey="pkey"
         :headers="{name:'Name',stopping_power:'SP',cost:'Cost'}"
         name="Armor" flow="pkey-col" :showHeaders="true"
         @update-selected-data="select_armor"
@@ -12,7 +12,7 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import {armor_data_table, armor_validate, has_feature, get_feature} from "../data_table_modules/mek_armor-data-module.js";
+import {armor_data_table, armor_validate, get_feature} from "../data_table_modules/mek_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
@@ -51,7 +51,6 @@ export default
         selected_keys()
         {
             let key_list=[];
-            let data=null;
             let default_data=get_feature(this.pkey,"None");
 
             if(this.armor===undefined)
@@ -64,7 +63,6 @@ export default
                 if(_val[this.pkey]==this.armor[this.pkey])
                 {
                     key_list.push(this.armor[this.pkey]);
-                    data=_val;
                     return true;
                 }
             },this);
