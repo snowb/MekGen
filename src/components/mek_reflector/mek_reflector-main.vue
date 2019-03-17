@@ -6,7 +6,7 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-sub-component-table
-                :items="reflector_table" pkey="quality_value" :selectedKeys="selected_keys"
+                :items="reflector_table" :pkey="pkey" :selectedKeys="selected_keys"
                 :headers="{quality_value:'QV',cost:'Cost'}"
                 name="Quality" flow="pkey-col" :showHeaders="true"
                 @update-selected-data="select_reflector"
@@ -41,7 +41,7 @@ import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 
-import {reflector_data_table, reflector_validate} from "../data_table_modules/mek_reflector-data-module.js";
+import {reflector_data_table, reflector_validate, has_feature, get_feature} from "../data_table_modules/mek_reflector-data-module.js";
 
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
 export default 
@@ -61,6 +61,7 @@ export default
     data()
     {
         let obj={}
+        obj.pkey="quality_value";
 
         obj.uuid=null;
         obj.component_name=null;
@@ -74,6 +75,8 @@ export default
         obj.efficiencies.space={};
         obj.efficiencies.space.cost=0;
         obj.efficiencies.space.modifier=0;
+
+        obj.alerts=[];
         return obj;
     },
     methods:
@@ -172,24 +175,30 @@ export default
         },
         selected_keys()
         {
-            let key_list=[];
-            let data=null;
+            let default_data=get_feature(this.pkey,1);
 
-            this.reflector_table.some((_val)=>
+            if(this.selected_reflector===undefined)
             {
-                if(_val.quality_value==this.selected_reflector.quality_value)
-                {
-                    key_list.push(this.selected_reflector.quality_value);
-                    data=_val;
-                    return true;
-                }
-            },this);
-
-            if(!reflector_validate(this.selected_reflector))
-            {
-                this.select_reflector(data);
+                this.select_reflector(default_data);
             }
-            return key_list;
+            let has_reflector=has_feature(this.pkey,this.selected_reflector[this.pkey]);
+            let json_data=JSON.stringify(this.selected_reflector);
+            if(!has_reflector)
+            {
+                this.addAlert("Mek_Reflector: "+json_data);
+                this.addAlert("**** Invalid data. Reseting to default. ****");
+                this.publishAlerts();
+                this.select_reflector(default_data);
+                return [default_data[this.pkey]];
+            }
+            else if(!reflector_validate(this.selected_reflector))
+            {
+                this.addAlert("Mek_Reflector: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
+                this.publishAlerts();
+                this.select_reflector(get_feature(this.selected_reflector[this.pkey]));
+            }
+            return [this.selected_reflector[this.pkey]];
         }
     }
 }
