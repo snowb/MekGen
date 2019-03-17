@@ -36,17 +36,16 @@ export default
     {
         resetAlert()
         {
-            this.$store.commit("alertMessage","")
+            this.$store.commit("resetAlertMessages");
         }
     },
     computed:
     {
         alertMessage()
         {
-            this.$store.getters.alertMessage;
-            let alertMessage=this.$store.getters.alertMessage;
-            this.$set(this,"showAlert",!!alertMessage)
-            return alertMessage;
+            let alertMessages=this.$store.getters.alertMessages;
+            this.$set(this,"showAlert",!!alertMessages && alertMessages.length>0)
+            return alertMessages;
         }
     }
 }
@@ -91,7 +90,7 @@ export default
 }
 .alert-leave-active
 {
-    transition: all 500ms 5s;
+    transition: all 500ms 3s;
 }
 .alert-leave-to
 {
