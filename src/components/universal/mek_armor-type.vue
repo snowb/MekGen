@@ -1,6 +1,6 @@
 <template>
     <mek-sub-component-table
-        :items="armor_type_table" :selectedKeys="selected_keys" pkey="damage_coefficient"
+        :items="armor_type_table" :selectedKeys="selected_keys" :pkey="pkey"
         :headers="{type:'Type',damage_coefficient:'DC',cost:'Cost'}"
         name="Armor Type" flow="pkey-col" :showHeaders="true"
         :format="{cost:'multiplier'}"
@@ -15,6 +15,7 @@ import utility_mixin from "../../mixins/utility_mixin.js";
 import {armor_type_data_table, armor_type_validate, has_feature, get_feature} from "../data_table_modules/mek_armor-type-data-module.js"
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
+import { deflate } from 'zlib';
 export default 
 {
     name: "mek_armor_type",
@@ -27,6 +28,7 @@ export default
     data:function()
     {
         let obj={}
+        obj.pkey="damage_coefficient";
         return obj;
     },
     methods:
@@ -46,22 +48,31 @@ export default
         {
             let key_list=[];
             let data=null;
-
-            this.armor_type_table.some((_val)=>
+            let default_data=get_feature(this.pkey,1);
+            if(this.armorType===undefined)
             {
-                if(_val.damage_coefficient==this.armorType.damage_coefficient)
-                {
-                    key_list.push(this.armorType.damage_coefficient);
-                    data=_val;
-                    return true;
-                }
-            },this);
-
-            if(!armor_type_validate(this.armorType))
-            {
-                this.select_armor_type(data);
+                this.select_armor_type(default_data);
+                return [default_data[this.pkey]];
             }
-            return key_list;
+
+            let has_armor_type=has_feature(this.pkey,this.armorType[this.pkey]);
+            let json_data=JSON.stringify(this.armorType);
+            if(!has_armor_type)
+            {
+                this.addAlert("Mek_Armor-Type: "+json_data);
+                this.addAlert("**** Invalid data. Reseting to default. ****");
+                this.publishAlerts();
+                this.select_armor(default_data);
+                return [default_data[this.pkey]];
+            }
+            else if(!armor_type_validate(this.armorType))
+            {
+                this.addAlert("Mek_Armor: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
+                this.publishAlerts();
+                this.select_armor(get_feature(this.armorType[this.pkey]));
+            }
+            return [this.armorType[this.pkey]];
         }
     }
 }
