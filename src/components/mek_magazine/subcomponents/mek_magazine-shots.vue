@@ -9,29 +9,16 @@
             </div>
         </div>
     </span>
-    <!--mek-sub-component-table
-        :items="filteredAmmoArray"
-        :headers="{type:'Type',cost:'Cost',effect:'Effect'}" :showHeaders="true"
-        :format="{cost:'multiplier'}"
-        name="Ammo Table" flow="col"
-        :selectedIndices="selected_ammo_index_array"
-        @update-selected-indices="select_ammo"
-    ></mek-sub-component-table-->
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
-//import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_magazine_shots",
     props:["shots"],
     mixins:[selected_item_mixin,utility_mixin],
-    /* components:
-    {
-        "mek-sub-component-table":mek_sub_component_table
-    }, */
     data:function()
     {
         let obj={};
