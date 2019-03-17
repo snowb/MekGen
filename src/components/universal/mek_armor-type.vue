@@ -11,6 +11,7 @@
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
+import alerts_mixin from "../../mixins/alerts_mixin.js";
 
 import {armor_type_data_table, armor_type_validate, has_feature, get_feature} from "../data_table_modules/mek_armor-type-data-module.js"
 
@@ -19,7 +20,7 @@ export default
 {
     name: "mek_armor_type",
     props:["armorType"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin, alerts_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table
@@ -28,6 +29,7 @@ export default
     {
         let obj={}
         obj.pkey="damage_coefficient";
+        obj.alert=[];
         return obj;
     },
     methods:

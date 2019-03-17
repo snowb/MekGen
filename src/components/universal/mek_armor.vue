@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import component_methods_mixin from "../../mixins/component_methods_mixin";
+import alerts_mixin from "../../mixins/alerts_mixin";
 import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
@@ -20,7 +20,7 @@ export default
 {
     name: "mek_armor",
     props:["armor","maxArmor"],
-    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin, component_methods_mixin],
+    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin, alerts_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table

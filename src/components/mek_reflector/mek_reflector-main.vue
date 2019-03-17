@@ -40,15 +40,17 @@ import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
+import alerts from "../../mixins/alerts_mixin";
 
 import {reflector_data_table, reflector_validate, has_feature, get_feature} from "../data_table_modules/mek_reflector-data-module.js";
 
 import mek_sub_component_table from "../universal/mek_sub-component-table.vue";
+import alerts_mixin from '../../mixins/alerts_mixin';
 export default 
 {
     name:"mek_reflector",
     props:[],
-    mixins:[selected_item_mixin, utility_mixin, component_methods_mixin, component_computed_mixin],
+    mixins:[selected_item_mixin, utility_mixin, component_methods_mixin, component_computed_mixin, alerts_mixin],
     components:
     {
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),

@@ -9,6 +9,7 @@
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
 
 import {ammo_data_table, ammo_validate, has_feature, get_feature, shock_exclusive, blast_exclusive} from "../../data_table_modules/mek_ammo-list-data-module.js";
 
@@ -17,7 +18,7 @@ export default
 {
     name:"mek_magazine_ammo_list",
     props:["ammoArray","hasBlast"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin, alerts_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table
