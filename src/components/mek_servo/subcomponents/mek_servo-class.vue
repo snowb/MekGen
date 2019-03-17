@@ -23,13 +23,14 @@ export default
     data:()=>
     {
         let obj={};
+        obj.count=0;
         return obj;
     },
     methods:
     {
         select_class:function(_selected_class_index)
         {
-            this.$emit("update-servo-class",this.class_table[_selected_class_index]);
+            this.$emit("update-servo-class",JSON.parse(JSON.stringify(this.class_table[_selected_class_index])));
         }
     },
     computed:
@@ -47,11 +48,12 @@ export default
                 }
             },this);
 
-            let matchingDamageBonus=typeof this.class_table[index].damage_bonus!=="undefined" && typeof this.servoClass.damage_bonus==="undefined";
-            matchingDamageBonus=matchingDamageBonus && this.class_table[index].damage_bonus==this.servoClass.damage_bonus;
-            let matchingThrow=typeof this.class_table[index].throw_range!=="undefined" && typeof this.servoClass.throw_range==="undefined";
-            matchingThrow=matchingDamageBonus && this.class_table[index].throw_range==this.servoClass.throw_range;
-
+            let matchingDamageBonus=this.class_table[index].damage_bonus===undefined && this.servoClass.damage_bonus===undefined
+                                    ? true
+                                    : this.class_table[index].damage_bonus==this.servoClass.damage_bonus;
+            let matchingThrow=this.class_table[index].throw_range===undefined && this.servoClass.throw_range===undefined
+                                    ? true
+                                    : this.class_table[index].throw_range==this.servoClass.throw_range;
 
             switch(true)
             {
@@ -126,7 +128,7 @@ export default
                 //case "tail":
                 //    break;
             }
-            return this.servo_classes.map((_val)=>
+            let new_class_table = this.servo_classes.map((_val)=>
             {
                 let obj={};
                 obj.code=_val.code;
@@ -145,6 +147,7 @@ export default
                 }
                 return obj;
             });
+            return new_class_table;
         }
     }
 }
