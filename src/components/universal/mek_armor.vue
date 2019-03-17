@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import component_methods_mixin from "../../mixins/component_methods_mixin";
 import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
@@ -19,7 +20,7 @@ export default
 {
     name: "mek_armor",
     props:["armor","maxArmor"],
-    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin],
+    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin, component_methods_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table
@@ -50,14 +51,17 @@ export default
         },
         selected_keys()
         {
-            let key_list=[];
             let default_data=get_feature(this.pkey,"None");
 
             if(this.armor===undefined)
             {
                 this.select_armor(default_data);
             }
-            let has_armor=has_feature(this.pkey,this.armor[this.pkey]);
+
+            let has_armor=this.armor_table.some((_val)=>
+            {
+                return _val[this.pkey]==this.armor[this.pkey];
+            },this);
             let json_data=JSON.stringify(this.armor);
             if(!has_armor)
             {
@@ -72,7 +76,7 @@ export default
                 this.addAlert("Mek_Armor: "+json_data);
                 this.addAlert("**** Invalid data. Reseting. ****");
                 this.publishAlerts();
-                this.select_armor(get_feature(this.armor[this.pkey]));
+                this.select_armor(get_feature(this.pkey,this.armor[this.pkey]));
             }
             return [this.armor[this.pkey]];
         }
