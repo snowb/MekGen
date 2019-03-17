@@ -15,7 +15,6 @@ import utility_mixin from "../../mixins/utility_mixin.js";
 import {armor_type_data_table, armor_type_validate, has_feature, get_feature} from "../data_table_modules/mek_armor-type-data-module.js"
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
-import { deflate } from 'zlib';
 export default 
 {
     name: "mek_armor_type",
@@ -46,8 +45,6 @@ export default
         },
         selected_keys()
         {
-            let key_list=[];
-            let data=null;
             let default_data=get_feature(this.pkey,1);
             if(this.armorType===undefined)
             {
