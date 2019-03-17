@@ -25,13 +25,29 @@ let reflector_validate=(_data)=>
     return valid;
 }
 
-/* 
-presently:
+let has_feature=(_key, _val)=>
+{
+    return reflector_data_table.some((_data)=>
+    {
+        return _data[_key]!==undefined && _data[_key]==_val;
+    });
+};
 
-does not need has_feature function
+let get_feature=(_key, _val)=>
+{
+    if(has_feature(_key,_val))
+    {
+        let found_feature=null;
+        reflector_data_table.some((_table_val)=>
+        {
+            if(_table_val[_key]==_val)
+            {
+                found_feature=_table_val;
+                return true;
+            }
+        },this);
+        return found_feature;
+    }
+}
 
-does not need get_feature function
-
-*/
-
-export {reflector_data_table, reflector_validate};
+export {reflector_data_table, reflector_validate, has_feature, get_feature};
