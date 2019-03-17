@@ -70,7 +70,7 @@ export default
                 this.addAlert("Mek_Armor: "+json_data);
                 this.addAlert("**** Invalid data. Reseting. ****");
                 this.publishAlerts();
-                this.select_armor(get_feature(this.armorType[this.pkey]));
+                this.select_armor(get_feature(this.pkey, this.armorType[this.pkey]));
             }
             return [this.armorType[this.pkey]];
         }
