@@ -10,7 +10,7 @@ let store= new Vuex.Store(
         {
             components:{
                 "00b21977-fa33-4f49-925b-5f766792384c":JSON.parse('{"uuid":"00b21977-fa33-4f49-925b-5f766792384c","component_category":"equipment","component_type":"projectile","component_name":"Gun","cost_multipliers":{"accuracy":1,"feature":1,"multi_feed":1,"burst_value":1,"range_mod":1.25},"efficiencies":{"space":{"cost":0,"modifier":0}},"selected_damage":{"damage":9,"cost":9,"range":9},"selected_accuracy":{"accuracy":0,"cost":1},"feature_array":[],"selected_range_mod":{"range_mod":1.5,"cost":1.25},"selected_multi_feed":{"feeds":1,"cost":1},"selected_burst_value":{"burst_value":1,"cost":1},"cost":11.25,"cost_multiplier":1.25,"weight":4.5,"damage_capacity":9}'),
-                "24417195-7da1-4562-9e1f-04982fee5ddc":JSON.parse('{"uuid":"24417195-7da1-4562-9e1f-04982fee5ddc","component_category":"equipment","component_type":"servo","component_name":"Torso Servo - Armored","selected_servo_type":{"type":"Torso"},"selected_servo_class":{"code":1,"id":"SL","name":"Superlight","cost":2,"space":2,"kills":2},"selected_armor":{"name":"Striker","cost":0,"stopping_power":1,"code":1},"selected_armor_type":{"type":"Standard","damage_coefficient":1,"cost":1},"selected_absorption":{"absorption":0,"cost":1,"armor_penalty":0},"cost_multipliers":{"armor_type":1,"absorption":1},"kills_space_trade":{"space_modifier":0,"kills_modifier":0,"cost":0},"cost":3,"cost_multiplier":1,"weight":1.5,"total_kills":2,"available_space":2}')
+                "24417195-7da1-4562-9e1f-04982fee5ddc":JSON.parse('{"uuid":"24417195-7da1-4562-9e1f-04982fee5ddc","component_category":"equipment","component_type":"servo","component_name":"Error Test Servo","selected_servo_type":{"type":"Torso"},"selected_servo_class":{"code":1,"id":"SL","name":"Superlight","cost":2,"space":2,"kills":2},"selected_armor":{"name":"Striker","cost":0,"stopping_power":1,"code":1},"selected_armor_type":{"type":"Standard","damage_coefficient":1,"cost":1},"selected_absorption":{"absorption":0,"cost":1,"armor_penalty":0},"cost_multipliers":{"armor_type":1,"absorption":1},"kills_space_trade":{"space_modifier":0,"kills_modifier":0,"cost":0},"cost":3,"cost_multiplier":1,"weight":1.5,"total_kills":2,"available_space":2}')
             },
             component_list:{
                 equipment:
@@ -21,7 +21,7 @@ let store= new Vuex.Store(
                     },
                     servo:
                     {
-                        "24417195-7da1-4562-9e1f-04982fee5ddc":"Torso Servo - Armored"
+                        "24417195-7da1-4562-9e1f-04982fee5ddc":"Error Test Servo"
                     }
                 }
             },
