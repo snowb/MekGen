@@ -12,7 +12,7 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import {armor_data_table, armor_validate, get_feature} from "../data_table_modules/mek_armor-data-module.js";
+import {armor_data_table, armor_validate, get_feature, has_feature} from "../data_table_modules/mek_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
@@ -57,16 +57,7 @@ export default
             {
                 this.select_armor(default_data);
             }
-
-            let has_armor=this.armor_table.some((_val)=>
-            {
-                if(_val[this.pkey]==this.armor[this.pkey])
-                {
-                    key_list.push(this.armor[this.pkey]);
-                    return true;
-                }
-            },this);
-
+            let has_armor=has_feature(this.pkey,this.armor[this.pkey]);
             let json_data=JSON.stringify(this.armor);
             if(!has_armor)
             {
@@ -83,8 +74,7 @@ export default
                 this.publishAlerts();
                 this.select_armor(get_feature(this.armor[this.pkey]));
             }
-
-            return key_list;
+            return [this.armor[this.pkey]];
         }
     }
 }
