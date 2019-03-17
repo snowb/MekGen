@@ -141,18 +141,6 @@ export default
             //otherwise add feature and return
             return feature_array;
         },
-        addAlert(_alert_string)
-        {
-            this.alerts.push(_alert_string);
-        },
-        publishAlerts()
-        {
-            if(this.alerts.length>0)
-            {   
-                this.$store.commit("alertMessage",this.alerts);
-            }
-            this.$set(this,"alerts",[]);
-        },
         is_exclusive_feature:function(_target_array,_feature)
         {
             return this[_target_array].some(function(_val)
