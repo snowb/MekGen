@@ -1,21 +1,21 @@
 <template>
     <mek-sub-component-table
-        :items="class_table" :headers="class_table_headers"
-        name="Servo Class" flow="col" :showHeaders="true"
-        :selectedIndices="class_index"
-        @update-selected-indices="select_class"
+        :items="class_table" :headers="class_table_headers" :selectedKeys="selected_keys" :pkey="pkey"
+        name="Servo Class" flow="pkey-col" :showHeaders="true"
+        @update-selected-data="select_class"
     ></mek-sub-component-table>
 </template>
 <script>
 import servo_classes_mixin from "../../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
 export default 
 {
     name:"mek_servo_class",
-    props:["servoClass","servoType"],
-    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin],
+    props:["servoClass","servoType","suppressAlerts"],
+    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue"),
@@ -23,49 +23,95 @@ export default
     data:()=>
     {
         let obj={};
+        obj.pkey="name";
+        obj.alerts=[];
+        obj.selected_class=null;
         return obj;
     },
     methods:
     {
-        select_class:function(_selected_class_index)
+        select_class:function(_selected_class)
         {
-            this.$emit("update-servo-class",JSON.parse(JSON.stringify(this.class_table[_selected_class_index])));
+            let selected_class=JSON.parse(JSON.stringify(_selected_class));
+            this.$set(this,"selected_class",selected_class);
+            this.$emit("update-servo-class",selected_class);
+        },
+        get_feature(_pkey_value)
+        {
+            if(this.has_feature(_pkey_value))
+            {
+                let found_feature=null;
+                this.class_table.some((_table_val)=>
+                {
+                    if(_table_val[this.pkey]==_pkey_value)
+                    {
+                        found_feature=_table_val;
+                        return true;
+                    }
+                },this);
+                return found_feature;
+            }
+        },
+        has_feature(_pkey_value)
+        {
+            return this.class_table.some((_val)=>
+            {
+                return _val[this.pkey]==_pkey_value;
+            },this);
+        },
+        class_validate(_data)
+        {
+            if(typeof _data==="undefined")
+            {
+                return false;
+            }
+            let valid=this.class_table.some((_val)=>
+            {
+                return _val.name==_data.name
+                    && _val.id==_data.id
+                    && _val.code==_data.code
+                    && _val.cost==_data.cost
+                    && _val.space==_data.space
+                    && _val.damage_bonus==_data.damage_bonus
+                    && _val.throw_range==_data.throw_range;
+            });
+
+            return valid;
         }
     },
     computed:
     {
-        class_index()
+        selected_keys()
         {
-            let index=0;
+            let default_data=this.get_feature("Superlight");
 
-            this.class_table.some((_elem,_index)=>
+            if(this.servoClass===undefined)
             {
-                if(_elem.code==this.servoClass.code)
-                {
-                    index=_index;
-                    return true;
-                }
-            },this);
-
-            let matchingDamageBonus=this.class_table[index].damage_bonus===undefined && this.servoClass.damage_bonus===undefined
-                                    ? true
-                                    : this.class_table[index].damage_bonus==this.servoClass.damage_bonus;
-            let matchingThrow=this.class_table[index].throw_range===undefined && this.servoClass.throw_range===undefined
-                                    ? true
-                                    : this.class_table[index].throw_range==this.servoClass.throw_range;
-
-            switch(true)
-            {
-                case this.servoClass.name!=this.class_table[index].name:
-                case this.servoClass.cost!=this.class_table[index].cost:
-                case this.servoClass.space!=this.class_table[index].space:
-                case this.servoClass.kills!=this.class_table[index].kills:
-                case !matchingDamageBonus:
-                case !matchingThrow:
-                    this.select_class(index);
+                this.select_class(default_data);
             }
-
-            return [index];
+            let json_data=JSON.stringify(this.servoClass);
+            if(!this.has_feature(this.servoClass[this.pkey]))
+            {
+                if(!this.suppressAlerts)
+                {
+                    this.addAlert("Mek_Servo-Class: "+json_data);
+                    this.addAlert("**** Invalid data. Reseting to default. ****");
+                    this.publishAlerts();
+                }
+                this.select_class(default_data);
+                return [default_data[this.pkey]];
+            }
+            else if(!this.class_validate(this.servoClass))
+            {
+                if(!this.suppressAlerts)
+                {
+                    this.addAlert("Mek_Servo-Class: "+json_data);
+                    this.addAlert("**** Invalid data. Reseting. ****");
+                    this.publishAlerts();
+                }               
+                this.select_class(this.get_feature(this.servoClass[this.pkey]));
+            }
+            return [this.servoClass[this.pkey]];
         },
         class_table_headers()
         {
