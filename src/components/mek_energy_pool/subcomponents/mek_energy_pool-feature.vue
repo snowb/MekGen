@@ -179,7 +179,7 @@ export default
             let cleaned_array=this.cleanFeatureArray(this.featureArray);
 
             if(cleaned_array.update)
-            {c
+            {
                 this.$set(this,"feature_table",cleaned_array.cleaned_array);
                 this.$emit("update-feature",cleaned_array.cleaned_array);
             }
