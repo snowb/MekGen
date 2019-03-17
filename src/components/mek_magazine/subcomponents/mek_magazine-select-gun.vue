@@ -25,6 +25,7 @@ export default
     data:function()
     {
         let obj={};
+        obj.pkey="uuid";
         return obj;
     },
     methods:
@@ -33,6 +34,39 @@ export default
         {
             this.$emit("update-gun", this.gun_table[_gun_index], _gun_name_change);
         },
+        /*
+        need to add PKEY-DROPDOWN to sub-component-table to be usable
+        
+        get_feature(_pkey_val)
+        {
+            let found_feature=this.gun_table.filter((_val)=>
+            {
+                return _val[this.pkey]==_pkey_val;
+            },this);
+
+            return found_feature[0];
+        },
+        has_feature(_pkey_val)
+        {
+            return this.gun_table.some((_val)=>
+            {
+                return _val[this.pkey]==_pkey_val;
+            },this);
+        },
+        gun_validate(_data)
+        {
+            if(typeof _data==="undefined")
+            {
+                return false;
+            }
+            let valid=this.gun_table.some((_val)=>
+            {
+                return _val.uuid==_data.uuid
+                        && _val.cost==_data.cost
+                        && _val.name==_data.name;
+            });
+            return valid;
+        } */
     },
     computed:
     {
@@ -60,6 +94,35 @@ export default
             }
             return [index];
         },
+        /* selected_keys()
+        {
+            let default_data=JSON.parse(JSON.stringify(this.get_feature(this.pkey,"(none)")));
+            if(this.selectedGun===undefined)
+            {
+                this.select_gun(feature_clone);
+                return [default_data[this.pkey]];
+            }
+            let pkey_value=this.selectedGun[this.pkey];
+            if(pkey_value===undefined || !this.has_feature(this.pkey,pkey_value))
+            {
+                let json_data=JSON.stringify(this.selectedGun);
+                this.addAlert("Mek_Magazine-Select-Gun: "+json_data);
+                this.addAlert("**** Invalid data. Reseting to default. ****");
+                this.publishAlerts();
+                this.select_gun(default_data);
+                return ["(none)"];
+            }
+            else if(this.has_feature(this.pkey,pkey_value) && !this.gun_validate(this.selectedGun))
+            {
+                let json_data=JSON.stringify(this.get_feature(this.pkey,pkey_value));
+                let feature_clone=JSON.parse(json_data);
+                this.addAlert("Mek_Magazine-Select-Gun: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
+                this.publishAlerts();
+                this.select_gun(feature_clone);
+            }
+            return [pkey_value];
+        }, */
         gun_table()
         {
 
