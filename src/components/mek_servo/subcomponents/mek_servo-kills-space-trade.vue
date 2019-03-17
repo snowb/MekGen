@@ -21,6 +21,7 @@
 </template>
 <script>
 import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
 import 'vue-awesome/icons/plus-square';
 import Icon from 'vue-awesome/components/Icon';
@@ -41,6 +42,7 @@ export default
         obj.selected_modifier.kills=0;
         obj.selected_modifier.space=0;
         obj.selected_modifier.cost=0;
+        obj.alerts=[];
         return obj;
     },
     methods:
@@ -86,6 +88,7 @@ export default
                 case this.new_kills<=0:
                 case this.new_space<0:
                 case ((this.selected_modifier.kills*2) + this.selected_modifier.space)!==0:
+                    this.addAlert("Mek_Servo-Kills-Space-Trade: Invalid values, reseting to 0.");
                     this.selected_modifier.kills=0;
                     this.selected_modifier.space=0;
                     this.selected_modifier.cost=0;
