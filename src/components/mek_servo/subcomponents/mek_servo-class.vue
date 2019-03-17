@@ -23,7 +23,6 @@ export default
     data:()=>
     {
         let obj={};
-        obj.count=0;
         return obj;
     },
     methods:
@@ -108,15 +107,9 @@ export default
                     type_kills_multiplier=2;
                     break;
                 case "arm":
-                    type_cost_modifier=1;
-                    type_space_modifier=1;
-                    type_kills_modifier=1;
                     isArm=true;
                     break;
                 case "leg":
-                    type_cost_modifier=1;
-                    type_space_modifier=1;
-                    type_kills_modifier=1;
                     isLeg=true;
                     break;
                 case "pod":
