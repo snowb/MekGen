@@ -6,6 +6,7 @@
         :selectedIndices="gun_index"
         @update-selected-indices="select_gun"
     ></mek-sub-component-table>
+    <!--- uses dropdown for selection, have not written a pkey based dropdown option ...--->
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
