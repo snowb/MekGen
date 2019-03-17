@@ -52,14 +52,14 @@ export default
             {
                 if(_val[self.pkey]===undefined)
                 {//if feature with pkey doesn't exist in data table, ignore
-                    self.addAlert("Mek_Magazine: "+JSON.stringify(_val));
+                    self.addAlert("Mek_Magazine-Ammo-List: "+JSON.stringify(_val));
                     self.addAlert("**** Missing primary key. Ignoring. ****");
                     return _cleaned_array;
                 }
                 let clean_feature=_val;
                 if(!ammo_validate(_val))
                 {//invalid data
-                    self.addAlert("Mek_Magazine: "+JSON.stringify(_val))
+                    self.addAlert("Mek_Magazine-Ammo-List: "+JSON.stringify(_val))
                     self.addAlert("**** Invalid data, attempting to reset. ****")
                     clean_feature=get_feature(self.pkey,_val[self.pkey]);
                     update=true;
@@ -84,7 +84,7 @@ export default
                 }
                 else if(isShock && hasExclusiveShock)
                 {
-                    self.addAlert("Mek_Magazine: "+_val);
+                    self.addAlert("Mek_Magazine-Ammo-List: "+_val);
                     self.addAlert("**** Duplicate exclusive shock data. Ignoring. ****");
                     update=true;
                     return _cleaned_array;
@@ -99,7 +99,7 @@ export default
                 }
                 else if(isBlast && hasExclusiveBlast)
                 {
-                    self.addAlert("Mek_Magazine: "+_val);
+                    self.addAlert("Mek_Magazine-Ammo-List: "+_val);
                     self.addAlert("**** Duplicate exclusive blast radius data. Ignoring. ****");
                     update=true;
                     return _cleaned_array;
@@ -195,7 +195,7 @@ export default
                 if(pkey_value===undefined || !has_feature(this.pkey,pkey_value))
                 {
                     let json_data=JSON.stringify(this.ammoArray[0]);
-                    this.addAlert("Mek_Magazine: "+json_data);
+                    this.addAlert("Mek_Magazine-Ammo-List: "+json_data);
                     this.addAlert("**** Invalid data. Reseting to default. ****");
                     this.publishAlerts();
                     let default_data=JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")));
@@ -206,7 +206,7 @@ export default
                 {
                     let json_data=JSON.stringify(get_feature(this.pkey,pkey_value));
                     let feature_clone=JSON.parse(json_data);
-                    this.addAlert("Mek_Magazine: "+json_data);
+                    this.addAlert("Mek_Magazine-Ammo-List: "+json_data);
                     this.addAlert("**** Invalid data. Reseting. ****");
                     this.publishAlerts();
                     this.select_ammo(feature_clone);
