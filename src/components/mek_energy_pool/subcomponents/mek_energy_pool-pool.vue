@@ -1,22 +1,25 @@
 <template>
     <mek-sub-component-table
-        :items="energy_pool_table"
+        :items="energy_pool_table" :selectedKeys="selected_keys" :pkey="pkey"
         :headers="{cost:'Cost',power_available:'Power Available',max_power:'Maximum Power',damage_capacity:'DC'}"
-        name="Energy Pool" flow="col" :showHeaders="true"
-        :selectedIndices="energy_pool_index"
-        @update-selected-indices="select_energy_pool"
+        name="Energy Pool" flow="pkey-col" :showHeaders="true"
+        @update-selected-data="select_energy_pool"
     ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import  {energy_pool_data_table, energy_pool_validate, has_feature, get_feature}
+    from "../../data_table_modules/mek_energy_pool-pool-data-module";
 
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_energy_pool_pool",
     props:["energyPool"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table
@@ -24,56 +27,49 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.energy_pool_table=
-        [
-            {cost:10,power_available:0,max_power:50,damage_capacity:5},
-            {cost:10,power_available:5,max_power:25,damage_capacity:4},
-            {cost:20,power_available:10,max_power:40,damage_capacity:7},
-            {cost:30,power_available:15,max_power:45,damage_capacity:8},
-            {cost:40,power_available:20,max_power:50,damage_capacity:10},
-            {cost:50,power_available:25,max_power:55,damage_capacity:11},
-            {cost:60,power_available:30,max_power:60,damage_capacity:13},
-        ];
-
-        obj.selected_energy_pool={damage:1,cost:1.5,range:4};
-
+        //obj.selected_energy_pool={damage:1,cost:1.5,range:4};
+        obj.pkey="power_available";
+        obj.alerts=[];
         return obj;
     },
     methods:
     {
-        select_energy_pool:function(_energy_pool_index)
+        select_energy_pool:function(_energy_pool)
         {
-            this.$emit("update-energy-pool", this.energy_pool_table[_energy_pool_index]);
+            this.$emit("update-energy-pool", JSON.parse(JSON.stringify(_energy_pool)));
         },
     },
     computed:
     {
-        energy_pool_index()
+        energy_pool_table()
         {
-            let energy_pool_index=0;
-            this.energy_pool_table.some((_val,_index)=>
-            {
-                if(this.energyPool.power_available==_val.power_available)
-                {
-                    energy_pool_index=_index;
-                    return true;
-                }
-            });
+            return energy_pool_data_table;
+        },
+        selected_keys()
+        {
+            let default_data=get_feature(this.pkey,0);
 
-            let update=false;
-            switch(true)
+            if(this.energyPool===undefined)
             {
-                case this.energyPool.cost!=this.energy_pool_table[energy_pool_index].cost:
-                case this.energyPool.max_power!=this.energy_pool_table[energy_pool_index].max_power:
-                case this.energyPool.damage_capacity!=this.energy_pool_table[energy_pool_index].damage_capacity:
-                    update=true;       
+                this.select_energy_pool(default_data);
             }
-            if(update)
-            {   
-                this.select_energy_pool(energy_pool_index);
+            let json_data=JSON.stringify(this.energyPool);
+            if(!has_feature(this.pkey,this.energyPool[this.pkey]))
+            {
+                this.addAlert("Mek_Energy_Pool-Pool: "+json_data);
+                this.addAlert("**** Invalid data. Reseting to default. ****");
+                this.publishAlerts();
+                this.select_energy_pool(default_data);
+                return [default_data[this.pkey]];
             }
-            return [energy_pool_index];
+            else if(!energy_pool_validate(this.energyPool))
+            {
+                this.addAlert("Mek_Energy_Pool-Pool: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
+                this.publishAlerts();
+                this.select_energy_pool(get_feature(this.pkey,this.energyPool[this.pkey]));
+            }
+            return [this.energyPool[this.pkey]];
         }
     }
 }
