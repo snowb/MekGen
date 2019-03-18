@@ -29,7 +29,7 @@ import Icon from 'vue-awesome/components/Icon';
 export default
 {
     name:"mek_servo_kills_space_trade",
-    mixins:[utility_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     props:["base_kills","space_modifier","kills_modifier","base_space"],
     components:
     {
