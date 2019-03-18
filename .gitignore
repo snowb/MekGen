@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 dev-branch
+./components/universal/mek-space-efficiency.orig.vue
 
 # local env files
 .env.local
