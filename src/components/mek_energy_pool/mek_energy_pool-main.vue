@@ -150,7 +150,7 @@ export default
                     this.component_name=null;
                     this.$set(this,"selected_energy_pool",{cost:10,power_available:0,max_power:50,damage_capacity:5});
                     this.$set(this,"feature_array",[]);
-                    this.selected_portfolio_size.size=3;
+                    this.$set(this,"selected_portfolio_size",{size:3,cost:1});
                     this.selected_morphable=false;
                     this.cost_multipliers.portfolio_size=1;
                     this.cost_multipliers.feature=1;
