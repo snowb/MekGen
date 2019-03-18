@@ -87,6 +87,10 @@ export default
             let self=this;
             let update=false;
             let key_list=[];
+            if(_feature_array.length==0)
+            {
+                return {cleaned_array:[],update:update,key_list:key_list};
+            }
 
             let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
             {
