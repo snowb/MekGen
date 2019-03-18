@@ -27,7 +27,6 @@ export default
     data:function()
     {
         let obj={};
-        //obj.selected_energy_pool={damage:1,cost:1.5,range:4};
         obj.pkey="power_available";
         obj.alerts=[];
         return obj;
