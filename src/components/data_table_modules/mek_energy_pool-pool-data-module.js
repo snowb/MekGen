@@ -21,9 +21,10 @@ let energy_pool_validate=(_data)=>
     }
     let valid=energy_pool_data_table.some((_val)=>
     {
-        return _val.type==_data.type
+        return _val.power_available==_data.power_available
                 && _val.cost==_data.cost
-                && _val.damage_coefficient==_data.damage_coefficient;
+                && _val.max_power==_data.max_power
+                && _val.damage_capacity==_data.damage_capacity;
     });
     return valid;
 }
