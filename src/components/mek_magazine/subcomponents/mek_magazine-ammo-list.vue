@@ -36,8 +36,9 @@ export default
     {
         select_ammo:function(_selected_ammo)
         {//refactor to external ammo array cleaner
+            let suppress_alerts=true;//suppress alerts for exclusives
             let new_selected_ammo_array=this.toggleFeature(this.selected_ammo_array,_selected_ammo);
-            new_selected_ammo_array=this.cleanFeatureArray(new_selected_ammo_array).cleaned_array;
+            new_selected_ammo_array=this.cleanFeatureArray(new_selected_ammo_array, suppress_alerts).cleaned_array;
             this.publishAlerts();
             this.$set(this,"selected_ammo_array",new_selected_ammo_array);
             this.$emit("update-ammo",new_selected_ammo_array);
@@ -86,8 +87,11 @@ export default
                 }
                 else if(isShock && hasExclusiveShock)
                 {
-                    self.addAlert("Mek_Magazine-Ammo-List: "+_val);
-                    self.addAlert("**** Duplicate exclusive shock data. Ignoring. ****");
+                    if(!_suppress_alerts)
+                    {
+                        self.addAlert("Mek_Magazine-Ammo-List: "+_val);
+                        self.addAlert("**** Duplicate exclusive shock data. Ignoring. ****");
+                    }
                     update=true;
                     return _cleaned_array;
                 }
@@ -101,8 +105,11 @@ export default
                 }
                 else if(isBlast && hasExclusiveBlast)
                 {
-                    self.addAlert("Mek_Magazine-Ammo-List: "+_val);
-                    self.addAlert("**** Duplicate exclusive blast radius data. Ignoring. ****");
+                    if(!_suppress_alerts)
+                    {
+                        self.addAlert("Mek_Magazine-Ammo-List: "+_val);
+                        self.addAlert("**** Duplicate exclusive blast radius data. Ignoring. ****");
+                    }
                     update=true;
                     return _cleaned_array;
                 }
