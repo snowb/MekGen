@@ -12,6 +12,9 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
+import {feature_data_table, feature_validate, has_feature, get_feature}
+    from "../../data_table_modules/mek_energy_pool-feature-data-module";
+
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
@@ -25,12 +28,6 @@ export default
     data:function()
     {
         let obj={};
-        obj.feature_table=
-            [
-                {feature:"Morphable",cost:1.25},
-                {feature:"Fragile",cost:1},
-            ];
-
         obj.selected_feature_array=[];
         obj.pkey="feature";
         obj.alerts=[];
@@ -45,42 +42,6 @@ export default
             this.publishAlerts();
             this.$set(this,"selected_feature_array",new_selected_feature_array);
             this.$emit("update-feature",new_selected_feature_array);
-        },
-        feature_validate(_data)
-        {
-            if(typeof _data==="undefined")
-            {
-                return false;
-            }
-            let valid=this.feature_table.some((_val)=>
-            {
-                return _val.feature==_data.feature
-                        && _val.cost==_data.cost;
-            });
-            return valid;
-        },
-        has_feature(_key, _val)
-        {
-            return this.feature_table.some((_data)=>
-            {
-                return _data[_key]!==undefined && _data[_key]==_val;
-            });
-        },
-        get_feature(_key, _val)
-        {
-            if(this.has_feature(_key,_val))
-            {
-                let found_feature=null;
-                this.feature_table.some((_table_val)=>
-                {
-                    if(_table_val[_key]==_val)
-                    {
-                        found_feature=_table_val;
-                        return true;
-                    }
-                },this);
-                return found_feature;
-            }
         },
         cleanFeatureArray(_feature_array)
         {//takes feature_array, returns cleaned array removing multiple exclusive values
@@ -149,6 +110,10 @@ export default
     },
     computed:
     {
+        feature_table()
+        {
+            return feature_data_table;
+        },
         selected_keys()
         {
             if(this.featureArray.length==0)
@@ -158,7 +123,7 @@ export default
             if(this.featureArray.length==1)
             {
                 let pkey_value=this.featureArray[0][this.pkey];
-                if(pkey_value===undefined || !this.has_feature(this.pkey,pkey_value))
+                if(pkey_value===undefined || !has_feature(this.pkey,pkey_value))
                 {
                     let json_data=JSON.stringify(this.featureArray[0]);
                     this.addAlert("Mek_Energy_Pool-Feature: "+json_data);
@@ -167,9 +132,9 @@ export default
                     this.select_ammo([]);
                     return [];
                 }
-                else if(this.has_feature(this.pkey,pkey_value) && !this.feature_validate(this.featureArray[0]))
+                else if(has_feature(this.pkey,pkey_value) && !feature_validate(this.featureArray[0]))
                 {
-                    let json_data=JSON.stringify(this.get_feature(this.pkey,pkey_value));
+                    let json_data=JSON.stringify(get_feature(this.pkey,pkey_value));
                     let feature_clone=JSON.parse(json_data);
                     this.addAlert("Mek_Energy_Pool-Feature: "+json_data);
                     this.addAlert("**** Invalid data. Reseting. ****");
