@@ -1,23 +1,26 @@
 <template>
     <mek-sub-component-table
-        :items="feature_table"
+        :items="feature_table" :selectedKeys="selected_keys" :pkey="pkey"
         :headers="{feature:'Feature',cost:'Cost'}"
-        name="Features" flow="col" :showHeaders="true"
+        name="Features" flow="pkey-col" :showHeaders="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_feature_index_array"
-        @update-selected-indices="select_feature"
+        @update-selected-data="select_feature"
     ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {feature_data_table, feature_validate, has_feature, get_feature, shock_exclusive, throw_exclusive}
+    from "../../data_table_modules/mek_melee/mek_melee-feature-data-module";
 
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_melee_feature",
     props:["featureArray"],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[selected_item_mixin, utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":mek_sub_component_table
@@ -25,95 +28,123 @@ export default
     data:function()
     {
         let obj={};
-        obj.feature_table=
-            [
-                {feature:"Handy",cost:1.5,name:"Handy"},
-                {feature:"Quick",cost:2,name:"Quick"},
-                {feature:"Clumsy",cost:0.5,name:"Clumsy"},
-                {feature:"Armor Piercing",cost:2,name:"AP"},
-                {feature:"Entangle",cost:1.25,name:"Entangling"},
-                {feature:"Thrown",cost:1.2,exclusive_throw:true,name:"Thrown"},
-                {feature:"Returning",cost:1.5,exclusive_throw:true,name:"Returning"},
-                {feature:"Disruptor",cost:2,name:"Disrupting"},
-                {feature:"Shock (only)",cost:2,exclusive:false,exclusive_shock:true,name:"Shock"},
-                {feature:"Shock (added)",cost:3,exclusive:false,exclusive_shock:true,name:"Shocking"},
-            ];
-        obj.exclusive_feature=obj.feature_table.reduce(function(_array,_val)
-        {
-            if(_val.exclusive)
-            {
-                _array.push(_val);
-            }
-            return _array;
-        },[]);
-        obj.exclusive_shock=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_shock!=="undefined";});
-        obj.exclusive_throw=obj.feature_table.filter((_el)=>{return typeof _el.exclusive_throw!=="undefined";});
-
+        obj.alerts=[];
+        obj.pkey="feature";
         obj.selected_feature_array=[];
         return obj;
     },
     methods:
     {
-        select_feature:function(_selected_feature_index)
+        select_feature:function(_selected_feature)
         {
-            let select_feature_name=this.feature_table[_selected_feature_index].feature;
-            let isExclusiveThrow=this.is_exclusive_feature("exclusive_throw",select_feature_name);
-            let isExclusiveShock=this.is_exclusive_feature("exclusive_shock",select_feature_name);
-            let featureClone=Object.assign({},this.feature_table[_selected_feature_index]);
+            let suppress_alerts=true;//suppress alerts, for exclusive switching
+            let new_selected_feature_array=this.toggleFeature(this.selected_feature_array,_selected_feature);
+            new_selected_feature_array=this.cleanFeatureArray(new_selected_feature_array, suppress_alerts).cleaned_array;
+            this.publishAlerts();
+            this.$set(this,"selected_feature_array",new_selected_feature_array);
+            this.$emit("update-feature",new_selected_feature_array);
+        },
+        cleanFeatureArray(_feature_array, _suppress_alerts)
+        {//takes feature_array, returns cleaned array removing multiple exclusive values
+            let hasExclusiveShock=false;
+            let hasExclusiveThrow=false;
+            let self=this;
+            let update=false;
+            let key_list=[];
 
-            let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
-            {//filter out matching feature (toggle)
-                return _val.feature.toLowerCase()!=select_feature_name.toLowerCase();
-            });
-
-            let togglefeature=this.selected_feature_array.some((_elem)=>
+            let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
             {
-                return _elem.feature.toLowerCase()==select_feature_name.toLowerCase();
+                if(_val[self.pkey]===undefined)
+                {//if feature with pkey doesn't exist in data table, ignore
+                    self.addAlert("Mek_Melee-Feature: "+JSON.stringify(_val));
+                    self.addAlert("**** Missing primary key. Ignoring. ****");
+                    return _cleaned_array;
+                }
+                let clean_feature=_val;
+                if(!feature_validate(_val))
+                {//invalid data
+                    self.addAlert("Mek_Melee-Feature: "+JSON.stringify(_val))
+                    self.addAlert("**** Invalid data, attempting to reset. ****")
+                    clean_feature=get_feature(self.pkey,_val[self.pkey]);
+                    update=true;
+                    //attempt to set to corrected feature
+                }
+                if(clean_feature===null)
+                {//no matching feature
+                    self.addAlert("**** Unable to reset. No matching data. ****")
+                    update=true;
+                    return _cleaned_array;
+                    //ignore element
+                }
+                let isShock=self.is_exclusive_feature("shock_exclusive",_val[self.pkey]);
+                let isThrow=self.is_exclusive_feature("throw_exclusive",_val[self.pkey]);
+
+                if(isShock && !hasExclusiveShock)
+                {
+                    _cleaned_array.push(_val);
+                    hasExclusiveShock=true;
+                    key_list.push(_val[self.pkey]);
+                    return _cleaned_array;
+                }
+                else if(isShock && hasExclusiveShock)
+                {
+                    if(!_suppress_alerts)
+                    {
+                        self.addAlert("Mek_Melee-Feature: "+_val);
+                        self.addAlert("**** Duplicate exclusive shock data. Ignoring. ****");
+                    }
+                    update=true;
+                    return _cleaned_array;
+                }
+
+                if(isThrow && !hasExclusiveThrow)
+                {
+                    _cleaned_array.push(_val);
+                    hasExclusiveThrow=true;
+                    key_list.push(_val[self.pkey]);
+                    return _cleaned_array;
+                }
+                else if(isThrow && hasExclusiveThrow)
+                {
+                    if(!_suppress_alerts)
+                    {
+                        self.addAlert("Mek_Melee-Feature: "+_val);
+                        self.addAlert("**** Duplicate exclusive blast radius data. Ignoring. ****");
+                    }
+                    update=true;
+                    return _cleaned_array;
+                }
+
+                if(!key_list.includes(_val[self.pkey]))
+                {
+                    _cleaned_array.push(_val);
+                    key_list.push(_val[self.pkey]);
+                }
+                return _cleaned_array;
+            },[]);
+            temp_selected_feature_array.reverse();
+            return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list};
+            //returns an object with the pruned feature array, whether it was updated, and the key_list
+        },
+        toggleFeature(_feature_array,_feature)
+        {
+            let feature_array=JSON.parse(JSON.stringify(_feature_array));
+            
+            let remove_feature=feature_array.some((_val)=>
+            {//if _feature matches already existing feature, flag for deletion
+                return _val[this.pkey]==_feature[this.pkey];
             },this);
 
-            if(isExclusiveThrow)
-            {
-                temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
+            if(remove_feature)
+            {//if flagged for removal, filter out
+                return feature_array.filter((_val)=>
                 {
-                    return !_val.exclusive_throw
-                })
+                    return _val[this.pkey]!=_feature[this.pkey];
+                },this);
             }
-            if(isExclusiveShock)
-            {
-                temp_selected_feature_array=temp_selected_feature_array.filter((_val)=>
-                {
-                    return !_val.exclusive_shock
-                })
-            }
-
-            if(!togglefeature)
-            {
-                temp_selected_feature_array.push(featureClone);
-            }
-            
-            this.$set(this,"selected_feature_array",temp_selected_feature_array);
-
-            if(temp_selected_feature_array.length==0)
-            {
-                this.$set(this,"selected_feature_array",[]);
-            }
-
-            this.$emit("update-feature",this.selected_feature_array);
-        },
-        find_feature_index:function(_feature)
-        {
-            let found_index;
-            this.feature_table.some(function(_val, _index)
-            {
-                if(_val.feature.toLowerCase() == _feature.toLowerCase())
-                {
-                    found_index=_index;
-                    return true;
-                }
-                return false;
-            });
-
-            return found_index;
+            feature_array.push(_feature);
+            //otherwise add feature and return
+            return feature_array;
         },
         is_exclusive_feature:function(_target_array,_feature)
         {
@@ -125,91 +156,33 @@ export default
                 }
                 return false;
             });
-        },
-        exclusive_indices:function()
-        {
-            let foundIndices=this.selected_feature_array.reduce(function(_indices,_val,_index)
-            {
-                if(_val.exclusive)
-                {
-                    _indices.push(_index);
-                }
-                return _indices;
-            },[]);
-            return foundIndices;
-        },
-        is_all_feature_index:function(_index)
-        {
-            return this.feature_table[_index].feature.toLowerCase()=="all";
         }
     },
     computed:
     {
-        selected_feature_index_array:function()
+        feature_table()
         {
-            let indices=[];
+            return feature_data_table;
+        },
+        shock_exclusive(){return shock_exclusive;},
+        throw_exclusive(){return throw_exclusive;},
+        selected_keys()
+        {
             if(this.featureArray.length==0)
             {
-                this.selected_feature_array=[];
-            }
-            if(this.featureArray.length==1)
-            {
-                this.selected_feature_array=[this.feature_table[this.find_feature_index(this.featureArray[0].feature)]];
-                return [this.find_feature_index(this.featureArray[0].feature)];
-            }
-            
-            let hasExclusiveThrow=false;
-            let hasExclusiveShock=false;
-            let self=this;
-            let feature_list=[];
-            this.selected_feature_array=this.featureArray.reduceRight(function(_prev, _val)
-            {
-                if(self.is_exclusive_feature("exclusive_throw",_val.feature))
-                {
-                    if(!hasExclusiveThrow)
-                    {
-                        _prev.push(_val);
-                        hasExclusiveThrow=true;
-                        feature_list.push(_val.feature.toLowerCase());
-                    }
-                }
-                else if(self.is_exclusive_feature("exclusive_shock",_val.feature))
-                {
-                    if(!hasExclusiveShock)
-                    {
-                        _prev.push(_val);
-                        hasExclusiveShock=true;
-                        feature_list.push(_val.feature.toLowerCase());
-                    }
-                }
-                else if(!feature_list.includes(_val.feature.toLowerCase()))
-                {
-                    _prev.push(_val);
-                    feature_list.push(_val.feature.toLowerCase());
-                }
-                return _prev;
-            },[]);
-
-            indices=this.selected_feature_array.reduce(function(_indices,_val)
-            {
-                _indices.push(self.find_feature_index(_val.feature));
-                return _indices;
-            },[]);
-            if(this.featureArray.length!=this.selected_feature_array.length)
-            {
-                this.$emit("update-feature",this.selected_feature_array);
+                return [];
             }
 
-            return indices;
+            let cleaned_array=this.cleanFeatureArray(this.featureArray);
+            this.publishAlerts();
+            if(cleaned_array.update)
+            {
+                this.$set(this,"selected_feature_array",cleaned_array.cleaned_array);
+                this.$emit("update-feature",cleaned_array.cleaned_array);
+            }
+
+            return cleaned_array.key_list;
         },
-        flat_feature_array:function()
-        {
-            return this.feature_table.reduce(function(_array, _el)
-            {
-                _array.push(_el.feature);
-                return _array;
-            },[]);
-        }
     }
 }
 </script>
