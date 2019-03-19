@@ -13,7 +13,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
 import {accuracy_data_table, accuracy_validate, has_feature, get_feature}
-    from "../../data_table_modules/mek_melee/mek_melee-accuracy-data-module.js";;
+    from "../../data_table_modules/mek_melee/mek_melee-accuracy-data-module.js";
 
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
