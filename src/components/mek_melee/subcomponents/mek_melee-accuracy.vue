@@ -57,7 +57,7 @@ export default
             let json_data=JSON.stringify(this.accuracy);
             if(!has_feature(this.pkey,this.accuracy[this.pkey]))
             {
-                this.addAlert("Mek_Energy_Pool-Size: "+json_data);
+                this.addAlert("Mek_Melee-Accuracy: "+json_data);
                 this.addAlert("**** Invalid data. Reseting to default. ****");
                 this.publishAlerts();
                 this.select_accuracy(default_data);
@@ -65,7 +65,7 @@ export default
             }
             else if(!accuracy_validate(this.accuracy))
             {
-                this.addAlert("Mek_Energy_Pool-Size: "+json_data);
+                this.addAlert("Mek_Melee-Accuracy: "+json_data);
                 this.addAlert("**** Invalid data. Reseting. ****");
                 this.publishAlerts();
                 this.select_accuracy(get_feature(this.pkey,this.accuracy[this.pkey]));
