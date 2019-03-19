@@ -6,31 +6,31 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <div class="mek-flex-col">
-                <mekshield-type :type="type" @update-type="select_type"></mekshield-type>
-                <mekshield-class :shield_class="shield_class" :type="type" :is_ablative="is_ablative" @update-class-code="select_class_code"></mekshield-class>
+                <mek-shield-type :type="type" @update-type="select_type"></mek-shield-type>
+                <mek-shield-class :shield_class="shield_class" :type="type" :is_ablative="is_ablative" @update-class-code="select_class_code"></mek-shield-class>
             </div>
             <span class="mek-flex-col no-margin">
-                <mekshield-defense-ability
+                <mek-shield-defense-ability
                     v-if="type.toLowerCase()=='standard'"
                     :defense_ability="defense_ability"
                     :cost="cost_multipliers.defense_ability" 
-                    @update-defense-ability="select_da"></mekshield-defense-ability>
-                <mekshield-binder
+                    @update-defense-ability="select_da"></mek-shield-defense-ability>
+                <mek-shield-binder
                     v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
                     :binder="binder"
                     :base_stopping_power="shield_class.stopping_power"
                     @update-binder="select_binder"
-                ></mekshield-binder>
-                <mekshield-reset-time 
+                ></mek-shield-binder>
+                <mek-shield-reset-time 
                     v-if="type.toLowerCase()=='reactive'"
                     :reset-time="reset_time"
                     @update-reset-time="select_reset"
-                ></mekshield-reset-time>
-                <mekshield-turns-in-use
+                ></mek-shield-reset-time>
+                <mek-shield-turns-in-use
                     v-if="type.toLowerCase()=='reactive'"
                     :turns-in-use="turns_in_use"
                     @update-turns-in-use="select_turns"
-                ></mekshield-turns-in-use>
+                ></mek-shield-turns-in-use>
             </span>
             <span class="mek-flex-col no-margin">
                 <mek-armor-type v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
@@ -44,10 +44,10 @@
                 ></mek-energy-absorbing-armor>
             </span>
             <span class="mek-flex-col no-margin" v-if="type.toLowerCase()=='reactive'">
-                <mekshield-weakness
+                <mek-shield-weakness
                     @update-weakness="select_weakness"
                     :weakness-array="weakness_array"
-                ></mekshield-weakness>
+                ></mek-shield-weakness>
             </span>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
@@ -104,13 +104,13 @@ export default
         ],
     components:
     {
-        "mekshield-type":()=>import("./subcomponents/mek_shield-type.vue"),
-        "mekshield-class":()=>import("./subcomponents/mek_shield-class.vue"),
-        "mekshield-defense-ability":()=>import("./subcomponents/mek_shield-defense-ability.vue"),
-        "mekshield-binder":()=>import("./subcomponents/mek_shield-binder.vue"),
-        "mekshield-reset-time":()=>import("./subcomponents/mek_shield-reset-time.vue"),
-        "mekshield-turns-in-use":()=>import("./subcomponents/mek_shield-turns-in-use.vue"),
-        "mekshield-weakness":()=>import("./subcomponents/mek_shield-weakness.vue"),
+        "mek-shield-type":()=>import(/* webpackChunkName: "mek-shield-type" */"./subcomponents/mek_shield-type.vue"),
+        "mek-shield-class":()=>import(/* webpackChunkName: "mek-shield-class" */"./subcomponents/mek_shield-class.vue"),
+        "mek-shield-defense-ability":()=>import(/* webpackChunkName: "mek-shield-defense-ability" */"./subcomponents/mek_shield-defense-ability.vue"),
+        "mek-shield-binder":()=>import(/* webpackChunkName: "mek-shield-binder" */"./subcomponents/mek_shield-binder.vue"),
+        "mek-shield-reset-time":()=>import(/* webpackChunkName: "mek-shield-reset-time" */"./subcomponents/mek_shield-reset-time.vue"),
+        "mek-shield-turns-in-use":()=>import(/* webpackChunkName: "mek-shield-turns-in-use" */"./subcomponents/mek_shield-turns-in-use.vue"),
+        "mek-shield-weakness":()=>import(/* webpackChunkName: "mek-shield-weakness" */"./subcomponents/mek_shield-weakness.vue"),
         
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),

@@ -73,11 +73,11 @@ export default
     mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-emw-damage":()=>import("./subcomponents/mek_emw-damage.vue"),
-        "mek-emw-accuracy":()=>import("./subcomponents/mek_emw-accuracy.vue"),
-        "mek-emw-attack-factor":()=>import("./subcomponents/mek_emw-attack-factor.vue"),
-        "mek-emw-turns-in-use":()=>import("./subcomponents/mek_emw-turns-in-use.vue"),
-        "mek-emw-feature":()=>import("./subcomponents/mek_emw-feature.vue"),
+        "mek-emw-damage":()=>import(/* webpackChunkName: "mek-emw-damage" */"./subcomponents/mek_emw-damage.vue"),
+        "mek-emw-accuracy":()=>import(/* webpackChunkName: "mek-emw-accuracy" */"./subcomponents/mek_emw-accuracy.vue"),
+        "mek-emw-attack-factor":()=>import(/* webpackChunkName: "mek-emw-attack-factor" */"./subcomponents/mek_emw-attack-factor.vue"),
+        "mek-emw-turns-in-use":()=>import(/* webpackChunkName: "mek-emw-turns-in-use" */"./subcomponents/mek_emw-turns-in-use.vue"),
+        "mek-emw-feature":()=>import(/* webpackChunkName: "mek-emw-feature" */"./subcomponents/mek_emw-feature.vue"),
 
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),

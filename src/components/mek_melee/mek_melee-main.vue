@@ -60,10 +60,10 @@ export default
     mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-melee-damage":()=>import("./subcomponents/mek_melee-damage.vue"),
-        "mek-melee-accuracy":()=>import("./subcomponents/mek_melee-accuracy.vue"),
-        "mek-melee-feature":()=>import("./subcomponents/mek_melee-feature.vue"),
-        "mek-melee-entangle-range":()=>import("./subcomponents/mek_melee-entangle-range.vue"),
+        "mek-melee-damage":()=>import(/* webpackChunkName: "mek-melee-damage" */"./subcomponents/mek_melee-damage.vue"),
+        "mek-melee-accuracy":()=>import(/* webpackChunkName: "mek-melee-accuracy" */"./subcomponents/mek_melee-accuracy.vue"),
+        "mek-melee-feature":()=>import(/* webpackChunkName: "mek-melee-feature" */"./subcomponents/mek_melee-feature.vue"),
+        "mek-melee-entangle-range":()=>import(/* webpackChunkName: "mek-melee-entangle-range" */"./subcomponents/mek_melee-entangle-range.vue"),
 
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),

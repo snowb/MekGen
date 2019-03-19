@@ -40,9 +40,9 @@ export default
     mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-magazine-select-gun":()=>import("./subcomponents/mek_magazine-select-gun.vue"),
-        "mek-magazine-ammo-list":()=>import("./subcomponents/mek_magazine-ammo-list.vue"),
-        "mek-magazine-shots":()=>import("./subcomponents/mek_magazine-shots.vue"),
+        "mek-magazine-select-gun":()=>import(/* webpackChunkName: "mek-magazine-select-gun" */"./subcomponents/mek_magazine-select-gun.vue"),
+        "mek-magazine-ammo-list":()=>import(/* webpackChunkName: "mek-magazine-ammo-list" */"./subcomponents/mek_magazine-ammo-list.vue"),
+        "mek-magazine-shots":()=>import(/* webpackChunkName: "mek-magazine-shots" */"./subcomponents/mek_magazine-shots.vue"),
 
         "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),

@@ -78,14 +78,14 @@ export default
     mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-missile-damage":()=>import("./subcomponents/mek_missile-damage.vue"),
-        "mek-missile-pack-size":()=>import("./subcomponents/mek_missile-pack-size.vue"),
-        "mek-missile-accuracy":()=>import("./subcomponents/mek_missile-accuracy.vue"),
-        "mek-missile-range-mod":()=>import("./subcomponents/mek_missile-range-mod.vue"),
-        "mek-missile-smart":()=>import("./subcomponents/mek_missile-smart.vue"),
-        "mek-missile-skill":()=>import("./subcomponents/mek_missile-skill.vue"),
-        "mek-missile-blast-radius":()=>import("./subcomponents/mek_missile-blast-radius.vue"),
-        "mek-missile-feature":()=>import("./subcomponents/mek_missile-feature.vue"),
+        "mek-missile-damage":()=>import(/* webpackChunkName: "mek-missile-damage" */"./subcomponents/mek_missile-damage.vue"),
+        "mek-missile-pack-size":()=>import(/* webpackChunkName: "mek-missile-pack-size" */"./subcomponents/mek_missile-pack-size.vue"),
+        "mek-missile-accuracy":()=>import(/* webpackChunkName: "mek-missile-accuracy" */"./subcomponents/mek_missile-accuracy.vue"),
+        "mek-missile-range-mod":()=>import(/* webpackChunkName: "mek-missile-range-mod" */"./subcomponents/mek_missile-range-mod.vue"),
+        "mek-missile-smart":()=>import(/* webpackChunkName: "mek-missile-smart" */"./subcomponents/mek_missile-smart.vue"),
+        "mek-missile-skill":()=>import(/* webpackChunkName: "mek-missile-skill" */"./subcomponents/mek_missile-skill.vue"),
+        "mek-missile-blast-radius":()=>import(/* webpackChunkName: "mek-missile-blast-radius" */"./subcomponents/mek_missile-blast-radius.vue"),
+        "mek-missile-feature":()=>import(/* webpackChunkName: "mek-missile-feature" */"./subcomponents/mek_missile-feature.vue"),
 
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),

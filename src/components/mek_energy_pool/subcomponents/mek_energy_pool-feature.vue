@@ -116,35 +116,6 @@ export default
         },
         selected_keys()
         {
-            /* if(this.featureArray.length==0)
-            {
-                return [];
-            }
-            if(this.featureArray.length==1)
-            {
-                let pkey_value=this.featureArray[0][this.pkey];
-                if(pkey_value===undefined || !has_feature(this.pkey,pkey_value))
-                {
-                    let json_data=JSON.stringify(this.featureArray[0]);
-                    this.addAlert("Mek_Energy_Pool-Feature: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting to default. ****");
-                    this.publishAlerts();
-                    this.select_ammo([]);
-                    return [];
-                }
-                else if(has_feature(this.pkey,pkey_value) && !feature_validate(this.featureArray[0]))
-                {
-                    let json_data=JSON.stringify(get_feature(this.pkey,pkey_value));
-                    let feature_clone=JSON.parse(json_data);
-                    this.addAlert("Mek_Energy_Pool-Feature: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting. ****");
-                    this.publishAlerts();
-                    this.select_ammo(feature_clone);
-                }
-                
-                return [pkey_value];
-            } */
-
             let cleaned_array=this.cleanFeatureArray(this.featureArray);
             this.publishAlerts();
 

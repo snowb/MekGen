@@ -80,12 +80,12 @@ export default
     mixins:[selected_item_mixin, utility_mixin, component_computed_mixin,component_methods_mixin],
     components:
     {
-        "mek-projectile-damage":()=>import("./subcomponents/mek_projectile-damage.vue"),
-        "mek-projectile-accuracy":()=>import("./subcomponents/mek_projectile-accuracy.vue"),
-        "mek-projectile-multi-feed":()=>import("./subcomponents/mek_projectile-multi-feed.vue"),
-        "mek-projectile-range-mod":()=>import("./subcomponents/mek_projectile-range-mod.vue"),
-        "mek-projectile-burst-value":()=>import("./subcomponents/mek_projectile-burst-value.vue"),
-        "mek-projectile-feature":()=>import("./subcomponents/mek_projectile-feature.vue"),
+        "mek-projectile-damage":()=>import(/* webpackChunkName: "mek-projectile-damage" */"./subcomponents/mek_projectile-damage.vue"),
+        "mek-projectile-accuracy":()=>import(/* webpackChunkName: "mek-projectile-accuracy" */"./subcomponents/mek_projectile-accuracy.vue"),
+        "mek-projectile-multi-feed":()=>import(/* webpackChunkName: "mek-projectile-multi-feed" */"./subcomponents/mek_projectile-multi-feed.vue"),
+        "mek-projectile-range-mod":()=>import(/* webpackChunkName: "mek-projectile-range-mod" */"./subcomponents/mek_projectile-range-mod.vue"),
+        "mek-projectile-burst-value":()=>import(/* webpackChunkName: "mek-projectile-burst-value" */"./subcomponents/mek_projectile-burst-value.vue"),
+        "mek-projectile-feature":()=>import(/* webpackChunkName: "mek-projectile-feature" */"./subcomponents/mek_projectile-feature.vue"),
         //"mek-projectile-mount-type":mek_projectile_mount_type,
 
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
