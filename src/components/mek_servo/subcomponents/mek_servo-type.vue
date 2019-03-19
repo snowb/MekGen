@@ -8,7 +8,8 @@
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
-import {servo_data_table, servo_type_validate, has_feature, get_feature} from "../../data_table_modules/mek_servo-type-data-module.js";
+import {servo_data_table, servo_type_validate, has_feature, get_feature} 
+    from "../../data_table_modules/mek_servo/mek_servo-type-data-module.js";
 
 export default 
 {

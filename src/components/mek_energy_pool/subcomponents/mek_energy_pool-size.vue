@@ -12,7 +12,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
 import {energy_pool_size_data_table, energy_pool_size_validate, has_feature, get_feature}
-    from "../../data_table_modules/mek_energy_pool-size-data-module";
+    from "../../data_table_modules/mek_energy_pool/mek_energy_pool-size-data-module";
 
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default

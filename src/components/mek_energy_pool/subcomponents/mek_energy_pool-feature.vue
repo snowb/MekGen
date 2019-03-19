@@ -13,7 +13,7 @@ import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
 import {feature_data_table, feature_validate, has_feature, get_feature}
-    from "../../data_table_modules/mek_energy_pool-feature-data-module";
+    from "../../data_table_modules/mek_energy_pool/mek_energy_pool-feature-data-module";
 
 import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
