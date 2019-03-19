@@ -12,6 +12,10 @@
 </template>
 
 <script>
+console.log("****");
+console.log("Mekton Mek Generator");
+console.log(process.env.NODE_ENV.charAt(0).toUpperCase()+process.env.NODE_ENV.slice(1)+" Build Version: "+process.env.VUE_APP_VERSION);
+console.log("****");
 import {mapGetters} from 'vuex';
 
 export default {
