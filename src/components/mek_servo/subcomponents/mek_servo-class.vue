@@ -134,6 +134,9 @@ export default
             }
             return obj;
         },
+        /*
+            due to dependency on Servo Type, Class Table data must be computed locally
+        */
         class_table()
         {
             let type_cost_multiplier=1;
