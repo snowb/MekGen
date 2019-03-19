@@ -62,7 +62,7 @@ export default
                     return _cleaned_array;
                 }
                 let clean_feature=_val;
-                if(!this.feature_validate(_val))
+                if(!feature_validate(_val))
                 {//invalid data
                     self.addAlert("Mek_Energy_Pool-Feature: "+JSON.stringify(_val))
                     self.addAlert("**** Invalid data, attempting to reset. ****")
@@ -116,7 +116,7 @@ export default
         },
         selected_keys()
         {
-            if(this.featureArray.length==0)
+            /* if(this.featureArray.length==0)
             {
                 return [];
             }
@@ -143,9 +143,10 @@ export default
                 }
                 
                 return [pkey_value];
-            }
+            } */
 
             let cleaned_array=this.cleanFeatureArray(this.featureArray);
+            this.publishAlerts();
 
             if(cleaned_array.update)
             {
