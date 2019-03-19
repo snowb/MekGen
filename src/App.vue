@@ -12,10 +12,17 @@
 </template>
 
 <script>
+// eslint-disable-next-line
 console.log("****");
+// eslint-disable-next-line
 console.log("Mekton Mek Generator");
+// eslint-disable-next-line
+console.log("Build Date-Time: "+process.env.VUE_APP_BUILD_DATE)
+// eslint-disable-next-line
 console.log(process.env.NODE_ENV.charAt(0).toUpperCase()+process.env.NODE_ENV.slice(1)+" Build Version: "+process.env.VUE_APP_VERSION);
+// eslint-disable-next-line
 console.log("****");
+
 import {mapGetters} from 'vuex';
 
 export default {
