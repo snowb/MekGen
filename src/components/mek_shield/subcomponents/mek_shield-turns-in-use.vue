@@ -11,7 +11,6 @@
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_turns_in_use",
@@ -19,7 +18,7 @@ export default
     mixins:[selected_item_mixin],
     components:
     {
-        "mek-sub-component-table":mek_sub_component_table
+        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
     },
     data:function()
     {

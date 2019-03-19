@@ -14,7 +14,6 @@ import alerts_mixin from "../../../mixins/alerts_mixin";
 import {damage_data_table, damage_validate, has_feature, get_feature}
     from "../../data_table_modules/mek_melee/mek_melee-damage-data-module.js";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_melee_damage",
@@ -22,7 +21,7 @@ export default
     mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
-        "mek-sub-component-table":mek_sub_component_table
+        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
     },
     data:function()
     {

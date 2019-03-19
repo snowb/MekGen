@@ -1,33 +1,4 @@
 <template>
-    <!--span class="mek-flex-col">
-        <div class="metallic_background_small">
-            <div class="subsection_container">
-                <div class="subsection_header_small">Weakness</div>
-                <table style="margin:auto;">
-                    <tr style="font-weight:bold; border-bottom:1px solid black;">
-                        <td>Weakness</td>
-                        <td>Monicker</td>
-                        <td>Cost</td>
-                    </tr>
-                    <tr><td colspan=3 style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(weakness,index) in weakness_table" :key="'shield-weakness-'+index"
-                        class="clickable"
-                        :class="selectedItemMultiple('selected_weakness_index_array',index,'selected_item')"
-                        @click="select_weakness(weakness.weakness)"
-                    >
-                        <td>{{weakness.weakness}}</td>
-                        <td>{{weakness.monicker}}</td>
-                        <td>x{{weakness.cost}}</td>
-                    </tr>
-                    <tr style="visibility:hidden;height:0px;line-height:0px;">
-                        <td>{{invisible_pad(flat_weakness_array)}}</td>
-                        <td>{{invisible_pad(flat_monicker_array)}}</td>
-                        <td>WWW</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </span-->
     <mek-sub-component-table
         :items="weakness_table"
         :headers="{weakness:'Weakness',monicker:'Monicker',cost:'Cost'}"
@@ -41,7 +12,6 @@
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_shield_weakness",
@@ -49,7 +19,7 @@ export default
     mixins:[selected_item_mixin, utility_mixin],
     components:
     {
-        "mek-sub-component-table":mek_sub_component_table
+        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
     },
     data:function()
     {

@@ -15,7 +15,6 @@ import alerts_mixin from "../../../mixins/alerts_mixin";
 import {feature_data_table, feature_validate, has_feature, get_feature, shock_exclusive, throw_exclusive}
     from "../../data_table_modules/mek_melee/mek_melee-feature-data-module";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default 
 {
     name:"mek_melee_feature",
@@ -23,7 +22,7 @@ export default
     mixins:[selected_item_mixin, utility_mixin,alerts_mixin],
     components:
     {
-        "mek-sub-component-table":mek_sub_component_table
+        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
     },
     data:function()
     {

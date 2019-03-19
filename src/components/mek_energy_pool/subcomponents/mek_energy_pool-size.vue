@@ -14,7 +14,6 @@ import alerts_mixin from "../../../mixins/alerts_mixin";
 import {energy_pool_size_data_table, energy_pool_size_validate, has_feature, get_feature}
     from "../../data_table_modules/mek_energy_pool/mek_energy_pool-size-data-module";
 
-import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default
 {
     name:"mek_portfolio_size",
@@ -22,7 +21,7 @@ export default
     mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
-        "mek-sub-component-table":mek_sub_component_table
+        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
     },
     data:function()
     {
