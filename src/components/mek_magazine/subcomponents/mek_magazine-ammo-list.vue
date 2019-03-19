@@ -127,6 +127,14 @@ export default
                     || (hasExclusiveBlast && _val[this.pkey].toLowerCase()=="nuclear");
                 //filter out nuclear if blast-radius isn't a feature
             },this).reverse();
+            if(temp_selected_feature_array.length==0)
+            {//empty, reset to default
+                temp_selected_feature_array=[JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")))];
+                update=true;
+                key_list=["High-Ex"];
+                this.addAlert("Mek_Magazine-Ammo-List: ");
+                this.addAlert("**** Reseting to default ****");
+            }
             return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list};
             //returns an object with the pruned feature array, whether it was updated, and the key_list
         },
@@ -179,39 +187,8 @@ export default
         blast_exclusive(){return blast_exclusive;},
         selected_keys()
         {
-            if(this.ammoArray.length==0)
-            {
-                let feature_clone=JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")));
-                //this.$set(this,"selected_ammo_array",[feature_clone]);
-                this.select_ammo(feature_clone);
-                return ["High-Ex"];
-            }
-            if(this.ammoArray.length==1)
-            {
-                let pkey_value=this.ammoArray[0][this.pkey];
-                if(pkey_value===undefined || !has_feature(this.pkey,pkey_value))
-                {
-                    let json_data=JSON.stringify(this.ammoArray[0]);
-                    this.addAlert("Mek_Magazine-Ammo-List: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting to default. ****");
-                    this.publishAlerts();
-                    let default_data=JSON.parse(JSON.stringify(get_feature(this.pkey,"High-Ex")));
-                    this.select_ammo(default_data);
-                    return ["High-Ex"];
-                }
-                else if(has_feature(this.pkey,pkey_value) && !ammo_validate(this.ammoArray[0]))
-                {
-                    let json_data=JSON.stringify(get_feature(this.pkey,pkey_value));
-                    let feature_clone=JSON.parse(json_data);
-                    this.addAlert("Mek_Magazine-Ammo-List: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting. ****");
-                    this.publishAlerts();
-                    this.select_ammo(feature_clone);
-                }
-                return [pkey_value];
-            }
-
             let cleaned_array=this.cleanFeatureArray(this.ammoArray);
+            this.publishAlerts();
 
             if(cleaned_array.update)
             {
