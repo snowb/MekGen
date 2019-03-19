@@ -192,10 +192,9 @@ export default
 
             if(cleaned_array.update)
             {
-                this.$set(this,"selected_ammo_array",cleaned_array.cleaned_array);
                 this.$emit("update-ammo",cleaned_array.cleaned_array);
             }
-
+            this.$set(this,"selected_ammo_array",cleaned_array.cleaned_array);
             return cleaned_array.key_list;
         }
     }

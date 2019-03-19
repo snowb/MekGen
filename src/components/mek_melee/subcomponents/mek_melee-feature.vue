@@ -123,6 +123,7 @@ export default
                 return _cleaned_array;
             },[]);
             temp_selected_feature_array.reverse();
+  
             return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list};
             //returns an object with the pruned feature array, whether it was updated, and the key_list
         },
@@ -137,10 +138,11 @@ export default
 
             if(remove_feature)
             {//if flagged for removal, filter out
-                return feature_array.filter((_val)=>
+                let return_array=feature_array.filter((_val)=>
                 {
                     return _val[this.pkey]!=_feature[this.pkey];
                 },this);
+                return return_array;
             }
             feature_array.push(_feature);
             //otherwise add feature and return
@@ -168,19 +170,13 @@ export default
         throw_exclusive(){return throw_exclusive;},
         selected_keys()
         {
-            if(this.featureArray.length==0)
-            {
-                return [];
-            }
-
             let cleaned_array=this.cleanFeatureArray(this.featureArray);
             this.publishAlerts();
             if(cleaned_array.update)
             {
-                this.$set(this,"selected_feature_array",cleaned_array.cleaned_array);
                 this.$emit("update-feature",cleaned_array.cleaned_array);
             }
-
+            this.$set(this,"selected_feature_array",cleaned_array.cleaned_array);
             return cleaned_array.key_list;
         },
     }

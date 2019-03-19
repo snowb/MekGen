@@ -150,10 +150,9 @@ export default
 
             if(cleaned_array.update)
             {
-                this.$set(this,"selected_feature_array",cleaned_array.cleaned_array);
                 this.$emit("update-feature",cleaned_array.cleaned_array);
             }
-
+            this.$set(this,"selected_feature_array",cleaned_array.cleaned_array);
             return cleaned_array.key_list;
         }
     },
