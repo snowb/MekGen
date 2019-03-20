@@ -12,7 +12,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {feature_data_table, feature_validate, has_feature, get_feature}
+import {feature_data_table, feature_validate, get_feature}
     from "../../data_table_modules/mek_energy_pool/mek_energy_pool-feature-data-module";
 
 export default 
@@ -65,7 +65,7 @@ export default
                 {//invalid data
                     self.addAlert("Mek_Energy_Pool-Feature: "+JSON.stringify(_val))
                     self.addAlert("**** Invalid data, attempting to reset. ****")
-                    clean_feature=this.get_feature(self.pkey,_val[self.pkey]);
+                    clean_feature=get_feature(self.pkey,_val[self.pkey]);
                     update=true;
                     //attempt to set to corrected feature
                 }
