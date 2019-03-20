@@ -67,12 +67,12 @@ let cleaned_feature=function(_pkey, _feature, _filtered_table)
         alerts.push("Mek_Armor-Type: "+json_data);
         alerts.push("**** Invalid data. Reseting to default. ****");
     }
-    else if(!armor_validate(_feature))
+    else if(!armor_type_validate(_feature))
     {
         data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
         key_list=[data[_pkey]];
         update=true;
-        alerts.push("Mek_Armor: "+json_data);
+        alerts.push("Mek_Armor-Type: "+json_data);
         alerts.push("**** Invalid data. Reseting. ****");
     }
     else
