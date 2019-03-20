@@ -42,7 +42,7 @@ import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 import alerts_mixin from "../../mixins/alerts_mixin";
 
-import {reflector_data_table, reflector_validate, has_feature, get_feature} 
+import {reflector_data_table, reflector_validate, has_feature, get_feature, cleaned_feature} 
     from "../data_table_modules/mek_reflector/mek_reflector-data-module.js";
 
 export default 
@@ -176,30 +176,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,1);
-
-            if(this.selected_reflector===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.selected_reflector);
+            if(cleaned_data.alerts.length>0)
             {
-                this.select_reflector(default_data);
-            }
-            let has_reflector=has_feature(this.pkey,this.selected_reflector[this.pkey]);
-            let json_data=JSON.stringify(this.selected_reflector);
-            if(!has_reflector)
-            {
-                this.addAlert("Mek_Reflector: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_reflector(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!reflector_validate(this.selected_reflector))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Reflector: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_reflector(get_feature(this.selected_reflector[this.pkey]));
+                this.select_armor_type(cleaned_data.data);
             }
-            return [this.selected_reflector[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }
