@@ -13,7 +13,7 @@ import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import alerts_mixin from "../../mixins/alerts_mixin.js";
 
-import {armor_type_data_table, armor_type_validate, has_feature, get_feature} 
+import {armor_type_data_table, armor_type_validate, has_feature, get_feature, cleaned_feature} 
     from "../data_table_modules/mek_armor/mek_armor-type-data-module.js"
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
@@ -48,31 +48,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,1);
-            if(this.armorType===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.armorType);
+            if(cleaned_data.alerts.length>0)
             {
-                this.select_armor_type(default_data);
-                return [default_data[this.pkey]];
-            }
-
-            let has_armor_type=has_feature(this.pkey,this.armorType[this.pkey]);
-            let json_data=JSON.stringify(this.armorType);
-            if(!has_armor_type)
-            {
-                this.addAlert("Mek_Armor-Type: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_armor(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!armor_type_validate(this.armorType))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Armor: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_armor(get_feature(this.pkey, this.armorType[this.pkey]));
+                this.select_armor_type(cleaned_data.data);
             }
-            return [this.armorType[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }
