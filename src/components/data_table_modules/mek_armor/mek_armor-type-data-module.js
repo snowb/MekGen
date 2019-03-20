@@ -51,7 +51,7 @@ let get_feature=(_key, _val)=>
     }
 }
 
-let cleaned_feature=function(_pkey, _feature, _filtered_table)
+let cleaned_feature=function(_pkey, _feature)
 {//input: primary key, selected feature, filtered data table
     let data=undefined;
     let key_list=[];

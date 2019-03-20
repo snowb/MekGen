@@ -13,7 +13,7 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import {armor_data_table, armor_validate, get_feature, cleaned_feature} 
+import {armor_data_table, cleaned_feature} 
     from "../data_table_modules/mek_armor/mek_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";

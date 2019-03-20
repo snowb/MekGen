@@ -13,7 +13,7 @@ import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import alerts_mixin from "../../mixins/alerts_mixin.js";
 
-import {ram_data_table, ram_validate, get_feature, cleaned_feature} 
+import {ram_data_table, cleaned_feature} 
     from "../data_table_modules/mek_armor/mek_energy_absorbing_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
