@@ -19,6 +19,10 @@
 </template>
 <script>
 import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
+
+import {entangle_validate}
+    from "../../data_table_modules/mek_melee/mek_melee-entangle-range-data-module.js";
 
 import 'vue-awesome/icons/plus-square';
 import Icon from 'vue-awesome/components/Icon';
@@ -26,7 +30,7 @@ import Icon from 'vue-awesome/components/Icon';
 export default
 {
     name:"mek_melee_entangle_range",
-    mixins:[utility_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     props:["base_damage","range_modifier","damage_modifier"],
     components:
     {
@@ -48,19 +52,18 @@ export default
         },
         incrementProperty(_prop)
         {
-            this.selected_modifier.range=_prop=="range" ? this.selected_modifier.range+1 : this.selected_modifier.range-1;
-            this.selected_modifier.damage=_prop=="damage" ? this.selected_modifier.damage-1 : this.selected_modifier.damage+1;
+            let new_range_mod=_prop=="range" ? this.selected_modifier.range+1 : this.selected_modifier.range-1;
+            let new_damage_mod=_prop=="damage" ? this.selected_modifier.damage-1 : this.selected_modifier.damage+1;
 
-            switch(true)
+            let validated=entangle_validate(this.base_damage,new_range_mod,new_damage_mod);
+            if(validated.update)
             {
-                case (this.selected_modifier.range - this.selected_modifier.damage)!==0:
-                case this.selected_modifier.range<0:
-                case this.selected_modifier.damage<0:
-                case this.new_damage<0:
-                    this.selected_modifier.range=0;
-                    this.selected_modifier.damage=0;
-                    break;
+                this.addAlert("Mek_Melee-Entangle-Range: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
             }
+            this.selected_modifier.range=validated.range_mod;
+            this.selected_modifier.damage=validated.damage_mod;
+
             this.selectDamageAndRange();
         }
     },
@@ -68,19 +71,19 @@ export default
     {
         checked_modifier()
         {
-            this.selected_modifier.range=this.range_modifier;
-            this.selected_modifier.damage=this.damage_modifier;
-            switch(true)
+            let json_data=JSON.stringify({range_mod:this.range_modifier,damage_mod:this.damage_modifier});
+            let validated=entangle_validate(this.base_damage,this.range_modifier,this.damage_modifier);
+            this.selected_modifier.range=validated.range_mod;
+            this.selected_modifier.damage=validated.damage_mod;
+            if(validated.update)
             {
-                case (this.range_modifier - this.damage_modifier)!==0:
-                case this.range_modifier<0:
-                case this.damage_modifier<0:
-                case this.new_damage<0:
-                    this.selected_modifier.range=0;
-                    this.selected_modifier.damage=0;
-                    this.selectDamageAndRange();
-                    break;
+                this.addAlert("Mek_Melee-Entangle-Range: "+json_data);
+                this.addAlert("**** Invalid data. Reseting. ****");
+                this.publishAlerts();
+                this.selectDamageAndRange();
             }
+            
+
             return {range:this.selected_modifier.range,damage:this.selected_modifier.damage};
         },
         new_damage()
