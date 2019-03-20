@@ -1,0 +1,30 @@
+<svg width="61" height="69.5" xmlns="http://www.w3.org/2000/svg" class="hexbackground">
+ <!-- Created with Method Draw - http://github.com/duopixel/Method-Draw/ -->
+ <defs>
+  <linearGradient id="svg_5" x1="0" y1="0" x2="1" y2="1">
+   <stop stop-color="rgba(112,7,0,1)" offset="0"/>
+   <stop stop-color="rgba(241,112,92,1)" offset="0.49"/>
+   <stop stop-color="rgba(241,112,92,1)" offset="0.51"/>
+   <stop stop-color="rgba(247,37,0,1)" offset="1"/>
+  </linearGradient>
+ </defs>
+
+ <g>
+  <!--<path id="svg_1" d="m120,100 L110,117.32050807568876 L90,117.32050807568878 L80,100 L90,82.67949192431124 L110,82.67949192431124Z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/>-->
+<!--
+  <path id="svg_2" d="m100,100 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/> 
+  <path id="svg_2" d="m70,83 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/> 
+  <path id="svg_2" d="m130,83 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/> 
+  <path id="svg_2" d="m129.9,117.6 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/> 
+  <path id="svg_2" d="m70,117.6 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-linecap="null" stroke-linejoin="null" stroke-width="1" stroke="#000000" fill-opacity="0" fill="url(#svg_5)"/> 
+-->
+  <path id="svg_2" d="m50,34.5 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m20,17.5 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m80,17.5 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m79.9,52.1 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m20,52.1 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m50,69.2 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" sstroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+  <path id="svg_2" d="m50,0 l-10,17.32050807568876 l-20,0 l-10,-17.32050807568876 l10,-17.320508075688764 l20,0z" stroke-opacity="null" stroke-width="1" stroke="#bbb" fill-opacity="1" fill="#eee"/> 
+
+ </g>
+</svg>
