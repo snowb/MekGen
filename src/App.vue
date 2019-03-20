@@ -10,7 +10,6 @@
         <mek-alert></mek-alert>
     </div>
 </template>
-
 <script>
 // eslint-disable-next-line
 console.log("****\n"+
