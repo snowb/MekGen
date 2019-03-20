@@ -12,7 +12,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {feature_data_table, feature_validate, has_feature, get_feature, shock_exclusive, throw_exclusive}
+import {feature_data_table, feature_validate, get_feature, shock_exclusive, throw_exclusive}
     from "../../data_table_modules/mek_melee/mek_melee-feature-data-module";
 
 export default 
