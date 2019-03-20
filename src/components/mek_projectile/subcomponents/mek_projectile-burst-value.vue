@@ -1,9 +1,9 @@
 <template>
     <mek-sub-component-table
         :items="burst_value_table"
-        :headers="{burst_value:'BV',cost:'Cost'}" :showHeaders="true"
+        :headers="{burst_value:'BV',cost:'Cost'}" :show-headers="true"
         name="Burst Value" flow="row" :format="{cost:'multiplier'}"
-        :selectedIndices="burst_value_index"
+        :selected-indices="burst_value_index"
         @update-selected-indices="select_burst_value"
     ></mek-sub-component-table>
 </template>

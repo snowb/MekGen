@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="accuracy_table"
         :headers="headers"
-        name="Accuracy" flow="row" :showHeaders="true"
+        name="Accuracy" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="accuracy_index"
+        :selected-indices="accuracy_index"
         @update-selected-indices="select_accuracy"
     ></mek-sub-component-table>
 </template>

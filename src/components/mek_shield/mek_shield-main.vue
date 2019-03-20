@@ -173,7 +173,7 @@ export default
         obj.armor_type={type:"Standard",damage_coefficient:1,cost:1};
         obj.cost_multipliers.armor_type=1;
 
-        obj.absorption={absorption:0,cost:1,armor_penalty:1};
+        obj.absorption={absorption:0,cost:1,armor_penalty:0};
         obj.cost_multipliers.absorption=1;
 
         return obj;
@@ -279,7 +279,7 @@ export default
                 }
                 if(this.absorption===null)
                 {
-                    this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:1})
+                    this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:0})
                     this.cost_multipliers.absorption=1;
                 }
             }

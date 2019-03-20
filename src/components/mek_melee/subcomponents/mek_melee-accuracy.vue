@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
-        :items="accuracy_table" :selectedKeys="selected_keys" :pkey="pkey"
+        :items="accuracy_table" :selected-keys="selected_keys" :pkey="pkey"
         :headers="{accuracy:'WA',cost:'Cost'}"
-        name="Accuracy" flow="pkey-row" :showHeaders="true"
+        name="Accuracy" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
         @update-selected-data="select_accuracy"
     ></mek-sub-component-table>

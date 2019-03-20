@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
-        :items="energy_pool_table" :selectedKeys="selected_keys" :pkey="pkey"
+        :items="energy_pool_table" :selected-keys="selected_keys" :pkey="pkey"
         :headers="{cost:'Cost',power_available:'Power Available',max_power:'Maximum Power',damage_capacity:'DC'}"
-        name="Energy Pool" flow="pkey-col" :showHeaders="true"
+        name="Energy Pool" flow="pkey-col" :show-headers="true"
         @update-selected-data="select_energy_pool"
     ></mek-sub-component-table>
 </template>

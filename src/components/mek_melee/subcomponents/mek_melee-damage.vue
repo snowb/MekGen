@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
-        :items="damage_table" :selectedKeys="selected_keys" :pkey="pkey"
+        :items="damage_table" :selected-keys="selected_keys" :pkey="pkey"
         :headers="{damage:'Damage',cost:'Cost'}"
-        name="Damage" flow="pkey-row" :showHeaders="true"
+        name="Damage" flow="pkey-row" :show-headers="true"
         @update-selected-data="select_damage"
     ></mek-sub-component-table>
 </template>

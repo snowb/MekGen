@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
         :items="type_table" :headers="{name:''}"
-        name="Type" flow="col" :showHeaders="false"
-        :selectedIndices="type_index"
+        name="Type" flow="col" :show-headers="false"
+        :selected-indices="type_index"
         @update-selected-indices="select_type"
     ></mek-sub-component-table>
 </template>

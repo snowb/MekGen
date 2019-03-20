@@ -1,9 +1,9 @@
 <template>
     <mek-sub-component-table
         :items="gun_table"
-        :headers="{name:'Name',cost:'Cost'}" :showHeaders="true"
+        :headers="{name:'Name',cost:'Cost'}" :show-headers="true"
         name="Gun Table" flow="dropdown"
-        :selectedIndices="gun_index"
+        :selected-indices="gun_index"
         @update-selected-indices="select_gun"
     ></mek-sub-component-table>
     <!--- uses dropdown for selection, have not written a pkey based dropdown option ...--->

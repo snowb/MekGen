@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
-        :items="portfolio_size_table" :selectedKeys="selected_keys" :pkey="pkey"
+        :items="portfolio_size_table" :selected-keys="selected_keys" :pkey="pkey"
         :headers="{size:'Portfolio Size',cost:'Cost'}"
-        name="Portfolio Size" flow="pkey-row" :showHeaders="true"
+        name="Portfolio Size" flow="pkey-row" :show-headers="true"
         @update-selected-data="select_portfolio_size"
     ></mek-sub-component-table>
 </template>

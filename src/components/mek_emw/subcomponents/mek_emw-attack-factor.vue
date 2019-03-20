@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="attack_factor_table"
         :headers="{attack_factor:'AF',cost:'Cost'}"
-        name="Attack Factor" flow="row" :showHeaders="true"
+        name="Attack Factor" flow="row" :show-headers="true"
         :format="{cost:'multiplier',attack_factor:'nullzero'}"
-        :selectedIndices="attack_factor_index"
+        :selected-indices="attack_factor_index"
         @update-selected-indices="select_attack_factor"
     ></mek-sub-component-table>
 </template>

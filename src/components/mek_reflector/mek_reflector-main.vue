@@ -6,9 +6,9 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-sub-component-table
-                :items="reflector_table" :pkey="pkey" :selectedKeys="selected_keys"
+                :items="reflector_table" :pkey="pkey" :selected-keys="selected_keys"
                 :headers="{quality_value:'QV',cost:'Cost'}"
-                name="Quality" flow="pkey-col" :showHeaders="true"
+                name="Quality" flow="pkey-col" :show-headers="true"
                 @update-selected-data="select_reflector"
             ></mek-sub-component-table>
             <span class="mek-flex-col no-margin">

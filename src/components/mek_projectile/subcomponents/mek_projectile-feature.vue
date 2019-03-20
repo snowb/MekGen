@@ -1,8 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="filteredFeatureTable"
-        :headers="{feature:'Feature',cost:'Cost'}"
-        :showHeaders="true" :format="{cost:'multiplier'}"
+        :headers="{feature:'Feature',cost:'Cost'}" :show-headers="true" :format="{cost:'multiplier'}"
         :selected-indices="selected_feature_index_array"
         @update-selected-indices="select_feature"
         name="Features"

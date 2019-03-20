@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
-        :items="class_table" :headers="class_table_headers" :selectedKeys="selected_keys" :pkey="pkey"
-        name="Servo Class" flow="pkey-col" :showHeaders="true"
+        :items="class_table" :headers="class_table_headers" :selected-keys="selected_keys" :pkey="pkey"
+        name="Servo Class" flow="pkey-col" :show-headers="true"
         @update-selected-data="select_class"
     ></mek-sub-component-table>
 </template>

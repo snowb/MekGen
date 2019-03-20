@@ -2,8 +2,8 @@
     <mek-sub-component-table
         :items="class_list"
         :headers="headers"
-        name="Class" flow="col" :showHeaders="true"
-        :selectedIndices="shield_class_index"
+        name="Class" flow="col" :show-headers="true"
+        :selected-indices="shield_class_index"
         @update-selected-indices="select_class"
     ></mek-sub-component-table>
 </template>

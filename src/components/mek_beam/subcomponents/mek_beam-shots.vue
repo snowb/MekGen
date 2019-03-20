@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="filteredShotsTable"
         :headers="{shots:'Shots',cost:'Cost'}"
-        name="Shots" flow="row" :showHeaders="true"
+        name="Shots" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_shots_index"
+        :selected-indices="selected_shots_index"
         @update-selected-indices="select_shots"
     ></mek-sub-component-table>
 </template>

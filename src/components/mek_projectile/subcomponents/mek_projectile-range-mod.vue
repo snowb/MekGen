@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="range_mod_table"
         :headers="{range_mod:'Range Mod',range:'Range',cost:'Cost'}"
-        name="Range Mod" flow="col" :showHeaders="true"
+        name="Range Mod" flow="col" :show-headers="true"
         :format="{range_mod:'percent',cost:'multiplier'}"
-        :selectedIndices="selected_range_mod_index"
+        :selected-indices="selected_range_mod_index"
         @update-selected-indices="select_range_mod"
     ></mek-sub-component-table>
 </template>

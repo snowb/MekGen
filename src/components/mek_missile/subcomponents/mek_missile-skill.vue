@@ -1,9 +1,9 @@
 <template>
     <mek-sub-component-table
         :items="skill_table"
-        :headers="{skill:'Skill',cost:'Cost'}" :showHeaders="true"
+        :headers="{skill:'Skill',cost:'Cost'}" :show-headers="true"
         name="Smart Skill" flow="row" :format="{cost:'multiplier'}"
-        :selectedIndices="skill_index"
+        :selected-indices="skill_index"
         @update-selected-indices="select_skill"
     ></mek-sub-component-table>
 </template>

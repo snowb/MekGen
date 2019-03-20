@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="warm_up_table"
         :headers="{time:'Turns',cost:'Cost'}"
-        name="Warm Up Time" flow="row" :showHeaders="true"
+        name="Warm Up Time" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_warm_up_index"
+        :selected-indices="selected_warm_up_index"
         @update-selected-indices="select_warm_up_time"
     ></mek-sub-component-table>
 </template>

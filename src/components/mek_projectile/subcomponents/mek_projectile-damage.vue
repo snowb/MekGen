@@ -2,8 +2,8 @@
     <mek-sub-component-table
         :items="damage_table"
         :headers="{damage:'Damage',cost:'Cost',range:'Range'}"
-        name="Damage" flow="row" :showHeaders="true"
-        :selectedIndices="damage_index"
+        name="Damage" flow="row" :show-headers="true"
+        :selected-indices="damage_index"
         @update-selected-indices="select_damage"
     ></mek-sub-component-table>
 </template>

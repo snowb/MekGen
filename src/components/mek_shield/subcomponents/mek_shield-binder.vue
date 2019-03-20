@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="binder_table"
         :headers="{stopping_power_modifier:'-SP',space:'+Space',cost:'Cost'}"
-        name="Binder" flow="row" :showHeaders="true"
+        name="Binder" flow="row" :show-headers="true"
         :format="{stopping_power_modifier:'percent',cost:'multiplier'}"
-        :selectedIndices="selected_binder_index"
+        :selected-indices="selected_binder_index"
         @update-selected-indices="select_binder"
     ></mek-sub-component-table>
 </template>

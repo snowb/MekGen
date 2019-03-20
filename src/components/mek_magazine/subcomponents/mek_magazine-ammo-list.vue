@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
-        :items="filteredAmmoArray" :selectedKeys="selected_keys" :pkey="pkey"
-        :headers="{type:'Type',cost:'Cost',effect:'Effect'}" :showHeaders="true"
+        :items="filteredAmmoArray" :selected-keys="selected_keys" :pkey="pkey"
+        :headers="{type:'Type',cost:'Cost',effect:'Effect'}" :show-headers="true"
         :format="{cost:'multiplier'}" name="Ammo Table" flow="pkey-col"
         @update-selected-data="select_ammo"
     ></mek-sub-component-table>

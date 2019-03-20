@@ -1,9 +1,9 @@
 <template>
     <mek-sub-component-table
         :items="multi_feed_table"
-        :headers="{feeds:'Feeds',cost:'Cost'}" :showHeaders="true"
+        :headers="{feeds:'Feeds',cost:'Cost'}" :show-headers="true"
         name="Multi-Feed" flow="row" :format="{cost:'multiplier'}"
-        :selectedIndices="multi_feed_index"
+        :selected-indices="multi_feed_index"
         @update-selected-indices="select_multi_feed"
     ></mek-sub-component-table>
 </template>

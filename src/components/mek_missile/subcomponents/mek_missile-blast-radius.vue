@@ -1,9 +1,9 @@
 <template>
     <mek-sub-component-table
         :items="blast_radius_table"
-        :headers="{blast_radius:'Radius (hex)',cost:'Cost'}" :showHeaders="true"
+        :headers="{blast_radius:'Radius (hex)',cost:'Cost'}" :show-headers="true"
         name="Blast Radius" flow="col" :format="{cost:'multiplier',blast_radius:'nullzero'}"
-        :selectedIndices="blast_radius_index"
+        :selected-indices="blast_radius_index"
         @update-selected-indices="select_blast_radius"
     ></mek-sub-component-table>
 </template>

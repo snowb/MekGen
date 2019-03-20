@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="reset_table"
         :headers="{time:'Rounds',cost:'Cost'}"
-        name="Reset Time" flow="row" :showHeaders="true"
+        name="Reset Time" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_reset_index"
+        :selected-indices="selected_reset_index"
         @update-selected-indices="select_reset"
     ></mek-sub-component-table>
 </template>

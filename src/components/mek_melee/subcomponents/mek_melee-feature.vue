@@ -1,8 +1,8 @@
 <template>
     <mek-sub-component-table
-        :items="feature_table" :selectedKeys="selected_keys" :pkey="pkey"
+        :items="feature_table" :selected-keys="selected_keys" :pkey="pkey"
         :headers="{feature:'Feature',cost:'Cost'}"
-        name="Features" flow="pkey-col" :showHeaders="true"
+        name="Features" flow="pkey-col" :show-headers="true"
         :format="{cost:'multiplier'}"
         @update-selected-data="select_feature"
     ></mek-sub-component-table>

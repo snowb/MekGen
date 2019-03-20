@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
-        :items="type_table" :headers="{type:''}" :pkey="pkey" :selectedKeys="selected_keys"
-        name="Type" flow="pkey-col" :showHeaders="false"
+        :items="type_table" :headers="{type:''}" :pkey="pkey" :selected-keys="selected_keys"
+        name="Type" flow="pkey-col" :show-headers="false"
         @update-selected-data="select_type"
     ></mek-sub-component-table>
 </template>

@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="turns_table"
         :headers="{turns:'Turns',cost:'Cost'}"
-        name="Turns in Use" flow="row" :showHeaders="true"
+        name="Turns in Use" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_turns_index"
+        :selected-indices="selected_turns_index"
         @update-selected-indices="select_turns"
     ></mek-sub-component-table>
 </template>

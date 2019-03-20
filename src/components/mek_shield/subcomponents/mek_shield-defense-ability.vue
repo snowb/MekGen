@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="da_table"
         :headers="{da:'DA',cost:'Cost'}"
-        name="Defense Ability" flow="row" :showHeaders="true"
+        name="Defense Ability" flow="row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selectedIndices="selected_da_index"
+        :selected-indices="selected_da_index"
         @update-selected-indices="select_da"
     ></mek-sub-component-table>
 </template>

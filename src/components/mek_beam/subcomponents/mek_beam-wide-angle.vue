@@ -2,9 +2,9 @@
     <mek-sub-component-table
         :items="wide_angle_table"
         :headers="{angle:'Angle',cost:'Cost'}"
-        name="Wide Angle" flow="row" :showHeaders="true"
+        name="Wide Angle" flow="row" :show-headers="true"
         :format="{angle:'wide-angle',cost:'multiplier'}"
-        :selectedIndices="selected_angle_index"
+        :selected-indices="selected_angle_index"
         @update-selected-indices="select_angle"
     ></mek-sub-component-table>
 </template>
