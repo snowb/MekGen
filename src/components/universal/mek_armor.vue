@@ -13,7 +13,7 @@ import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
 import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 
-import {armor_data_table, armor_validate, get_feature} 
+import {armor_data_table, armor_validate, get_feature, cleaned_feature} 
     from "../data_table_modules/mek_armor/mek_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
@@ -52,34 +52,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,"None");
-
-            if(this.armor===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.armor, this.armor_table);
+            if(cleaned_data.alerts.length>0)
             {
-                this.select_armor(default_data);
-            }
-
-            let has_armor=this.armor_table.some((_val)=>
-            {
-                return _val[this.pkey]==this.armor[this.pkey];
-            },this);
-            let json_data=JSON.stringify(this.armor);
-            if(!has_armor)
-            {
-                this.addAlert("Mek_Armor: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_armor(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!armor_validate(this.armor))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Armor: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_armor(get_feature(this.pkey,this.armor[this.pkey]));
+                this.select_armor(cleaned_data.data);
             }
-            return [this.armor[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }
