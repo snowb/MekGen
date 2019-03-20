@@ -56,6 +56,7 @@ export default
             let new_damage_mod=_prop=="damage" ? this.selected_modifier.damage-1 : this.selected_modifier.damage+1;
 
             let validated=entangle_validate(this.base_damage,new_range_mod,new_damage_mod);
+            let json_data=JSON.stringify({range_mod:new_range_mod,damage_mod:new_damage_mod});
             if(validated.update)
             {
                 this.addAlert("Mek_Melee-Entangle-Range: "+json_data);
