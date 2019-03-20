@@ -113,7 +113,7 @@ export default
         obj.selected_armor_type={type:"Standard",damage_coefficient:1,cost:1};
         obj.cost_multipliers.armor_type=1;
 
-        obj.selected_absorption={absorption:0,cost:1,armor_penalty:1};
+        obj.selected_absorption={absorption:0,cost:1,armor_penalty:0};
         obj.cost_multipliers.absorption=1;
 
         obj.kills_space_trade={};
@@ -143,6 +143,11 @@ export default
         {
             this.$set(this,"selected_armor",_armor);
             this.component_changed=true;
+            if(_armor.stopping_power==0)
+            {//reset RAM and Armor type on selecting No-Armor
+                this.updateAbsorption({absorption:0,cost:1,armor_penalty:0});
+                this.updateArmorType({type:"Standard",damage_coefficient:1,cost:1});
+            }
         },
         updateArmorType(_armor_type)
         {
