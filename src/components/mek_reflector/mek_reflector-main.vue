@@ -42,7 +42,7 @@ import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 import alerts_mixin from "../../mixins/alerts_mixin";
 
-import {reflector_data_table, reflector_validate, has_feature, get_feature, cleaned_feature} 
+import {reflector_data_table, cleaned_feature} 
     from "../data_table_modules/mek_reflector/mek_reflector-data-module.js";
 
 export default 
