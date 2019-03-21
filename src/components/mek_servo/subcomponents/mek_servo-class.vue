@@ -11,6 +11,9 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
+import {create_class_data_table, class_data_table, cleaned_feature} 
+    from "../../data_table_modules/mek_servo/mek_servo-class-data-module.js";
+
 export default 
 {
     name:"mek_servo_class",
@@ -36,82 +39,25 @@ export default
             this.$set(this,"selected_class",selected_class);
             this.$emit("update-servo-class",selected_class);
         },
-        get_feature(_pkey_value)
-        {
-            if(this.has_feature(_pkey_value))
-            {
-                let found_feature=null;
-                this.class_table.some((_table_val)=>
-                {
-                    if(_table_val[this.pkey]==_pkey_value)
-                    {
-                        found_feature=_table_val;
-                        return true;
-                    }
-                },this);
-                return found_feature;
-            }
-        },
-        has_feature(_pkey_value)
-        {
-            return this.class_table.some((_val)=>
-            {
-                return _val[this.pkey]==_pkey_value;
-            },this);
-        },
-        class_validate(_data)
-        {
-            if(typeof _data==="undefined")
-            {
-                return false;
-            }
-            let valid=this.class_table.some((_val)=>
-            {
-                return _val.name==_data.name
-                    && _val.id==_data.id
-                    && _val.code==_data.code
-                    && _val.cost==_data.cost
-                    && _val.space==_data.space
-                    && _val.damage_bonus==_data.damage_bonus
-                    && _val.throw_range==_data.throw_range;
-            });
-
-            return valid;
-        }
     },
     computed:
     {
         selected_keys()
         {
-            let default_data=this.get_feature("Superlight");
-
-            if(this.servoClass===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.servoClass);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.select_class(default_data);
-            }
-            let json_data=JSON.stringify(this.servoClass);
-            if(!this.has_feature(this.servoClass[this.pkey]))
-            {
-                if(!this.suppressAlerts)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    this.addAlert("Mek_Servo-Class: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting to default. ****");
-                    this.publishAlerts();
-                }
-                this.select_class(default_data);
-                return [default_data[this.pkey]];
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            else if(!this.class_validate(this.servoClass))
+            if(cleaned_data.update)
             {
-                if(!this.suppressAlerts)
-                {
-                    this.addAlert("Mek_Servo-Class: "+json_data);
-                    this.addAlert("**** Invalid data. Reseting. ****");
-                    this.publishAlerts();
-                }               
-                this.select_class(this.get_feature(this.servoClass[this.pkey]));
+                this.select_class(cleaned_data.data);
             }
-            return [this.servoClass[this.pkey]];
+            return cleaned_data.key_list;
         },
         class_table_headers()
         {
@@ -134,62 +80,10 @@ export default
             }
             return obj;
         },
-        /*
-            due to dependency on Servo Type, Class Table data must be computed locally
-        */
         class_table()
         {
-            let type_cost_multiplier=1;
-            let type_space_multiplier=1;
-            let type_kills_multiplier=1;
-            let type_cost_modifier=0;
-            let type_space_modifier=0;
-            let type_kills_modifier=0;
-            let isArm=false;
-            let isLeg=false;
-
-            switch(this.servoType.toLowerCase())
-            {
-                case "torso":
-                    type_cost_multiplier=2;
-                    type_space_multiplier=2;
-                    type_kills_multiplier=2;
-                    break;
-                case "arm":
-                    isArm=true;
-                    break;
-                case "leg":
-                    isLeg=true;
-                    break;
-                case "pod":
-                    type_space_multiplier=2;
-                    type_kills_multiplier=0;
-                    break;
-                //case "head": //head, wing, tail are all just 1s
-                //case "wing":
-                //case "tail":
-                //    break;
-            }
-            let new_class_table = this.servo_classes.map((_val)=>
-            {
-                let obj={};
-                obj.code=_val.code;
-                obj.id=_val.id; 
-                obj.name=_val.name; 
-                obj.cost=(_val.code*type_cost_multiplier)+type_cost_modifier;
-                obj.space=(_val.code*type_space_multiplier)+type_space_modifier;
-                obj.kills=(_val.code*type_kills_multiplier)+type_kills_modifier;
-                if(isArm || isLeg)
-                {
-                    obj.damage_bonus=isLeg ? Math.ceil(obj.code/2)-1 : Math.ceil(obj.code/3)-1;
-                    if(isArm)
-                    {
-                        obj.throw_range=Math.floor(obj.code/2)+1;
-                    }
-                }
-                return obj;
-            });
-            return new_class_table;
+            create_class_data_table(this.servoType);
+            return class_data_table;
         }
     }
 }
