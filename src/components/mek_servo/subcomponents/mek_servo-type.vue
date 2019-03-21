@@ -35,20 +35,6 @@ export default
     },
     computed:
     {
-        type_index()
-        {
-            let index=0;
-            this.type_table.some((_elem,_index)=>
-            {
-                if(_elem.type.toLowerCase()==this.servoType.type.toLowerCase())
-                {
-                    index=_index;
-                    return true;
-                }
-            },this);
-
-            return [index];
-        },
         selected_keys()
         {
             let default_data=get_feature(this.pkey,"Torso");
