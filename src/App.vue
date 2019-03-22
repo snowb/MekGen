@@ -14,9 +14,16 @@
 // eslint-disable-next-line
 console.log("****\n"+
 "Mekton Mek Generator\n"+
-"Build Date-Time: "+process.env.VUE_APP_BUILD_DATE+"\n"+
-"Build Version: "+process.env.VUE_APP_VERSION+"\n"+
-"****");
+"Build Date-Time: "+process.env.VUE_APP_BUILD_DATE);
+if(process.env.NODE_ENV=="production")
+{
+    console.log("Build Version: "+process.env.VUE_APP_VERSION);
+}
+else
+{
+    console.log("Commit Count: "+process.env.VUE_APP_COMMIT_COUNT);
+}
+console.log("****");
 
 import {mapGetters} from 'vuex';
 
