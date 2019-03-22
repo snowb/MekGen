@@ -10,6 +10,8 @@ let accuracy_data_table=
     {accuracy:2,cost:2}
 ];
 
+let default_data={accuracy:0,cost:1};
+
 //data validator for accuracy_data_table
 let accuracy_validate=(_data)=>
 {
@@ -52,4 +54,37 @@ let get_feature=(_key, _val)=>
     }
 }
 
-export {accuracy_data_table, accuracy_validate, has_feature, get_feature};
+let cleaned_feature=function(_pkey, _feature)
+{//input: primary key, selected feature, filtered data table
+    let data=undefined;
+    let key_list=[];
+    let update=false;
+    let alerts=[];
+    let json_data=JSON.stringify(_feature);
+
+    if(_feature===undefined || !has_feature(_pkey,_feature[_pkey]))
+    {
+        data=default_data;
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Melee-Accuracy: "+json_data);
+        alerts.push("**** Invalid data. Reseting to default. ****");
+    }
+    else if(!accuracy_validate(_feature))
+    {
+        data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Melee-Accuracy: "+json_data);
+        alerts.push("**** Invalid data. Reseting. ****");
+    }
+    else
+    {
+        data=JSON.parse(JSON.stringify(_feature));
+        key_list=[data[_pkey]];
+        update=false;
+    }
+    return {data:data, key_list:key_list, update:update, alerts:alerts};
+}
+
+export {accuracy_data_table, accuracy_validate, has_feature, get_feature, cleaned_feature};

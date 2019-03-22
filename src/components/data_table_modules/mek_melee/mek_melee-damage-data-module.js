@@ -8,6 +8,8 @@ let damage_data_table=Array.apply({}, Array(20)).map((_el,_index)=>
     return {damage:damage,cost:cost};
 });
 
+let default_data={damage:1,cost:0.5};
+
 //data validator for damage_data_table
 let damage_validate=(_data)=>
 {
@@ -50,4 +52,37 @@ let get_feature=(_key, _val)=>
     }
 }
 
-export {damage_data_table, damage_validate, has_feature, get_feature};
+let cleaned_feature=function(_pkey, _feature)
+{//input: primary key, selected feature, filtered data table
+    let data=undefined;
+    let key_list=[];
+    let update=false;
+    let alerts=[];
+    let json_data=JSON.stringify(_feature);
+
+    if(_feature===undefined || !has_feature(_pkey,_feature[_pkey]))
+    {
+        data=default_data;
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Melee-Damage: "+json_data);
+        alerts.push("**** Invalid data. Reseting to default. ****");
+    }
+    else if(!damage_validate(_feature))
+    {
+        data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Melee-Damage: "+json_data);
+        alerts.push("**** Invalid data. Reseting. ****");
+    }
+    else
+    {
+        data=JSON.parse(JSON.stringify(_feature));
+        key_list=[data[_pkey]];
+        update=false;
+    }
+    return {data:data, key_list:key_list, update:update, alerts:alerts};
+}
+
+export {damage_data_table, damage_validate, has_feature, get_feature, cleaned_feature};
