@@ -15,7 +15,7 @@ let cleaned_feature=function(_kills_space_obj, _base_kills, _base_space)
     {
         alerts.push("Mek_Servo-Kills-Space-Trade:");
         alerts.push("**** Missing Base Kills, reseting to 2.");
-        upate=true;
+        update=true;
     }
     if(_base_space===undefined)
     {
