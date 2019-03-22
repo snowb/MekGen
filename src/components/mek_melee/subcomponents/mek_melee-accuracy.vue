@@ -12,7 +12,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {accuracy_data_table, accuracy_validate, has_feature, get_feature}
+import {accuracy_data_table, cleaned_feature}
     from "../../data_table_modules/mek_melee/mek_melee-accuracy-data-module.js";
 
 export default
@@ -29,6 +29,7 @@ export default
         let obj={};
         obj.alerts=[];
         obj.pkey="accuracy";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -47,29 +48,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,0);
-
-            if(this.accuracy===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.accuracy);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.select_accuracy(default_data);
-            }
-            let json_data=JSON.stringify(this.accuracy);
-            if(!has_feature(this.pkey,this.accuracy[this.pkey]))
-            {
-                this.addAlert("Mek_Melee-Accuracy: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_accuracy(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!accuracy_validate(this.accuracy))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Melee-Accuracy: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_accuracy(get_feature(this.pkey,this.accuracy[this.pkey]));
+                this.select_accuracy(cleaned_data.data);
             }
-            return [this.accuracy[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }

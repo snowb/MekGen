@@ -21,7 +21,7 @@
 import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
-import {entangle_validate}
+import {cleaned_feature}
     from "../../data_table_modules/mek_melee/mek_melee-entangle-range-data-module.js";
 
 import 'vue-awesome/icons/plus-square';
@@ -42,6 +42,9 @@ export default
         obj.selected_modifier={};
         obj.selected_modifier.range=0;
         obj.selected_modifier.damage=0;
+        obj.suppressAlerts=false;
+        obj.alerts=[];
+        obj.new_damage=0;
         return obj;
     },
     methods:
@@ -55,15 +58,16 @@ export default
             let new_range_mod=_prop=="range" ? this.selected_modifier.range+1 : this.selected_modifier.range-1;
             let new_damage_mod=_prop=="damage" ? this.selected_modifier.damage-1 : this.selected_modifier.damage+1;
 
-            let validated=entangle_validate(this.base_damage,new_range_mod,new_damage_mod);
-            let json_data=JSON.stringify({range_mod:new_range_mod,damage_mod:new_damage_mod});
+            let cleaned_data=cleaned_feature(this.base_damage,new_range_mod,new_damage_mod);
+            /* let json_data=JSON.stringify({range_mod:new_range_mod,damage_mod:new_damage_mod});
             if(validated.update)
             {
                 this.addAlert("Mek_Melee-Entangle-Range: "+json_data);
                 this.addAlert("**** Invalid data. Reseting. ****");
-            }
-            this.selected_modifier.range=validated.range_mod;
-            this.selected_modifier.damage=validated.damage_mod;
+            } */
+            this.selected_modifier.range=cleaned_data.range_mod;
+            this.selected_modifier.damage=cleaned_data.damage_mod;
+            this.new_damage=cleaned_data.damage;
 
             this.selectDamageAndRange();
         }
@@ -72,25 +76,29 @@ export default
     {
         checked_modifier()
         {
-            let json_data=JSON.stringify({range_mod:this.range_modifier,damage_mod:this.damage_modifier});
-            let validated=entangle_validate(this.base_damage,this.range_modifier,this.damage_modifier);
-            this.selected_modifier.range=validated.range_mod;
-            this.selected_modifier.damage=validated.damage_mod;
-            if(validated.update)
+            let cleaned_data=cleaned_feature(this.base_damage,this.range_modifier,this.damage_modifier);
+            this.selected_modifier.range=cleaned_data.range_mod;
+            this.selected_modifier.damage=cleaned_data.damage_mod;
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.addAlert("Mek_Melee-Entangle-Range: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
+            }
+            if(cleaned_data.update)
+            {
                 this.selectDamageAndRange();
             }
             
-
+            this.new_damage=cleaned_data.damage;
             return {range:this.selected_modifier.range,damage:this.selected_modifier.damage};
         },
-        new_damage()
+        /* new_damage()
         {
             return this.base_damage - this.selected_modifier.damage;
-        }
+        } */
     }
 }
 </script>
