@@ -8,14 +8,16 @@
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
-import {servo_data_table, servo_type_validate, has_feature, get_feature} 
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
+
+import {servo_data_table, servo_type_validate, cleaned_feature} 
     from "../../data_table_modules/mek_servo/mek_servo-type-data-module.js";
 
 export default 
 {
     name:"mek_servo_type",
     props:["servoType"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue"),
@@ -24,6 +26,8 @@ export default
     {
         let obj={};
         obj.pkey="type";
+        obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -37,29 +41,20 @@ export default
     {
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,"Torso");
-            if(this.servoType===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.servoType);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.select_type(default_data);
-            }
-
-            let json_data=JSON.stringify(this.servoType);
-            if(!has_feature(this.pkey,this.servoType[this.pkey]))
-            {
-                this.addAlert("Mek_Servo-Type: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_type(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!servo_type_validate(this.servoType))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Servo-Type: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_type(get_feature(this.pkey,this.servoType[this.pkey]));
+                this.select_type(cleaned_data.data);
             }
-            return [this.servoType[this.pkey]];
+            return cleaned_data.key_list;
         },
         type_table()
         {
