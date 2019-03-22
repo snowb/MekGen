@@ -56,8 +56,8 @@ export default
         },
         incrementProperty(_prop)
         {
-            let prevKills=this.selected_modifier.kills;
-            let prevSpace=this.selected_modifier.space;
+            //let prevKills=this.selected_modifier.kills;
+            //let prevSpace=this.selected_modifier.space;
             this.selected_modifier.kills=_prop=="kills" ? this.selected_modifier.kills+1 : this.selected_modifier.kills-1;
             this.selected_modifier.space=_prop=="space" ? this.selected_modifier.space+2 : this.selected_modifier.space-2;
 
