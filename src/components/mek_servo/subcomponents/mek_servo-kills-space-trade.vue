@@ -23,6 +23,9 @@
 import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
+import {cleaned_feature} 
+    from "../../data_table_modules/mek_servo/mek_servo-kills-space-trade-data-module.js";
+
 import 'vue-awesome/icons/plus-square';
 import Icon from 'vue-awesome/components/Icon';
 
@@ -58,21 +61,11 @@ export default
             this.selected_modifier.kills=_prop=="kills" ? this.selected_modifier.kills+1 : this.selected_modifier.kills-1;
             this.selected_modifier.space=_prop=="space" ? this.selected_modifier.space+2 : this.selected_modifier.space-2;
 
-            switch(true)
-            {
-                case this.new_kills<=0:
-                case this.new_space<0:
-                    this.selected_modifier.kills=prevKills;
-                    this.selected_modifier.space=prevSpace;
-                    break;
-                case ((this.selected_modifier.kills*2) + this.selected_modifier.space)!==0:
-                    this.selected_modifier.kills=0;
-                    this.selected_modifier.space=0;
-                    this.selected_modifier.cost=0;
-                    break;
-            }
-            
-            this.selected_modifier.cost=this.selected_modifier.kills>0 ? this.selected_modifier.kills*2 : 0;
+            let cleaned_data=cleaned_feature(this.selected_modifier,this.base_kills,this.base_space);
+            this.selected_modifier.kills=cleaned_data.data.kills_modifier;
+            this.selected_modifier.space=cleaned_data.data.space_modifier;
+            this.selected_modifier.cost=cleaned_data.data.cost;
+            this.publishAlerts();
 
             this.selectExtraSpace();
         }
@@ -83,30 +76,26 @@ export default
         {
             this.selected_modifier.kills=this.kills_modifier;
             this.selected_modifier.space=this.space_modifier;
-            switch(true)
-            {
-                case this.new_kills<=0:
-                case this.new_space<0:
-                case ((this.selected_modifier.kills*2) + this.selected_modifier.space)!==0:
-                    this.addAlert("Mek_Servo-Kills-Space-Trade: Invalid values, reseting to 0.");
-                    this.selected_modifier.kills=0;
-                    this.selected_modifier.space=0;
-                    this.selected_modifier.cost=0;
-                    break;
-            }
 
-            let kills=this.base_kills + this.kills_modifier;
-            let space=this.base_space + this.space_modifier;
-            return {kills:kills, space:space};
+            let cleaned_data=cleaned_feature(this.selected_modifier,this.base_kills,this.base_space);
+
+            if(cleaned_data.update)
+            {
+                this.selected_modifier.kills=cleaned_data.data.kills_modifier;
+                this.selected_modifier.space=cleaned_data.data.space_modifier;
+                this.selected_modifier.cost=cleaned_data.data.cost;
+                this.publishAlerts();
+            }
+            return {kills:cleaned_data.data.kills, space:cleaned_data.data.space};
         },
-        new_kills()
+       /*  new_kills()
         {
             return this.base_kills + this.selected_modifier.kills;
         },
         new_space()
         {
             return this.base_space + this.selected_modifier.space;
-        },
+        }, */
         title()
         {
             switch(true)
