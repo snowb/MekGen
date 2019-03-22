@@ -17,11 +17,11 @@ console.log("****\n"+
 "Build Date-Time: "+process.env.VUE_APP_BUILD_DATE);
 if(process.env.NODE_ENV=="production")
 {
-    console.log("Build Version: "+process.env.VUE_APP_VERSION);
+    console.log("'Prod' Build Version: "+process.env.VUE_APP_VERSION);
 }
 else
 {
-    console.log("Commit Count: "+process.env.VUE_APP_COMMIT_COUNT);
+    console.log("Dev Commit Count: "+process.env.VUE_APP_COMMIT_COUNT);
 }
 console.log("****");
 
