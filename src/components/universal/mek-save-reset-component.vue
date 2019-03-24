@@ -1,5 +1,5 @@
 <template>
-    <div class="mek-button-container" style="margin:5px;">
+    <div class="mek-button-container">
         <span :class="{'mek-button':!saveClicked,'mek-button-clicked':saveClicked}" 
             @click="button_clicked('save')" @animationend="saveClicked=false"
             title="Save Equipment"
@@ -58,11 +58,19 @@ export default
 }
 </script>
 <style scoped>
+    @media all and (max-width:500px)
+    {
+        .mek-button-container
+        {
+            display:contents;
+        }
+    }
     .mek-button-container
     {
         align-self:center;
         font-size: 150%;
         font-weight: bold;
+        margin:5px;
     }
     .mek-button
     {
