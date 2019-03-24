@@ -11,7 +11,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {ammo_data_table, ammo_validate, get_feature, shock_exclusive, blast_exclusive, cleaned_feature} 
+import {ammo_data_table, cleaned_feature} 
     from "../../data_table_modules/mek_magazine/mek_ammo-list-data-module.js";
 
 export default
@@ -72,17 +72,6 @@ export default
             feature_array.push(_feature);
             //otherwise add feature and return
             return feature_array;
-        },
-        is_exclusive_feature:function(_target_array,_feature)
-        {
-            return this[_target_array].some(function(_val)
-            {
-                if(_val[this.pkey].toLowerCase() == _feature.toLowerCase())
-                {
-                    return true;
-                }
-                return false;
-            },this);
         }
     },
     computed:
@@ -98,8 +87,6 @@ export default
                 return _elem.type.toLowerCase()!="nuclear";
             });
         },
-        shock_exclusive(){return shock_exclusive;},
-        blast_exclusive(){return blast_exclusive;},
         selected_keys()
         {
             let cleaned_data=cleaned_feature(this.ammoArray,this.pkey);
