@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="portfolio_size_table" :selected-keys="selected_keys" :pkey="pkey"
-        :headers="{size:'Portfolio Size',cost:'Cost'}"
+        :headers="{size:'Portfolio Size',cost:'Cost'}" :format="{cost:'multiplier'}"
         name="Portfolio Size" flow="pkey-row" :show-headers="true"
         @update-selected-data="select_portfolio_size"
     ></mek-sub-component-table>
@@ -11,7 +11,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {energy_pool_size_data_table, energy_pool_size_validate, has_feature, get_feature}
+import {energy_pool_size_data_table, energy_pool_size_validate, has_feature, get_feature, cleaned_feature}
     from "../../data_table_modules/mek_energy_pool/mek_energy_pool-size-data-module";
 
 export default
@@ -29,7 +29,7 @@ export default
         obj.selected_portfolio_size={damage:1,cost:1.5,range:4};
         obj.alerts=[];
         obj.pkey="cost";
-
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -53,29 +53,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,1);
-
-            if(this.portfolioSize===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.portfolioSize);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.select_portfolio_size(default_data);
-            }
-            let json_data=JSON.stringify(this.portfolioSize);
-            if(!has_feature(this.pkey,this.portfolioSize[this.pkey]))
-            {
-                this.addAlert("Mek_Energy_Pool-Size: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_portfolio_size(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!energy_pool_size_validate(this.portfolioSize))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Energy_Pool-Size: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_portfolio_size(get_feature(this.pkey,this.portfolioSize[this.pkey]));
+                this.select_portfolio_size(cleaned_data.data);
             }
-            return [this.portfolioSize[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }
