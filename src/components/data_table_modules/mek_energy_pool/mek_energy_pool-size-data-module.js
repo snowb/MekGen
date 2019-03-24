@@ -74,6 +74,7 @@ let cleaned_feature=function(_pkey, _feature)
     else if(!energy_pool_size_validate(_feature))
     {
         data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
+        data.size=data.size===null?Infinity:data.size;
         key_list=[data[_pkey]];
         update=true;
         alerts.push("Mek_Energy_Pool-Size: "+json_data);
@@ -82,6 +83,7 @@ let cleaned_feature=function(_pkey, _feature)
     else
     {
         data=JSON.parse(JSON.stringify(_feature));
+        data.size=data.size===null?Infinity:data.size;
         key_list=[data[_pkey]];
         update=false;
     }
