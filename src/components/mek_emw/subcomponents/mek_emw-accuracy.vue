@@ -1,16 +1,16 @@
 <template>
     <mek-sub-component-table
-        :items="accuracy_table"
-        :headers="headers"
-        name="Accuracy" flow="row" :show-headers="true"
-        :format="{cost:'multiplier'}"
-        :selected-indices="accuracy_index"
-        @update-selected-indices="select_accuracy"
+        :items="accuracy_table" :headers="headers"
+        name="Accuracy" flow="pkey-row" :show-headers="true"
+        :format="{cost:'multiplier'}" :pkey="pkey" :selected-keys="selected_keys"
+        @update-selected-data="select_accuracy"
     ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
+import { accuracy_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_emw/mek_emw-accuracy-data-module';
 
 export default
 {
@@ -24,47 +24,21 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.accuracy_table=
-        [
-            {accuracy:-2,cost:0.6,defense_ability:-4},
-            {accuracy:-1,cost:0.8,defense_ability:-3},
-            {accuracy:0,cost:0.9,defense_ability:-2},
-            {accuracy:1,cost:1,defense_ability:-1},
-            {accuracy:2,cost:1.5,defense_ability:0},
-            {accuracy:3,cost:2,defense_ability:1}
-        ];
-
+        obj.alerts=[];
+        obj.pkey="accuracy";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
         select_accuracy:function(_accuracy)
         {
-            this.$emit("update-accuracy",this.accuracy_table[_accuracy]);
+            let data=JSON.parse(JSON.stringify(_accuracy))
+            this.$emit("update-accuracy",data);
         },
     },
     computed:
     {
-        accuracy_index:function()
-        {
-            let index=2;
-            this.accuracy;
-            this.accuracy_table.some(function(_val,_index)
-            {
-                if(_val.accuracy==this.accuracy.accuracy)
-                {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.accuracy_table[index].cost!==this.cost)
-            {
-                this.select_accuracy(index);
-            }
-            return [index];
-        },
         headers()
         {
             if(this.isVariableBeamShield)
@@ -76,6 +50,27 @@ export default
                 return {defense_ability:'DA',cost:'Cost'}
             }
             return {accuracy:'WA',cost:'Cost'};
+        },
+        accuracy_table()
+        {
+            return accuracy_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.accuracy);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
+            {
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
+            if(cleaned_data.update)
+            {
+                this.select_accuracy(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
