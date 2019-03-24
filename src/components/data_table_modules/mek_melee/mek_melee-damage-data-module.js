@@ -19,10 +19,8 @@ let damage_validate=(_data)=>
     }
     let valid=damage_data_table.some((_val)=>
     {
-        return _val.power_available==_data.power_available
-                && _val.cost==_data.cost
-                && _val.max_power==_data.max_power
-                && _val.damage_capacity==_data.damage_capacity;
+        return _val.damage==_data.damage
+                && _val.cost==_data.cost;
     });
     return valid;
 }
