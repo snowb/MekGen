@@ -48,7 +48,6 @@ export default
                 });
                 this.publishAlerts();
             }
-            this.publishAlerts();
             this.$set(this,"selected_ammo_array",new_selected_ammo_array);
             this.$emit("update-ammo",new_selected_ammo_array);
             this.suppressAlerts=false;
