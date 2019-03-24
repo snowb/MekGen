@@ -195,6 +195,8 @@ export default
                     this.$set(this,"component_name",null);
                 }
             this.$nextTick(()=>{this.component_changed=false;});
+            this.selected_portfolio_size.size=this.selected_portfolio_size.size=="Infinity"
+                    ?Infinity:this.selected_portfolio_size.size;
         },
     },
     computed:
