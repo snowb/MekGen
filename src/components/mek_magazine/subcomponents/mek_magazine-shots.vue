@@ -57,12 +57,13 @@ export default
         {
             get()
             {
-                return this.shots;
+                return this.shots <= 0 ? 1 : this.shots;
             },
             set(_value)
             {
                 this.shots;
                 let shots=+_value.replace(/[^0-9]/g,"");//clear all none numeric characters
+                shots=shots<=0 ? 1 : shots;
                 this.select_shots(shots);
             }
         }
