@@ -68,7 +68,7 @@ let cleaned_feature=function(_pkey, _feature)
         data=default_data;
         key_list=[data[_pkey]];
         update=true;
-        alerts.push("Mek_EMW-Accuracy: "+json_data);
+        alerts.push("Mek_EMW-Attack-Factor: "+json_data);
         alerts.push("**** Invalid data. Reseting to default. ****");
     }
     else if(!attack_factor_validate(_feature))
@@ -76,7 +76,7 @@ let cleaned_feature=function(_pkey, _feature)
         data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
         key_list=[data[_pkey]];
         update=true;
-        alerts.push("Mek_EMW-Accuracy: "+json_data);
+        alerts.push("Mek_EMW-Attack-Factor: "+json_data);
         alerts.push("**** Invalid data. Reseting. ****");
     }
     else
@@ -88,4 +88,4 @@ let cleaned_feature=function(_pkey, _feature)
     return {data:data, key_list:key_list, update:update, alerts:alerts};
 };
 
-export {attack_factor_data_table, accuracy_validate, has_feature, get_feature, cleaned_feature};
+export {attack_factor_data_table, attack_factor_validate, has_feature, get_feature, cleaned_feature};
