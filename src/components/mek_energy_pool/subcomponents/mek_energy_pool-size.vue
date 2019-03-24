@@ -26,7 +26,6 @@ export default
     data:function()
     {
         let obj={};
-        obj.selected_portfolio_size={damage:1,cost:1.5,range:4};
         obj.alerts=[];
         obj.pkey="cost";
         obj.suppressAlerts=false;
@@ -37,11 +36,7 @@ export default
         select_portfolio_size:function(_portfolio_size)
         {
             let data=JSON.parse(JSON.stringify(_portfolio_size));
-            let infinite_size=_portfolio_size.size===Infinity;
-            if(infinite_size)
-            {
-                data.size=Infinity;
-            }
+            data.size=_portfolio_size.size===Infinity?Infinity:_portfolio_size.size;
             this.$emit("update-portfolio-size", data);
         },
     },
