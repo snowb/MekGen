@@ -33,7 +33,7 @@ let feature_validate=(_data)=>
                 && _val.throw_exclusive==_data.throw_exclusive;
     });
     return valid;
-}
+};
 
 let has_feature=(_key, _val)=>
 {
@@ -58,7 +58,7 @@ let get_feature=(_key, _val)=>
         },this);
         return found_feature;
     }
-}
+};
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {
@@ -80,7 +80,7 @@ let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
     {
         return _val[_pkey]==_pkey_value;
     });
-}
+};
 
 let cleaned_feature=function(_feature_array, _pkey)
 {//takes feature_array, returns cleaned array removing multiple exclusive values
@@ -97,7 +97,7 @@ let cleaned_feature=function(_feature_array, _pkey)
             ? "**** Missing feature array. Returning blank. ****"
             : "**** No primary key provided. Returning blank. ****";
         alerts.push(error);
-        return {cleaned_array:[],update:true,key_list:[]};
+        return {cleaned_array:[],update:true,key_list:[],alerts:alerts};
     }
 
     let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
