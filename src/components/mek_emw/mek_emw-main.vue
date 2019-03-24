@@ -203,6 +203,7 @@ export default
                     this.$set(this,"component_name",null);
                 }
             this.$nextTick(()=>{this.component_changed=false;});
+            this.selected_turns_in_use.turns=this.selected_turns_in_use.turns=="Infinity"?Infinity:this.selected_turns_in_use.turns;
         },
         componentSaveReset:function(_action)
         {
