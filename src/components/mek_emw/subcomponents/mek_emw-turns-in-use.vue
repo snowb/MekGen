@@ -1,21 +1,24 @@
 <template>
     <mek-sub-component-table
-        :items="turns_table"
+        :items="turns_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{turns:'Turns',cost:'Cost'}"
-        name="Turns in Use" flow="row" :show-headers="true"
+        name="Turns in Use" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_turns_index"
-        @update-selected-indices="select_turns"
+        @update-selected-data="select_turns"
     ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
+import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import { turns_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_emw/mek_emw-turns-in-use-data-module';
 
 export default 
 {
     name:"mek_emw_turns_in_use",
     props:["turnsInUse"],
-    mixins:[selected_item_mixin],
+    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,46 +26,42 @@ export default
     data:function()
     {
         let obj={};
-        obj.turns_table=
-            [
-                {turns:1,cost:0.3},
-                {turns:2,cost:0.4},
-                {turns:3,cost:0.5},
-                {turns:4,cost:0.6},
-                {turns:5,cost:0.7},
-                {turns:7,cost:0.8},
-                {turns:10,cost:0.9},
-                {turns:Infinity,cost:1.0}
-            ];
-
+        obj.pkey="turns";
+        obj.suppressAlerts=false;
+        obj.alerts=[];
         return obj;
     },
     methods:
     {
         select_turns:function(_selected_turns)
         {
-            this.$emit("update-turns-in-use",this.turns_table[_selected_turns]);
+            let data=JSON.parse(JSON.stringify(_selected_turns))
+            data.turns=_selected_turns.turns===Infinity?Infinity:_selected_turns.turns;
+            this.$emit("update-turns-in-use",data);
         }
     },
     computed:
     {
-        selected_turns_index:function()
+        turns_table()
         {
-            let index=7;
-            this.turns_table.some(function(_val,_index)
+            return turns_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.turnsInUse);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.turns==this.turnsInUse.turns)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.turns_table[index].cost!==this.turnsInUse.cost)
-            {
-                this.select_turns(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_turns(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
