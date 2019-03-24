@@ -52,7 +52,7 @@ let get_feature=(_key, _val)=>
         },this);
         return found_feature;
     }
-}
+};
 
 let cleaned_feature=function(_pkey, _feature)
 {//input: primary key, selected feature, filtered data table
@@ -85,6 +85,6 @@ let cleaned_feature=function(_pkey, _feature)
         update=false;
     }
     return {data:data, key_list:key_list, update:update, alerts:alerts};
-}
+};
 
 export {accuracy_data_table, accuracy_validate, has_feature, get_feature, cleaned_feature};
