@@ -96,7 +96,7 @@ export default
         obj.component_changed=true;
 
         obj.selected_damage={damage:1,cost:1};
-        obj.selected_accuracy={accuracy:1,cost:1};
+        obj.selected_accuracy={accuracy:1,cost:1,defense_ability:-1};
         obj.selected_attack_factor={attack_factor:0,cost:1};
         obj.selected_turns_in_use={turns:Infinity,cost:1};
 
@@ -131,29 +131,25 @@ export default
         },
         updateDamage(_damage)
         {
-            this.selected_damage.damage=_damage.damage;
-            this.selected_damage.cost=_damage.cost;
+            this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
             this.damage_capacity=_damage.damage/4;
         },
         updateAccuracy(_accuracy)
         {
-            this.selected_accuracy.accuracy=_accuracy.accuracy;
-            this.selected_accuracy.cost=_accuracy.cost;
+            this.$set(this,"selected_accuracy",_accuracy);
             this.cost_multipliers.accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateAttackFactor(_attack_factor)
         {
-            this.selected_attack_factor.attack_factor=_attack_factor.attack_factor;
-            this.selected_attack_factor.cost=_attack_factor.cost;
+            this.$set(this,"selected_attack_factor",_attack_factor);
             this.cost_multipliers.attack_factor=_attack_factor.cost;
             this.component_changed=true;
         },
         updateTurnsInUse(_turns)
         {
-            this.selected_turns_in_use.turns=_turns.turns;
-            this.selected_turns_in_use.cost=_turns.cost;
+            this.$set(this,"selected_turns_in_use",_turns);
             this.cost_multipliers.turns_in_use=_turns.cost;
             this.component_changed=true;
         },
