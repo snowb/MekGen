@@ -11,7 +11,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {energy_pool_size_data_table, energy_pool_size_validate, has_feature, get_feature, cleaned_feature}
+import {energy_pool_size_data_table, cleaned_feature}
     from "../../data_table_modules/mek_energy_pool/mek_energy_pool-size-data-module";
 
 export default
