@@ -202,7 +202,7 @@ export default
         raw_space()
         {
             //core cost prop
-            return this.selected_energy_pool.cost * this.cost_multiplier;
+            return this.round(this.selected_energy_pool.cost * this.cost_multiplier,2);
         },
         cost:function()
         {
