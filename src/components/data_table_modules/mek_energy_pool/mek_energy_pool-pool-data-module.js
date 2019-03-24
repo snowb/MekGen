@@ -12,6 +12,8 @@ let energy_pool_data_table=
     {cost:60,power_available:30,max_power:60,damage_capacity:13},
 ];
 
+let default_data={cost:10,power_available:0,max_power:50,damage_capacity:5};
+
 //data validator for energy_pool_data_table
 let energy_pool_validate=(_data)=>
 {
@@ -27,7 +29,7 @@ let energy_pool_validate=(_data)=>
                 && _val.damage_capacity==_data.damage_capacity;
     });
     return valid;
-}
+};
 
 let has_feature=(_key, _val)=>
 {
@@ -52,6 +54,39 @@ let get_feature=(_key, _val)=>
         },this);
         return found_feature;
     }
-}
+};
 
-export {energy_pool_data_table, energy_pool_validate, has_feature, get_feature};
+let cleaned_feature=function(_pkey, _feature)
+{//input: primary key, selected feature, filtered data table
+    let data=undefined;
+    let key_list=[];
+    let update=false;
+    let alerts=[];
+    let json_data=JSON.stringify(_feature);
+
+    if(_feature===undefined || !has_feature(_pkey,_feature[_pkey]))
+    {
+        data=default_data;
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Energy_Pool-Pool: "+json_data);
+        alerts.push("**** Invalid data. Reseting to default. ****");
+    }
+    else if(!energy_pool_validate(_feature))
+    {
+        data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
+        key_list=[data[_pkey]];
+        update=true;
+        alerts.push("Mek_Energy_Pool-Pool: "+json_data);
+        alerts.push("**** Invalid data. Reseting. ****");
+    }
+    else
+    {
+        data=JSON.parse(JSON.stringify(_feature));
+        key_list=[data[_pkey]];
+        update=false;
+    }
+    return {data:data, key_list:key_list, update:update, alerts:alerts};
+};
+
+export {energy_pool_data_table, energy_pool_validate, has_feature, get_feature, cleaned_feature};
