@@ -24,10 +24,8 @@ let energy_pool_size_validate=(_data)=>
     }
     let valid=energy_pool_size_data_table.some((_val)=>
     {
-        return _val.power_available==_data.power_available
-                && _val.cost==_data.cost
-                && _val.max_power==_data.max_power
-                && _val.damage_capacity==_data.damage_capacity;
+        return _val.size==_data.size
+                && _val.cost==_data.cost;
     });
     return valid;
 };
