@@ -1,22 +1,25 @@
 <template>
     <mek-sub-component-table
-        :items="attack_factor_table"
+        :items="attack_factor_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{attack_factor:'AF',cost:'Cost'}"
-        name="Attack Factor" flow="row" :show-headers="true"
+        name="Attack Factor" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier',attack_factor:'nullzero'}"
-        :selected-indices="attack_factor_index"
-        @update-selected-indices="select_attack_factor"
+        @update-selected-data="select_attack_factor"
     ></mek-sub-component-table>
 </template>
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import { attack_factor_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_emw/mek_emw-attack-factor-data-module';
 
 export default
 {
     name:"mek_emw_attack_factor",
     props:["attackFactor"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -24,46 +27,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.attack_factor_table=
-        [
-            {attack_factor:0,cost:1},
-            {attack_factor:1,cost:1.5},
-            {attack_factor:2,cost:2},
-            {attack_factor:3,cost:2.5},
-            {attack_factor:4,cost:3},
-            {attack_factor:5,cost:3.5}
-        ];
-
+        obj.alerts=[];
+        obj.pkey="attack_factor";
+        obj.suppresAlerts=false;
         return obj;
     },
     methods:
     {
         select_attack_factor:function(_attack_factor)
         {
-            this.$emit("update-attack-factor",this.attack_factor_table[_attack_factor]);
+            let data=JSON.parse(JSON.stringify(_attack_factor));
+            this.$emit("update-attack-factor",data);
         },
     },
     computed:
     {
-        attack_factor_index:function()
+        attack_factor_table()
         {
-            let index=0;
-            this.attackFactor;
-            this.attack_factor_table.some(function(_val,_index)
+            return attack_factor_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.attackFactor);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.attack_factor==this.attackFactor.attack_factor)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.attack_factor_table[index].cost!==this.attackFactor.cost)
-            {
-                this.select_attack_factor(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_attack_factor(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
