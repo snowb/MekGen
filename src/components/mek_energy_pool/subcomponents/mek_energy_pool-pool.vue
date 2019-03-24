@@ -11,7 +11,7 @@ import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import  {energy_pool_data_table, energy_pool_validate, has_feature, get_feature}
+import  {energy_pool_data_table, cleaned_feature}
     from "../../data_table_modules/mek_energy_pool/mek_energy_pool-pool-data-module";
 
 export default
@@ -28,6 +28,7 @@ export default
         let obj={};
         obj.pkey="power_available";
         obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -45,29 +46,20 @@ export default
         },
         selected_keys()
         {
-            let default_data=get_feature(this.pkey,0);
-
-            if(this.energyPool===undefined)
+            let cleaned_data=cleaned_feature(this.pkey, this.energyPool);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.select_energy_pool(default_data);
-            }
-            let json_data=JSON.stringify(this.energyPool);
-            if(!has_feature(this.pkey,this.energyPool[this.pkey]))
-            {
-                this.addAlert("Mek_Energy_Pool-Pool: "+json_data);
-                this.addAlert("**** Invalid data. Reseting to default. ****");
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
                 this.publishAlerts();
-                this.select_energy_pool(default_data);
-                return [default_data[this.pkey]];
             }
-            else if(!energy_pool_validate(this.energyPool))
+            if(cleaned_data.update)
             {
-                this.addAlert("Mek_Energy_Pool-Pool: "+json_data);
-                this.addAlert("**** Invalid data. Reseting. ****");
-                this.publishAlerts();
-                this.select_energy_pool(get_feature(this.pkey,this.energyPool[this.pkey]));
+                this.select_portfolio_size(cleaned_data.data);
             }
-            return [this.energyPool[this.pkey]];
+            return cleaned_data.key_list;
         }
     }
 }
