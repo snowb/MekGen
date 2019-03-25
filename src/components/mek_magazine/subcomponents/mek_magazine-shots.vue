@@ -17,7 +17,7 @@ export default
 {
     name:"mek_magazine_shots",
     props:["shots"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[utility_mixin],
     data:function()
     {
         let obj={};

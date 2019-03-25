@@ -15,7 +15,7 @@ export default
 {
     name:"mek_magazine_select_gun",
     props:["selectedGun"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[utility_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
