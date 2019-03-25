@@ -26,7 +26,7 @@ export default
     {
         let obj={};
         obj.alerts=[];
-        obj.pkey="accuracy";
+        //obj.pkey="accuracy";
         obj.suppressAlerts=false;
         return obj;
     },
@@ -51,6 +51,10 @@ export default
                 return {defense_ability:'DA',cost:'Cost'}
             }
             return {accuracy:'WA',cost:'Cost'};
+        },
+        pkey()
+        {
+            return (this.isBeamShield && !this.isVariableBeamShield) ? "defense_ability" : "accuracy";
         },
         accuracy_table()
         {
