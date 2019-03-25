@@ -9,17 +9,16 @@
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin";
-import { binder_data_table, cleaned_feature } 
+import { binder_data_table, cleaned_feature, create_binder_data_table } 
     from '../../data_table_modules/mek_shield/mek_shield-binder-data-module';
 
 export default 
 {
     name: "mek_shield_binder",
     props:["binder","base_stopping_power"],
-    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -44,14 +43,8 @@ export default
     {
         binder_table()
         {
-            return binder_data_table.map((_elem)=>
-            {
-                return {
-                    stopping_power_modifier:_elem.stopping_power_modifier,
-                    cost:_elem.cost,
-                    space:this.round((this.base_stopping_power*_elem.stopping_power_modifier) * 2,1)
-                }
-            },this);
+            create_binder_data_table(this.base_stopping_power);
+            return binder_data_table;
         },
         selected_keys()
         {
