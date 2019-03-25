@@ -1,4 +1,5 @@
 //data table module, raw data output for re-use in non-vue-component formats
+import {partial_validate, partial_has_feature, partial_get_feature} from "../universal/mek_partial-function-data-module";
 
 //create new ammo_data_table
 let ammo_data_table=
@@ -24,50 +25,18 @@ let ammo_data_table=
 ];
 let shock_exclusive=ammo_data_table.filter((_el)=>{return typeof _el.shock_exclusive!=="undefined";});
 let blast_exclusive=ammo_data_table.filter((_el)=>{return typeof _el.blast_exclusive!=="undefined";});
-
+let data_table_keys=["type","cost","effect","shock_exclusive","blast_exclusive"];
 let default_data={type:"High-Ex",cost:1,effect:"Standard"};
 
 //data validator for ammo_data_table
-let ammo_validate=(_data)=>
-{
-    if(typeof _data==="undefined")
-    {
-        return false;
-    }
-    let valid=ammo_data_table.some((_val)=>
-    {
-        return _val.type==_data.type
-                && _val.cost==_data.cost
-                && _val.shock_exclusive==_data.shock_exclusive
-                && _val.blast_exclusive==_data.blast_exclusive;
-    });
-    return valid;
-};
+//call partial_validate with appropriate data for full validate
+let ammo_validate=partial_validate(ammo_data_table, data_table_keys);
 
-let has_feature=(_key, _val)=>
-{
-    return ammo_data_table.some((_data)=>
-    {
-        return _data[_key]!==undefined && _data[_key]==_val;
-    });
-};
+//completed function for checking if data has data
+let has_feature=partial_has_feature(ammo_data_table);
 
-let get_feature=(_key, _val)=>
-{
-    if(has_feature(_key,_val))
-    {
-        let found_feature=null;
-        ammo_data_table.some((_table_val)=>
-        {
-            if(_table_val[_key]==_val)
-            {
-                found_feature=_table_val;
-                return true;
-            }
-        },this);
-        return found_feature;
-    }
-};
+//completed function for returning matching data
+let get_feature=partial_get_feature(ammo_data_table, has_feature);
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {
@@ -91,6 +60,11 @@ let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
     });
 };
 
+/*** 
+ * 
+ * create cleaned_feat function for features
+ * 
+ *  ***/
 let cleaned_feature=function(_feature_array, _pkey)
 {//takes feature_array, returns cleaned array removing multiple exclusive values
     let hasExclusiveShock=false;

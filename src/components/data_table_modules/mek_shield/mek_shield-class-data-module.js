@@ -1,5 +1,6 @@
 //data table module, raw data output for re-use in non-vue-component formats
 import servo_classes from "../universal/servo_classes_data";
+import {partial_validate, partial_has_feature, partial_get_feature, partial_cleaned_feature} from "../universal/mek_partial-function-data-module";
 
 //create new class_data_table
 let class_data_table=[];
@@ -33,84 +34,22 @@ let create_class_data_table=function(_type)
     },this);
 };
 create_class_data_table("standard");
+let data_table_keys=["stopping_power","code","id","name","kills","cost"];
 
-let default_data={stopping_power_modifier:0,cost:1,space:0};
+//data validator for create_class_data_table
+//call partial_validate with appropriate data for full validate
+let class_validate=partial_validate(class_data_table, data_table_keys);
 
-//data validator for class_data_table
-let class_validate=(_data)=>
-{
-    if(typeof _data==="undefined")
-    {
-        return false;
-    }
-    let valid=class_data_table.some((_val)=>
-    {
-        return _val.stopping_power_modifier==_data.stopping_power_modifier
-                && _val.cost==_data.cost
-                && _val.id==_data.id
-                && _val.name==_data.name
-                && _val.kills==_data.kills
-                && _val.cost==_data.cost;
-    });
-    return valid;
-}
+//completed function for checking if data has data
+let has_feature=partial_has_feature(class_data_table);
 
-let has_feature=(_key, _val)=>
-{
-    return class_data_table.some((_data)=>
-    {
-        return _data[_key]!==undefined && _data[_key]==_val;
-    });
-};
+//completed function for returning matching data
+let get_feature=partial_get_feature(class_data_table, has_feature);
 
-let get_feature=(_key, _val)=>
-{
-    if(has_feature(_key,_val))
-    {
-        let found_feature=null;
-        class_data_table.some((_table_val)=>
-        {
-            if(_table_val[_key]==_val)
-            {
-                found_feature=_table_val;
-                return true;
-            }
-        },this);
-        return found_feature;
-    }
-};
-
-let cleaned_feature=function(_pkey, _feature)
-{//input: primary key, selected feature, filtered data table
-    let data=undefined;
-    let key_list=[];
-    let update=false;
-    let alerts=[];
-    let json_data=JSON.stringify(_feature);
-
-    if(_feature===undefined || !has_feature(_pkey,_feature[_pkey]))
-    {
-        data=default_data;
-        key_list=[data[_pkey]];
-        update=true;
-        alerts.push("Mek_Shield-Class: "+json_data);
-        alerts.push("**** Invalid data. Reseting to default. ****");
-    }
-    else if(!class_validate(_feature))
-    {
-        data=JSON.parse(JSON.stringify(get_feature(_pkey,_feature[_pkey])));
-        key_list=[data[_pkey]];
-        update=true;
-        alerts.push("Mek_Shield-Class: "+json_data);
-        alerts.push("**** Invalid data. Reseting. ****");
-    }
-    else
-    {
-        data=JSON.parse(JSON.stringify(_feature));
-        key_list=[data[_pkey]];
-        update=false;
-    }
-    return {data:data, key_list:key_list, update:update, alerts:alerts};
-};
+let default_data=JSON.parse(JSON.stringify(get_feature("code",1)));
+//
+//completed function for returning cleaed data
+let cleaned_feature=
+    partial_cleaned_feature(class_validate, has_feature, get_feature, default_data, "Mek_Shield-Class");
 
 export {class_data_table, class_validate, has_feature, get_feature, cleaned_feature, create_class_data_table};

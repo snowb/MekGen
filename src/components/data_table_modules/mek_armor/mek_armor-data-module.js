@@ -23,7 +23,11 @@ let has_feature=partial_has_feature(armor_data_table);
 //completed function for returning matching data
 let get_feature=partial_get_feature(armor_data_table, has_feature);
 
-/*** determine if can be switched to some form of partial function format ****/
+/*** 
+ * 
+ * determine if can be switched to some form of partial function format 
+ * 
+ * ****/
 let cleaned_feature=function(_pkey, _feature, _filtered_table)
 {//input: primary key, selected feature, filtered data table
     let data=undefined;
