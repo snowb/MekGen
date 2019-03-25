@@ -1,23 +1,25 @@
 <template>
     <mek-sub-component-table
-        :items="binder_table"
+        :items="binder_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{stopping_power_modifier:'-SP',space:'+Space',cost:'Cost'}"
-        name="Binder" flow="row" :show-headers="true"
+        name="Binder" flow="pkey-row" :show-headers="true"
         :format="{stopping_power_modifier:'percent',cost:'multiplier'}"
-        :selected-indices="selected_binder_index"
-        @update-selected-indices="select_binder"
+        @update-selected-data="select_binder"
     ></mek-sub-component-table>
 </template>
 
 <script>
 import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import { binder_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_shield/mek_shield-binder-data-module';
 
 export default 
 {
     name: "mek_shield_binder",
     props:["binder","base_stopping_power"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -25,74 +27,49 @@ export default
     data:function()
     {
         let obj={}
-        obj.binder_table=
-            [
-                {stopping_power_modifier:0,cost:1,space:0},
-                {stopping_power_modifier:0.25,cost:1.1,space:0},
-                {stopping_power_modifier:0.33,cost:1.2,space:0},
-                {stopping_power_modifier:0.50,cost:1.3,space:0},
-                {stopping_power_modifier:0.66,cost:1.2,space:0},
-                {stopping_power_modifier:0.75,cost:1.1,space:0}
-            ];
+        obj.alerts=[];
+        obj.suppressAlerts=false;
+        obj.pkey="stopping_power_modifier";
         return obj;
     },
     methods:
     {
         select_binder:function(_selected_binder_index)
         {
-            this.$emit("update-binder",this.binder_table[_selected_binder_index]);
+            let data=JSON.parse(JSON.stringify(_selected_binder_index))
+            this.$emit("update-binder",data);
         },
-        calculate_extra_space:function(_stopping_power_mod)
-        {
-            return (this.base_stopping_power*_stopping_power_mod) * 2;
-        },
-        update_binder_table()
-        {
-            this.binder_table.forEach((_elem)=>
-            {
-                _elem.space=this.round((this.base_stopping_power*_elem.stopping_power_modifier) * 2,1);
-            },this);
-        }
     },
     computed:
     {
-        selected_binder_index:function()
+        binder_table()
         {
-            let index=0;
-            this.binder_table.some(function(_val,_index)
+            return binder_data_table.map((_elem)=>
             {
-                if(_val.stopping_power_modifier==this.binder.stopping_power_modifier)
-                {
-                    index=_index;
-                    return true;
+                return {
+                    stopping_power_modifier:_elem.stopping_power_modifier,
+                    cost:_elem.cost,
+                    space:this.round((this.base_stopping_power*_elem.stopping_power_modifier) * 2,1)
                 }
-                return false;
             },this);
-            let update=false;
-            switch(true)
-            {
-                case this.binder.cost!=this.binder_table[index].cost:
-                case this.space!=this.calculate_extra_space(this.binder_table[index].stopping_power_modifier):
-                    update=true;
-            }
-
-            if(update)
-            {
-                this.select_binder(index);
-            }
-            return [index];
-        }
-    },
-    watch:
-    {
-        base_stopping_power()
+        },
+        selected_keys()
         {
-            this.update_binder_table();
+            let cleaned_data=cleaned_feature(this.pkey, this.binder);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
+            {
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
+            if(cleaned_data.update)
+            {
+                this.select_binder(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
-    },
-    mounted()
-    {
-        this.update_binder_table();
     }
 }
 </script>
