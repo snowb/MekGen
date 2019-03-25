@@ -1,7 +1,8 @@
 //data table module, raw data output for re-use in non-vue-component formats
 
 //create new binder_data_table
-let binder_data_table=
+let binder_data_table=[];
+let raw_binder_data_table=
 [
     {stopping_power_modifier:0,cost:1,space:0},
     {stopping_power_modifier:0.25,cost:1.1,space:0},
@@ -10,6 +11,21 @@ let binder_data_table=
     {stopping_power_modifier:0.66,cost:1.2,space:0},
     {stopping_power_modifier:0.75,cost:1.1,space:0}
 ];
+
+let create_binder_data_table=function(_base_stopping_power)
+{
+    let base_stopping_power=_base_stopping_power===undefined?5:_base_stopping_power;
+    binder_data_table=raw_binder_data_table.map((_elem)=>
+    {
+        let space=Math.round((base_stopping_power*_elem.stopping_power_modifier * 2)*10)/10;
+        return {
+            stopping_power_modifier:_elem.stopping_power_modifier,
+            cost:_elem.cost,
+            space:space
+        }
+    });
+};
+create_binder_data_table(5);
 
 let default_data={stopping_power_modifier:0,cost:1,space:0};
 
@@ -87,4 +103,4 @@ let cleaned_feature=function(_pkey, _feature)
     return {data:data, key_list:key_list, update:update, alerts:alerts};
 };
 
-export {binder_data_table, binder_validate, has_feature, get_feature, cleaned_feature};
+export {binder_data_table, binder_validate, has_feature, get_feature, cleaned_feature, create_binder_data_table};
