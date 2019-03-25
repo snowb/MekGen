@@ -77,6 +77,7 @@ let get_feature=partial_get_feature(class_data_table, has_feature);
 let default_data=get_feature("code",1);
 
 //completed function for returning cleaed data
-let cleaned_feature=partial_cleaned_feature(servo_class_validate, has_feature, get_feature, default_data, "Mek_Servo-Class");
+let cleaned_feature=
+    partial_cleaned_feature(servo_class_validate, has_feature, get_feature, default_data, "Mek_Servo-Class");
 
 export {create_class_data_table, class_data_table, servo_class_validate, has_feature, get_feature, cleaned_feature};

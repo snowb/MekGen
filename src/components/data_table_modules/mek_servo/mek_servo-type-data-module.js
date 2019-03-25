@@ -26,6 +26,7 @@ let has_feature=partial_has_feature(servo_data_table);
 let get_feature=partial_get_feature(servo_data_table, has_feature);
 
 //completed function for returning cleaed data
-let cleaned_feature=partial_cleaned_feature(servo_type_validate, has_feature, get_feature, default_data, "Mek_Servo-Type");
+let cleaned_feature=
+    partial_cleaned_feature(servo_type_validate, has_feature, get_feature, default_data, "Mek_Servo-Type");
 
 export {servo_data_table, servo_type_validate, has_feature, get_feature, cleaned_feature};
