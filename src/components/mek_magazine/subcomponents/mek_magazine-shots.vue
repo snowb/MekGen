@@ -11,7 +11,6 @@
     </span>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 
 export default

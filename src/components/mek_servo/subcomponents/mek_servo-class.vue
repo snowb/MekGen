@@ -6,8 +6,6 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import servo_classes_mixin from "../../../mixins/servo_classes_mixin.js";
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin.js";
 
@@ -18,7 +16,7 @@ export default
 {
     name:"mek_servo_class",
     props:["servoClass","servoType","suppressAlerts"],
-    mixins:[servo_classes_mixin, selected_item_mixin,utility_mixin,alerts_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue"),

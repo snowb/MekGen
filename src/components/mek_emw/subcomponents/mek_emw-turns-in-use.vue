@@ -8,7 +8,6 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 import { turns_data_table, cleaned_feature } 
@@ -18,7 +17,7 @@ export default
 {
     name:"mek_emw_turns_in_use",
     props:["turnsInUse"],
-    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")

@@ -60,8 +60,6 @@
 </template>
 
 <script>
-import servo_classes_mixin from "../../mixins/servo_classes_mixin.js";
-import selected_item_mixin from "../../mixins/selected_item_mixin.js";
 import utility_mixin from "../../mixins/utility_mixin.js";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
@@ -72,8 +70,6 @@ export default
     props:[],
     mixins:
         [
-            servo_classes_mixin, 
-            selected_item_mixin, 
             utility_mixin, 
             component_methods_mixin, 
             component_computed_mixin

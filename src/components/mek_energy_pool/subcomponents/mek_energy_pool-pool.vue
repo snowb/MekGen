@@ -7,7 +7,6 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
@@ -18,7 +17,7 @@ export default
 {
     name:"mek_energy_pool_pool",
     props:["energyPool"],
-    mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
+    mixins:[utility_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")

@@ -48,7 +48,6 @@
 </template>
 
 <script>
-import selected_item_mixin from "../../mixins/selected_item_mixin";
 import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
@@ -57,7 +56,7 @@ export default
 {
     name:"mek_melee",
     props:[""],
-    mixins:[selected_item_mixin, utility_mixin, component_computed_mixin, component_methods_mixin],
+    mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
         "mek-melee-damage":()=>import(/* webpackChunkName: "mek-melee-damage" */"./subcomponents/mek_melee-damage.vue"),
