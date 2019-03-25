@@ -94,8 +94,6 @@ export default
     name:"mek_shield",
     mixins:
         [
-            servo_classes_mixin, 
-            selected_item_mixin, 
             utility_mixin, 
             component_methods_mixin, 
             component_computed_mixin
@@ -132,7 +130,7 @@ export default
         obj.shield_class={};
         obj.shield_class.code=1;
         obj.shield_class.stopping_power=5;
-        obj.shield_class.kills=null;
+        obj.shield_class.kills=25;
         obj.shield_class.cost=5;
         obj.shield_class.id="SL";
         obj.shield_class.name="Superlight";
@@ -283,13 +281,9 @@ export default
             }
             this.component_changed=true;
         },
-        select_class_code:function(_class_code_obj)
+        select_class_code:function(_shield_class_obj)
         {
-            this.shield_class.code=_class_code_obj.code;
-            this.shield_class.stopping_power=_class_code_obj.stopping_power;
-            this.shield_class.cost=_class_code_obj.cost;
-            this.shield_class.id=_class_code_obj.id;
-            this.shield_class.name=_class_code_obj.name;
+            this.$set(this,"shield_class",_shield_class_obj);
             this.component_changed=true;
         },
         select_da:function(_da_obj)
