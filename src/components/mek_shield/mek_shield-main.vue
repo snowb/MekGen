@@ -59,13 +59,13 @@
         </div>
         <div class="mek-inline-flex-row">
             <mek-component-stats :cols="4" :rows="5">
-                <div slot="col1-row1" v-if="shield_class.kills!==null">Kills: {{shield_class.kills}}</div>
+                <div slot="col1-row1" v-if="is_ablative">Kills: {{shield_class.kills}}</div>
                 <div slot="col1-row1" v-else>Base Stopping Power: {{round(shield_class.stopping_power,2)}}
                     <br>Final Stopping Power: {{round(calculate_stopping_power(),2)}}
                 </div>
-                <div slot="col1-row2" v-if="armor_type!==null">Armor Type: {{armor_type.type}}</div>
-                <div slot="col1-row3" v-if="armor_type!==null" style="padding-left:10px;">Damage Coefficient: {{armor_type.damage_coefficient}}</div>
-                <div slot="col1-row4" v-if="absorption!==null">Absorption: {{absorption.absorption*100}}%</div>
+                <div slot="col1-row2" v-if="armor_type.damage_coefficient!=1">Armor Type: {{armor_type.type}}</div>
+                <div slot="col1-row3" v-if="armor_type.damage_coefficient!=1" style="padding-left:10px;">Damage Coefficient: {{armor_type.damage_coefficient}}</div>
+                <div slot="col1-row4" v-if="absorption.absorption!=0">Absorption: {{absorption.absorption*100}}%</div>
                 <div slot="col2-row1" v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
                 <div slot="col2-row1" v-if="type.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
                 <div slot="col2-row2" v-if="type.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
@@ -127,40 +127,27 @@ export default
         obj.original_component=null;
         obj.component_changed=true;
 
-        obj.shield_class={};
-        obj.shield_class.code=1;
-        obj.shield_class.stopping_power=5;
-        obj.shield_class.kills=25;
-        obj.shield_class.cost=5;
-        obj.shield_class.id="SL";
-        obj.shield_class.name="Superlight";
+        obj.shield_class={code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"};
 
         obj.defense_ability={da:-2,cost:1};
         obj.cost_multipliers={};
         obj.cost_multipliers.defense_ability=1;
         
-        obj.binder={};
-        obj.binder.cost=1;
-        obj.binder.space=0;
-        obj.binder.stopping_power_modifier=0;
+        obj.binder={cost:1,space:0,stopping_power_modifier:0};
         obj.cost_multipliers.binder=1;
 
-        obj.reset_time={};
-        obj.reset_time.time=2;
-        obj.reset_time.cost=1;
+        obj.reset_time={time:2,cost:1};
         obj.cost_multipliers.reset_time=1;
         
-        obj.turns_in_use={};
-        obj.turns_in_use.time="X";
-        obj.turns_in_use.cost=1;
+        obj.turns_in_use={time:"X",cost:1};
         obj.cost_multipliers.turns_in_use=1;
 
         obj.weakness_array=[];
-        obj.weakness_array[0]={};
+        /* obj.weakness_array[0]={};
         obj.weakness_array[0].weakness="All";
         obj.weakness_array[0].monicker="Shield";
         obj.weakness_array[0].cost=1;
-        obj.weakness_array[0].exclusive=false;
+        obj.weakness_array[0].exclusive=false; */
         obj.cost_multipliers.weakness=1;
 
         obj.efficiencies={};
@@ -188,96 +175,45 @@ export default
             {
                 this.shield_class.cost=this.shield_class.stopping_power*3;
 
-                this.defense_ability=null;
+                this.$set(this,"defense_ability",{da:-2,cost:1});
                 this.cost_multipliers.defense_ability=1;
 
-                this.$set(this,"binder",{stopping_power_modifier:0})
+                this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
                 this.cost_multipliers.binder=1;
 
-                let reset_time=this.reset_time===null?{cost:1,time:2}:this.reset_time;
-                this.$set(this,"reset_time",reset_time);
-                this.cost_multipliers.reset_time=this.reset_time.cost;
-
-                let turns_in_use=this.turns_in_use===null ? {time:"X",cost:1} : this.turns_in_use;
-                this.$set(this,"turns_in_use",turns_in_use);
-                this.cost_multipliers.turns_in_use=this.turns_in_use.cost;
-
-                let weakness_array=this.weakness_array===null ? [{weakness:"All",monicker:"Shield",cost:1,exclusive:false}] : this.weakness_array;
-                this.$set(this,"weakness_array",weakness_array);
-                this.cost_multipliers.weakness=this.weakness_array.reduce(function(_sum,_val){return _sum*_val.cost},1);
-            
-                this.$set(this,"armor_type",null);
+                this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1});
                 this.cost_multipliers.armor_type=1;
-                this.$set(this,"absorption",null);
+                this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:0});
                 this.cost_multipliers.absorption=1;
             }
             else if(this.type==="active")
             {
                 this.shield_class.cost=this.shield_class.stopping_power*1.5;
 
-                this.defense_ability=null;
+                this.$set(this,"defense_ability",{da:-2,cost:1});
                 this.cost_multipliers.defense_ability=1;
-
-                if(typeof this.binder.space==="undefined")
-                {//binder is never null, as stopping_power_modifier is always at least 0
-                    this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
-                    this.shield_name;
-                }
-                this.cost_multipliers.binder=this.binder.cost;
                 
-                this.reset_time=null
+                this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.turns_in_use=null;
+                this.$set(this,"turns_in_use",{time:"X",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
-                this.weakness_array=null;
+                this.$set(this,"weakness_array",[]);
                 this.cost_multipliers.weakness=1;
-                
-                if(this.armor_type===null)
-                {
-                    this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1})
-                    this.cost_multipliers.armor_type=1;
-                }
-                if(this.absorption===null)
-                {
-                    this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:1})
-                    this.cost_multipliers.absorption=1;
-                }
             }
             else if(this.type=="standard")
             {
                 this.shield_class.cost=this.shield_class.stopping_power;
 
-                this.defense_ability=this.defense_ability===null ? -2 : this.defense_ability;
-                this.cost_multipliers.defense_ability=this.cost_multipliers.defense_ability===null ? 1 : this.cost_multipliers.defense_ability;
-                
-                if(this.binder===null)
-                {
-                    this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
-                    this.shield_name;
-                }
-                this.cost_multipliers.binder=this.binder.cost;
-
-                this.reset_time=null;
+                this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.turns_in_use=null;
+                this.$set(this,"turns_in_use",{time:"X",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
-                this.weakness_array=null;
+                this.$set(this,"weakness_array",[]);
                 this.cost_multipliers.weakness=1;
-
-                if(this.armor_type===null)
-                {
-                    this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1})
-                    this.cost_multipliers.armor_type=1;
-                }
-                if(this.absorption===null)
-                {
-                    this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:0})
-                    this.cost_multipliers.absorption=1;
-                }
             }
             this.component_changed=true;
         },
@@ -294,22 +230,20 @@ export default
         },
         select_binder:function(_binder_obj)
         {
-            this.binder.cost=_binder_obj.cost;
-            this.binder.space=_binder_obj.space;
-            this.binder.stopping_power_modifier=_binder_obj.stopping_power_modifier;
+            this.$set(this,"binder",_binder_obj);
             this.cost_multipliers.binder=_binder_obj.cost;
             this.shield_name;
             this.component_changed=true;
         },
         select_reset:function(_reset_obj)
         {
-            this.reset_time=_reset_obj;
+            this.$set(this,"reset_time",_reset_obj);
             this.cost_multipliers.reset_time=_reset_obj.cost;
             this.component_changed=true;
         },
         select_turns:function(_turns_obj)
         {
-            this.turns_in_use=_turns_obj;
+            this.$set(this,"turns_in_use",_turns_obj);
             this.cost_multipliers.turns_in_use=_turns_obj.cost;
             this.component_changed=true;
         },
@@ -321,17 +255,16 @@ export default
                 _cost_multi*=_val.cost;
                 return _cost_multi;
             },1);
-            this.shield_class.kills=this.is_ablative ? this.calculate_stopping_power()*5 : null;
             this.component_changed=true;
         },
         select_armor_type(_armor_type)
         {
-            this.$set(this,"armor_type",JSON.parse(JSON.stringify(_armor_type)));
+            this.$set(this,"armor_type",_armor_type);
             this.cost_multipliers.armor_type=this.armor_type.cost;
         },
         select_absorption(_absorption)
         {
-            this.$set(this,"absorption",JSON.parse(JSON.stringify(_absorption)));
+            this.$set(this,"absorption",_absorption);
             this.cost_multipliers.absorption=this.absorption.cost;
         },
         updateComponentName:function(_name)
@@ -341,7 +274,7 @@ export default
         },
         calculate_stopping_power:function()
         {
-            let sp_modifier=this.absorption!==null ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
+            let sp_modifier=this.absorption!=0 ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
             return this.shield_class.stopping_power - (this.shield_class.stopping_power * sp_modifier);
         },
         weighted_stopping_power()
@@ -436,9 +369,8 @@ export default
     {
         is_ablative:function()
         {
-            if(this.weakness_array===null)
+            if(this.weakness_array===null || this.weakness_array.length==0)
             {
-                this.shield_class.kills=null;
                 return false;
             }
             let isAblative=this.weakness_array.some(function(_val)
@@ -454,7 +386,7 @@ export default
         },
         surge_damage:function()
         {
-            if(this.weakness_array===null)
+            if(this.weakness_array===null || this.weakness_array.length==0)
             {
                 return false;
             }
@@ -513,7 +445,7 @@ export default
         shield_name:function()
         {
             let fullname="";
-            if(this.type.toLowerCase()=="standard" && this.defense_ability!==null)
+            if(this.type.toLowerCase()=="standard")
             {
                 fullname=["Huge","Large","Medium","Small","Tiny"][this.defense_ability*-1];
             }
