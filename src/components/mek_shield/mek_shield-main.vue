@@ -135,7 +135,7 @@ export default
         obj.shield_class.id="SL";
         obj.shield_class.name="Superlight";
 
-        obj.defense_ability=-2;
+        obj.defense_ability={da:-2,cost:1};
         obj.cost_multipliers={};
         obj.cost_multipliers.defense_ability=1;
         
@@ -288,7 +288,7 @@ export default
         },
         select_da:function(_da_obj)
         {
-            this.defense_ability=_da_obj.da;
+            this.$set(this,"defense_ability",_da_obj);
             this.cost_multipliers.defense_ability=_da_obj.cost;
             this.component_changed=true;
         },
