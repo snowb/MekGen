@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="da_table"
+        :items="da_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{da:'DA',cost:'Cost'}"
-        name="Defense Ability" flow="row" :show-headers="true"
+        name="Defense Ability" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_da_index"
-        @update-selected-indices="select_da"
+        @update-selected-data="select_da"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import { da_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_shield/mek_shield-defense-ability-data-module';
 
 export default 
 {
     name:"mek_shield_defense_ability",
     props:["defense_ability","cost"],
-    mixins:[selected_item_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,42 +24,41 @@ export default
     data:function()
     {
         let obj={};
-        obj.da_table=
-            [
-                {da:-4,cost:0.6},
-                {da:-3,cost:0.8},
-                {da:-2,cost:1},
-                {da:-1,cost:1.25},
-                {da:0,cost:1.5},
-            ];
+        obj.alerts=[];
+        obj.pkey="da";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
         select_da:function(_selected_da)
         {
-            this.$emit("update-defense-ability",this.da_table[_selected_da]);
+            let data=JSON.parse(JSON.stringify(_selected_da))
+            this.$emit("update-defense-ability",data);
         }
     },
     computed:
     {
-        selected_da_index:function()
+        da_table()
         {
-            let index=2;
-            this.da_table.some(function(_val,_index)
+            return da_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.defense_ability);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.da==this.defense_ability)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.da_table[index].cost!==this.cost)
-            {
-                this.select_da(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_da(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
