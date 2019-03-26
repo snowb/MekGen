@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="reset_table"
+        :items="reset_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{time:'Rounds',cost:'Cost'}"
-        name="Reset Time" flow="row" :show-headers="true"
+        name="Reset Time" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_reset_index"
-        @update-selected-indices="select_reset"
+        @update-selected-data="select_reset"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import { reset_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_shield/mek_shield-reset-time-data-module';
 
 export default 
 {
     name:"mek_shield_reset_time",
     props:["resetTime"],
-    mixins:[selected_item_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,42 +24,41 @@ export default
     data:function()
     {
         let obj={};
-        obj.reset_table=
-            [
-                {time:"X",cost:0.5},
-                {time:3,cost:0.75},
-                {time:2,cost:1.0},
-                {time:1,cost:1.5},
-                {time:0,cost:2.0}
-            ];
+        obj.pkey="time";
+        obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
         select_reset:function(_selected_reset_obj)
         {
-            this.$emit("update-reset-time",this.reset_table[_selected_reset_obj]);
+            let data=JSON.parse(JSON.stringify(_selected_reset_obj))
+            this.$emit("update-reset-time",data);
         }
     },
     computed:
     {
-        selected_reset_index:function()
+        reset_table()
         {
-            let index=2;
-            this.reset_table.some(function(_val,_index)
+            return reset_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.resetTime);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.time==this.resetTime.time)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.reset_table[index].cost!==this.resetTime.cost)
-            {
-                this.select_reset(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_reset(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
