@@ -25,7 +25,7 @@ let store= new Vuex.Store(
                     }
                 }
             },
-            currentTab:"mek-servo",
+            currentTab:"mek-shield",
             selected_component:null,
             alert_messages:[]
         },
