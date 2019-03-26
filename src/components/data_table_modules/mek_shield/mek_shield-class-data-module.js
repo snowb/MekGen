@@ -20,7 +20,7 @@ let create_class_data_table=function(_type)
     }
 
     class_data_table=servo_classes.map(function(_val)
-    {
+    {//generate new class_data_table
         let newelement=
         {
             stopping_power:_val.code+4,
@@ -31,14 +31,17 @@ let create_class_data_table=function(_type)
             cost:(_val.code+4)*type_multiplier
         };
         return newelement;
-    },this);
+    },this);    
 };
 create_class_data_table("standard");
 let data_table_keys=["stopping_power","code","id","name","kills","cost"];
 
 //data validator for create_class_data_table
 //call partial_validate with appropriate data for full validate
-let class_validate=partial_validate(class_data_table, data_table_keys);
+let class_validate=()=>
+{//must run uniquely every time to ensure updated class_data_table
+    return partial_validate(class_data_table, data_table_keys);
+}
 
 //completed function for checking if data has data
 let has_feature=partial_has_feature(class_data_table);
