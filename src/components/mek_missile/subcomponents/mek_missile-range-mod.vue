@@ -50,7 +50,7 @@ export default
             let range_mod=this.antiMissile && this.rangeMod.range_mod!=1
                 ? {range_mod:1,cost:1,range:1*this.baseRange}   //static default data ... belongs in data module?
                 : this.rangeMod;
-            let cleaned_data=cleaned_feature(this.pkey, this.rangeMod);
+            let cleaned_data=cleaned_feature(this.pkey, range_mod);
             if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
                 cleaned_data.alerts.forEach((_alert)=>
