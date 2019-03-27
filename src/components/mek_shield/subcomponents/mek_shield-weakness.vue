@@ -10,8 +10,8 @@
 <script>
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {feature_data_table, cleaned_feature}
-    from "../../data_table_modules/mek_shield/mek_shield-feature-data-module";
+import {weakness_data_table, cleaned_weakness}
+    from "../../data_table_modules/mek_shield/mek_shield-weakness-data-module";
 
 export default 
 {
@@ -36,8 +36,8 @@ export default
         select_weakness:function(_selected_weakness)
         {
             this.suppressAlerts=true;//suppress alerts, for exclusive switching
-            let new_selected_weakness_array=this.toggleFeature(this.selected_weakness_array,_selected_weakness);
-            let cleaned_data=cleaned_feature(new_selected_weakness_array, this.pkey);
+            let new_selected_weakness_array=this.toggleWeakness(this.selected_weakness_array,_selected_weakness);
+            let cleaned_data=cleaned_weakness(new_selected_weakness_array, this.pkey);
             new_selected_weakness_array=cleaned_data.cleaned_array;
             if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
@@ -51,36 +51,36 @@ export default
             this.$emit("update-weakness",new_selected_weakness_array);
             this.suppressAlerts=false;
         },
-        toggleFeature(_feature_array,_feature)
+        toggleWeakness(_weakness_array,_weakness)
         {
-            let feature_array=JSON.parse(JSON.stringify(_feature_array));
+            let weakness_array=JSON.parse(JSON.stringify(_weakness_array));
             
-            let remove_feature=feature_array.some((_val)=>
-            {//if _feature matches already existing feature, flag for deletion
-                return _val[this.pkey]==_feature[this.pkey];
+            let remove_weakness=weakness_array.some((_val)=>
+            {//if _weakness matches already existing weakness, flag for deletion
+                return _val[this.pkey]==_weakness[this.pkey];
             },this);
 
-            if(remove_feature)
+            if(remove_weakness)
             {//if flagged for removal, filter out
-                return feature_array.filter((_val)=>
+                return weakness_array.filter((_val)=>
                 {
-                    return _val[this.pkey]!=_feature[this.pkey];
+                    return _val[this.pkey]!=_weakness[this.pkey];
                 },this);
             }
-            feature_array.push(_feature);
-            //otherwise add feature and return
-            return feature_array;
+            weakness_array.push(_weakness);
+            //otherwise add weakness and return
+            return weakness_array;
         }
     },
     computed:
     {
         weakness_table()
         {
-            return feature_data_table;
+            return weakness_data_table;
         },
         selected_keys()
         {
-            let cleaned_data=cleaned_feature(this.weaknessArray,this.pkey);
+            let cleaned_data=cleaned_weakness(this.weaknessArray,this.pkey);
             if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
                 cleaned_data.alerts.forEach((_alert)=>
