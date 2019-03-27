@@ -59,7 +59,7 @@ let cleaned_weakness=function(_weakness_array, _pkey)
 
     if(_weakness_array===undefined || _pkey===undefined)
     {
-        alerts.push("Mek_Shield-weakness: ");
+        alerts.push("Mek_Shield-Weakness: ");
         let error=_weakness_array===undefined
             ? "**** Missing weakness array. Returning blank. ****"
             : "**** No primary key provided. Returning blank. ****";
@@ -138,11 +138,11 @@ let cleaned_weakness=function(_weakness_array, _pkey)
         temp_selected_weakness_array=[JSON.parse(JSON.stringify(default_data))];
         update=true;
         key_list=["All"];
-        alerts.push("Mek_Shield-weakness: ");
+        alerts.push("Mek_Shield-Weakness: ");
         alerts.push("**** Reseting to default ****");
     }
     return {cleaned_array:temp_selected_weakness_array,update:update,key_list:key_list,alerts:alerts};
     //returns an object with the pruned weakness array, whether it was updated, and the key_list
 }
 
-export {weakness_data_table, weakness_validate, has_weakness, get_weakness, exclusive_beam, cleaned_weakness};
+export {weakness_data_table, weakness_validate, has_weakness, get_weakness, cleaned_weakness};
