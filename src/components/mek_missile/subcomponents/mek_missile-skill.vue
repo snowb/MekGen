@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="skill_table"
+        :items="skill_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{skill:'Skill',cost:'Cost'}" :show-headers="true"
-        name="Smart Skill" flow="row" :format="{cost:'multiplier'}"
-        :selected-indices="skill_index"
-        @update-selected-indices="select_skill"
+        name="Smart Skill" flow="pkey-row" :format="{cost:'multiplier'}"
+        @update-selected-data="select_skill"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {skill_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_missile/mek_missile-skill-data-module.js";
 
 export default
 {
     name:"mek_missile_skill",
     props:["skill"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,46 +24,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.skill_table=
-        [
-            {skill:6,cost:1},
-            {skill:9,cost:1.3},
-            {skill:12,cost:1.6},
-            {skill:15,cost:1.9},
-            {skill:18,cost:2.2},
-            {skill:20,cost:2.5},
-        ];
+        obj.alerts=[];
+        obj.pkey="skill";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_skill:function(_skill_index)
+        select_skill:function(_skill)
         {
-            this.$emit("update-skill",this.skill_table[_skill_index]);
+            let data=JSON.parse(JSON.stringify(_skill));
+            this.$emit("update-skill",data);
         },
     },
     computed:
     {
-        skill_index:function()
+        skill_table()
         {
-            let index=0;
-            this.skill;
-            this.skill_table.some(function(_val,_index)
+            return skill_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.skill);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.skill==this.skill.skill)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-
-            if(this.skill_table[index].cost!==this.skill.cost)
-            {
-                this.select_skill(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_skill(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
