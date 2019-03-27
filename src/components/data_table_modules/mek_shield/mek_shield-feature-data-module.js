@@ -64,20 +64,22 @@ let cleaned_feature=function(_feature_array, _pkey)
             ? "**** Missing feature array. Returning blank. ****"
             : "**** No primary key provided. Returning blank. ****";
         alerts.push(error);
-        return {cleaned_array:default_data,update:true,key_list:["All"],alerts:alerts};
+        return {cleaned_array:[default_data],update:true,key_list:["All"],alerts:alerts};
     }
 
     let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
     {
         if(hasExclusiveAll)
         {//found exclusive all weakness, return just that
-            return _cleaned_array;
+            key_list=["All"];
+            return [default_data];
         }
         let isAll=is_exclusive_feature("all_exclusive",_pkey,_val[_pkey]);
         if(isAll && _cleaned_array.length==0)
         {//last item added was All, return that and essential end
             hasExclusiveAll=true;
-            return default_data;
+            key_list=["All"];
+            return [default_data];
         }
         else if(isAll)
         {//otherwise, not last item, ignore All weakness
@@ -131,7 +133,14 @@ let cleaned_feature=function(_feature_array, _pkey)
         return _cleaned_array;
     },[]);
     temp_selected_feature_array.reverse();
-
+    if(temp_selected_feature_array.length==0)
+    {//empty, reset to default
+        temp_selected_feature_array=[JSON.parse(JSON.stringify(default_data))];
+        update=true;
+        key_list=["All"];
+        alerts.push("Mek_Magazine-Ammo-List: ");
+        alerts.push("**** Reseting to default ****");
+    }
     return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list,alerts:alerts};
     //returns an object with the pruned feature array, whether it was updated, and the key_list
 }
