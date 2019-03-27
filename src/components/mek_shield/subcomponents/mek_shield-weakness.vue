@@ -1,22 +1,23 @@
 <template>
     <mek-sub-component-table
-        :items="weakness_table"
+        :items="weakness_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{weakness:'Weakness',monicker:'Monicker',cost:'Cost'}"
-        name="Weakness" flow="col" :show-headers="true"
+        name="Weakness" flow="pkey-col" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_weakness_index_array"
-        @update-selected-indices="select_weakness"
+        @update-selected-data="select_weakness"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {feature_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_shield/mek_shield-feature-data-module";
 
 export default 
 {
     name:"mek_shield_weakness",
     props:["weaknessArray"],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -24,19 +25,9 @@ export default
     data:function()
     {
         let obj={};
-        obj.weakness_table=
-            [
-                {weakness:"All",monicker:"Shield",cost:1.0},
-                {weakness:"Ablative",monicker:"Screen",cost:1.0},
-                {weakness:"Energy Only",monicker:"Interference",cost:0.75,exclusive:true},
-                {weakness:"Matter Only",monicker:"Kinetic",cost:0.75,exclusive:true},
-                {weakness:"Ranged Only",monicker:"Swashbuckling",cost:0.75,exclusive:true},
-                {weakness:"Enclosing",monicker:"Mirror",cost:0.5},
-                {weakness:"Surge",monicker:"Surge",cost:2.5}
-            ];
- 
-        obj.exclusive_weaknesses=obj.weakness_table.filter((_el)=>{return typeof _el.exclusive!=="undefined"});
-
+        obj.alerts=[];
+        obj.pkey="weakness";
+        obj.suppressAlerts=false;
         obj.selected_weakness_array=[{weakness:"All",monicker:"Shield",cost:1.0}];
         return obj;
     },
@@ -44,160 +35,66 @@ export default
     {
         select_weakness:function(_selected_weakness)
         {
-            let select_weakness_name=this.weakness_table[_selected_weakness].weakness;
-            let isAllWeakness=select_weakness_name.toLowerCase()=="all";
-            let currentIsAll=this.selected_weakness_array[0].weakness.toLowerCase()=="all";
-            let weakness_index=this.find_weakness_index(select_weakness_name);
-            let weaknessClone=Object.assign({},this.weakness_table[weakness_index]);
-            if(isAllWeakness || currentIsAll)
+            this.suppressAlerts=true;//suppress alerts, for exclusive switching
+            let new_selected_weakness_array=this.toggleFeature(this.selected_weakness_array,_selected_weakness);
+            let cleaned_data=cleaned_feature(new_selected_weakness_array, this.pkey);
+            new_selected_weakness_array=cleaned_data.cleaned_array;
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                this.$set(this,"selected_weakness_array",[weaknessClone]);
-            }
-            else
-            {
-                let isExclusive=this.is_exclusive_weakness(select_weakness_name);
-
-                let temp_selected_weakness_array=this.selected_weakness_array.filter((_val)=>
-                {//filter out matching weaknesses (toggle)
-                    return _val.weakness.toLowerCase()!=select_weakness_name.toLowerCase();
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
                 });
-
-                let togglefeature=this.selected_weakness_array.some((_elem)=>
-                {
-                    return _elem.weakness.toLowerCase()==select_weakness_name.toLowerCase();
-                },this);
-
-                temp_selected_weakness_array=isExclusive ? temp_selected_weakness_array.filter((_val)=>{return typeof _val.exclusive==="undefined"}) : temp_selected_weakness_array;
-                //if selected weakness is exclusive, filter out other exclusives
-
-                this.$set(this,"selected_weakness_array",temp_selected_weakness_array);
-
-                if(!togglefeature)
-                {
-                    this.selected_weakness_array.push(weaknessClone);
-                }
-                if(temp_selected_weakness_array.length==0)
-                {
-                    let allIndex=this.find_weakness_index("All");
-                    weaknessClone=Object.assign({},this.weakness_table[allIndex]);
-                    this.$set(this,"selected_weakness_array",[weaknessClone]);
-                }
+                this.publishAlerts();
             }
-            this.$emit("update-weakness",this.selected_weakness_array);
+            this.$set(this,"selected_weakness_array",new_selected_weakness_array);
+            this.$emit("update-weakness",new_selected_weakness_array);
+            this.suppressAlerts=false;
         },
-        find_weakness_index:function(_weakness)
+        toggleFeature(_feature_array,_feature)
         {
-            let found_index;
-            this.weakness_table.some(function(_val, _index)
-            {
-                if(_val.weakness.toLowerCase() == _weakness.toLowerCase())
-                {
-                    found_index=_index;
-                    return true;
-                }
-                return false;
-            });
+            let feature_array=JSON.parse(JSON.stringify(_feature_array));
+            
+            let remove_feature=feature_array.some((_val)=>
+            {//if _feature matches already existing feature, flag for deletion
+                return _val[this.pkey]==_feature[this.pkey];
+            },this);
 
-            return found_index;
-        },
-        is_exclusive_weakness:function(_weakness)
-        {
-            return this.exclusive_weaknesses.some(function(_val)
-            {
-                if(_val.weakness.toLowerCase() == _weakness.toLowerCase())
+            if(remove_feature)
+            {//if flagged for removal, filter out
+                return feature_array.filter((_val)=>
                 {
-                    return true;
-                }
-                return false;
-            });
-        },
-        exclusive_indices:function()
-        {
-            let foundIndices=this.selected_weakness_array.reduce(function(_indices,_val,_index)
-            {
-                if(_val.exclusive)
-                {
-                    _indices.push(_index);
-                }
-                return _indices;
-            },[]);
-            return foundIndices;
-        },
-        is_all_weakness_index:function(_index)
-        {
-            return this.weakness_table[_index].weakness.toLowerCase()=="all";
+                    return _val[this.pkey]!=_feature[this.pkey];
+                },this);
+            }
+            feature_array.push(_feature);
+            //otherwise add feature and return
+            return feature_array;
         }
     },
     computed:
     {
-        selected_weakness_index_array:function()
+        weakness_table()
         {
-            let indices=[];
-            if(this.weaknessArray.length==0)
-            {
-                this.selected_weakness_array=[this.weakness_table[0]];
-                return [0];
-            }
-            if(this.weaknessArray.length==1)
-            {
-                let weakness_index=this.find_weakness_index(this.weaknessArray[0].weakness);
-                this.selected_weakness_array=[this.weakness_table[weakness_index]];
-                return [weakness_index];
-            }
-            
-            let hasExclusive=false;
-            let self=this;
-            let weakness_list=[];
-            this.selected_weakness_array=this.weaknessArray.reduceRight(function(_prev, _val)
-            {
-                if(_val.weakness.toLowerCase()=="all")
-                {
-                    return [_val];
-                }
-                if(self.is_exclusive_weakness(_val.weakness))
-                {
-                    if(!hasExclusive)
-                    {
-                        _prev.push(_val);
-                        hasExclusive=true;
-                        weakness_list.push(_val.weakness.toLowerCase());
-                    }
-                }
-                else if(!weakness_list.includes(_val.weakness.toLowerCase()))
-                {
-                    _prev.push(_val);
-                    weakness_list.push(_val.weakness.toLowerCase());
-                }
-                return _prev;
-            },[]);
-
-            indices=this.selected_weakness_array.reduce(function(_indices,_val)
-            {
-                _indices.push(self.find_weakness_index(_val.weakness));
-                return _indices;
-            },[]);
-            if(this.weaknessArray.length!=this.selected_weakness_array.length)
-            {
-                this.$emit("update-weakness",this.selected_weakness_array);
-            }
-
-            return indices;
+            return feature_data_table;
         },
-        flat_weakness_array:function()
+        selected_keys()
         {
-            return this.weakness_table.reduce(function(_array, _el)
+            let cleaned_data=cleaned_feature(this.weaknessArray,this.pkey);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                _array.push(_el.weakness);
-                return _array;
-            },[]);
-        },
-        flat_monicker_array:function()
-        {
-            return this.weakness_table.reduce(function(_array, _el)
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
+            if(cleaned_data.update)
             {
-                _array.push(_el.monicker);
-                return _array;
-            },[]);
+                this.$emit("update-weakness",cleaned_data.cleaned_array);
+            }
+            this.$set(this,"selected_weakness_array",cleaned_data.cleaned_array);
+            return cleaned_data.key_list;
         }
     }
 }
