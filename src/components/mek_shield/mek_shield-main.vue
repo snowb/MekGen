@@ -7,43 +7,43 @@
         <div class="mek-inline-flex-row">
             <div class="mek-flex-col">
                 <mek-shield-type :type="type" @update-type="select_type"></mek-shield-type>
-                <mek-shield-class :shield_class="shield_class" :type="type" :is_ablative="is_ablative" @update-class-code="select_class_code"></mek-shield-class>
+                <mek-shield-class :shield_class="shield_class" :type="type.name" :is_ablative="is_ablative" @update-class-code="select_class_code"></mek-shield-class>
             </div>
             <span class="mek-flex-col no-margin">
                 <mek-shield-defense-ability
-                    v-if="type.toLowerCase()=='standard'"
+                    v-if="type.name.toLowerCase()=='standard'"
                     :defense_ability="defense_ability"
                     :cost="cost_multipliers.defense_ability" 
                     @update-defense-ability="select_da"></mek-shield-defense-ability>
                 <mek-shield-binder
-                    v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
+                    v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :binder="binder"
                     :base_stopping_power="shield_class.stopping_power"
                     @update-binder="select_binder"
                 ></mek-shield-binder>
                 <mek-shield-reset-time 
-                    v-if="type.toLowerCase()=='reactive'"
+                    v-if="type.name.toLowerCase()=='reactive'"
                     :reset-time="reset_time"
                     @update-reset-time="select_reset"
                 ></mek-shield-reset-time>
                 <mek-shield-turns-in-use
-                    v-if="type.toLowerCase()=='reactive'"
+                    v-if="type.name.toLowerCase()=='reactive'"
                     :turns-in-use="turns_in_use"
                     @update-turns-in-use="select_turns"
                 ></mek-shield-turns-in-use>
             </span>
             <span class="mek-flex-col no-margin">
-                <mek-armor-type v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
+                <mek-armor-type v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :armor-type="armor_type"
                     @update-armor-type="select_armor_type"
                 ></mek-armor-type>
                 <mek-energy-absorbing-armor
-                    v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'"
+                    v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :absorption="absorption"
                     @update-absorption="select_absorption"
                 ></mek-energy-absorbing-armor>
             </span>
-            <span class="mek-flex-col no-margin" v-if="type.toLowerCase()=='reactive'">
+            <span class="mek-flex-col no-margin" v-if="type.name.toLowerCase()=='reactive'">
                 <mek-shield-weakness
                     @update-weakness="select_weakness"
                     :weakness-array="weakness_array"
@@ -66,11 +66,11 @@
                 <div slot="col1-row2" v-if="armor_type.damage_coefficient!=1">Armor Type: {{armor_type.type}}</div>
                 <div slot="col1-row3" v-if="armor_type.damage_coefficient!=1" style="padding-left:10px;">Damage Coefficient: {{armor_type.damage_coefficient}}</div>
                 <div slot="col1-row4" v-if="absorption.absorption!=0">Absorption: {{absorption.absorption*100}}%</div>
-                <div slot="col2-row1" v-if="type.toLowerCase()=='standard' || type.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
-                <div slot="col2-row1" v-if="type.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
-                <div slot="col2-row2" v-if="type.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
-                <div slot="col2-row3" v-if="type.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time}}</div>
-                <div slot="col2-row4" v-if="type.toLowerCase()=='reactive'">Surge Damage: {{surge_damage}}</div>
+                <div slot="col2-row1" v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
+                <div slot="col2-row1" v-if="type.name.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
+                <div slot="col2-row2" v-if="type.name.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
+                <div slot="col2-row3" v-if="type.name.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time}}</div>
+                <div slot="col2-row4" v-if="type.name.toLowerCase()=='reactive'">Surge Damage: {{surge_damage}}</div>
                 <div slot="col3-row1">Base Space: {{raw_space}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
                 <div slot="col3-row3">Weight: {{round(weight,2)}} tons</div>
@@ -120,7 +120,7 @@ export default
     {
         let obj={};
         obj.uuid=null;
-        obj.type="standard";
+        obj.type={name:"Standard"};
         obj.component_name=null;
         obj.component_category="equipment";
         obj.component_type="shield";
@@ -160,13 +160,14 @@ export default
     {
         select_type:function(_type)
         {
-            if(this.type.toLowerCase()==_type.toLowerCase())
+            if(this.type.name.toLowerCase()==_type.name.toLowerCase())
             {
                 return;
             }
             this.component_changed=true;
-            this.type=_type.toLowerCase();
-            if(this.type==="reactive")
+            this.$set(this,"type",_type);
+            let type=_type.name.toLowerCase();
+            if(type==="reactive")
             {
                 this.shield_class.cost=this.shield_class.stopping_power*3;
 
@@ -181,7 +182,7 @@ export default
                 this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:0});
                 this.cost_multipliers.absorption=1;
             }
-            else if(this.type==="active")
+            else if(type==="active")
             {
                 this.shield_class.cost=this.shield_class.stopping_power*1.5;
 
@@ -197,7 +198,7 @@ export default
                 this.$set(this,"weakness_array",[]);
                 this.cost_multipliers.weakness=1;
             }
-            else if(this.type=="standard")
+            else if(type=="standard")
             {
                 this.shield_class.cost=this.shield_class.stopping_power;
 
@@ -300,7 +301,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="shield";
             return_data.component_name=this.component_name===null?this.shield_name:this.component_name;
-            return_data.type=this.type;
+            return_data.type=JSON.parse(JSON.stringify(this.type));
             return_data.shield_class=JSON.parse(JSON.stringify(this.shield_class));
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
@@ -310,7 +311,7 @@ export default
             return_data.is_ablative=this.is_ablative;
             return_data.weight=this.weight;
 
-            switch(this.type.toLowerCase())
+            switch(this.type.name.toLowerCase())
             {
                 case "standard":
                     return_data.defense_ability=JSON.parse(JSON.stringify(this.defense_ability));
@@ -410,16 +411,16 @@ export default
         },
         raw_space:function()
         {
-            if(this.type.toLowerCase()=="standard")
+            if(this.type.name.toLowerCase()=="standard")
             {
                 return 1;
             }
             let base_cost=this.shield_class.cost * this.cost_multiplier;
-            if(this.type.toLowerCase()=="active")
+            if(this.type.name.toLowerCase()=="active")
             {
                 return this.round(base_cost/2, 2);
             }
-            else if(this.type.toLowerCase()=="reactive")
+            else if(this.type.name.toLowerCase()=="reactive")
             {
                 return this.round(base_cost,2);
             }
@@ -442,20 +443,20 @@ export default
         shield_name:function()
         {
             let fullname="";
-            if(this.type.toLowerCase()=="standard")
+            if(this.type.name.toLowerCase()=="standard")
             {
                 fullname=["Huge","Large","Medium","Small","Tiny"][this.defense_ability.da*-1];
             }
             fullname+=" "+this.shield_class.name;
-            if(this.type.toLowerCase()=="standard" || this.type.toLowerCase()=="active")
+            if(this.type.name.toLowerCase()=="standard" || this.type.name.toLowerCase()=="active")
             {
                 this.binder;
-                fullname+=this.type.toLowerCase()=="active"?" Active":"";
+                fullname+=this.type.name.toLowerCase()=="active"?" Active":"";
                 fullname+=this.absorption!==null&&this.absorption.absorption>0?" Absorbing":"";
                 fullname+=this.armor_type!==null&&this.armor_type.type.toLowerCase()!="standard" ? " "+this.armor_type.type : "";
                 fullname+=this.binder!==null&&this.binder.space>0?" Binder":" Shield";
             }
-            else if(this.type.toLowerCase()=="reactive")
+            else if(this.type.name.toLowerCase()=="reactive")
             {
                 fullname+=" Reactive";
                 let exclusive_name="";
