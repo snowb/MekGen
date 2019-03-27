@@ -7,7 +7,6 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
 import {ammo_data_table, cleaned_feature} 
@@ -17,7 +16,7 @@ export default
 {
     name:"mek_magazine_ammo_list",
     props:["ammoArray","hasBlast"],
-    mixins:[utility_mixin, alerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
