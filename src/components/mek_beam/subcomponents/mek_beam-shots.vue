@@ -33,7 +33,7 @@ export default
                 {shots:3,cost:0.7},
                 {shots:5,cost:0.8},
                 {shots:10,cost:0.9},
-                {shots:Infinity,cost:1}
+                {shots:"__INFINITY__",cost:1}
             ];
         return obj;
     },

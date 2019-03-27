@@ -11,7 +11,7 @@ let turns_data_table=
     {turns:5,cost:0.7},
     {turns:7,cost:0.8},
     {turns:10,cost:0.9},
-    {turns:Infinity,cost:1.0}
+    {turns:"__INFINITY__",cost:1.0}
 ];
 let data_table_keys=["turns","cost"];
 let default_data={turns:Infinity,cost:1};

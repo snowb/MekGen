@@ -107,9 +107,9 @@ export default
         obj.selected_pack_size=1;
         obj.selected_accuracy={accuracy:0,cost:1};
         obj.selected_range_mod={range_mod:1,cost:1,type:null};
-        obj.selected_smart={smart:0,cost:1};
+        obj.selected_smart={smart:"__NIL__",cost:1};
         obj.selected_skill={skill:6,cost:1};
-        obj.selected_blast_radius={blast_radius:0,cost:1};
+        obj.selected_blast_radius={blast_radius:"__NIL__",cost:1};
         obj.smoke_scatter_duration=null;
 
         obj.damage_capacity=this.round(1/15,2);
@@ -249,9 +249,9 @@ export default
                     this.selected_pack_size=1;
                     this.selected_accuracy.accuracy=0;
                     this.selected_range_mod.range_mod=1;
-                    this.selected_smart.smart=0;
+                    this.selected_smart.smart="__NIL__";
                     this.selected_skill.skill=6;
-                    this.selected_blast_radius.blast_radius=0;
+                    this.selected_blast_radius.blast_radius="__NIL__";
                     this.smoke_scatter_duration=null;
                     this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
@@ -281,7 +281,6 @@ export default
             return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
             return_data.selected_smart=JSON.parse(JSON.stringify(this.selected_smart));
             return_data.selected_skill=JSON.parse(JSON.stringify(this.selected_skill));
-            return_data.selected_blast_radius=JSON.parse(JSON.stringify(this.selected_blast_radius));
             return_data.selected_blast_radius=JSON.parse(JSON.stringify(this.selected_blast_radius));
 
             return_data.cost=this.total_cost;
@@ -331,6 +330,8 @@ export default
         missile_name()
         {
             let missile_name=this.has_feature("nuclear") ? "Nuclear ":"";
+
+            missile_name+=this.selected_smart.smart!="__NIL__"?"Smart ":"";
 
             missile_name=this.feature_array.reduce((_name,_val)=>
             {

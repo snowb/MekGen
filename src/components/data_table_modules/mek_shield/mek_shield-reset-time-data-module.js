@@ -4,7 +4,7 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 //create new reset_data_table
 let reset_data_table=
 [
-    {time:"X",cost:0.5},
+    {time:"__NIL__",cost:0.5},
     {time:3,cost:0.75},
     {time:2,cost:1.0},
     {time:1,cost:1.5},

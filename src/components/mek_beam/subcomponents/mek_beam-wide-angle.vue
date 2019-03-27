@@ -27,8 +27,8 @@ export default
         let obj={}
         obj.wide_angle_table=
             [
-                {angle:0,cost:1},
-                {angle:1,cost:2},
+                {angle:"__NIL__",cost:1},
+                {angle:"__HEX__",cost:2},
                 {angle:60,cost:3},
                 {angle:180,cost:5},
                 {angle:300,cost:7},

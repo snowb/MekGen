@@ -11,7 +11,7 @@ let turns_data_table=
     {time:5,cost:0.7},
     {time:7,cost:0.8},
     {time:10,cost:0.9},
-    {time:Infinity,cost:1}
+    {time:"__INFINITY__",cost:1}
 ];
 let data_table_keys=["time","cost"];
 let default_data={time:"X",cost:1};

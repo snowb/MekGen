@@ -118,9 +118,9 @@ export default
         obj.selected_burst_value={burst_value:1,cost:1};
         obj.selected_range_mod={range_mod:1,cost:1,range:4};
         obj.selected_accuracy={accuracy:1,cost:1};
-        obj.selected_shots={shots:Infinity,cost:1};
+        obj.selected_shots={shots:"__INFINITY__",cost:1};
         obj.selected_warm_up_time={time:0,cost:1.0};
-        obj.selected_wide_angle={angle:0,cost:1.0};
+        obj.selected_wide_angle={angle:"__NIL__",cost:1.0};
         
         obj.feature_array=[];
 
@@ -231,9 +231,9 @@ export default
                     this.selected_burst_value.burst_value=1;
                     this.selected_range_mod.range_mod=1;
                     this.selected_accuracy.accuracy=1;
-                    this.selected_shots.shots=Infinity;
+                    this.selected_shots.shots="__INFINITY__";
                     this.selected_warm_up_time.time=0;
-                    this.selected_wide_angle.angle=0;
+                    this.selected_wide_angle.angle="__NIL__";
                     this.$store.commit("saveComponent",null);
                     break;
             }
@@ -252,7 +252,7 @@ export default
 
             return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
             return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
-            return_data.selected_burst_value.burst_value=this.selected_burst_value.burst_value===Infinity?"Infinity":this.selected_burst_value.burst_value;
+            //return_data.selected_burst_value.burst_value=this.selected_burst_value.burst_value===Infinity?"Infinity":this.selected_burst_value.burst_value;
             return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
             return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
             return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
@@ -298,12 +298,12 @@ export default
         },
         beam_name()
         {
-            let isInfiniteBurst=this.selected_burst_value.burst_value===Infinity;
-            let isBurst=this.selected_burst_value.burst_value>1 && !isInfiniteBurst;
+            let isInfiniteBurst=this.selected_burst_value.burst_value=="__INFINITY__";
+            let isBurst=this.selected_burst_value.burst_value!=1 && !isInfiniteBurst;
             let beam_name=  isBurst?"Burst-"+this.selected_burst_value.burst_value+" ":
                             isInfiniteBurst?"Infinite-Burst ":
                             "";
-            beam_name+=this.selected_wide_angle.angle>0?"Wide-Angle ":"";
+            beam_name+=this.selected_wide_angle.angle!="__NIL__"?"Wide-Angle ":"";
 
             let isHydro=false;
             let isMegaBeam=false;
@@ -341,7 +341,7 @@ export default
         },
         show_warm_up_time()
         {
-            return !this.mag_fed && this.selected_shots.shots==Infinity;
+            return !this.mag_fed && this.selected_shots.shots=="__INFINITY__";
         },
         anti_missile()
         {

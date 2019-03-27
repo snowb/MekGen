@@ -139,7 +139,7 @@ export default
         obj.reset_time={time:2,cost:1};
         obj.cost_multipliers.reset_time=1;
         
-        obj.turns_in_use={time:Infinity,cost:1};
+        obj.turns_in_use={time:"__INFINITY__",cost:1};
         obj.cost_multipliers.turns_in_use=1;
 
         obj.weakness_array=[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}];
@@ -191,7 +191,7 @@ export default
                 this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.$set(this,"turns_in_use",{time:Infinity,cost:1});
+                this.$set(this,"turns_in_use",{time:"__INFINITY__",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[]);
@@ -204,7 +204,7 @@ export default
                 this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.$set(this,"turns_in_use",{time:Infinity,cost:1});
+                this.$set(this,"turns_in_use",{time:"__INFINITY__",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[]);
@@ -444,7 +444,7 @@ export default
             let fullname="";
             if(this.type.toLowerCase()=="standard")
             {
-                fullname=["Huge","Large","Medium","Small","Tiny"][this.defense_ability*-1];
+                fullname=["Huge","Large","Medium","Small","Tiny"][this.defense_ability.da*-1];
             }
             fullname+=" "+this.shield_class.name;
             if(this.type.toLowerCase()=="standard" || this.type.toLowerCase()=="active")

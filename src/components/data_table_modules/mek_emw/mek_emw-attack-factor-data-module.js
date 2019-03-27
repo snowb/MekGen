@@ -4,7 +4,7 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 //create new attack_factor_data_table
 let attack_factor_data_table=
 [
-    {attack_factor:0,cost:1},
+    {attack_factor:"__NIL__",cost:1},
     {attack_factor:1,cost:1.5},
     {attack_factor:2,cost:2},
     {attack_factor:3,cost:2.5},

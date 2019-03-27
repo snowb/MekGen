@@ -25,7 +25,7 @@
             <mek-emw-feature style="align-self:start;"
                 @update-feature="updateFeature"
                 :feature-array="feature_array"
-                :turns-in-use="selected_turns_in_use.turns!=Infinity"
+                :turns-in-use="selected_turns_in_use.turns!='__INFINITY__'"
             ></mek-emw-feature>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
@@ -96,8 +96,8 @@ export default
 
         obj.selected_damage={damage:1,cost:1};
         obj.selected_accuracy={accuracy:1,cost:1,defense_ability:-1};
-        obj.selected_attack_factor={attack_factor:0,cost:1};
-        obj.selected_turns_in_use={turns:Infinity,cost:1};
+        obj.selected_attack_factor={attack_factor:"__NIL__",cost:1};
+        obj.selected_turns_in_use={turns:"__INFINITY__",cost:1};
 
         obj.damage_capacity=0.25;
 
@@ -173,7 +173,7 @@ export default
             return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
             return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
             return_data.selected_turns_in_use=JSON.parse(JSON.stringify(this.selected_turns_in_use));
-            return_data.selected_turns_in_use.turns=this.selected_turns_in_use.turns===Infinity?"Infinity":this.selected_turns_in_use.turns;
+            //return_data.selected_turns_in_use.turns=this.selected_turns_in_use.turns===Infinity?"Infinity":this.selected_turns_in_use.turns;
 
             return_data.selected_attack_factor=JSON.parse(JSON.stringify(this.selected_attack_factor));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
@@ -202,7 +202,7 @@ export default
                     this.$set(this,"component_name",null);
                 }
             this.$nextTick(()=>{this.component_changed=false;});
-            this.selected_turns_in_use.turns=this.selected_turns_in_use.turns=="Infinity"?Infinity:this.selected_turns_in_use.turns;
+            //this.selected_turns_in_use.turns=this.selected_turns_in_use.turns=="Infinity"?Infinity:this.selected_turns_in_use.turns;
         },
         componentSaveReset:function(_action)
         {
@@ -224,8 +224,8 @@ export default
                     this.component_name=null;
                     this.selected_damage.damage=1;
                     this.selected_accuracy.accuracy=1;
-                    this.selected_attack_factor.attack_factor=0;
-                    this.selected_turns_in_use.turns=0;
+                    this.selected_attack_factor.attack_factor="__NIL__";
+                    this.selected_turns_in_use.turns="__INFINITY__";
                     this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
                     break;
@@ -277,7 +277,7 @@ export default
         },
         emw_name()
         {
-            let emw_name=this.selected_attack_factor.attack_factor!=0?"Automated ":"";
+            let emw_name=this.selected_attack_factor.attack_factor!="__NIL__"?"Automated ":"";
 
             emw_name=this.feature_array.reduce((_name,_val)=>
             {

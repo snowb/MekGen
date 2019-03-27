@@ -24,7 +24,7 @@ export default
     data:function()
     {
         let obj={};
-        obj.pkey="cost";//must be cost as time can be Infinity
+        obj.pkey="time";//must be cost as time can be Infinity
         obj.alerts=[];
         obj.suppressAlerts=false;
         return obj;

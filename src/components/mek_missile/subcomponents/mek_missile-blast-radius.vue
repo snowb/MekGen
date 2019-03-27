@@ -26,7 +26,7 @@ export default
 
         obj.blast_radius_table=
         [
-            {blast_radius:0,cost:1},
+            {blast_radius:"__NIL__",cost:1},
             {blast_radius:1,cost:3},
             {blast_radius:2,cost:4},
             {blast_radius:3,cost:5},

@@ -166,9 +166,17 @@ export default
         },
         formatOutput(_data, _key)
         {
-            if(_data===Infinity)
-            {
-                return "\u221E"
+            if(_data===Infinity || _data=="__INFINITY__")
+            {//special codes for displaying Infinity symbol
+                return "\u221E";
+            }
+            if(_data=="__NIL__")
+            {//special codes for displaying NIL symbol
+                return "\u00D8";
+            }
+            if(_data=="__HEX__")
+            {//special codes for displaying "Hex" instead of number symbol
+                return "Hex";
             }
             if(typeof this.format==="undefined" || typeof this.format[_key]==="undefined")
             {

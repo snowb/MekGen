@@ -26,7 +26,7 @@ export default
 
         obj.smart_table=
         [
-            {smart:0,cost:1},
+            {smart:"__NIL__",cost:1},
             {smart:1,cost:2.5},
             {smart:2,cost:3},
             {smart:3,cost:3.5},

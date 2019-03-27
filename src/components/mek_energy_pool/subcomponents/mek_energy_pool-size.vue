@@ -26,7 +26,7 @@ export default
     {
         let obj={};
         obj.alerts=[];
-        obj.pkey="cost";//must be cost because size can be Infinity
+        obj.pkey="size";
         obj.suppressAlerts=false;
         return obj;
     },

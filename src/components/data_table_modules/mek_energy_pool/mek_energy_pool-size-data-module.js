@@ -11,7 +11,7 @@ let energy_pool_size_data_table=
     {size:5,cost:1.3},
     {size:7,cost:1.4},
     {size:10,cost:1.5},
-    {size:Infinity,cost:2},
+    {size:"__INFINITY__",cost:2},
 ];
 let data_table_keys=["size","cost"];
 let default_data={size:3,cost:1};

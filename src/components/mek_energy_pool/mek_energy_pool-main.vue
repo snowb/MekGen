@@ -237,7 +237,7 @@ export default
         },
         infinite_size()
         {
-            return this.selected_portfolio_size.size===Infinity;
+            return this.selected_portfolio_size.size===Infinity || this.selected_portfolio_size.size==="__INFINITY__";
         }
     }
 };

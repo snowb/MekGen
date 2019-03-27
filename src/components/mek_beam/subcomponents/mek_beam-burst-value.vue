@@ -33,7 +33,7 @@ export default
             {burst_value:6,cost:3.5},
             {burst_value:7,cost:4},
             {burst_value:8,cost:4.5},
-            {burst_value:Infinity,cost:5},
+            {burst_value:"__INFINITY__",cost:5},
         ]
 
         return obj;
