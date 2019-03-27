@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 import { binder_data_table, cleaned_feature, create_binder_data_table } 
     from '../../data_table_modules/mek_shield/mek_shield-binder-data-module';
@@ -18,7 +17,7 @@ export default
 {
     name: "mek_shield_binder",
     props:["binder","base_stopping_power"],
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
