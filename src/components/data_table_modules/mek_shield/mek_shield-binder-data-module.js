@@ -32,7 +32,10 @@ let default_data={stopping_power_modifier:0,cost:1,space:0};
 
 //data validator for binder_data_table  
 //call partial_validate with appropriate data for full validate
-let binder_validate=partial_validate(binder_data_table, data_table_keys);
+let binder_validate=()=>
+{//as function to recompute for updated binder_data_table   
+    return partial_validate(binder_data_table, data_table_keys);
+}
 
 //completed function for checking if data has data
 let has_feature=partial_has_feature(binder_data_table);
