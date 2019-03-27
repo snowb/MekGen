@@ -1,20 +1,20 @@
 <template>
     <mek-sub-component-table
-        :items="type_table" :headers="{name:''}"
-        name="Type" flow="col" :show-headers="false"
-        :selected-indices="type_index"
-        @update-selected-indices="select_type"
+        :items="type_table" :headers="{name:''}" :pkey="pkey" :selected-keys="selected_keys"
+        name="Type" flow="pkey-col" :show-headers="false"
+        @update-selected-data="select_type"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import { type_data_table, cleaned_feature } 
+    from '../../data_table_modules/mek_shield/mek_shield-type-data-module';
 
 export default 
 {
     name:"mek_shield_type",
     props:["type"],
-    mixins:[selected_item_mixin, utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -22,36 +22,41 @@ export default
     data:function()
     {
         let obj={};
-        obj.type_table=
-            [
-                {name:"Standard"},
-                {name:"Active"},
-                {name:"Reactive"}
-            ];
+        obj.pkey="name";
+        obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
         select_type:function(_selected_type)
         {
-            this.$emit("update-type",this.type_table[_selected_type].name.toLowerCase());
+            let data=JSON.parse(JSON.stringify(_selected_type))
+            this.$emit("update-type",data);
         }
     },
     computed:
     {
-        type_index()
+        type_table()
         {
-            let index=0;
-            this.type_table.some((_elem,_index)=>
+            return type_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.type);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_elem.name.toLowerCase()==this.type.toLowerCase())
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-            },this);
-
-            return [index];
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
+            if(cleaned_data.update)
+            {
+                this.select_type(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
