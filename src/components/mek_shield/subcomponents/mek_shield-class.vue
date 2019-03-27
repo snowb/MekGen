@@ -8,7 +8,6 @@
 </template>
 <script>
 import servo_classes_mixin from "../../../mixins/servo_classes_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
 import alerts_mixin from "../../../mixins/alerts_mixin.js";
 import { class_data_table, cleaned_feature, create_class_data_table } 
     from '../../data_table_modules/mek_shield/mek_shield-class-data-module';
@@ -17,7 +16,7 @@ export default
 {
     name:"mek_shield_class",
     props:["type","shield_class","is_ablative"],
-    mixins:[servo_classes_mixin,utility_mixin,alerts_mixin],
+    mixins:[servo_classes_mixin,alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -26,7 +25,6 @@ export default
     {
         let obj={};
         obj.alerts=[];
-        obj.pkey="stopping_power";
         obj.suppressAlerts=false;
         return obj;
     },
@@ -52,6 +50,10 @@ export default
                 return {name:'Name',kills:'Kills',cost:'Cost'};
             }
             return {name:'Name',stopping_power:'SP',cost:'Cost'};
+        },
+        pkey()
+        {
+            return this.is_ablative ? "kills" : "stopping_power";
         },
         selected_keys()
         {
