@@ -96,7 +96,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         else if(isBeam && hasExclusiveBeam)
         {
             alerts.push("Mek_EMW-Feature: "+_val);
-            alerts.push("**** Duplicate exclusive Beam data. Ignoring. ****");
+            alerts.push("**** Duplicate exclusive EMW data. Ignoring. ****");
             update=true;
             return _cleaned_array;
         }
