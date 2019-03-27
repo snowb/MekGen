@@ -142,12 +142,7 @@ export default
         obj.turns_in_use={time:Infinity,cost:1};
         obj.cost_multipliers.turns_in_use=1;
 
-        obj.weakness_array=[];
-        /* obj.weakness_array[0]={};
-        obj.weakness_array[0].weakness="All";
-        obj.weakness_array[0].monicker="Shield";
-        obj.weakness_array[0].cost=1;
-        obj.weakness_array[0].exclusive=false; */
+        obj.weakness_array=[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}];
         obj.cost_multipliers.weakness=1;
 
         obj.efficiencies={};
