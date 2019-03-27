@@ -133,11 +133,16 @@ export default
         selected_weakness_index_array:function()
         {
             let indices=[];
-
+            if(this.weaknessArray.length==0)
+            {
+                this.selected_weakness_array=[this.weakness_table[0]];
+                return [0];
+            }
             if(this.weaknessArray.length==1)
             {
-                this.selected_weakness_array=[this.weakness_table[this.find_weakness_index(this.weaknessArray[0].weakness)]];
-                return [this.find_weakness_index(this.weaknessArray[0].weakness)];
+                let weakness_index=this.find_weakness_index(this.weaknessArray[0].weakness);
+                this.selected_weakness_array=[this.weakness_table[weakness_index]];
+                return [weakness_index];
             }
             
             let hasExclusive=false;
