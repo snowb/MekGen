@@ -247,7 +247,7 @@ export default
                         _newObj[key]="";
                     }
                     let stringVal=(""+_elem[key]);
-                    if(_newObj[key].length <= stringVal.length)
+                    if(_newObj[key].length-4 <= stringVal.length)
                     {
                         _newObj[key]="xx"+stringVal+"xx";
                     }
