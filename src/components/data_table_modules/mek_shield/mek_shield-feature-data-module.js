@@ -138,7 +138,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         temp_selected_feature_array=[JSON.parse(JSON.stringify(default_data))];
         update=true;
         key_list=["All"];
-        alerts.push("Mek_Magazine-Ammo-List: ");
+        alerts.push("Mek_Shield-Feature: ");
         alerts.push("**** Reseting to default ****");
     }
     return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list,alerts:alerts};
