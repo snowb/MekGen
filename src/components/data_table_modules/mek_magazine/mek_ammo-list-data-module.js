@@ -75,12 +75,12 @@ let cleaned_feature=function(_feature_array, _pkey)
 
     if(_feature_array===undefined || _pkey===undefined)
     {
-        alerts.push("Mek_Melee-Feature: ");
+        alerts.push("Mek_Magazine-Ammo-List: ");
         let error=_feature_array===undefined
             ? "**** Missing feature array. Returning default. ****"
             : "**** No primary key provided. Returning default. ****";
         alerts.push(error);
-        return {cleaned_array:default_data,update:true,key_list:["High-Ex"],alerts:alerts};
+        return {cleaned_array:[default_data],update:true,key_list:["High-Ex"],alerts:alerts};
     }
 
     let temp_selected_feature_array=_feature_array.reduceRight((_cleaned_array, _val)=>
