@@ -106,7 +106,7 @@ export default
         obj.selected_damage={damage:1,cost:0.1,range:4};
         obj.selected_pack_size=1;
         obj.selected_accuracy={accuracy:0,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1,type:null};
+        obj.selected_range_mod={range_mod:1,cost:1,type:null,id:6};
         obj.selected_smart={smart:"__NIL__",cost:1};
         obj.selected_skill={skill:6,cost:1};
         obj.selected_blast_radius={blast_radius:"__NIL__",cost:1};
@@ -145,8 +145,7 @@ export default
         },
         updateDamage(_damage)
         {
-            this.selected_damage.damage=_damage.damage;
-            this.selected_damage.cost=_damage.cost;
+            this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
             this.damage_capacity=this.round(this.selected_pack_size*_damage.damage/15,2);
 
@@ -164,15 +163,13 @@ export default
         },
         updateAccuracy(_accuracy)
         {
-            this.selected_accuracy.accuracy=_accuracy.accuracy;
-            this.selected_accuracy.cost=_accuracy.cost;
+            this.$set(this,"selected_accuracy",_accuracy);
             this.cost_multipliers.accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
         {
-            this.selected_range_mod.range_mod=_range_mod.range_mod;
-            this.selected_range_mod.cost=_range_mod.cost;
+            this.$set(this,"selected_range_mod",_range_mod);
             this.cost_multipliers.range_mod=_range_mod.cost;
             this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : null;
 
@@ -184,22 +181,19 @@ export default
         },
         updateSmart(_smart)
         {
-            this.selected_smart.smart=_smart.smart;
-            this.selected_smart.cost=_smart.cost;
+            this.$set(this,"selected_smart",_smart);
             this.cost_multipliers.smart=_smart.cost;
             this.component_changed=true;
         },
         updateSkill(_skill)
         {
-            this.selected_skill.skill=_skill.skill;
-            this.selected_skill.cost=_skill.cost;
+            this.$set(this,"selected_skill",_skill);
             this.cost_multipliers.smart=_skill.cost;
             this.component_changed=true;
         },
         updateBlastRadius(_blast)
         {
-            this.selected_blast_radius.blast_radius=_blast.blast_radius;
-            this.selected_blast_radius.cost=_blast.cost;
+            this.$set(this,"selected_blast_radius",_blast);
             this.cost_multipliers.blast_radius=_blast.cost;
             this.component_changed=true;
         },
