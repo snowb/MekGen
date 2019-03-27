@@ -139,7 +139,7 @@ export default
         obj.reset_time={time:2,cost:1};
         obj.cost_multipliers.reset_time=1;
         
-        obj.turns_in_use={time:"X",cost:1};
+        obj.turns_in_use={time:Infinity,cost:1};
         obj.cost_multipliers.turns_in_use=1;
 
         obj.weakness_array=[];
@@ -196,7 +196,7 @@ export default
                 this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.$set(this,"turns_in_use",{time:"X",cost:1});
+                this.$set(this,"turns_in_use",{time:Infinity,cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[]);
@@ -209,7 +209,7 @@ export default
                 this.$set(this,"reset_time",{cost:1,time:2});
                 this.cost_multipliers.reset_time=1;
 
-                this.$set(this,"turns_in_use",{time:"X",cost:1});
+                this.$set(this,"turns_in_use",{time:Infinity,cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[]);
@@ -244,6 +244,7 @@ export default
         select_turns:function(_turns_obj)
         {
             this.$set(this,"turns_in_use",_turns_obj);
+            this.turns_in_use.time=this.turns_in_use.time===null?Infinity:this.turns_in_use.time;
             this.cost_multipliers.turns_in_use=_turns_obj.cost;
             this.component_changed=true;
         },
@@ -327,6 +328,7 @@ export default
                 case "reactive":
                     return_data.reset_time=JSON.parse(JSON.stringify(this.reset_time));
                     return_data.turns_in_use=JSON.parse(JSON.stringify(this.turns_in_use));
+                    return_data.turns_in_use.time=return_data.turns_in_use.time===null?"Infinity":return_data.turns_in_use.time;
                     return_data.weakness_array=JSON.parse(JSON.stringify(this.weakness_array));
                     return_data.surge_damage=this.surge_damage;
                     break;
