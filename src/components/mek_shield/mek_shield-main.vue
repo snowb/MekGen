@@ -195,7 +195,7 @@ export default
                 this.$set(this,"turns_in_use",{time:"__INFINITY__",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
-                this.$set(this,"weakness_array",[]);
+                this.$set(this,"weakness_array",[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}]);
                 this.cost_multipliers.weakness=1;
             }
             else if(type=="standard")
@@ -208,7 +208,7 @@ export default
                 this.$set(this,"turns_in_use",{time:"__INFINITY__",cost:1});
                 this.cost_multipliers.turns_in_use=1;
 
-                this.$set(this,"weakness_array",[]);
+                this.$set(this,"weakness_array",[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}]);
                 this.cost_multipliers.weakness=1;
             }
             this.component_changed=true;
@@ -349,13 +349,17 @@ export default
                     break;
                 case "clear":
                     this.uuid=null;
-                    this.select_type("standard");
-                    this.shield_class.code=1;
-                    this.defense_ability=-2;
-                    this.binder.stopping_power_modifier=0;
+                    this.select_type({name:"Standard"});
+                    this.$set(this,"shield_class",{code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"});
+                    this.$set(this,"defense_ability",{da:-2,cost:1});
+                    this.cost_multipliers.defense_ability=1;
+                    this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
+                    this.cost_multipliers.binder=1;
                     this.efficiencies.space.modifier=0;
-                    this.armor_type.type="Standard";
-                    this.absorption.absorption=0;
+                    this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1});
+                    this.cost_multipliers.armor_type=1;
+                    this.$set(this,"absorption",{absorption:0,cost:1,armor_penalty:0});
+                    this.cost_multipliers.absorption=1;
                     this.component_name=null;
                     this.shield_name;//must call to force recompute
                     this.$store.commit("saveComponent",null);
