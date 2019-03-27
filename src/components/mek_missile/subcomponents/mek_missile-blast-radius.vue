@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="blast_radius_table"
+        :items="blast_radius_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{blast_radius:'Radius (hex)',cost:'Cost'}" :show-headers="true"
-        name="Blast Radius" flow="col" :format="{cost:'multiplier',blast_radius:'nullzero'}"
-        :selected-indices="blast_radius_index"
-        @update-selected-indices="select_blast_radius"
+        name="Blast Radius" flow="pkey-col" :format="{cost:'multiplier'}"
+        @update-selected-data="select_blast_radius"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {blast_radius_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_missile/mek_missile-blast-radius-data-module.js";
 
 export default
 {
     name:"mek_missile_blast_radius",
     props:["blast_radius"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,52 +24,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.blast_radius_table=
-        [
-            {blast_radius:"__NIL__",cost:1},
-            {blast_radius:1,cost:3},
-            {blast_radius:2,cost:4},
-            {blast_radius:3,cost:5},
-            {blast_radius:4,cost:6},
-            {blast_radius:5,cost:7},
-            {blast_radius:6,cost:7.5},
-            {blast_radius:7,cost:8},
-            {blast_radius:8,cost:8.5},
-            {blast_radius:9,cost:9},
-            {blast_radius:10,cost:10},
-            {blast_radius:20,cost:20},
-        ];
+        obj.alerts=[];
+        obj.pkey="blast_radius";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_blast_radius:function(_blast_radius_index)
+        select_blast_radius:function(_blast_radius)
         {
-            this.$emit("update-blast-radius",this.blast_radius_table[_blast_radius_index]);
+            let data=JSON.parse(JSON.stringify(_blast_radius));
+            this.$emit("update-accuracy",data);
         },
     },
     computed:
     {
-        blast_radius_index:function()
+        blast_radius_table()
         {
-            let index=0;
-            this.blast_radius;
-            this.blast_radius_table.some(function(_val,_index)
+            return blast_radius_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.blast_radius);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.blast_radius==this.blast_radius.blast_radius)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-
-            if(this.blast_radius_table[index].cost!==this.blast_radius.cost)
-            {
-                this.select_blast_radius(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_blast_radius(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
