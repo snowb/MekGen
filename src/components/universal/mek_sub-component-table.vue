@@ -221,6 +221,11 @@ export default
     {
         itemDisplayedKeys()
         {
+            return this.items;
+
+            /* 
+            old way, only allows matching of displayed data
+            keeping here for now ... just in case
             let headers=this.headers;
             return this.items.reduce((_newArray,_elem)=>
             {
@@ -234,7 +239,8 @@ export default
                 }
                 _newArray.push(obj);
                 return _newArray;
-            },[]);
+            },[]); 
+            */
         },
         largestKeyValues()
         {
