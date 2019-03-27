@@ -34,7 +34,7 @@ export default
         select_blast_radius:function(_blast_radius)
         {
             let data=JSON.parse(JSON.stringify(_blast_radius));
-            this.$emit("update-accuracy",data);
+            this.$emit("update-blast-radius",data);
         },
     },
     computed:
