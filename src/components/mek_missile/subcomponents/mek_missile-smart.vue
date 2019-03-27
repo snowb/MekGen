@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="smart_table"
+        :items="smart_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{smart:'Rounds',cost:'Cost'}" :show-headers="true"
-        name="Smart" flow="row" :format="{cost:'multiplier',smart:'nullzero'}"
-        :selected-indices="smart_index"
-        @update-selected-indices="select_smart"
+        name="Smart" flow="pkey-row" :format="{cost:'multiplier',smart:'nullzero'}"
+        @update-selected-data="select_smart"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {smart_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_missile/mek_missile-smart-data-module.js";
 
 export default
 {
     name:"mek_missile_smart",
     props:["smart"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,45 +24,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.smart_table=
-        [
-            {smart:"__NIL__",cost:1},
-            {smart:1,cost:2.5},
-            {smart:2,cost:3},
-            {smart:3,cost:3.5},
-            {smart:4,cost:4},
-        ];
+        obj.alerts=[];
+        obj.pkey="smart";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_smart:function(_smart_index)
+        select_smart:function(_smart)
         {
-            this.$emit("update-smart",this.smart_table[_smart_index]);
+            let data=JSON.parse(JSON.stringify(_smart));
+            this.$emit("update-smart",data);
         },
     },
     computed:
     {
-        smart_index:function()
+        smart_table()
         {
-            let index=0;
-            this.smart;
-            this.smart_table.some(function(_val,_index)
+            return smart_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.smart);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.smart==this.smart.smart)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-
-            if(this.smart_table[index].cost!==this.smart.cost)
-            {
-                this.select_smart(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_smart(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
