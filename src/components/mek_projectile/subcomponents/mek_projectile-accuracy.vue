@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="accuracy_table"
+        :items="accuracy_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{accuracy:'WA',cost:'Cost'}" :show-headers="true"
-        name="Accuracy" flow="row" :format="{cost:'multiplier'}"
-        :selected-indices="accuracy_index"
-        @update-selected-indices="select_accuracy"
+        name="Accuracy" flow="pkey-row" :format="{cost:'multiplier'}"
+        @update-selected-data="select_accuracy"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {accuracy_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_projectile/mek_projectile-accuracy-data-module.js";
 
 export default
 {
     name:"mek_projectile_accuracy",
     props:["accuracy"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,45 +24,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.accuracy_table=
-        [
-            {accuracy:-2,cost:0.6},
-            {accuracy:-1,cost:0.8},
-            {accuracy:0,cost:1.0},
-            {accuracy:1,cost:1.5},
-            {accuracy:2,cost:2.0},
-        ];
+        obj.alerts=[];
+        obj.pkey="accuracy";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_accuracy:function(_accuracy_index)
+        select_accuracy:function(_accuracy)
         {
-            this.$emit("update-accuracy",this.accuracy_table[_accuracy_index]);
+            let data=JSON.parse(JSON.stringify(_accuracy));
+            this.$emit("update-accuracy",data);
         },
     },
     computed:
     {
-        accuracy_index:function()
+        accuracy_table()
         {
-            let index=2;
-            this.accuracy;
-            this.accuracy_table.some(function(_val,_index)
+            return accuracy_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.accuracy);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.accuracy==this.accuracy.accuracy)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-
-            if(this.accuracy_table[index].cost!==this.accuracy.cost)
-            {
-                this.select_accuracy(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_accuracy(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
