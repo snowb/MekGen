@@ -2,7 +2,7 @@
 import {partial_validate, partial_has_feature, partial_get_feature} from "../universal/mek_partial-function-data-module";
 
 //create new feature_data_table
-let feature_data_table=
+let raw_feature_data_table=
 [
     {feature:"Long Range",cost:1.33},
     {feature:"Hypervelocity",cost:1.25},
@@ -18,19 +18,60 @@ let feature_data_table=
     {feature:"Smoke-Scatter",cost:1,exclusive_smoke_scatter:true},
     {feature:"Nuclear",cost:1000},
 ];
-let exclusive_smoke_scatter=feature_data_table.filter((_el)=>{return typeof _el.exclusive_smoke_scatter!=="undefined";});
-let exclusive_counter=feature_data_table.filter((_el)=>{return typeof _el.exclusive_counter!=="undefined";});
-let data_table_keys=["feature","cost","exclusive_smoke_scatter","exclusive_counter","exclusive_smoke"];
+let exclusive_smoke_scatter=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_smoke_scatter!=="undefined";});
+let exclusive_counter=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_counter!=="undefined";});
+let data_table_keys=["feature","cost","exclusive_smoke_scatter","exclusive_counter"];
 
+let feature_data_table=raw_feature_data_table;
+let data_cached=false;
+
+let filter_data_table=(_blast_radius, _smart)=>
+{
+    data_cached=false;
+    if(_blast_radius!="__NIL__" && _smart)
+    {
+        feature_data_table=raw_feature_data_table;
+        return;
+    }
+    feature_data_table=raw_feature_data_table.filter((_val)=>
+    {
+        if(_blast_radius=="__NIL__" && ["nuclear","scatter","smoke","smoke-scatter"].includes(_val.feature.toLowerCase()))
+        {//filter out some features if no blast radius
+            return false;
+        }
+        if(!_smart && _val.feature.toLowerCase()=="home on jam")
+        {//filtered out home-on-jam for dumb missiles
+            return false;
+        }
+        return true;
+    });
+};
+
+let cached_validate=partial_validate(raw_feature_data_table, data_table_keys);
 //data validator for feature_data_table
 //call partial_validate with appropriate data for full validate
-let feature_validate=partial_validate(feature_data_table, data_table_keys);
+let feature_validate=(_data)=>
+{
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(feature_data_table, data_table_keys);
+    return cached_validate(_data);
+}
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(feature_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(feature_data_table)(_pkey,_data);
+}
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(feature_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(feature_data_table, has_feature)(_pkey,_data);
+}
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {
@@ -53,6 +94,14 @@ let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
         return _val[_pkey]==_pkey_value;
     });
 };
+
+/*****
+ * *
+ * *    likely need to setup create_feature_data_table taking Blast_Radius and Smart as input
+ * *    so claned_feature will remove invalid features
+ * *
+ *****/
+
 
 /*** 
  * 
@@ -105,7 +154,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         }
         let isSmokeScatter=is_exclusive_feature("exclusive_smoke_scatter",_pkey,_val[_pkey]);
         let isCounter=is_exclusive_feature("exclusive_counter",_pkey,_val[_pkey]);
-
+console.log(JSON.stringify(_val),has_feature(_pkey,_val[_pkey]))
         if(isSmokeScatter && !hasExclusiveSmokeScatter)
         {
             _cleaned_array.push(_val);
@@ -116,11 +165,10 @@ let cleaned_feature=function(_feature_array, _pkey)
         else if(isSmokeScatter && hasExclusiveSmokeScatter)
         {
             alerts.push("Mek_Missile-Feature: "+_val);
-            alerts.push("**** Duplicate exclusive shock data. Ignoring. ****");
+            alerts.push("**** Duplicate Exclusive SmokeScatter data. Ignoring. ****");
             update=true;
             return _cleaned_array;
         }
-
         if(isCounter && !hasExclusiveCounter)
         {
             _cleaned_array.push(_val);
@@ -131,11 +179,10 @@ let cleaned_feature=function(_feature_array, _pkey)
         else if(isCounter && hasExclusiveCounter)
         {
             alerts.push("Mek_Missile-Feature: "+_val);
-            alerts.push("**** Duplicate exclusive blast radius data. Ignoring. ****");
+            alerts.push("**** Duplicate Exclusive Counter data. Ignoring. ****");
             update=true;
             return _cleaned_array;
         }
-
         if(!key_list.includes(_val[_pkey]))
         {
             _cleaned_array.push(_val);
@@ -156,4 +203,4 @@ let cleaned_feature=function(_feature_array, _pkey)
     //returns an object with the pruned feature array, whether it was updated, and the key_list
 };
 
-export {feature_data_table, feature_validate, has_feature, get_feature, cleaned_feature};
+export {feature_data_table, feature_validate, has_feature, get_feature, cleaned_feature, filter_data_table};
