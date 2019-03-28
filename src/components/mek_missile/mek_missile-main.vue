@@ -106,7 +106,7 @@ export default
         obj.selected_damage={damage:1,cost:0.1,range:4};
         obj.selected_pack_size=1;
         obj.selected_accuracy={accuracy:0,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1,type:null,id:6};
+        obj.selected_range_mod={range_mod:1,cost:1,id:6};
         obj.selected_smart={smart:"__NIL__",cost:1};
         obj.selected_skill={skill:6,cost:1};
         obj.selected_blast_radius={blast_radius:"__NIL__",cost:1};
@@ -168,7 +168,7 @@ export default
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
-        {
+        {//console.log(_range_mod)
             this.$set(this,"selected_range_mod",_range_mod);
             this.cost_multipliers.range_mod=_range_mod.cost;
             this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : null;
