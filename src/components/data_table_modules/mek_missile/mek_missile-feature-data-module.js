@@ -154,7 +154,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         }
         let isSmokeScatter=is_exclusive_feature("exclusive_smoke_scatter",_pkey,_val[_pkey]);
         let isCounter=is_exclusive_feature("exclusive_counter",_pkey,_val[_pkey]);
-console.log(JSON.stringify(_val),has_feature(_pkey,_val[_pkey]))
+        
         if(isSmokeScatter && !hasExclusiveSmokeScatter)
         {
             _cleaned_array.push(_val);
