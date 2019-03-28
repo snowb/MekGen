@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="burst_value_table"
+        :items="burst_value_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{burst_value:'BV',cost:'Cost'}" :show-headers="true"
-        name="Burst Value" flow="row" :format="{cost:'multiplier'}"
-        :selected-indices="burst_value_index"
-        @update-selected-indices="select_burst_value"
+        name="Burst Value" flow="pkey-row" :format="{cost:'multiplier'}"
+        @update-selected-data="select_burst_value"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {burst_value_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_projectile/mek_projectile-burst-value-data-module.js";
 
 export default
 {
     name:"mek_projectile_burst_value",
     props:["burstValue"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,47 +24,41 @@ export default
     data:function()
     {
         let obj={};
-        obj.burst_value_table=
-        [
-            {burst_value:1,cost:1},
-            {burst_value:2,cost:1.5},
-            {burst_value:3,cost:2},
-            {burst_value:4,cost:2.5},
-            {burst_value:5,cost:3},
-            {burst_value:6,cost:3.5},
-            {burst_value:7,cost:4},
-            {burst_value:8,cost:4.5},
-        ]
-
+        obj.alerts=[];
+        obj.pkey="burst_value";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_burst_value:function(_burst_value_index)
+        select_burst_value:function(_burst_value)
         {
-            this.$emit("update-burst-value",this.burst_value_table[_burst_value_index]);
+            let data=JSON.parse(JSON.stringify(_burst_value));
+            this.$emit("update-burst-value",data);
         },
     },
     computed:
     {
-        burst_value_index:function()
+        burst_value_table()
         {
-            let index=0;
-            this.burstValue;
-            this.burst_value_table.some(function(_val,_index)
+            return burst_value_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.burstValue);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.burst_value==this.burstValue.burst_value)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.burst_value_table[index].cost!==this.burstValue.cost)
-            {
-                this.select_burst_value(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_burst_value(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
