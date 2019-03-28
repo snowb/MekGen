@@ -4,7 +4,7 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 
 //create new class_data_table
 let class_data_table=[];
-
+let data_cached=false;
 let create_class_data_table=function(_type)
 {
     let type=_type===undefined?"standard":_type;
@@ -31,16 +31,24 @@ let create_class_data_table=function(_type)
             cost:(_val.code+4)*type_multiplier
         };
         return newelement;
-    },this);    
+    },this);
+    data_cached=false;
 };
 create_class_data_table("standard");
 let data_table_keys=["stopping_power","code","id","name","kills","cost"];
 
+let cached_validate=partial_validate(class_data_table, data_table_keys);
 //data validator for create_class_data_table
 //call partial_validate with appropriate data for full validate
-let class_validate=()=>
+let class_validate=(_data)=>
 {//must run uniquely every time to ensure updated class_data_table
-    return partial_validate(class_data_table, data_table_keys);
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(class_data_table, data_table_keys);
+    return cached_validate(_data);
 }
 
 //completed function for checking if data has data

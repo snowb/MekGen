@@ -13,8 +13,10 @@ let raw_binder_data_table=
     {stopping_power_modifier:0.75,cost:1.1,space:0}
 ];
 
+let data_cached=false;
 let create_binder_data_table=function(_base_stopping_power)
 {
+    data_cached=false;
     let base_stopping_power=_base_stopping_power===undefined?5:_base_stopping_power;
     binder_data_table=raw_binder_data_table.map((_elem)=>
     {
@@ -30,11 +32,18 @@ create_binder_data_table(5);
 let data_table_keys=["stopping_power_modifier","cost","space"];
 let default_data={stopping_power_modifier:0,cost:1,space:0};
 
+let cached_validate=partial_validate(binder_data_table, data_table_keys);
 //data validator for binder_data_table  
 //call partial_validate with appropriate data for full validate
-let binder_validate=()=>
-{//as function to recompute for updated binder_data_table   
-    return partial_validate(binder_data_table, data_table_keys);
+let binder_validate=(_data)=>
+{//as function to recompute for updated binder_data_table
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(binder_data_table, data_table_keys);
+    return cached_validate(_data);
 }
 
 //completed function for checking if data has data
