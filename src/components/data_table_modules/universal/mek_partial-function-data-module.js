@@ -39,10 +39,10 @@ let partial_has_feature=(_data_table)=>(_key, _val)=>
 //has_feature must exist in data table module
 let partial_get_feature=(_data_table, _has_feature)=>(_key, _val)=>
 {
+    let found_feature=null;
     if(_has_feature(_key,_val))
     {
-        let found_feature=null;
-        _data_table.some((_table_val)=>
+        found_feature=_data_table.some((_table_val)=>
         {
             if(_table_val[_key]==_val)
             {
@@ -50,8 +50,8 @@ let partial_get_feature=(_data_table, _has_feature)=>(_key, _val)=>
                 return true;
             }
         },this);
-        return found_feature;
     }
+    return found_feature;
 }
 
 let partial_cleaned_feature=(_validator, _has_feature, _get_feature, _default_data, _name)=>(_pkey, _feature)=>
