@@ -21,10 +21,10 @@
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
                 <div class="mek-inline-flex-col">
-                    <mek-missile-smart :smart="selected_smart"
+                    <mek-missile-smart :smart="selected_smart" v-if="!is_mine && !is_bomb"
                         @update-smart="updateSmart"
                     ></mek-missile-smart>
-                    <mek-missile-skill v-if="selected_smart.smart>0" :skill="selected_skill"
+                    <mek-missile-skill v-if="selected_smart.smart>0 && (!is_mine && !is_bomb)" :skill="selected_skill"
                         @update-skill="updateSkill"
                     ></mek-missile-skill>
                     <mek-space-efficiency style="align-self:baseline;"
@@ -173,8 +173,13 @@ export default
             this.cost_multipliers.range_mod=_range_mod.cost;
             this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : null;
 
+            if(this.is_mine || this.is_bomb)
+            {//update smart and skill if is mine or bomb
+                this.updateSmart({smart:"__NIL__",cost:1});
+                this.updateSkill({skill:6,cost:1});
+            }
             if(this.is_mine)
-            {
+            {//reset accuracy if is a mine
                 this.updateAccuracy({accuracy:0,cost:1});
             }
             this.component_changed=true;
