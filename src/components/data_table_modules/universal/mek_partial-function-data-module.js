@@ -42,7 +42,7 @@ let partial_get_feature=(_data_table, _has_feature)=>(_key, _val)=>
     let found_feature=null;
     if(_has_feature(_key,_val))
     {
-        found_feature=_data_table.some((_table_val)=>
+        _data_table.some((_table_val)=>
         {
             if(_table_val[_key]==_val)
             {
