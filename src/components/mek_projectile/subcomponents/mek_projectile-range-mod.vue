@@ -1,23 +1,23 @@
 <template>
     <mek-sub-component-table
-        :items="range_mod_table"
+        :items="range_mod_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{range_mod:'Range Mod',range:'Range',cost:'Cost'}"
-        name="Range Mod" flow="col" :show-headers="true"
+        name="Range Mod" flow="pkey-col" :show-headers="true"
         :format="{range_mod:'percent',cost:'multiplier'}"
-        :selected-indices="selected_range_mod_index"
-        @update-selected-indices="select_range_mod"
+        @update-selected-data="select_range_mod"
     ></mek-sub-component-table>
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import { range_mod_data_table, cleaned_feature, create_range_mod_data_table } 
+    from '../../data_table_modules/mek_projectile/mek_projectile-range-mod-data-module';
 
 export default 
 {
-    name: "mek_range_mod",
+    name: "mek_projectile_range_mod",
     props:["rangeMod","baseRange"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -25,60 +25,42 @@ export default
     data:function()
     {
         let obj={}
-        obj.range_mod_table=
-            [
-                {range_mod:0,cost:0.5,range:0},
-                {range_mod:0.25,cost:0.62,range:0.25*3},
-                {range_mod:0.5,cost:0.75,range:0.5*3},
-                {range_mod:0.75,cost:0.88,range:0.75*3},
-                {range_mod:1,cost:1,range:1*3},
-                {range_mod:1.25,cost:1.12,range:1.25*3},
-                {range_mod:1.5,cost:1.25,range:1.5*3},
-                {range_mod:1.75,cost:1.38,range:1.75*3},
-                {range_mod:2,cost:1.5,range:2*3},
-                {range_mod:2.5,cost:1.75,range:2.5*3},
-                {range_mod:3,cost:2,range:3*3},
-            ];
+        obj.alerts=[];
+        obj.suppressAlerts=false;
+        obj.pkey="range_mod";
         return obj;
     },
     methods:
     {
-        select_range_mod:function(_range_mod_index)
+        select_range_mod:function(_range_mod)
         {
-            this.$emit("update-range-mod",this.range_mod_table[_range_mod_index]);
+            let data=JSON.parse(JSON.stringify(_range_mod))
+            this.$emit("update-range-mod",data);
         }
     },
     computed:
     {
-        selected_range_mod_index:function()
+        range_mod_table()
         {
-            let index=0;
-            this.rangeMod;
-            this.range_mod_table.some((_val, _index)=>
+            create_range_mod_data_table(this.baseRange);
+            return range_mod_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.rangeMod);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.range_mod==this.rangeMod.range_mod)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-            },this);
-            
-            if(this.rangeMod.cost!=this.range_mod_table[index].cost)
-            {
-                this.select_range_mod(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
-        }
-    },
-    watch:
-    {
-        baseRange(_newval)
-        {
-            let newtable=this.range_mod_table.map((_val)=>
+            if(cleaned_data.update)
             {
-                return {range_mod:_val.range_mod,cost:_val.cost,range:_newval*_val.range_mod}
-            });
-            this.$set(this,"range_mod_table",newtable);
+                this.select_range_mod(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
