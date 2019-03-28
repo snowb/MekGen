@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="multi_feed_table"
-        :headers="{feeds:'Feeds',cost:'Cost'}" :show-headers="true"
-        name="Multi-Feed" flow="row" :format="{cost:'multiplier'}"
-        :selected-indices="multi_feed_index"
-        @update-selected-indices="select_multi_feed"
+        :items="feeds_table" :pkey="pkey" :selected-keys="selected_keys"
+        :headers="{feeds:'feeds',cost:'Cost'}" :show-headers="true"
+        name="Multi-feeds" flow="pkey-row" :format="{cost:'multiplier'}"
+        @update-selected-data="select_feeds"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {feeds_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_projectile/mek_projectile-multi-feed-data-module.js";
 
 export default
 {
-    name:"mek_projectile_multi_feed",
+    name:"mek_projectile_multi_feeds",
     props:["multiFeed"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,44 +24,41 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.multi_feed_table=
-        [
-            {feeds:1,cost:1},
-            {feeds:2,cost:1.2},
-            {feeds:3,cost:1.4},
-            {feeds:4,cost:1.6}
-        ]
-
+        obj.alerts=[];
+        obj.pkey="feeds";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_multi_feed:function(_multi_feed_index)
+        select_feeds:function(_feeds)
         {
-            this.$emit("update-multi-feed", this.multi_feed_table[_multi_feed_index]);
+            let data=JSON.parse(JSON.stringify(_feeds));
+            this.$emit("update-multi-feed",data);
         },
     },
     computed:
     {
-        multi_feed_index:function()
+        feeds_table()
         {
-            let index=0;
-            this.multiFeed;
-            this.multi_feed_table.some(function(_val,_index)
+            return feeds_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.multiFeed);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.feeds==this.multiFeed.feeds)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-                return false;
-            },this);
-            if(this.multi_feed_table[index].cost!==this.multiFeed.cost)
-            {
-                this.select_multi_feed(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_feeds(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
