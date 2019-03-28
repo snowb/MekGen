@@ -35,13 +35,6 @@ create_range_mod_data_table(4);
 let data_table_keys=["range_modifier","cost","type","id"];
 let default_data={range_mod:1,cost:1,range:4,id:6};
 
-/* //data validator for range_mod_data_table  
-//call partial_validate with appropriate data for full validate
-let range_mod_validate=()=>
-{//as function to recompute for updated range_mod_data_table   
-    return partial_validate(range_mod_data_table, data_table_keys);
-}
- */
 let cached_validate=partial_validate(range_mod_data_table, data_table_keys);
 //data validator for range_mod_data_table
 //call partial_validate with appropriate data for full validate
