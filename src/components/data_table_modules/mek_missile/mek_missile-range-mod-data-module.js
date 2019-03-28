@@ -20,8 +20,8 @@ let raw_range_mod_data_table=
     {range_mod:30,cost:15.5,range:30*4,id:13},
     {range_mod:50,cost:25.5,range:50*4,id:14}
 ];
-
-let create_range_mod_data_table=function(_base_range)
+let data_cached=false;
+let create_range_mod_data_table=(_base_range)=>
 {
     let base_range=_base_range===undefined?4:_base_range;
     range_mod_data_table=raw_range_mod_data_table.map((_elem)=>
@@ -29,16 +29,31 @@ let create_range_mod_data_table=function(_base_range)
         _elem.range=_elem.range_mod*base_range;
         return _elem;
     });
+    data_cached=false;
 };
 create_range_mod_data_table(4);
-let data_table_keys=["range_modifier","cost","range","type","id"];
+let data_table_keys=["range_modifier","cost","type","id"];
 let default_data={range_mod:1,cost:1,range:4,id:6};
 
-//data validator for range_mod_data_table  
+/* //data validator for range_mod_data_table  
 //call partial_validate with appropriate data for full validate
 let range_mod_validate=()=>
 {//as function to recompute for updated range_mod_data_table   
     return partial_validate(range_mod_data_table, data_table_keys);
+}
+ */
+let cached_validate=partial_validate(range_mod_data_table, data_table_keys);
+//data validator for range_mod_data_table
+//call partial_validate with appropriate data for full validate
+let range_mod_validate=(_data)=>
+{
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(range_mod_data_table, data_table_keys);
+    return cached_validate(_data);
 }
 
 //completed function for checking if data has data
