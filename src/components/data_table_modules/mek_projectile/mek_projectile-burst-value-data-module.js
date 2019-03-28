@@ -14,7 +14,7 @@ let burst_value_data_table=
     {burst_value:8,cost:4.5},
 ];
 let data_table_keys=["burst_value","cost"];
-let default_data={burst_value:0,cost:1};
+let default_data={burst_value:1,cost:1};
 
 //data validator for burst_value_data_table
 //call partial_validate with appropriate data for full validate
