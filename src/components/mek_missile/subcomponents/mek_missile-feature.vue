@@ -10,7 +10,7 @@
 <script>
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {feature_data_table, cleaned_feature} 
+import {feature_data_table, cleaned_feature, filter_data_table} 
     from "../../data_table_modules/mek_missile/mek_missile-feature-data-module.js";
 
 export default 
@@ -76,21 +76,13 @@ export default
     {
         filteredFeatureTable()
         {
-            return feature_data_table.filter((_val)=>
-            {
-                if(this.blastRadius=="__NIL__" && ["nuclear","scatter","smoke","smoke-scatter"].includes(_val.feature.toLowerCase()))
-                {//filter out some features if no blast radius
-                    return false;
-                }
-                if(!this.smartMissile && _val.feature.toLowerCase()=="home on jam")
-                {//filtered out home-on-jam for dumb missiles
-                    return false;
-                }
-                return true;
-            },this);
+            filter_data_table(this.blastRadius,this.smartMissile);
+            return feature_data_table;
         },
         selected_keys()
         {
+            this.blastRadius;
+            this.smartMissile;
             let cleaned_data=cleaned_feature(this.featureArray,this.pkey);
             if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
@@ -105,22 +97,26 @@ export default
                 this.$emit("update-feature",cleaned_data.cleaned_array);
             }
             this.$set(this,"selected_feature_array",cleaned_data.cleaned_array);
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     },
-/*     watch:
+    watch:
     {
         "blastRadius":function(_newval,_oldval)
-        {
-            if(_newval<=0 && _oldval>0)
+        {//must track changes in blastRadius to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
             {
-                let temp_selected_feature_array=this.selected_feature_array.filter((_val)=>
-                {//filter out phalanx selected features if changing from BV>1 to BV=1
-                    return _val.feature.toLowerCase()!="nuclear";
-                })
-                this.$emit("update-feature",temp_selected_feature_array);
+                this.suppressAlerts=true;
+            }
+        },
+        "smartMissile":function(_newval,_oldval)
+        {//must track changes in smartMissile to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
             }
         }
-    } */
+    }
 }
 </script>
