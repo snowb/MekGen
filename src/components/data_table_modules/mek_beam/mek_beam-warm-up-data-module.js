@@ -4,7 +4,7 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 //create new warm_up_data_table
 let warm_up_data_table=
 [
-    {time:0,cost:1.0},
+    {time:0,cost:1},
     {time:1,cost:0.9},
     {time:2,cost:0.7},
     {time:3,cost:0.6},
