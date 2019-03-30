@@ -17,10 +17,10 @@
                         @update-burst-value="updateBurstValue" 
                         :burst-value="selected_burst_value"
                     ></mek-beam-burst-value>
-                    <mek-beam-shots v-show="forceTrue"
+                    <!--mek-beam-shots v-show="forceTrue"
                         @update-shots="updateShots" 
                         :shots="selected_shots" :mag-fed="mag_fed"
-                    ></mek-beam-shots>
+                    ></mek-beam-shots-->
                 </div>
                 <mek-beam-range-mod style="align-self:start;"
                     @update-range-mod="updateRangeMod"
@@ -78,6 +78,10 @@ import utility_mixin from "../../mixins/utility_mixin";
 import component_computed_mixin from "../../mixins/component_computed_mixin";
 import component_methods_mixin from "../../mixins/component_methods_mixin";
 
+import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue")
+    .then(module=>console.log(module));
+
+
 export default
 {
     name:"mek_beam",
@@ -89,7 +93,7 @@ export default
         "mek-beam-accuracy":()=>import(/* webpackChunkName: "mek_beam-accuracy" */"./subcomponents/mek_beam-accuracy.vue"),
         "mek-beam-burst-value":()=>import(/* webpackChunkName: "mek_beam-burst-value" */"./subcomponents/mek_beam-burst-value.vue"),
         "mek-beam-range-mod":()=>import(/* webpackChunkName: "mek_beam-range-mod" */"./subcomponents/mek_beam-range-mod.vue"),
-        "mek-beam-shots":()=>import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
+        //"mek-beam-shots":()=>import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
         "mek-beam-warm-up-time":()=>import(/* webpackChunkName: "mek_beam-warm-up-time" */"./subcomponents/mek_beam-warm-up-time.vue"),
         "mek-beam-wide-angle":()=>import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
         "mek-beam-feature":()=>import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
