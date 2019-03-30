@@ -15,6 +15,9 @@ let raw_shots_data_table=
 ];
 let shots_data_table=raw_shots_data_table;
 let data_cached=false;
+let data_table_keys=["shots","cost"];
+let default_data={shots:"__INFINITY__",cost:1};
+
 let filter_shots_data_table=(_mag_fed)=>
 {
     if(!_mag_fed)
@@ -23,7 +26,7 @@ let filter_shots_data_table=(_mag_fed)=>
         {
             return _val.shots!=15;
         });
-        default_data={shots:"__INFINITY__",cost:1}
+        default_data={shots:"__INFINITY__",cost:1};
     }
     else
     {
@@ -41,9 +44,6 @@ let filter_shots_data_table=(_mag_fed)=>
     data_cached=false;
 };
 filter_shots_data_table(false);
-
-let data_table_keys=["shots","cost"];
-let default_data={shots:"__INFINITY__",cost:1};
 
 let cached_validate=partial_validate(shots_data_table, data_table_keys);
 //data validator for shots_data_table
