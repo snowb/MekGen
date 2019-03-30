@@ -17,15 +17,11 @@
                         @update-burst-value="updateBurstValue" 
                         :burst-value="selected_burst_value"
                     ></mek-beam-burst-value>
-                    <mek-beam-shots
-                        @update-shots="updateShots" 
-                        :shots="selected_shots" :mag-fed="mag_fed"
-                    ></mek-beam-shots>
-                </div>
                     <mek-beam-shots2
                         @update-shots="updateShots" 
                         :shots="selected_shots" :mag-fed="mag_fed"
                     ></mek-beam-shots2>
+                </div>
                 <mek-beam-range-mod style="align-self:start;"
                     @update-range-mod="updateRangeMod"
                     :range-mod="selected_range_mod" :anti-missile="anti_missile"
@@ -95,7 +91,7 @@ export default
         "mek-beam-burst-value":()=>import(/* webpackChunkName: "mek_beam-burst-value" */"./subcomponents/mek_beam-burst-value.vue"),
         "mek-beam-range-mod":()=>import(/* webpackChunkName: "mek_beam-range-mod" */"./subcomponents/mek_beam-range-mod.vue"),
         "mek-beam-shots":()=>import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
-        "mek-beam-shots2":()=>import(/* webpackChunkName: "mek_beam-shots2" */"./subcomponents/mek_beam-shots.vue"),
+        "mek-beam-shots2":()=>import(/* webpackChunkName: "mek_beam-shots2" */"./subcomponents/mek_beam-shots.1.vue"),
         "mek-beam-warm-up-time":()=>import(/* webpackChunkName: "mek_beam-warm-up-time" */"./subcomponents/mek_beam-warm-up-time.vue"),
         "mek-beam-wide-angle":()=>import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
         "mek-beam-feature":()=>import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
