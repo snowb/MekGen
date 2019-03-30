@@ -1,23 +1,23 @@
 <template>
     <mek-sub-component-table
-        :items="warm_up_table"
+        :items="warm_up_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{time:'Turns',cost:'Cost'}"
-        name="Warm Up Time" flow="row" :show-headers="true"
+        name="Warm Up Time" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_warm_up_index"
-        @update-selected-indices="select_warm_up_time"
+        @update-selected-data="select_warm_up_time"
     ></mek-sub-component-table>
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import {warm_up_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_beam/mek_beam-warm-up-data-module.js";
 
 export default 
 {
     name: "mek_warm_up_time",
     props:["warmUpTime"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -25,42 +25,41 @@ export default
     data:function()
     {
         let obj={}
-        obj.warm_up_table=
-            [
-                {time:0,cost:1.0},
-                {time:1,cost:0.9},
-                {time:2,cost:0.7},
-                {time:3,cost:0.6},
-            ];
+        obj.alerts=[];
+        obj.pkey="time";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_warm_up_time:function(_range_mod_index)
+        select_warm_up_time:function(_warm_up)
         {
-            this.$emit("update-warm-up-time",this.warm_up_table[_range_mod_index]);
+            let data=JSON.parse(JSON.stringify(_warm_up))
+            this.$emit("update-warm-up-time",data);
         }
     },
     computed:
     {
-        selected_warm_up_index:function()
+        warm_up_table()
         {
-            let index=0;
-            this.warmUpTime;
-            this.warm_up_table.some((_val, _index)=>
+            return warm_up_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.warmUpTime);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.time==this.warmUpTime.time)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-            },this);
-            
-            if(this.warmUpTime.cost!=this.warm_up_table[index].cost)
-            {
-                this.select_warm_up_time(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_warm_up_time(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     },
 }
