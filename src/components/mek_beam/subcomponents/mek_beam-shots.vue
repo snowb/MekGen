@@ -1,23 +1,23 @@
 <template>
     <mek-sub-component-table
-        :items="filteredShotsTable"
+        :items="shots_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{shots:'Shots',cost:'Cost'}"
-        name="Shots" flow="row" :show-headers="true"
+        name="Shots" flow="pkey-row" :show-headers="true"
         :format="{cost:'multiplier'}"
-        :selected-indices="selected_shots_index"
-        @update-selected-indices="select_shots"
+        @update-selected-data="select_shots"
     ></mek-sub-component-table>
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import {shots_data_table, cleaned_feature, filter_shots_data_table}
+    from "../../data_table_modules/mek_beam/mek_beam-shots-data-module.js";
 
 export default 
 {
     name: "mek_beam_shots",
     props:["shots","magFed"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -25,82 +25,53 @@ export default
     data:function()
     {
         let obj={}
-        obj.shots_table=
-            [
-                {shots:0,cost:0.33},
-                {shots:1,cost:0.5},
-                {shots:2,cost:0.6},
-                {shots:3,cost:0.7},
-                {shots:5,cost:0.8},
-                {shots:10,cost:0.9},
-                {shots:"__INFINITY__",cost:1}
-            ];
+        obj.alerts=[];
+        obj.pkey="shots";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_shots:function(_shots_index)
+        select_shots:function(_shots)
         {
-            this.$emit("update-shots",this.filteredShotsTable[_shots_index]);
+            let data=JSON.parse(JSON.stringify(_shots));        
+            this.$emit("update-shots",data);
         }
     },
     computed:
     {
-        selected_shots_index:function()
+        shots_table()
         {
-            let index=0;
-            this.shots;
-            this.filteredShotsTable.some((_val, _index)=>
-            {
-                switch(true)
-                {
-                    case _val.shots==this.shots.shots:
-                    case _val.shots==15 && this.shots.shots==Infinity:
-                    case _val.shots==Infinity && this.shots.shots==15:
-                        index=_index;
-                        return true;
-                }
-            },this);
-            
-            if(this.shots.cost!=this.filteredShotsTable[index].cost)
-            {
-                this.select_shots(index);
-            }
-            return [index];
+            filter_shots_data_table(this.magFed);
+            return shots_data_table;
         },
-        filteredShotsTable()
+        selected_keys()
         {
-            if(this.magFed)
+            this.magFed;
+            let cleaned_data=cleaned_feature(this.pkey, this.shots);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                return this.shots_table.filter((_val)=>
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    return _val.shots!=0;
+                    this.addAlert(_alert);
                 });
+                this.publishAlerts();
             }
-            return this.shots_table;
+            if(cleaned_data.update)
+            {
+                this.select_shots(cleaned_data.data);
+            }
+            this.suppressAlerts=false;
+            return cleaned_data.key_list;
         }
     },
     watch:
     {
-        "magFed":function(_newval, _oldval)
+        magFed(_newval,_oldval)
         {
-            let infinityIndex=null;
-            this.shots_table.some((_val,_index)=>
+            if(_newval!=_oldval)
             {
-                if(_val.shots==Infinity || _val.shots==15)
-                {
-                    infinityIndex=_index;
-                    return true;
-                }
-            });
-
-            if(_newval && !_oldval)
-            {
-                this.shots_table[infinityIndex].shots=15;
-            }
-            else if(!_newval && _oldval)
-            {
-                this.shots_table[infinityIndex].shots=Infinity;
+                this.suppressAlerts=true;
             }
         }
     }
