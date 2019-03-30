@@ -21,11 +21,11 @@
                         @update-shots="updateShots" 
                         :shots="selected_shots" :mag-fed="mag_fed"
                     ></mek-beam-shots>
+                </div>
                     <mek-beam-shots2
                         @update-shots="updateShots" 
                         :shots="selected_shots" :mag-fed="mag_fed"
                     ></mek-beam-shots2>
-                </div>
                 <mek-beam-range-mod style="align-self:start;"
                     @update-range-mod="updateRangeMod"
                     :range-mod="selected_range_mod" :anti-missile="anti_missile"
