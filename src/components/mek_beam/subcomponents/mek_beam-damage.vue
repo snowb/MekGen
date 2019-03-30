@@ -1,21 +1,22 @@
 <template>
     <mek-sub-component-table
-        :items="damage_table"
+        :items="damage_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{damage:'Damage',cost:'Cost',range:'Range'}"
-        name="Damage" flow="row" :show-headers="true"
-        :selected-indices="damage_index"
-        @update-selected-indices="select_damage"
+        name="Damage" flow="pkey-row" :show-headers="true"
+        @update-selected-data="select_damage"
     ></mek-sub-component-table>
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+
+import {damage_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_beam/mek_beam-damage-data-module.js";
 
 export default
 {
     name:"mek_beam_damage",
     props:["damage"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -23,71 +24,42 @@ export default
     data:function()
     {
         let obj={};
-
-        obj.damage_table=Array.apply({}, Array(20));
-        
-         obj.damage_table.forEach((_el,_index)=>
-        {
-            let damage=_index+1;
-            let cost=damage*1.5;
-            let range=Math.round(Math.sqrt(damage)*4);
-            obj.damage_table[_index]={damage:damage,cost:cost,range:range};
-        },this);
-
-        obj.selected_damage={damage:1,cost:1.5,range:4};
-
+        obj.alerts=[];
+        obj.pkey="damage";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_damage:function(_damage_index)
+        select_damage:function(_damage)
         {
-            this.$emit("update-damage", this.damage_table[_damage_index]);
+            let data=JSON.parse(JSON.stringify(_damage));
+            this.$emit("update-damage",data);
         },
     },
     computed:
     {
-        damage_index()
+        damage_table()
         {
-            let damage_index=0;
-            this.damage_table.some((_val,_index)=>
+            return damage_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.damage);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(this.damage.damage==_val.damage)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    damage_index=_index;
-                    return true;
-                }
-            });
-
-            let update=false;
-            switch(true)
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
+            if(cleaned_data.update)
             {
-                case this.damage.damage!=this.damage_table[damage_index].damage:
-                case this.damage.cost!=this.damage_table[damage_index].cost:
-                case this.damage.range!=this.damage_table[damage_index].range:
-                    update=true;       
+                this.select_damage(cleaned_data.data);
             }
-            if(update)
-            {   
-                this.select_damage(damage_index);
-            }
-            return [damage_index];
+            return cleaned_data.key_list;
         }
     }
 }
 </script>
-<style scoped>
-th
-{
-    padding-left:10px;
-    padding-right:10px;
-}
-#left
-{
-    padding-left: 0px;
-}
-#right
-{
-    padding-right: 0px;
-}
-</style>
