@@ -13,8 +13,8 @@ let raw_feature_data_table=
     {feature:"Anti-Personnel Phalanx",cost:1.6,exclusive_personnel:true,exclusive_phalanx:true},
     {feature:"All Purpose",cost:2.6,exclusive_personnel:true,exclusive_phalanx:true}
 ];
-let exclusive_phalanx=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_phalanx!=="undefined";});
-let exclusive_personnel=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_personnel!=="undefined";});
+let exclusive_phalanx=raw_feature_data_table.filter((_el)=>{return _el.exclusive_phalanx!==undefined;});
+let exclusive_personnel=raw_feature_data_table.filter((_el)=>{return _el.exclusive_personnel!==undefined;});
 let exclusive_personnel_phalanx=raw_feature_data_table.filter((_el)=>{return _el.exclusive_personnel!==undefined && _el.exclusive_phalanx!==undefined;});
 let data_table_keys=["feature","cost","exclusive_phalanx","exclusive_personnel"];
 
