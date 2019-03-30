@@ -129,7 +129,7 @@ export default
 
         obj.shield_class={code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"};
 
-        obj.defense_ability={da:-2,cost:1};
+        obj.defense_ability={da:-2,cost:1,name:"medium"};
         obj.cost_multipliers={};
         obj.cost_multipliers.defense_ability=1;
         
@@ -186,7 +186,7 @@ export default
             {
                 this.shield_class.cost=this.shield_class.stopping_power*1.5;
 
-                this.$set(this,"defense_ability",{da:-2,cost:1});
+                this.$set(this,"defense_ability",{da:-2,cost:1,name:"medium"});
                 this.cost_multipliers.defense_ability=1;
                 
                 this.$set(this,"reset_time",{cost:1,time:2});
@@ -449,7 +449,7 @@ export default
             let fullname="";
             if(this.type.name.toLowerCase()=="standard")
             {
-                fullname=["Huge","Large","Medium","Small","Tiny"][this.defense_ability.da*-1];
+                fullname=this.defense_ability.name;
             }
             fullname+=" "+this.shield_class.name;
             if(this.type.name.toLowerCase()=="standard" || this.type.name.toLowerCase()=="active")
