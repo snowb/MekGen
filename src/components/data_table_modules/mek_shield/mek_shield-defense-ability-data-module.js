@@ -4,11 +4,11 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 //create new da_data_table
 let da_data_table=
 [
-    {da:-4,cost:0.6},
-    {da:-3,cost:0.8},
-    {da:-2,cost:1},
-    {da:-1,cost:1.25},
-    {da:0,cost:1.5},
+    {da:-4,cost:0.6,name:"Micro"},
+    {da:-3,cost:0.8,name:"Small"},
+    {da:-2,cost:1,name:"Medium"},
+    {da:-1,cost:1.25,name:"Large"},
+    {da:0,cost:1.5,name:"Huge"},
 ];
 let data_table_keys=["da","cost"];
 let default_data={da:-2,cost:1};
