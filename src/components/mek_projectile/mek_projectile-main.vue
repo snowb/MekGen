@@ -105,7 +105,7 @@ export default
 
         obj.selected_damage={damage:1,cost:1,range:3};
         obj.selected_accuracy={accuracy:0,cost:1};
-        obj.selected_range_mod={range_mod:1,cost:1};
+        obj.selected_range_mod={range_mod:1,cost:1, range:3};
         obj.selected_multi_feed={feeds:1,cost:1};
         obj.selected_burst_value={burst_value:1,cost:1};
 
@@ -142,37 +142,31 @@ export default
         },
         updateDamage(_damage)
         {
-            this.selected_damage.damage=_damage.damage;
-            this.selected_damage.cost=_damage.cost;
-            this.selected_damage.range=_damage.range;
+            this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
             this.damage_capacity=_damage.damage;
         },
         updateAccuracy(_accuracy)
         {
-            this.selected_accuracy.accuracy=_accuracy.accuracy;
-            this.selected_accuracy.cost=_accuracy.cost;
+            this.$set(this,"selected_accuracy",_accuracy);
             this.cost_multipliers.accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateMultiFeed(_multi_feed)
         {
-            this.selected_multi_feed.feeds=_multi_feed.feeds;
-            this.selected_multi_feed.cost=_multi_feed.cost;
+            this.$set(this,"selected_multi_feed",_multi_feed);
             this.cost_multipliers.multi_feed=_multi_feed.cost;
             this.component_changed=true;
         },
         updateBurstValue(_burst_value)
         {
-            this.selected_burst_value.burst_value=_burst_value.burst_value;
-            this.selected_burst_value.cost=_burst_value.cost;
+            this.$set(this,"selected_burst_value",_burst_value);
             this.cost_multipliers.burst_value=_burst_value.cost;
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
         {
-            this.selected_range_mod.range_mod=_range_mod.range_mod;
-            this.selected_range_mod.cost=_range_mod.cost;
+            this.$set(this,"selected_range_mod",_range_mod)
             this.cost_multipliers.range_mod=_range_mod.cost;
             this.component_changed=true;
         },
@@ -205,11 +199,11 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    this.selected_damage.damage=1;
-                    this.selected_accuracy.accuracy=1;
-                    this.selected_range_mod.range_mod=1;
-                    this.selected_multi_feed.feeds1;
-                    this.selected_burst_value.burst_value=1;
+                    this.$set(this,"selected_damage",{damage:1,cost:1,range:3});
+                    this.$set(this,"selected_accuracy",{accuracy:0,cost:1});
+                    this.$set(this,"selected_range_mod",{range_mod:1,cost:1, range:3});
+                    this.$set(this,"selected_multi_feed",{feeds:1,cost:1});
+                    this.$set(this,"selected_burst_value",{burst_value:1,cost:1});
                     //this.mount_type.mount_type="Servo-Mounted";
                     this.$set(this,"feature_array",[]);
                     this.$store.commit("saveComponent",null);
