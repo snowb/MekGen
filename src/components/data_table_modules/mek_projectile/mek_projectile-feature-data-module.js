@@ -15,6 +15,7 @@ let raw_feature_data_table=
 ];
 let exclusive_phalanx=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_phalanx!=="undefined";});
 let exclusive_personnel=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_personnel!=="undefined";});
+let exclusive_personnel_phalanx=raw_feature_data_table.filter((_el)=>{return _el.exclusive_personnel!==undefined && _el.exclusive_phalanx!==undefined;});
 let data_table_keys=["feature","cost","exclusive_phalanx","exclusive_personnel"];
 
 let feature_data_table=raw_feature_data_table;
@@ -66,10 +67,13 @@ let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
     switch(_exclusive_target.toLowerCase())
     {
         case "exclusive_phalanx":
-            exclusive_target_array=exclusive_phalanx;
+            exclusive_target_array=JSON.parse(JSON.stringify(exclusive_phalanx));
             break;
         case "exclusive_personnel":
-            exclusive_target_array=exclusive_personnel;
+            exclusive_target_array=JSON.parse(JSON.stringify(exclusive_personnel));
+            break;
+        case "exclusive_personnel_phalanx":
+            exclusive_target_array=JSON.parse(JSON.stringify(exclusive_personnel_phalanx));
             break;
     }
     if(exclusive_target_array===null)
@@ -97,8 +101,9 @@ let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
  * ***/
 let cleaned_feature=function(_feature_array, _pkey)
 {//takes feature_array, returns cleaned array removing multiple exclusive values
-    let hasExclusiveSmokeScatter=false;
-    let hasExclusiveCounter=false;
+    let hasExclusivePhalanx=false;
+    let hasExclusivePersonnel=false;
+    let hasExclusivePersonnelPhalanx=false;
     let update=false;
     let key_list=[];
     let alerts=[];
@@ -139,34 +144,53 @@ let cleaned_feature=function(_feature_array, _pkey)
             return _cleaned_array;
             //ignore element
         }
-        let isSmokeScatter=is_exclusive_feature("exclusive_phalanx",_pkey,_val[_pkey]);
-        let isCounter=is_exclusive_feature("exclusive_personnel",_pkey,_val[_pkey]);
-        
-        if(isSmokeScatter && !hasExclusiveSmokeScatter)
+        let isPhalanx=is_exclusive_feature("exclusive_phalanx",_pkey,_val[_pkey]);
+        let isPersonnel=is_exclusive_feature("exclusive_personnel",_pkey,_val[_pkey]);
+        let isPersonnelPhalanx=is_exclusive_feature("exclusive_personnel_phalanx",_pkey,_val[_pkey]);
+
+        if(isPersonnelPhalanx && !hasExclusivePersonnelPhalanx)
         {
             _cleaned_array.push(_val);
-            hasExclusiveSmokeScatter=true;
+            hasExclusivePersonnelPhalanx=true;
+            hasExclusivePersonnel=true;
+            hasExclusivePhalanx=true;
             key_list.push(_val[_pkey]);
             return _cleaned_array;
         }
-        else if(isSmokeScatter && hasExclusiveSmokeScatter)
+        else if(isPersonnelPhalanx && hasExclusivePersonnelPhalanx)
         {
             alerts.push("Mek_Projectile-Feature: "+_val);
-            alerts.push("**** Duplicate Exclusive SmokeScatter data. Ignoring. ****");
+            alerts.push("**** Duplicate Exclusive Personnel-Phalanx data. Ignoring. ****");
             update=true;
             return _cleaned_array;
         }
-        if(isCounter && !hasExclusiveCounter)
+        if(isPhalanx && !hasExclusivePhalanx)
         {
             _cleaned_array.push(_val);
-            hasExclusiveCounter=true;
+            hasExclusivePhalanx=true;
+            hasExclusivePersonnelPhalanx=true;
             key_list.push(_val[_pkey]);
             return _cleaned_array;
         }
-        else if(isCounter && hasExclusiveCounter)
+        else if(isPhalanx && hasExclusivePhalanx)
         {
             alerts.push("Mek_Projectile-Feature: "+_val);
-            alerts.push("**** Duplicate Exclusive Counter data. Ignoring. ****");
+            alerts.push("**** Duplicate Exclusive Phalanx data. Ignoring. ****");
+            update=true;
+            return _cleaned_array;
+        }
+        if(isPersonnel && !hasExclusivePersonnel)
+        {
+            _cleaned_array.push(_val);
+            hasExclusivePersonnel=true;
+            hasExclusivePersonnelPhalanx=true;
+            key_list.push(_val[_pkey]);
+            return _cleaned_array;
+        }
+        else if(isPersonnel && hasExclusivePersonnel)
+        {
+            alerts.push("Mek_Projectile-Feature: "+_val);
+            alerts.push("**** Duplicate Exclusive Anti-Personnel data. Ignoring. ****");
             update=true;
             return _cleaned_array;
         }
