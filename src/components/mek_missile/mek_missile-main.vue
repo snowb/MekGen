@@ -330,7 +330,7 @@ export default
         {
             let missile_name=this.has_feature("nuclear") ? "Nuclear ":"";
 
-            missile_name+=this.selected_smart.smart!="__NIL__"?"Smart ":"";
+            missile_name+=this.selected_smart.smart!="__NIL__"?"Smart-"+this.selected_skill.skill+" ":"";
 
             missile_name=this.feature_array.reduce((_name,_val)=>
             {
