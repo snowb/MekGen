@@ -14,7 +14,7 @@ import {damage_data_table, cleaned_feature}
 
 export default
 {
-    name:"mek_beam_damage",
+    name:"mek_projectile_damage",
     props:["damage"],
     mixins:[alerts_mixin],
     components:
@@ -63,18 +63,3 @@ export default
     }
 }
 </script>
-<style scoped>
-th
-{
-    padding-left:10px;
-    padding-right:10px;
-}
-#left
-{
-    padding-left: 0px;
-}
-#right
-{
-    padding-right: 0px;
-}
-</style>
