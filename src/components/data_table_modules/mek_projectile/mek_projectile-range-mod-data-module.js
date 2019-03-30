@@ -29,7 +29,7 @@ let create_range_mod_data_table=(_base_range)=>
     data_cached=false;
 };
 create_range_mod_data_table(3);
-let data_table_keys=["range_modifier","cost","type"];
+let data_table_keys=["range_modifier","cost","range"];
 let default_data={range_mod:1,cost:1,range:3};
 
 let cached_validate=partial_validate(range_mod_data_table, data_table_keys);
@@ -54,6 +54,6 @@ let get_feature=partial_get_feature(range_mod_data_table, has_feature);
 
 //completed function for returning cleaed data
 let cleaned_feature=
-    partial_cleaned_feature(range_mod_validate, has_feature, get_feature, default_data, "Mek_Shield-Range-Mod");
+    partial_cleaned_feature(range_mod_validate, has_feature, get_feature, default_data, "Mek_Projectile-Range-Mod");
 
 export {range_mod_data_table, range_mod_validate, has_feature, get_feature, cleaned_feature, create_range_mod_data_table};
