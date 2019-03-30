@@ -13,8 +13,6 @@ import alerts_mixin from "../../../mixins/alerts_mixin";
 import {shots_data_table, cleaned_feature, filter_shots_data_table}
     from "../../data_table_modules/mek_beam/mek_beam-shots-data-module.js";
 
-console.error("mek_beam-shots.vue importing")
-
 export default 
 {
     name: "mek_beam_shots",
