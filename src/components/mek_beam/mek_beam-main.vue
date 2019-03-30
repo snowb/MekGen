@@ -119,8 +119,8 @@ export default
         obj.selected_range_mod={range_mod:1,cost:1,range:4};
         obj.selected_accuracy={accuracy:1,cost:1};
         obj.selected_shots={shots:"__INFINITY__",cost:1};
-        obj.selected_warm_up_time={time:0,cost:1.0};
-        obj.selected_wide_angle={angle:"__NIL__",cost:1.0};
+        obj.selected_warm_up_time={time:0,cost:1};
+        obj.selected_wide_angle={angle:"__NIL__",cost:1};
         
         obj.feature_array=[];
 
@@ -153,51 +153,43 @@ export default
         },
         updateDamage(_damage)
         {
-            this.selected_damage.damage=_damage.damage;
-            this.selected_damage.cost=_damage.cost;
-            this.selected_damage.range=_damage.range;
+            this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
             this.damage_capacity=_damage.damage;
         },
         updateAccuracy(_accuracy)
         {
-            this.selected_accuracy.accuracy=_accuracy.accuracy;
-            this.selected_accuracy.cost=_accuracy.cost;
+            this.$set(this,"selected_accuracy",_accuracy);
             this.cost_multipliers.accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateBurstValue(_burst_value)
         {
-            this.selected_burst_value.burst_value=_burst_value.burst_value;
-            this.selected_burst_value.cost=_burst_value.cost;
+            this.$set(this,"selected_burst_value",_burst_value);
             this.cost_multipliers.burst_value=_burst_value.cost;
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
         {
-            this.selected_range_mod.range_mod=_range_mod.range_mod;
-            this.selected_range_mod.cost=_range_mod.cost;
+            this.$set(this,"selected_range_mod",_range_mod);
             this.cost_multipliers.range_mod=_range_mod.cost;
             this.component_changed=true;
         },
         updateShots(_shots)
         {
-            this.selected_shots.shots=_shots.shots;
-            this.selected_shots.cost=_shots.cost;
+            this.$set(this,"selected_shots",_shots);
             this.cost_multipliers.shots=_shots.cost;
             this.component_changed=true;
         },
         updateWarmUpTime(_warm_up_time)
         {
-            this.selected_warm_up_time.time=_warm_up_time.time;
-            this.selected_warm_up_time.cost=_warm_up_time.cost;
+            this.$set(this,"selected_warm_up_time",_warm_up_time);
             this.cost_multipliers.warm_up_time=_warm_up_time.cost;
             this.component_changed=true;
         },
         updateWideAngle(_wide_angle)
         {
-            this.selected_wide_angle.angle=_wide_angle.angle;
-            this.selected_wide_angle.cost=_wide_angle.cost;
+            this.$set(this,"selected_wide_angle",_wide_angle);
             this.cost_multipliers.wide_angle=_wide_angle.cost;
             this.component_changed=true;
         },
@@ -227,13 +219,13 @@ export default
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
                     this.$set(this,"feature_array",[]);
-                    this.selected_damage.damage=1;
-                    this.selected_burst_value.burst_value=1;
-                    this.selected_range_mod.range_mod=1;
-                    this.selected_accuracy.accuracy=1;
-                    this.selected_shots.shots="__INFINITY__";
-                    this.selected_warm_up_time.time=0;
-                    this.selected_wide_angle.angle="__NIL__";
+                    this.$set(this,"selected_damage",{damage:1,cost:1.5,range:4});
+                    this.$set(this,"selected_burst_value",{burst_value:1,cost:1});
+                    this.$set(this,"selected_range_mod",{range_mod:1,cost:1,range:4});
+                    this.$set(this,"selected_accuracy",{accuracy:1,cost:1});
+                    this.$set(this,"selected_shots",{shots:"__INFINITY__",cost:1});
+                    this.$set(this,"selected_warm_up_time",{time:0,cost:1});
+                    this.$set(this,"selected_wide_angle",{angle:"__NIL__",cost:1});
                     this.$store.commit("saveComponent",null);
                     break;
             }
