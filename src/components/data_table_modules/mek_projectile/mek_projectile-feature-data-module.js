@@ -108,7 +108,7 @@ let cleaned_feature=function(_feature_array, _pkey)
     }
     if(_feature_array===undefined || _pkey===undefined)
     {
-        alerts.push("Mek_Missile-Feature: ");
+        alerts.push("Mek_Projectile-Feature: ");
         let error=_feature_array===undefined
             ? "**** Missing feature array. Returning default. ****"
             : "**** No primary key provided. Returning default. ****";
@@ -119,14 +119,14 @@ let cleaned_feature=function(_feature_array, _pkey)
     {
         if(_val[_pkey]===undefined)
         {//if feature with pkey doesn't exist in data table, ignore
-            alerts.push("Mek_Missile-Feature: "+JSON.stringify(_val));
+            alerts.push("Mek_Projectile-Feature: "+JSON.stringify(_val));
             alerts.push("**** Missing primary key. Ignoring. ****");
             return _cleaned_array;
         }
         let clean_feature=_val;
         if(!feature_validate(_val))
         {//invalid data
-            alerts.push("Mek_Missile-Feature: "+JSON.stringify(_val))
+            alerts.push("Mek_Projectile-Feature: "+JSON.stringify(_val))
             alerts.push("**** Invalid data, attempting to reset. ****")
             clean_feature=get_feature(_pkey,_val[_pkey]);
             update=true;
@@ -151,7 +151,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         }
         else if(isSmokeScatter && hasExclusiveSmokeScatter)
         {
-            alerts.push("Mek_Missile-Feature: "+_val);
+            alerts.push("Mek_Projectile-Feature: "+_val);
             alerts.push("**** Duplicate Exclusive SmokeScatter data. Ignoring. ****");
             update=true;
             return _cleaned_array;
@@ -165,7 +165,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         }
         else if(isCounter && hasExclusiveCounter)
         {
-            alerts.push("Mek_Missile-Feature: "+_val);
+            alerts.push("Mek_Projectile-Feature: "+_val);
             alerts.push("**** Duplicate Exclusive Counter data. Ignoring. ****");
             update=true;
             return _cleaned_array;
@@ -183,7 +183,7 @@ let cleaned_feature=function(_feature_array, _pkey)
         temp_selected_feature_array=[];
         update=true;
         key_list=[];
-        alerts.push("Mek_Missile-Feature: ");
+        alerts.push("Mek_Projectile-Feature: ");
         alerts.push("**** Reseting to default ****");
     }
     return {cleaned_array:temp_selected_feature_array,update:update,key_list:key_list,alerts:alerts};
