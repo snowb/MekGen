@@ -17,11 +17,12 @@
                         @update-burst-value="updateBurstValue" 
                         :burst-value="selected_burst_value"
                     ></mek-beam-burst-value>
-                    <mek-beam-shots v-if="true"
+                    <mek-beam-shots
                         @update-shots="updateShots" 
                         :shots="selected_shots" :mag-fed="mag_fed"
                     ></mek-beam-shots>
-                    mek-beam-shots is supposed to be here
+                    <mek-beam-shots
+                    ></mek-beam-shots>
                 </div>
                 <mek-beam-range-mod style="align-self:start;"
                     @update-range-mod="updateRangeMod"
