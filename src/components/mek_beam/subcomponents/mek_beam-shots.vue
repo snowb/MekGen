@@ -1,4 +1,5 @@
 <template>
+<span>
     <mek-sub-component-table
         :items="shots_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{shots:'Shots',cost:'Cost'}"
@@ -6,6 +7,8 @@
         :format="{cost:'multiplier'}"
         @update-selected-data="select_shots"
     ></mek-sub-component-table>
+    mek_beam-shots
+    </span>
 </template>
 
 <script>
