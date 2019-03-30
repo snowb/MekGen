@@ -1,23 +1,23 @@
 <template>
     <mek-sub-component-table
-        :items="wide_angle_table"
+        :items="wide_angle_table" :pkey="pkey" :selected-keys="selected_keys"
         :headers="{angle:'Angle',cost:'Cost'}"
-        name="Wide Angle" flow="row" :show-headers="true"
+        name="Wide Angle" flow="pkey-row" :show-headers="true"
         :format="{angle:'wide-angle',cost:'multiplier'}"
-        :selected-indices="selected_angle_index"
-        @update-selected-indices="select_angle"
+        @update-selected-data="select_angle"
     ></mek-sub-component-table>
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import alerts_mixin from "../../../mixins/alerts_mixin";
+import {wide_angle_data_table, cleaned_feature}
+    from "../../data_table_modules/mek_beam/mek_beam-wide-angle-data-module.js";
 
 export default 
 {
     name: "mek_beam_wide_angle",
     props:["wideAngle"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
@@ -25,44 +25,41 @@ export default
     data:function()
     {
         let obj={}
-        obj.wide_angle_table=
-            [
-                {angle:"__NIL__",cost:1},
-                {angle:"__HEX__",cost:2},
-                {angle:60,cost:3},
-                {angle:180,cost:5},
-                {angle:300,cost:7},
-                {angle:360,cost:9},
-            ];
+        obj.alerts=[];
+        obj.pkey="angle";
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
     {
-        select_angle:function(_angle_index)
+        select_angle:function(_angle)
         {
-            this.$emit("update-wide-angle",this.wide_angle_table[_angle_index]);
+            let data=JSON.parse(JSON.stringify(_angle))
+            this.$emit("update-wide-angle",data);
         }
     },
     computed:
     {
-        selected_angle_index:function()
+        wide_angle_table()
         {
-            let index=0;
-            this.angle;
-            this.wide_angle_table.some((_val, _index)=>
+            return wide_angle_data_table;
+        },
+        selected_keys()
+        {
+            let cleaned_data=cleaned_feature(this.pkey, this.wideAngle);
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
-                if(_val.angle==this.wideAngle.angle)
+                cleaned_data.alerts.forEach((_alert)=>
                 {
-                    index=_index;
-                    return true;
-                }
-            },this);
-            
-            if(this.wideAngle.cost!=this.wide_angle_table[index].cost)
-            {
-                this.select_angle(index);
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
             }
-            return [index];
+            if(cleaned_data.update)
+            {
+                this.select_angle(cleaned_data.data);
+            }
+            return cleaned_data.key_list;
         }
     }
 }
