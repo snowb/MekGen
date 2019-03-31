@@ -365,15 +365,6 @@ tr.clickable_sct:hover td:last-child
     font-weight:bold;
     border-radius: 7px;
     box-shadow: inset -1px -1px 1px 1px white !important;
-    /*padding-top: 2px;
-    padding-bottom: 2px;
-
-    background-color: #222 !important;
-    color: #fff !important;
-    font-weight:bold;
-    border-radius: 7px;
-    box-shadow: inset -1px -1px 1px 1px white !important;
-    padding: 2px 5px;*/
 }
 tr.selected_item_sct td
 {
