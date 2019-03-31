@@ -177,4 +177,22 @@ export default
     background-color: rgba(0,0,0,0.2);
     white-space: nowrap;
 }
+.non_selected_item
+{
+    background-color: #aaa !important;
+    color: #222 !important;
+    font-weight: bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px #222 !important;
+}
+.selected_item
+{
+    background-color: #222 !important;
+    color: #fff !important;
+    font-weight:bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px white !important;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
 </style>
