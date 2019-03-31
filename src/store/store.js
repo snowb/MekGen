@@ -25,7 +25,7 @@ let store= new Vuex.Store(
                     }
                 }
             },
-            currentTab:"mek-shield",
+            currentDesignTab:"mek-shield",
             selected_component:null,
             alert_messages:[]
         },
@@ -61,11 +61,11 @@ let store= new Vuex.Store(
                     }
                 }
             },
-            showTab(_state, _tab)
+            showDesignTab(_state, _tab)
             {
                 if(typeof _tab==="string")
                 {
-                    Vue.set(_state,'currentTab',_tab);
+                    Vue.set(_state,'currentDesignTab',_tab);
                 }
             },
             selectComponent(_state, _uuid)
@@ -99,7 +99,7 @@ let store= new Vuex.Store(
         {
             componentList: _state => _state.component_list,
             getComponent: (_state)=>(_uuid)=>_state.components[_uuid],
-            targetTab: _state=>_state.currentTab,
+            targetDesignTab: _state=>_state.currentDesignTab,
             selectedComponent: _state =>
             {
                 return _state.selected_component===null?null:_state.components[_state.selected_component];

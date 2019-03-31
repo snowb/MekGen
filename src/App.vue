@@ -2,9 +2,9 @@
     <div id="app" style="display:inline-flex;">
         <mek-side-menu></mek-side-menu>
         <span>
-            <mek-top-menu @focus-section="focusSection" :section="targetTab"></mek-top-menu>
+            <mek-top-menu @focus-section="focusSection" :section="targetDesignTab"></mek-top-menu>
             <span id="main">
-                <component :is="targetTab"></component>
+                <component :is="targetDesignTab"></component>
             </span>
         </span>
         <mek-alert></mek-alert>
@@ -59,14 +59,14 @@ export default {
   {
     focusSection:function(_section)
     {
-        this.$store.commit("showTab",_section);
+        this.$store.commit("showDesignTab",_section);
     }
   },
   computed:
   {
     ...mapGetters(
         {
-            targetTab:'targetTab'
+            targetDesignTab:'targetDesignTab'
         })
   }
 }
