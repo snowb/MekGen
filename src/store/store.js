@@ -26,6 +26,9 @@ let store= new Vuex.Store(
                 }
             },
             currentDesignTab:"mek-shield",
+            currentBuildTab:"mek-nothing",
+            currentIngestTab:"mek-nothing",
+            currentAppTab:"mek-design-components",
             selected_component:null,
             alert_messages:[]
         },
@@ -68,6 +71,27 @@ let store= new Vuex.Store(
                     Vue.set(_state,'currentDesignTab',_tab);
                 }
             },
+            showBuildTab(_state, _tab)
+            {
+                if(typeof _tab==="string")
+                {
+                    Vue.set(_state,'currentBuildTab',_tab);
+                }
+            },
+            showIngestTab(_state, _tab)
+            {
+                if(typeof _tab==="string")
+                {
+                    Vue.set(_state,'currentIngestTab',_tab);
+                }
+            },
+            showAppTab(_state, _tab)
+            {
+                if(typeof _tab==="string")
+                {
+                    Vue.set(_state,'currentAppTab',_tab);
+                }
+            },
             selectComponent(_state, _uuid)
             {
                 if(typeof _uuid==="string")
@@ -100,6 +124,9 @@ let store= new Vuex.Store(
             componentList: _state => _state.component_list,
             getComponent: (_state)=>(_uuid)=>_state.components[_uuid],
             targetDesignTab: _state=>_state.currentDesignTab,
+            targetBuildTab: _state=>_state.currentBuildTab,
+            targetIngestTab: _state=>_state.currentIngestTab,
+            targetAppTab: _state=>_state.currentAppTab,
             selectedComponent: _state =>
             {
                 return _state.selected_component===null?null:_state.components[_state.selected_component];
