@@ -10,7 +10,11 @@
 
 <script>
 import selected_item_mixin from "../../mixins/selected_item_mixin";
+/*
 
+check if can be removed entirely
+
+*/
 export default
 {
     name: "mek_top_menu",
