@@ -27,7 +27,8 @@ let store= new Vuex.Store(
             },
             currentDesignTab:"mek-shield",
             currentBuildTab:"mek-nothing",
-            currentIngestTab:"mek-nothing",
+            currentImportTab:"equipment",
+            currentExportTab:"equipment",
             currentAppTab:"mek-design-components",
             selected_component:null,
             alert_messages:[]
@@ -64,32 +65,11 @@ let store= new Vuex.Store(
                     }
                 }
             },
-            showDesignTab(_state, _tab)
+            showTab(_state, _payload)
             {
-                if(typeof _tab==="string")
+                if(typeof _payload.prop==="string" && typeof _payload.tab==="string" && _state[_payload.prop]!==undefined)
                 {
-                    Vue.set(_state,'currentDesignTab',_tab);
-                }
-            },
-            showBuildTab(_state, _tab)
-            {
-                if(typeof _tab==="string")
-                {
-                    Vue.set(_state,'currentBuildTab',_tab);
-                }
-            },
-            showIngestTab(_state, _tab)
-            {
-                if(typeof _tab==="string")
-                {
-                    Vue.set(_state,'currentIngestTab',_tab);
-                }
-            },
-            showAppTab(_state, _tab)
-            {
-                if(typeof _tab==="string")
-                {
-                    Vue.set(_state,'currentAppTab',_tab);
+                    Vue.set(_state,_payload.prop,_payload.tab);
                 }
             },
             selectComponent(_state, _uuid)
@@ -122,10 +102,20 @@ let store= new Vuex.Store(
         getters:
         {
             componentList: _state => _state.component_list,
+            categoryList:_state=>Object.keys(_state.component_list),
+            typeList:(_state)=>(_category)=>
+            {
+                if(_state.component_list[_category]===undefined)
+                {
+                    return [];
+                }
+                return Object.keys(_state.component_list[_category]);
+            },
             getComponent: (_state)=>(_uuid)=>_state.components[_uuid],
             targetDesignTab: _state=>_state.currentDesignTab,
             targetBuildTab: _state=>_state.currentBuildTab,
-            targetIngestTab: _state=>_state.currentIngestTab,
+            targetImportTab: _state=>_state.currentImportTab,
+            targetExportTab: _state=>_state.currentExportTab,
             targetAppTab: _state=>_state.currentAppTab,
             selectedComponent: _state =>
             {
