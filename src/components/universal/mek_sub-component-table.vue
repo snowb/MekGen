@@ -4,7 +4,7 @@
             <div class="subsection_container1">
                 <div class="subsection_header_small1">{{name}}</div>
                 <div class="subsection_hidden_header">{{name}}</div>
-                <table style="margin:auto;" v-if="flow=='row'">
+                <!--table style="margin:auto;" v-if="flow=='row'">
                     <tr>
                         <td class="head_column1 pad" v-if="showHeaders">
                             <div v-for="(header,key) in headers" :key="key+'-header-'+name">
@@ -44,9 +44,9 @@
                             {{largestKeyValues[key]}}
                         </td>
                     </tr>
-                </table>
+                </table-->
                 <!-- re-design for selection by primary key (pkey)-->
-                <table style="margin:auto;" v-else-if="flow=='pkey-col'">
+                <table style="margin:auto;" v-if="flow=='pkey-col'">
                     <tr v-if="showHeaders" class="head_row">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
                             {{header}}
