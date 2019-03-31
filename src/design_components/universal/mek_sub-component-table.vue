@@ -4,55 +4,17 @@
             <div class="subsection_container1">
                 <div class="subsection_header_small1">{{name}}</div>
                 <div class="subsection_hidden_header">{{name}}</div>
-                <!--table style="margin:auto;" v-if="flow=='row'">
-                    <tr>
-                        <td class="head_column1 pad" v-if="showHeaders">
-                            <div v-for="(header,key) in headers" :key="key+'-header-'+name">
-                                {{header}}
-                            </div>
-                        </td>
-                        <td>&nbsp;</td>
-                        <td v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
-                            class="clickable1 pad"
-                            :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
-                            @click="updateSelectedIndices(index)"
-                        >
-                            <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                                {{formatOutput(item[key],key)}}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <table style="margin:auto;" v-else-if="flow=='col'">
-                    <tr v-if="showHeaders" class="head_row">
-                        <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
-                            {{header}}
-                        </th>
-                    </tr>
-                    <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
-                    <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
-                        class="clickable1 pad"
-                        :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
-                        @click="updateSelectedIndices(index)"
-                    >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                            {{formatOutput(item[key],key)}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table-->
-                <!-- re-design for selection by primary key (pkey)-->
                 <table style="margin:auto;" v-if="flow=='pkey-col'">
                     <tr v-if="showHeaders" class="head_row">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
                             {{header}}
                         </th>
                     </tr>
-                    <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
+                    <tr>
+                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                            &nbsp;
+                        </td>
+                    </tr>
                     <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
                         class="clickable1 pad"
                         :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item1')"
@@ -93,7 +55,11 @@
                             {{header}}
                         </th>
                     </tr>
-                    <tr><td :colspan="headers.length" style="line-height:4px;">&nbsp;</td></tr>
+                    <tr>
+                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                            &nbsp;
+                        </td>
+                    </tr>
                     <tr class="pad selected_item1" @click="showDropdown=true"
                         :style="hiddenDropDown"
                     >
@@ -264,6 +230,10 @@ export default
         hiddenDropDown()
         {
             return this.showDropdown ? "visibility:hidden;" : "";
+        },
+        colspan()
+        {
+            return Object.keys(this.headers).length
         }
     }
 }
