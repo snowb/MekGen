@@ -46,7 +46,7 @@ export default {
   {
     focusSection:function(_section)
     {
-        this.$store.commit("showBuildTab",_section);
+        this.$store.commit("showTab",{prop:"currentBuildTab",tab:_section});
     }
   },
   computed:
