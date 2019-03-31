@@ -1,11 +1,11 @@
 <template>
     <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small1">
-            <div class="subsection_container1">
-                <div class="subsection_header_small1">{{name}}</div>
-                <div class="subsection_hidden_header">{{name}}</div>
+        <div class="metallic_background_small_sct">
+            <div class="subsection_container_sct">
+                <div class="subsection_header_small_sct">{{name}}</div>
+                <div class="subsection_hidden_header_sct">{{name}}</div>
                 <table style="margin:auto;" v-if="flow=='pkey-col'">
-                    <tr v-if="showHeaders" class="head_row">
+                    <tr v-if="showHeaders" class="head_row_sct">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
                             {{header}}
                         </th>
@@ -16,15 +16,15 @@
                         </td>
                     </tr>
                     <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
-                        class="clickable1 pad"
-                        :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item1')"
+                        class="clickable_sct pad_sct"
+                        :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
                         @click="updateSelectedData(items[index])"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
                             {{formatOutput(item[key],key)}}
                         </td>
                     </tr>
-                    <tr class="invisible_pad_row">
+                    <tr class="invisible_pad_row_sct">
                         <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                             {{largestKeyValues[key]}}
                         </td>
@@ -32,15 +32,15 @@
                 </table>
                 <table style="margin:auto;" v-else-if="flow=='pkey-row'">
                     <tr>
-                        <td class="head_column1 pad" v-if="showHeaders">
+                        <td class="head_column_sct pad_sct" v-if="showHeaders">
                             <div v-for="(header,key) in headers" :key="key+'-header-'+name">
                                 {{header}}
                             </div>
                         </td>
                         <td>&nbsp;</td>
                         <td v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
-                            class="clickable1 pad"
-                            :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item1')"
+                            class="clickable_sct pad_sct"
+                            :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
                             @click="updateSelectedData(items[index])"
                         >
                             <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
@@ -50,7 +50,7 @@
                     </tr>
                 </table>
                 <table style="margin:auto;" v-if="flow=='dropdown'">
-                    <tr v-if="showHeaders" class="head_row">
+                    <tr v-if="showHeaders" class="head_row_sct">
                         <th v-for="(header,key) in headers" :key="key+'-header-'+name">
                             {{header}}
                         </th>
@@ -60,7 +60,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr class="pad selected_item1" @click="showDropdown=true"
+                    <tr class="pad selected_item_sct" @click="showDropdown=true"
                         :style="hiddenDropDown"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
@@ -68,23 +68,23 @@
                             {{itemDisplayedKeys[selectedIndices[0]][key]}}
                         </td>
                     </tr>
-                    <tr class="invisible_pad_row">
+                    <tr class="invisible_pad_row_sct">
                         <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                             {{largestKeyValues[key]}}
                         </td>
                     </tr>
                 </table>
-                <table class="dropdown-table" v-if="flow=='dropdown' && showDropdown">
+                <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown">
                     <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
-                        class="clickable1 pad"
-                        :class="selectedItemMultiple('selectedIndices',index,'selected_item1')"
+                        class="clickable_sct pad_sct"
+                        :class="selectedItemMultiple('selectedIndices',index,'selected_item_sct')"
                         @click="updateSelectedIndices(index);showDropdown=false"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
                             {{formatOutput(item[key],key)}}
                         </td>
                     </tr>
-                    <tr class="invisible_pad_row">
+                    <tr class="invisible_pad_row_sct">
                         <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                             {{largestKeyValues[key]}}
                         </td>
@@ -239,14 +239,14 @@ export default
 }
 </script>
 <style scoped>
-.invisible_pad_row
+.invisible_pad_row_sct
 {
     visibility:hidden;
     height:0px;
     line-height:0px;
     font-weight:bold;
 }
-.dropdown-table
+.dropdown-table_sct
 {
     margin:auto;
     position:absolute;
@@ -256,7 +256,7 @@ export default
     box-shadow: #222 0px 0px 5px 2px;
     z-index:100;
 }
-.subsection_header_small1
+.subsection_header_small_sct
 {
     font-weight: bold;
     position: absolute;
@@ -274,7 +274,7 @@ export default
     background-color: rgba(0,0,0,0.2);
     white-space: nowrap;
 }
-.subsection_hidden_header
+.subsection_hidden_header_sct
 {
     font-weight: bold;
     font-family: Arial Black, sans-serif;
@@ -284,7 +284,7 @@ export default
     line-height: 0px;
     height:0px;
 }
-.head_column1
+.head_column_sct
 {
     padding:2px 5px; 
     font-weight:bold;
@@ -292,37 +292,37 @@ export default
     border-right:1px solid black;
     margin-right:5px;
 }
-.head_row
+.head_row_sct
 {
     font-weight:bold; 
     border-bottom:1px solid black;
 }
-.clickable1
+.clickable_sct
 {
     cursor: pointer;
 }
-.pad
+.pad_sct
 {
     padding: 2px 5px;
 }
-.clickable1:hover
+.clickable_sct:hover
 {
     background-color: white;
     color: #222;
     border-radius: 7px;
     box-shadow: inset 1px 1px 1px 1px #222;
 }
-tr.clickable1:hover td:first-child
+tr.clickable_sct:hover td:first-child
 {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
-tr.clickable1:hover td:last-child
+tr.clickable_sct:hover td:last-child
 {
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
 }
-.metallic_background1
+.metallic_background_sct
 {
     background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
         rgba(255, 129, 110,1) 49%, 
@@ -335,7 +335,7 @@ tr.clickable1:hover td:last-child
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
     padding-top:43px;
 }
-.metallic_background_small1
+.metallic_background_small_sct
 {
     background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
         rgba(255, 129, 110,1) 49%, 
@@ -348,7 +348,7 @@ tr.clickable1:hover td:last-child
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
     padding-top:34px;
 }
-.subsection_container1
+.subsection_container_sct
 {
     position: relative;
     border-radius: 7px;
@@ -358,26 +358,44 @@ tr.clickable1:hover td:last-child
     width: 100%;
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
 }
-.selected_item1
+.selected_item_sct
 {
     background-color: #222 !important;
     color: #fff !important;
     font-weight:bold;
     border-radius: 7px;
     box-shadow: inset -1px -1px 1px 1px white !important;
-    padding: 2px 5px;
+    /*padding-top: 2px;
+    padding-bottom: 2px;
+
+    background-color: #222 !important;
+    color: #fff !important;
+    font-weight:bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px white !important;
+    padding: 2px 5px;*/
 }
-tr.selected_item1 td
+tr.selected_item_sct td
 {
     padding-top: 2px;
     padding-bottom: 2px;
 }
-tr.selected_item1 td:first-child
+tr.selected_item_sct td:first-child
 {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
 }
-tr.selected_item1 td:last-child
+tr.selected_item_sct td:last-child
+{
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+tr.clickable_sct:hover td:first-child
+{
+    border-top-left-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+tr.clickable_sct:hover td:last-child
 {
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
