@@ -15,7 +15,7 @@
 import {mapGetters} from 'vuex';
 
 export default {
-  name: 'ingest',
+  name: 'import-components',
   components:
   {
     //"mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
@@ -46,7 +46,7 @@ export default {
   {
     focusSection:function(_section)
     {
-        this.$store.commit("showIngestTab",_section);
+        this.$store.commit("showTab",{prop:"currentImportTab",tab:_section});
     }
   },
   computed:
