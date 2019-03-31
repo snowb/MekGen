@@ -77,26 +77,44 @@ export default
 }
 </script>
 <style scoped>
-    .icon_container
-    {
-        /*background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
+.icon_container
+{
+    /*background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
+    rgba(255, 129, 110,1) 49%, 
+    rgba(255, 129, 110,1) 51%, 
+    rgba(185,0,0,1) 100%);*/
+    display: inline-block;
+    border-radius: 0px 7px 7px 0px;
+    color: #eee;
+    background-color: #222;
+    padding: 2px 5px 1px 1px;
+    position: relative;
+    cursor: pointer;
+}
+.edit_icon
+{
+    top:3px;
+}
+.save_icon
+{
+    top:5px;
+}
+.section_header
+{
+    display:inline-block;
+    font-weight: bold;
+    font-size: 25px;
+    border:1px solid black;
+    border-radius: 7px;
+    padding:5px 20px;
+    font-family: Arial Black, sans-serif;
+    box-shadow: rgb(34, 34, 34) 0px 0px 0px 1px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+    color: #eee;
+    text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
+    /*background-color: rgba(34,34,34,1);*/
+    background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
         rgba(255, 129, 110,1) 49%, 
         rgba(255, 129, 110,1) 51%, 
-        rgba(185,0,0,1) 100%);*/
-        display: inline-block;
-        border-radius: 0px 7px 7px 0px;
-        color: #eee;
-        background-color: #222;
-        padding: 2px 5px 1px 1px;
-        position: relative;
-        cursor: pointer;
-    }
-    .edit_icon
-    {
-        top:3px;
-    }
-    .save_icon
-    {
-        top:5px;
-    }
+        rgba(185,0,0,1) 100%)
+}
 </style>
