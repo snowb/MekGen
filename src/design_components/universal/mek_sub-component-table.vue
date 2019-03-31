@@ -239,6 +239,11 @@ export default
 }
 </script>
 <style scoped>
+table
+{
+    border-collapse: collapse;
+    box-sizing:border-box;
+}
 .invisible_pad_row_sct
 {
     visibility:hidden;
