@@ -10,8 +10,8 @@
                             {{header}}
                         </th>
                     </tr>
-                    <tr>
-                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                    <tr v-if="showHeaders">
+                        <td :colspan="colspan" style="line-height:2px;border-top:1px solid black">
                             &nbsp;
                         </td>
                     </tr>
