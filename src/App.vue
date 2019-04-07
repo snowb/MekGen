@@ -1,7 +1,9 @@
 <template>
     <div id="app" style="display:inline-flex;">
         <span>
-            <mek-top-menu @focus-section="focusSection" :section="targetAppTab" :section-list="sectionList"></mek-top-menu>
+            <mek-top-menu @focus-section="focusSection" :section="targetAppTab" :section-list="sectionList"
+                color="dd0000" color-offset="rgb" size="lg"
+            ></mek-top-menu>
             <span id="app-main">
                 <component :is="targetAppTab" style="margin-top:5px;"></component>
             </span>
