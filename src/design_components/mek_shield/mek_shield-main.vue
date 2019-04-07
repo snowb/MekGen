@@ -129,7 +129,7 @@ export default
 
         obj.shield_class={code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"};
 
-        obj.defense_ability={da:-2,cost:1,name:"medium"};
+        obj.defense_ability={da:-2,cost:1,name:"Medium"};
         obj.cost_multipliers={};
         obj.cost_multipliers.defense_ability=1;
         
@@ -351,7 +351,7 @@ export default
                     this.uuid=null;
                     this.select_type({name:"Standard"});
                     this.$set(this,"shield_class",{code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"});
-                    this.$set(this,"defense_ability",{da:-2,cost:1});
+                    this.$set(this,"defense_ability",{da:-2,cost:1,name:"Medium"});
                     this.cost_multipliers.defense_ability=1;
                     this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
                     this.cost_multipliers.binder=1;
