@@ -88,6 +88,16 @@ export default
     text-shadow: 1px 1px 1px #fff, 1px -1px 1px #fff, -1px -1px 1px #fff, -1px 1px 1px #fff;
     background-color: rgba(0,0,0,0.2);
 }
+.subsection_container
+{
+    position: relative;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: rgb(170, 170, 170);
+    height: 100%;
+    width: 100%;
+    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+}
 .alert-leave-active
 {
     transition: all 500ms 3s;
