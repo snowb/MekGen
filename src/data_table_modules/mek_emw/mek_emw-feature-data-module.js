@@ -2,7 +2,7 @@
 import {partial_validate, partial_has_feature, partial_get_feature} from "../universal/mek_partial-function-data-module";
 
 //create new feature_data_table
-let feature_data_table=
+let raw_feature_data_table=
 [
     {feature:"Rechargeable",cost:1.1},
     {feature:"Thrown",cost:1.2},
@@ -11,18 +11,53 @@ let feature_data_table=
     {feature:"Beam Shield",cost:1.5,exclusive_beam_shield:true},
     {feature:"Variable Beam Shield",cost:2,exclusive_beam_shield:true}
 ];
-let exclusive_beam=feature_data_table.filter((_el)=>{return typeof _el.exclusive_beam_shield!=="undefined";});
+let exclusive_beam=raw_feature_data_table.filter((_el)=>{return typeof _el.exclusive_beam_shield!=="undefined";});
 let data_table_keys=["feature","cost","exclusive_beam_shield"];
 
-//data validator for damage_data_table
+let feature_data_table=raw_feature_data_table;
+let data_cached=false;
+
+let filter_data_table=(_infinite_use)=>
+{
+    data_cached=false;
+    if(_infinite_use)
+    {
+        feature_data_table=raw_feature_data_table.filter((_val)=>
+        {
+            return _val.feature!="Rechargeable";
+        });
+    }
+    else
+    {
+        feature_data_table=raw_feature_data_table;
+    }
+};
+
+let cached_validate=partial_validate(raw_feature_data_table, data_table_keys);
+//data validator for feature_data_table
 //call partial_validate with appropriate data for full validate
-let feature_validate=partial_validate(feature_data_table, data_table_keys);
+let feature_validate=(_data)=>
+{
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(feature_data_table, data_table_keys);
+    return cached_validate(_data);
+};
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(feature_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(feature_data_table)(_pkey,_data);
+};
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(feature_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(feature_data_table, has_feature)(_pkey,_data);
+};
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {
@@ -114,4 +149,4 @@ let cleaned_feature=function(_feature_array, _pkey)
     //returns an object with the pruned feature array, whether it was updated, and the key_list
 }
 
-export {feature_data_table, feature_validate, has_feature, get_feature, exclusive_beam, cleaned_feature};
+export {feature_data_table, feature_validate, has_feature, get_feature, exclusive_beam, cleaned_feature, filter_data_table};
