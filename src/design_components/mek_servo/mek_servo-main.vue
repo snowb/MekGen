@@ -17,7 +17,7 @@
                 <!--- ADD KILLS FOR SPACE CONVERTER --->
                 <!--- add reinforcing component --->
             </span>
-            <mek-servo-class @update-servo-class="updateServoClass" :suppress-alerts="suppress_alerts"
+            <mek-servo-class @update-servo-class="updateServoClass"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
             <mek-armor :armor="selected_armor"  :max-armor="selected_servo_class.code+2"
@@ -117,8 +117,6 @@ export default
         obj.kills_space_trade.kills_modifier=0;
         obj.kills_space_trade.cost=0;
 
-        obj.suppress_alerts=false;
-
         return obj;
     },
     methods:
@@ -126,7 +124,6 @@ export default
         updateServoType(_servo_type)
         {   
             this.component_type=_servo_type.type;
-            this.suppress_alerts=_servo_type.type!=this.selected_servo_type.type;
             this.$set(this,"selected_servo_type",_servo_type);
             this.component_changed=true;
         },
