@@ -70,7 +70,18 @@ export default
             {
                 this.select_class(cleaned_data.data);
             }
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
+        }
+    },
+    watch:
+    {
+        "type":function(_newval,_oldval)
+        {//must track changes in type to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
         }
     }
 }
