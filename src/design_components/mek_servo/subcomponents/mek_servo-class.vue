@@ -15,7 +15,7 @@ import {create_class_data_table, class_data_table, cleaned_feature}
 export default 
 {
     name:"mek_servo_class",
-    props:["servoClass","servoType","suppressAlerts"],
+    props:["servoClass","servoType"],
     mixins:[utility_mixin,alerts_mixin],
     components:
     {
@@ -27,6 +27,7 @@ export default
         obj.pkey="name";
         obj.alerts=[];
         obj.selected_class=null;
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
