@@ -60,7 +60,18 @@ export default
             {
                 this.select_range_mod(cleaned_data.data);
             }
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
+        }
+    },
+    watch:
+    {
+        "baseRange":function(_newval,_oldval)
+        {//must track changes in burstValue to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
         }
     }
 }
