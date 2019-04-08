@@ -1,18 +1,5 @@
 <template>
     <span class="side_menu_container">
-        <!--span class="side_menu_header">Equipment</span>
-        <span v-for="(component,key,compindex) in components" 
-            :key="'side-menu'+compindex"
-        >
-            <div class="equipment_header">{{key}}</div>
-            <div class="equipment" v-for="(equipment,eqindex) in component" 
-                :key="'side-menu-comp'+key+eqindex"
-                :data-text="equipment.component_name"
-                @click="loadData(equipment)"
-            >
-                {{equipment.component_name}}
-            </div>
-        </span-->
         <span v-if="Object.keys(componentList).length==0">
             No Saved<br>Components
         </span>
@@ -55,7 +42,7 @@ export default
     {
         loadData(_uuid)
         {
-            this.$store.commit("showTab","mek-"+this.getComponent(_uuid).component_type);
+            this.$store.commit("showTab",{prop:"currentDesignTab",tab:"mek-"+this.getComponent(_uuid).component_type});
             this.$store.commit("selectComponent",_uuid);
         }
     },
