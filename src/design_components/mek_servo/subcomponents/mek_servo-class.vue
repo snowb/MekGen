@@ -81,6 +81,7 @@ export default
         },
         class_table()
         {
+            this.suppressAlerts=true;
             create_class_data_table(this.servoType);
             return class_data_table;
         }

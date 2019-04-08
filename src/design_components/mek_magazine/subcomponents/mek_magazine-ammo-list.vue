@@ -75,6 +75,7 @@ export default
     {
         filteredAmmoArray()
         {
+            this.suppressAlerts=true;
             if(this.hasBlast)
             {
                 return ammo_data_table;

@@ -75,6 +75,7 @@ export default
     {
         filteredFeatureTable()
         {
+            this.suppressAlerts=true;
             filter_data_table(this.burstValue);
             return feature_data_table;
         },

@@ -42,6 +42,7 @@ export default
     {
         shots_table()
         {
+            this.suppressAlerts=true;
             filter_shots_data_table(this.magFed);
             return shots_data_table;
         },

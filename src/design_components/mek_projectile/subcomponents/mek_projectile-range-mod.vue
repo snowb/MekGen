@@ -42,6 +42,7 @@ export default
     {
         range_mod_table()
         {
+            this.suppressAlerts=true;
             create_range_mod_data_table(this.baseRange);
             return range_mod_data_table;
         },

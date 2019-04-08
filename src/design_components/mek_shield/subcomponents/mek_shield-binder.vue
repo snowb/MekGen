@@ -42,6 +42,7 @@ export default
     {
         binder_table()
         {
+            this.suppressAlerts=true;
             create_binder_data_table(this.base_stopping_power);
             return binder_data_table;
         },

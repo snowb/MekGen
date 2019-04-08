@@ -78,6 +78,7 @@ export default
     {
         feature_table()
         {
+            this.suppressAlerts=true;
             filter_data_table(this.infiniteUse);
             return feature_data_table;
         },

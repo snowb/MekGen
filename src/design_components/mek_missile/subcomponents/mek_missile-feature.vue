@@ -76,6 +76,7 @@ export default
     {
         filteredFeatureTable()
         {
+            this.suppressAlerts=true;
             filter_data_table(this.blastRadius,this.smartMissile);
             return feature_data_table;
         },
