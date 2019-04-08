@@ -11,12 +11,12 @@
 import utility_mixin from "../../../mixins/utility_mixin";
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {feature_data_table, cleaned_feature}
+import {feature_data_table, cleaned_feature, filter_data_table}
     from "../../../data_table_modules/mek_emw/mek_emw-feature-data-module";
 export default 
 {
     name:"mek_melee_feature",
-    props:["featureArray","turnsInUse"],
+    props:["featureArray","infiniteUse"],
     mixins:[utility_mixin,alerts_mixin],
     components:
     {
@@ -78,17 +78,12 @@ export default
     {
         feature_table()
         {
-          if(!this.turnsInUse)
-            {
-                return feature_data_table.filter((_val)=>
-                {
-                    return _val.feature!="Rechargeable";
-                });
-            }
+            filter_data_table(this.infiniteUse);
             return feature_data_table;
         },
         selected_keys()
         {
+            this.infiniteUse;
             let cleaned_data=cleaned_feature(this.featureArray,this.pkey);
             if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
@@ -98,13 +93,25 @@ export default
                 });
                 this.publishAlerts();
             }
+            
             if(cleaned_data.update)
             {
                 this.$emit("update-feature",cleaned_data.cleaned_array);
             }
             this.$set(this,"selected_feature_array",cleaned_data.cleaned_array);
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
         },
+    },
+    watch:
+    {
+        "infiniteUse":function(_newval,_oldval)
+        {//must track changes in blastRadius to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
+        }
     }
 }
 </script>
