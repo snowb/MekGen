@@ -25,7 +25,7 @@
             <mek-emw-feature style="align-self:start;"
                 @update-feature="updateFeature"
                 :feature-array="feature_array"
-                :turns-in-use="selected_turns_in_use.turns!='__INFINITY__'"
+                :infinite-use="selected_turns_in_use.turns=='__INFINITY__'"
             ></mek-emw-feature>
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
