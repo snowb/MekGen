@@ -67,7 +67,7 @@ export default
     watch:
     {
         "baseRange":function(_newval,_oldval)
-        {//must track changes in burstValue to disable alerts for removed features on cleaned_feat
+        {//must track changes in baseRange to disable alerts for removed features on cleaned_feat
             if(_newval!=_oldval)
             {
                 this.suppressAlerts=true;
