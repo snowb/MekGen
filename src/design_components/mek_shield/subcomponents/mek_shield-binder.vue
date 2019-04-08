@@ -60,7 +60,18 @@ export default
             {
                 this.select_binder(cleaned_data.data);
             }
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
+        }
+    },
+    watch:
+    {
+        "base_stopping_power":function(_newval,_oldval)
+        {//must track changes in base_stopping_power to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
         }
     }
 }
