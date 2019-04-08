@@ -31,6 +31,7 @@ export default
         let obj={}
         obj.pkey="stopping_power";
         obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -44,7 +45,7 @@ export default
     {
         armor_table()
         {
-            this.suppressAlerts=true;
+            //this.suppressAlerts=true;
             let new_armor_table=armor_data_table.filter((_val)=>
             {
                 return _val.code<=this.maxArmor;
@@ -54,7 +55,7 @@ export default
         selected_keys()
         {
             let cleaned_data=cleaned_feature(this.pkey, this.armor, this.armor_table);
-            if(cleaned_data.alerts.length>0)
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
             {
                 cleaned_data.alerts.forEach((_alert)=>
                 {
@@ -66,6 +67,7 @@ export default
             {
                 this.select_armor(cleaned_data.data);
             }
+            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     }
