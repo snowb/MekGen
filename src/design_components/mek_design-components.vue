@@ -7,7 +7,7 @@
                 <component :is="targetDesignTab"></component>
             </span>
         </span>
-        <mek-alert></mek-alert>
+        <!--mek-alert></mek-alert-->
     </div>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-side-menu":()=>import(/* webpackChunkName: "side-menu" */"./mek_side_menu/mek_side-menu.vue"),
-    "mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"../app_components/universal/mek_alert.vue"),
+    //"mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"../app_components/universal/mek_alert.vue"),
 
     "mek-servo":()=>import(/* webpackChunkName: "mek_servo-main" */"./mek_servo/mek_servo-main.vue"),
     "mek-melee":()=>import(/* webpackChunkName: "mek_melee-main" */"./mek_melee/mek_melee-main.vue"),
