@@ -27,7 +27,7 @@ export default {
       {
         return "{}";
       }
-      return JSON.stringify(this.selectedComponent).replace(/\s/g,"");
+      return JSON.stringify(this.selectedComponent);
     },
     ...mapGetters(
         {
@@ -53,5 +53,6 @@ export default {
     max-width: 75vw;
     overflow-wrap:break-word;
     word-break: break-all;
+    text-align:left;
 }
 </style>
