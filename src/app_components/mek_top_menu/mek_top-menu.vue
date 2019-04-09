@@ -32,11 +32,16 @@ export default
         {
             if(_data=='selected')
             {
-                return {fontSize:this.font_size,backgroundImage:this.background_image,color:this.text_color}
+                return {fontSize:this.font_size,
+                        backgroundImage:this.background_image,
+                        color:this.text_color,
+                        padding:this.padding_size,
+                        margin:"auto"};
             }
             else if(_data=="nonselected")
             {
-                return {fontSize:this.font_size};
+                return {fontSize:this.font_size,
+                        padding:this.padding_size};
             }
         }
     },
@@ -55,11 +60,26 @@ export default
             switch(this.size)
             {
                 case "sm":
-                    return "100%";
+                    return "90%";
                 case "lg":
                     return "150%";
             }
             return "110%";
+        },
+        padding_size()
+        {
+            if(this.size===undefined || this.size=="md")
+            {
+                return "10px";
+            }
+            switch(this.size)
+            {
+                case "sm":
+                    return "5px 10px";
+                case "lg":
+                    return "10px 15px";
+            }
+            return "10px";
         },
         background_image()
         {
@@ -133,7 +153,7 @@ export default
 
 
             let darkblue, darkerblue;
-            if(this.colorOffset!==undefined && /g/i.test(this.colorOffset))
+            if(this.colorOffset!==undefined && /b/i.test(this.colorOffset))
             {
                 darkblue=parseInt(baseblue * (100-darkpercent)/100);
                 darkerblue=parseInt(baseblue * (100-darkerpercent)/100);
