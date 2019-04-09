@@ -106,6 +106,8 @@ export default {
     font-weight:bold;
     border-radius: 7px;
     box-shadow: inset -1px -1px 1px 1px white !important;
+    padding: 2px 5px;
+    margin: 0px;
 }
 /* .side_menu_header
 {
