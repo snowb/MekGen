@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <span class="menu_container" style="border:thin solid black;">
-      <span v-for="(id,key) in componentList" :key="key" class="component clickable_ecm">
+    <span class="menu_container">
+      <span v-for="(id,key) in componentList" :key="key" class="component clickable_ecm"
+        @click="selectComponent(key)" :class="selected(key)"
+      >
         {{id}}
       </span>
       <span class="invisible_pad_ecm">{{invisiblePad}}</span>
     </span>
-  </div>
 </template>
 <script>
 import {mapGetters} from 'vuex';
@@ -21,10 +21,20 @@ export default {
   data:function()
   {
     let obj={};
+    obj.selectedKey=null;
     return obj;
   },
   methods:
   {
+    selectComponent(_key)
+    {
+      this.selectedKey=_key;
+      this.$store.commit("selectComponent",_key);
+    },
+    selected(_key)
+    {
+      return this.selectedKey==_key ? "selected_ecm" : "";
+    }
   },
   computed:
   {
@@ -40,7 +50,7 @@ export default {
         {
             targetTypeTab:'targetTypeTab',
             targetExportTab:'targetExportTab',
-            getComponentByType:'getComponentByType'
+            getComponentByType:'getComponentByType',
         })
   }
 }
@@ -59,6 +69,7 @@ export default {
     -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
     margin-right: 10px;
+    text-align: left;
 }
 .component
 {
@@ -87,6 +98,14 @@ export default {
     height:0px;
     line-height:0px;
     font-weight:bold;
+}
+.selected_ecm
+{
+    background-color: #222 !important;
+    color: #fff !important;
+    font-weight:bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px white !important;
 }
 /* .side_menu_header
 {
