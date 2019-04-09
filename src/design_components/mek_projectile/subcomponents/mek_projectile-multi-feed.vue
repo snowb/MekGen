@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="feeds_table" :pkey="pkey" :selected-keys="selected_keys"
-        :headers="{feeds:'feeds',cost:'Cost'}" :show-headers="true"
+        :headers="{feeds:'Feeds',cost:'Cost'}" :show-headers="true"
         name="Multi-feeds" flow="pkey-row" :format="{cost:'multiplier'}"
         @update-selected-data="select_feeds"
     ></mek-sub-component-table>
