@@ -3,7 +3,10 @@
         <mek-top-menu @focus-section="focusSection" :section="targetTypeTab" :section-list="sectionList"
             size="sm" color="d" color-offset="rgb"
         ></mek-top-menu>
-        <mek-component-menu v-if="targetTypeTab!=''"></mek-component-menu>
+        <span v-if="targetTypeTab!=''" class="mek-flex-row">
+          <mek-component-menu></mek-component-menu>
+          <mek-data-display></mek-data-display>
+        </span>
     </div>
 </template>
 <script>
@@ -15,6 +18,7 @@ export default {
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../../app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-component-menu":()=>import(/* webpackChunkName: "mek_component-menu" */"./mek_export-component-menu.vue"),
+    "mek-data-display":()=>import(/* webpackChunkName: "mek_data-display" */"./mek_export-data-display.vue"),
   },
   data:function()
   {
