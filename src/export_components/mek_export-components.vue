@@ -1,8 +1,8 @@
 <template>
     <div id="app" style="display:inline-flex-col;">
-        <mek-top-menu @focus-section="focusSection" :section="targetImportTab" :section-list="sectionList"
+        <mek-top-menu @focus-section="focusSection" :section="targetExportTab" :section-list="sectionList"
         ></mek-top-menu>
-        {{typeList("equipment")}}
+        <mek-type-menu></mek-type-menu>
     </div>
 </template>
 <script>
@@ -14,6 +14,7 @@ export default {
   components:
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
+    "mek-type-menu":()=>import(/* webpackChunkName: "mek_type-menu" */"./sub_components/mek_export-type-menu.vue"),
   },
   data:function()
   {
@@ -39,8 +40,7 @@ export default {
     },
     ...mapGetters(
         {
-            targetImportTab:'targetImportTab',
-            componentList:'componentList',
+            targetExportTab:'targetExportTab',
             categoryList:'categoryList',
             typeList:'typeList',
         })
