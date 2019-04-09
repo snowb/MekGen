@@ -30,6 +30,7 @@ let store= new Vuex.Store(
             currentImportTab:"equipment",
             currentExportTab:"equipment",
             currentAppTab:"mek-design-components",
+            currentTypeTab:"",
             selected_component:null,
             alert_messages:[]
         },
@@ -117,6 +118,7 @@ let store= new Vuex.Store(
             targetImportTab: _state=>_state.currentImportTab,
             targetExportTab: _state=>_state.currentExportTab,
             targetAppTab: _state=>_state.currentAppTab,
+            targetTypeTab: _state=>_state.currentTypeTab,
             selectedComponent: _state =>
             {
                 return _state.selected_component===null?null:_state.components[_state.selected_component];
