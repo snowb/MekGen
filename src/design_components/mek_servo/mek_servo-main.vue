@@ -172,7 +172,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
         },
         output_data()
         {
@@ -196,7 +196,7 @@ export default
             return_data.total_kills=this.total_kills;
             return_data.available_space=this.available_space;
 
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
             this.original_component=JSON.stringify(return_data);
             return return_data;
         },
