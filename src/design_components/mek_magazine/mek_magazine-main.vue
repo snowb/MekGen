@@ -4,9 +4,12 @@
             :component-changed="component_changed"
             @update-component-name="updateComponentName"
         ></mek-component-name>
-        <mek-magazine-select-gun :selected-gun="selected_gun" @update-gun="updateGun"></mek-magazine-select-gun>
+        <mek-magazine-select-gun :selected-gun="selected_gun" 
+            @update-gun="updateGun" @alert-generated="handleAlert"
+        ></mek-magazine-select-gun>
         <span class="mek-flex-row">
-            <mek-magazine-ammo-list :ammo-array="feature_array" @update-ammo="updateAmmo" 
+            <mek-magazine-ammo-list :ammo-array="feature_array"
+                @update-ammo="updateAmmo" @alert-generated="handleAlert"
                 :has-blast="hasBlast"
             >
             </mek-magazine-ammo-list>
@@ -69,6 +72,8 @@ export default
         obj.efficiencies.space.modifier=0;//have to set to use universal component_computed_mixin
 
         obj.selected_shots=1;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -180,6 +185,10 @@ export default
                     
                 });
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

@@ -96,6 +96,7 @@ export default
             
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.$emit("update-feature",cleaned_data.cleaned_array);
             }
             this.$set(this,"selected_feature_array",cleaned_data.cleaned_array);

@@ -89,6 +89,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.selectDamageAndRange();
             }
             

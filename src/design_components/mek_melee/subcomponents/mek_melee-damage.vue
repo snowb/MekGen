@@ -34,6 +34,7 @@ export default
     {
         select_damage:function(_damage)
         {
+            this.$emit("alert-generated",true);
             let data=JSON.parse(JSON.stringify(_damage));
             this.$emit("update-damage",data);
         },

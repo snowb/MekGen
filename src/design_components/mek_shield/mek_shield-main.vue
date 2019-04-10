@@ -37,11 +37,11 @@
                     :armor-type="armor_type"
                     @update-armor-type="select_armor_type"
                 ></mek-armor-type>
-                <mek-energy-absorbing-armor
+                <mek-armor-ram
                     v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :absorption="absorption"
                     @update-absorption="select_absorption"
-                ></mek-energy-absorbing-armor>
+                ></mek-armor-ram>
             </span>
             <span class="mek-flex-col no-margin" v-if="type.name.toLowerCase()=='reactive'">
                 <mek-shield-weakness
@@ -114,7 +114,7 @@ export default
         "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
 
         "mek-armor-type":()=>import("../universal/mek_armor-type.vue"),
-        "mek-energy-absorbing-armor":()=>import("../universal/mek_energy-absorbing-armor.vue")
+        "mek-armor-ram":()=>import("../universal/mek_armor-RAM.vue")
     },
     data:function()
     {

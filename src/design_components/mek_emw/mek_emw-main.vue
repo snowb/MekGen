@@ -5,25 +5,27 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <div class="mek-inline-flex-row">
-            <mek-emw-damage @update-damage="updateDamage" :damage="selected_damage"></mek-emw-damage>
+            <mek-emw-damage @update-damage="updateDamage" @alert-generated="handleAlert"
+                :damage="selected_damage"
+            ></mek-emw-damage>
             <mek-emw-accuracy 
-                @update-accuracy="updateAccuracy" 
+                @update-accuracy="updateAccuracy" @alert-generated="handleAlert"
                 :accuracy="selected_accuracy"
                 :is-beam-shield="is_beam_shield"
                 :is-variable-beam-shield="is_variable_beam_shield"
             ></mek-emw-accuracy>
             <mek-emw-attack-factor 
-                @update-attack-factor="updateAttackFactor" 
+                @update-attack-factor="updateAttackFactor" @alert-generated="handleAlert"
                 :attack-factor="selected_attack_factor"
             ></mek-emw-attack-factor>
         </div>
         <div class="mek-inline-flex-row">
             <mek-emw-turns-in-use 
-                @update-turns-in-use="updateTurnsInUse" 
+                @update-turns-in-use="updateTurnsInUse" @alert-generated="handleAlert"
                 :turns-in-use="selected_turns_in_use"
             ></mek-emw-turns-in-use>
             <mek-emw-feature style="align-self:start;"
-                @update-feature="updateFeature"
+                @update-feature="updateFeature" @alert-generated="handleAlert"
                 :feature-array="feature_array"
                 :infinite-use="selected_turns_in_use.turns=='__INFINITY__'"
             ></mek-emw-feature>
@@ -113,6 +115,8 @@ export default
         obj.cost_multipliers.feature=1;
         obj.cost_multipliers.attack_factor=1;
         obj.cost_multipliers.turns_in_use=1;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -231,6 +235,10 @@ export default
                     break;
             }
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

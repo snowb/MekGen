@@ -6,26 +6,29 @@
         ></mek-component-name>
         
         <div class="mek-inline-flex-row">
-            <mek-missile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-missile-damage>
-            <mek-missile-pack-size :pack="selected_pack_size" @update-pack-size="updatePackSize"
+            <mek-missile-damage @update-damage="updateDamage" @alert-generated="handleAlert"
+                :damage="selected_damage"
+            ></mek-missile-damage>
+            <mek-missile-pack-size :pack="selected_pack_size" 
+                @update-pack-size="updatePackSize" @alert-generated="handleAlert"
                 style="align-self:flex-end;"
             ></mek-missile-pack-size>
             <mek-missile-accuracy v-if="!is_mine"
-                @update-accuracy="updateAccuracy" 
+                @update-accuracy="updateAccuracy" @alert-generated="handleAlert"
                 :accuracy="selected_accuracy"
             ></mek-missile-accuracy>
             <div class="mek-inline-flex-row">
                 <mek-missile-range-mod style="align-self:baseline;"
-                    @update-range-mod="updateRangeMod"
+                    @update-range-mod="updateRangeMod" @alert-generated="handleAlert"
                     :range-mod="selected_range_mod" :anti-missile="has_feature('countermissile')"
                     :base-range="selected_damage.range"
                 ></mek-missile-range-mod>
                 <div class="mek-inline-flex-col">
                     <mek-missile-smart :smart="selected_smart" v-if="!is_mine && !is_bomb"
-                        @update-smart="updateSmart"
+                        @update-smart="updateSmart" @alert-generated="handleAlert"
                     ></mek-missile-smart>
                     <mek-missile-skill v-if="selected_smart.smart>0 && (!is_mine && !is_bomb)" :skill="selected_skill"
-                        @update-skill="updateSkill"
+                        @update-skill="updateSkill" @alert-generated="handleAlert"
                     ></mek-missile-skill>
                     <mek-space-efficiency style="align-self:baseline;"
                         :space_efficiency="efficiencies.space"
@@ -34,10 +37,10 @@
                     ></mek-space-efficiency>
                 </div>
                 <mek-missile-blast-radius :blast_radius="selected_blast_radius"
-                    @update-blast-radius="updateBlastRadius"
+                    @update-blast-radius="updateBlastRadius" @alert-generated="handleAlert"
                 ></mek-missile-blast-radius>
                 <mek-missile-feature style="align-self:baseline;"
-                    @update-feature="updateFeature"
+                    @update-feature="updateFeature" @alert-generated="handleAlert"
                     :feature-array="feature_array" :smart-missile="selected_smart.smart>0"
                     :blast-radius="selected_blast_radius.blast_radius"
                 ></mek-missile-feature>
@@ -128,6 +131,8 @@ export default
         obj.cost_multipliers.skill=1;
         obj.cost_multipliers.range_mod=1;
         obj.cost_multipliers.blast_radius=1;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -308,6 +313,10 @@ export default
             {
                 return _val.feature.toLowerCase()==_feature.toLowerCase();
             });
+        },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
         }
     },
     computed:

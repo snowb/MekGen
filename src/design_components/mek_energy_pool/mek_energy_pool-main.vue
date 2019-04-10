@@ -6,14 +6,14 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-energy-pool-pool :energy-pool="selected_energy_pool" style="align-self:flex-start;"
-                @update-energy-pool="updateEnergyPool"
+                @update-energy-pool="updateEnergyPool" @alert-generated="handleAlert"
             ></mek-energy-pool-pool>
             <div class="mek-inline-flex-col">
                 <mek-energy-pool-size :portfolio-size="selected_portfolio_size"
-                    @update-portfolio-size="updatePortfolioSize"
+                    @update-portfolio-size="updatePortfolioSize" @alert-generated="handleAlert"
                 ></mek-energy-pool-size>
                 <mek-energy-pool-feature style="align-self:flex-start;"
-                    @update-feature="updateFeature"
+                    @update-feature="updateFeature" @alert-generated="handleAlert"
                     :feature-array="feature_array"
                 ></mek-energy-pool-feature>
             </div>
@@ -91,6 +91,8 @@ export default
         obj.cost_multipliers={};
         obj.cost_multipliers.portfolio_size=1;
         obj.cost_multipliers.feature=1;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -197,6 +199,10 @@ export default
             this.selected_portfolio_size.size=this.selected_portfolio_size.size=="Infinity"
                     ?Infinity:this.selected_portfolio_size.size;
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

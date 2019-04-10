@@ -6,30 +6,31 @@
         ></mek-component-name>
         <span class="mek-inline-flex-row">
             <span class="mek-inline-flex-col">
-                <mek-servo-type :servo-type="selected_servo_type" @update-servo-type="updateServoType"
+                <mek-servo-type :servo-type="selected_servo_type" 
+                    @update-servo-type="updateServoType" @alert-generated="handleAlert"
                     style="align-self:flex-start;"
                 ></mek-servo-type>
                 <mek-servo-kills-space-trade style="align-self:baseline;"
                     :base_kills="selected_servo_class.kills" :kills_modifier="kills_space_trade.kills_modifier" 
                     :space_modifier="kills_space_trade.space_modifier" :base_space="selected_servo_class.space"
-                    @update-extra-space="updateExtraSpace"
+                    @update-extra-space="updateExtraSpace" @alert-generated="handleAlert"
                 ></mek-servo-kills-space-trade>
                 <!--- ADD KILLS FOR SPACE CONVERTER --->
                 <!--- add reinforcing component --->
             </span>
-            <mek-servo-class @update-servo-class="updateServoClass"
+            <mek-servo-class @update-servo-class="updateServoClass" @alert-generated="handleAlert"
                 :servo-type="selected_servo_type.type" :servo-class="selected_servo_class"
             ></mek-servo-class>
             <mek-armor :armor="selected_armor"  :max-armor="selected_servo_class.code+2"
-                @update-armor="updateArmor"
+                @update-armor="updateArmor" @alert-generated="handleAlert"
             ></mek-armor>
             <span class="mek-inline-flex-col">
                 <mek-armor-type :armor-type="selected_armor_type" v-if="selected_armor.cost!=0"
-                    @update-armor-type="updateArmorType"
+                    @update-armor-type="updateArmorType" @alert-generated="handleAlert"
                 ></mek-armor-type>
-                <mek-energy-absorbing-armor :absorption="selected_absorption" v-if="selected_armor.cost!=0"
-                    @update-absorption="updateAbsorption"
-                ></mek-energy-absorbing-armor>
+                <mek-armor-ram :absorption="selected_absorption" v-if="selected_armor.cost!=0"
+                    @update-absorption="updateAbsorption" @alert-generated="handleAlert"
+                ></mek-armor-ram>
             </span>
         </span>
         <div class="mek-inline-flex-row">
@@ -86,7 +87,7 @@ export default
 
         "mek-armor":()=>import(/* webpackChunkName: "mek_armor" */"../universal/mek_armor.vue"),
         "mek-armor-type":()=>import(/* webpackChunkName: "mek_armor-type" */"../universal/mek_armor-type.vue"),
-        "mek-energy-absorbing-armor":()=>import(/* webpackChunkName: "mek_energy-absorbing-armor" */"../universal/mek_energy-absorbing-armor.vue"),
+        "mek-armor-ram":()=>import(/* webpackChunkName: "mek_armor-ram" */"../universal/mek_armor-RAM.vue"),
         
     },
     data:function()
@@ -116,6 +117,8 @@ export default
         obj.kills_space_trade.space_modifier=0;
         obj.kills_space_trade.kills_modifier=0;
         obj.kills_space_trade.cost=0;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -225,6 +228,10 @@ export default
                     this.$store.commit("saveComponent",null);
                     break;
             }
+        },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
         }
     },
     computed:

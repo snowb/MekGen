@@ -5,7 +5,9 @@
                 @update-component-name="updateComponentName"
             ></mek-component-name>
             <div class="mek-inline-flex-row">
-                <mek-beam-damage @update-damage="updateDamage" :damage="selected_damage"></mek-beam-damage>
+                <mek-beam-damage @update-damage="updateDamage" @alert-generated="handleAlert"
+                    :damage="selected_damage"
+                ></mek-beam-damage>
                 <mek-beam-accuracy 
                     @update-accuracy="updateAccuracy" 
                     :accuracy="selected_accuracy"
@@ -14,37 +16,37 @@
             <div class="mek-inline-flex-row">
                 <div class="mek-flex-col no-margin">
                     <mek-beam-burst-value 
-                        @update-burst-value="updateBurstValue" 
+                        @update-burst-value="updateBurstValue" @alert-generated="handleAlert"
                         :burst-value="selected_burst_value"
                     ></mek-beam-burst-value>
-                    <mek-beam-shots v-show="forceTrue"
-                        @update-shots="updateShots" 
+                    <mek-beam-shots
+                        @update-shots="updateShots" @alert-generated="handleAlert"
                         :shots="selected_shots" :mag-fed="mag_fed"
                     ></mek-beam-shots>
                 </div>
                 <mek-beam-range-mod style="align-self:start;"
-                    @update-range-mod="updateRangeMod"
+                    @update-range-mod="updateRangeMod" @alert-generated="handleAlert"
                     :range-mod="selected_range_mod" :anti-missile="anti_missile"
                     :base-range="selected_damage.range"
                 ></mek-beam-range-mod>
                 <div class="mek-inline-flex-col">
                     <mek-beam-warm-up-time v-if="show_warm_up_time"
-                        @update-warm-up-time="updateWarmUpTime"
+                        @update-warm-up-time="updateWarmUpTime" @alert-generated="handleAlert"
                         :warm-up-time="selected_warm_up_time"
                     ></mek-beam-warm-up-time>
                     <mek-beam-wide-angle
-                        @update-wide-angle="updateWideAngle"
+                        @update-wide-angle="updateWideAngle" @alert-generated="handleAlert"
                         :wide-angle="selected_wide_angle"
                     ></mek-beam-wide-angle>
                     <mek-space-efficiency style="align-self:baseline;"
                         :space_efficiency="efficiencies.space"
                         :raw_space="raw_space"
-                        @update-efficiencies="updateEfficiencies"
+                        @update-efficiencies="updateEfficiencies" 
                     ></mek-space-efficiency>
                 </div>
                 <div class="mek-inline-flex-row">           
                     <mek-beam-feature style="align-self:baseline;"
-                            @update-feature="updateFeature"
+                            @update-feature="updateFeature" @alert-generated="handleAlert"
                             :feature-array="feature_array"
                             :burst-value="selected_burst_value.burst_value"
                         ></mek-beam-feature>
@@ -136,7 +138,8 @@ export default
         obj.cost_multipliers.warm_up_time=1;
         obj.cost_multipliers.burst_value=1;
 
-        obj.forceTrue=true;
+        obj.hasAlert=false;
+
         return obj;
     },
     methods:
@@ -272,6 +275,10 @@ export default
                 }
             this.$nextTick(()=>{this.component_changed=false;});
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

@@ -5,19 +5,21 @@
             @update-component-name="updateComponentName"
         ></mek-component-name>
         <div class="mek-inline-flex-row">
-            <mek-melee-damage @update-damage="updateDamage" :damage="selected_damage"
+            <mek-melee-damage @update-damage="updateDamage" @alert-generated="handleAlert"
+                :damage="selected_damage"
             ></mek-melee-damage>
-            <mek-melee-accuracy @update-accuracy="updateAccuracy" :accuracy="selected_accuracy"
+            <mek-melee-accuracy @update-accuracy="updateAccuracy" @alert-generated="handleAlert"
+                :accuracy="selected_accuracy"
             ></mek-melee-accuracy>
         </div>
         <div class="mek-inline-flex-row">
             <mek-melee-feature
-                    @update-feature="updateFeature" 
+                    @update-feature="updateFeature" @alert-generated="handleAlert"
                     :feature-array="feature_array"
             ></mek-melee-feature>
             <mek-melee-entangle-range v-if="isEntangle" style="align-self:start"
                 :base_damage="selected_damage.damage" :range_modifier="entangle.range_modifier" :damage_modifier="entangle.damage_modifier"
-                @update-damage-and-range="updateDamageAndRange"
+                @update-damage-and-range="updateDamageAndRange" @alert-generated="handleAlert"
             ></mek-melee-entangle-range>
             <mek-space-efficiency style="align-self:start;"
                 :space_efficiency="efficiencies.space"
@@ -99,6 +101,8 @@ export default
         obj.entangle={};
         obj.entangle.range_modifier=0;
         obj.entangle.damage_modifier=0;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -215,6 +219,10 @@ export default
                     break;
             }
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

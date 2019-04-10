@@ -6,19 +6,21 @@
         ></mek-component-name>
         
         <div class="mek-inline-flex-row">
-            <mek-projectile-damage @update-damage="updateDamage" :damage="selected_damage"></mek-projectile-damage>
+            <mek-projectile-damage @update-damage="updateDamage" @alert-generated="handleAlert"
+                :damage="selected_damage"
+            ></mek-projectile-damage>
             <mek-projectile-accuracy 
-                @update-accuracy="updateAccuracy" 
+                @update-accuracy="updateAccuracy" @alert-generated="handleAlert"
                 :accuracy="selected_accuracy"
             ></mek-projectile-accuracy>
             <mek-projectile-burst-value 
-                    @update-burst-value="updateBurstValue" 
+                    @update-burst-value="updateBurstValue" @alert-generated="handleAlert"
                     :burst-value="selected_burst_value"
                 ></mek-projectile-burst-value>
             <div class="mek-inline-flex-row">
                 <div class="mek-inline-flex-col">
                     <mek-projectile-multi-feed 
-                        @update-multi-feed="updateMultiFeed" 
+                        @update-multi-feed="updateMultiFeed" @alert-generated="handleAlert"
                         :multi-feed="selected_multi_feed"
                     ></mek-projectile-multi-feed>
                     <!-- not using for now
@@ -28,12 +30,12 @@
                     ></mek-projectile-mount-type-->
                 </div>
                 <mek-projectile-range-mod style="align-self:baseline;"
-                    @update-range-mod="updateRangeMod"
+                    @update-range-mod="updateRangeMod" @alert-generated="handleAlert"
                     :range-mod="selected_range_mod"
                     :base-range="selected_damage.range"
                 ></mek-projectile-range-mod>
                 <mek-projectile-feature style="align-self:baseline;"
-                        @update-feature="updateFeature"
+                        @update-feature="updateFeature" @alert-generated="handleAlert"
                         :feature-array="feature_array"
                         :burst-value="selected_burst_value.burst_value"
                     ></mek-projectile-feature>
@@ -124,6 +126,8 @@ export default
         obj.cost_multipliers.multi_feed=1;
         obj.cost_multipliers.burst_value=1;
         obj.cost_multipliers.range_mod=1;
+
+        obj.hasAlert=false;
 
         //obj.selected_mount_type={mount_type:"Servo-Mounted"};
         return obj;
@@ -250,6 +254,10 @@ export default
                 }
             this.$nextTick(()=>{this.component_changed=false;});
         },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
+        }
     },
     computed:
     {

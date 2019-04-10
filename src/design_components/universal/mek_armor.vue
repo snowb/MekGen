@@ -64,6 +64,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.select_armor(cleaned_data.data);
             }
             return cleaned_data.key_list;

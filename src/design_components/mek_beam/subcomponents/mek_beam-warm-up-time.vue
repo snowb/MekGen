@@ -57,6 +57,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.select_warm_up_time(cleaned_data.data);
             }
             return cleaned_data.key_list;

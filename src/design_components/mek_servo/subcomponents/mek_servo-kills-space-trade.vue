@@ -85,6 +85,7 @@ export default
                 this.selected_modifier.space=cleaned_data.data.space_modifier;
                 this.selected_modifier.cost=cleaned_data.data.cost;
                 this.publishAlerts();
+                this.$emit("alert-generated",true);
             }
             return {kills:cleaned_data.data.kills, space:cleaned_data.data.space};
         },
