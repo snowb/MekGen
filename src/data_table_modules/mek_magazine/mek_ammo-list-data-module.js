@@ -2,7 +2,7 @@
 import {partial_validate, partial_has_feature, partial_get_feature} from "../universal/mek_partial-function-data-module";
 
 //create new ammo_data_table
-let ammo_data_table=
+let raw_feature_data_table=
 [
     {type:"Paintball",cost:0.5,effect:"Practice Rounds"},
     {type:"Foam",cost:0.5,effect:"Firefighting"},
@@ -23,20 +23,54 @@ let ammo_data_table=
     {type:"Blast V",cost:14,effect:"5-Hex Radius",blast_exclusive:true},
     {type:"Nuclear",cost:1000,effect:"Atomic Ammo"},
 ];
-let shock_exclusive=ammo_data_table.filter((_el)=>{return typeof _el.shock_exclusive!=="undefined";});
-let blast_exclusive=ammo_data_table.filter((_el)=>{return typeof _el.blast_exclusive!=="undefined";});
+let shock_exclusive=raw_feature_data_table.filter((_el)=>{return typeof _el.shock_exclusive!=="undefined";});
+let blast_exclusive=raw_feature_data_table.filter((_el)=>{return typeof _el.blast_exclusive!=="undefined";});
 let data_table_keys=["type","cost","effect","shock_exclusive","blast_exclusive"];
 let default_data={type:"High-Ex",cost:1,effect:"Standard"};
 
-//data validator for ammo_data_table
+let feature_data_table=raw_feature_data_table;
+let data_cached=false;
+
+let filter_data_table=(_has_blast_radius)=>
+{
+    data_cached=false;
+    if(!_has_blast_radius)
+    {
+        feature_data_table=raw_feature_data_table.filter((_val)=>
+        {
+            return _val.type!="Nuclear";
+        });
+    }
+    else
+    {
+        feature_data_table=raw_feature_data_table;
+    }
+};
+let cached_validate=partial_validate(raw_feature_data_table, data_table_keys);
+//data validator for feature_data_table
 //call partial_validate with appropriate data for full validate
-let ammo_validate=partial_validate(ammo_data_table, data_table_keys);
+let feature_validate=(_data)=>
+{
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(feature_data_table, data_table_keys);
+    return cached_validate(_data);
+};
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(ammo_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(feature_data_table)(_pkey,_data);
+};
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(ammo_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(feature_data_table, has_feature)(_pkey,_data);
+};
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {
@@ -92,7 +126,7 @@ let cleaned_feature=function(_feature_array, _pkey)
             return _cleaned_array;
         }
         let clean_feature=_val;
-        if(!ammo_validate(_val))
+        if(!feature_validate(_val))
         {//invalid data
             alerts.push("Mek_Magazine-Ammo-List: "+JSON.stringify(_val))
             alerts.push("**** Invalid data, attempting to reset. ****")
@@ -165,4 +199,4 @@ let cleaned_feature=function(_feature_array, _pkey)
     //returns an object with the pruned feature array, whether it was updated, and the key_list
 };
 
-export {ammo_data_table, ammo_validate, has_feature, get_feature, shock_exclusive, blast_exclusive, cleaned_feature};
+export {feature_data_table, feature_validate, has_feature, get_feature, shock_exclusive, blast_exclusive, cleaned_feature, filter_data_table};
