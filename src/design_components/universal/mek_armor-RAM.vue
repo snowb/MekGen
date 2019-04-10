@@ -19,7 +19,7 @@ import {ram_data_table, cleaned_feature}
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
 {
-    name: "mek_energy_absorbing_armor",
+    name: "mek_armor_ram",
     props:["absorption","hasArmor"],
     mixins:[selected_item_mixin,utility_mixin,alerts_mixin],
     components:
@@ -59,6 +59,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.select_absorption_type(cleaned_data.data);
             }
             return cleaned_data.key_list;
