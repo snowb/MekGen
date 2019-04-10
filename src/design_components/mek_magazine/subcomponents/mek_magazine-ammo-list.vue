@@ -75,7 +75,6 @@ export default
     {
         filteredAmmoArray()
         {
-            this.suppressAlerts=true;
             if(this.hasBlast)
             {
                 return ammo_data_table;
@@ -102,6 +101,16 @@ export default
             }
             this.$set(this,"selected_ammo_array",cleaned_data.cleaned_array);
             return cleaned_data.key_list;
+        }
+    },
+    watch:
+    {
+        "hasBlast":function(_newval,_oldval)
+        {//must track changes in hasBlast to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
         }
     }
 }

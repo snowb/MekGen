@@ -78,7 +78,6 @@ export default
     {
         feature_table()
         {
-            this.suppressAlerts=true;
             filter_data_table(this.infiniteUse);
             return feature_data_table;
         },
@@ -100,7 +99,6 @@ export default
                 this.$emit("update-feature",cleaned_data.cleaned_array);
             }
             this.$set(this,"selected_feature_array",cleaned_data.cleaned_array);
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         },
     },

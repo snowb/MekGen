@@ -42,7 +42,6 @@ export default
     {
         binder_table()
         {
-            this.suppressAlerts=true;
             create_binder_data_table(this.base_stopping_power);
             return binder_data_table;
         },
@@ -61,7 +60,6 @@ export default
             {
                 this.select_binder(cleaned_data.data);
             }
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     },

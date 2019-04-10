@@ -42,7 +42,6 @@ export default
     {
         range_mod_table()
         {
-            this.suppressAlerts=true;
             create_range_mod_data_table(this.baseRange);
             return range_mod_data_table;
         },
@@ -61,7 +60,6 @@ export default
             {
                 this.select_range_mod(cleaned_data.data);
             }
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     },

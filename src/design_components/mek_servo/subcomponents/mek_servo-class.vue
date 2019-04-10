@@ -56,7 +56,6 @@ export default
             {
                 this.select_class(cleaned_data.data);
             }
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         },
         class_table_headers()
@@ -82,7 +81,6 @@ export default
         },
         class_table()
         {
-            this.suppressAlerts=true;
             create_class_data_table(this.servoType);
             return class_data_table;
         }

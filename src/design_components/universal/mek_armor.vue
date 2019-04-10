@@ -45,7 +45,6 @@ export default
     {
         armor_table()
         {
-            //this.suppressAlerts=true;
             let new_armor_table=armor_data_table.filter((_val)=>
             {
                 return _val.code<=this.maxArmor;
@@ -67,7 +66,6 @@ export default
             {
                 this.select_armor(cleaned_data.data);
             }
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     }

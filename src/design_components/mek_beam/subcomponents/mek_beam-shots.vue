@@ -42,7 +42,6 @@ export default
     {
         shots_table()
         {
-            this.suppressAlerts=true;
             filter_shots_data_table(this.magFed);
             return shots_data_table;
         },
@@ -62,7 +61,6 @@ export default
             {
                 this.select_shots(cleaned_data.data);
             }
-            this.suppressAlerts=false;
             return cleaned_data.key_list;
         }
     },
