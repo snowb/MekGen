@@ -195,7 +195,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
             this.selected_portfolio_size.size=this.selected_portfolio_size.size=="Infinity"
                     ?Infinity:this.selected_portfolio_size.size;
         },

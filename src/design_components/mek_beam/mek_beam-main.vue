@@ -273,7 +273,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
         },
         handleAlert(_alert_status)
         {

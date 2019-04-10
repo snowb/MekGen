@@ -180,7 +180,7 @@ export default
                     }
                     else
                     {
-                        this.component_changed=false;
+                        this.component_changed=this.hasAlert;
                     }
                     
                 });

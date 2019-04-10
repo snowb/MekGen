@@ -205,7 +205,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
             //this.selected_turns_in_use.turns=this.selected_turns_in_use.turns=="Infinity"?Infinity:this.selected_turns_in_use.turns;
         },
         componentSaveReset:function(_action)
