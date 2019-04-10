@@ -9,7 +9,7 @@
 <script>
 import alerts_mixin from "../../../mixins/alerts_mixin";
 
-import {ammo_data_table, cleaned_feature} 
+import {feature_data_table, cleaned_feature, filter_data_table} 
     from "../../../data_table_modules/mek_magazine/mek_ammo-list-data-module.js";
 
 export default
@@ -75,14 +75,8 @@ export default
     {
         filteredAmmoArray()
         {
-            if(this.hasBlast)
-            {
-                return ammo_data_table;
-            }
-            return ammo_data_table.filter((_elem)=>
-            {
-                return _elem.type.toLowerCase()!="nuclear";
-            });
+            filter_data_table(this.hasBlast);
+            return feature_data_table;
         },
         selected_keys()
         {
