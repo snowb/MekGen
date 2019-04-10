@@ -77,6 +77,7 @@ export default
         obj.efficiencies.space.modifier=0;
 
         obj.alerts=[];
+        obj.hasAlert=false;
         return obj;
     },
     methods:
@@ -116,7 +117,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
         },
         componentSaveReset:function(_action)
         {
@@ -186,6 +187,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.hasAlert=true;
                 this.select_armor_type(cleaned_data.data);
             }
             return cleaned_data.key_list;
