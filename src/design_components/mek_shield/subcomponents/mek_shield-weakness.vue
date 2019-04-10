@@ -91,6 +91,7 @@ export default
             }
             if(cleaned_data.update)
             {
+                this.$emit("alert-generated",true);
                 this.$emit("update-weakness",cleaned_data.cleaned_array);
             }
             this.$set(this,"selected_weakness_array",cleaned_data.cleaned_array);

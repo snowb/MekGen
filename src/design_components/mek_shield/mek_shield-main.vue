@@ -6,46 +6,50 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <div class="mek-flex-col">
-                <mek-shield-type :type="type" @update-type="select_type"></mek-shield-type>
-                <mek-shield-class :shield_class="shield_class" :type="type.name" :is_ablative="is_ablative" @update-class-code="select_class_code"></mek-shield-class>
+                <mek-shield-type :type="type" @update-type="select_type" @alert-generated="handleAlert"
+                ></mek-shield-type>
+                <mek-shield-class :shield_class="shield_class" :type="type.name" :is_ablative="is_ablative" 
+                    @update-class-code="select_class_code" @alert-generated="handleAlert"
+                ></mek-shield-class>
             </div>
             <span class="mek-flex-col no-margin">
                 <mek-shield-defense-ability
                     v-if="type.name.toLowerCase()=='standard'"
                     :defense_ability="defense_ability"
                     :cost="cost_multipliers.defense_ability" 
-                    @update-defense-ability="select_da"></mek-shield-defense-ability>
+                    @update-defense-ability="select_da" @alert-generated="handleAlert"
+                ></mek-shield-defense-ability>
                 <mek-shield-binder
                     v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :binder="binder"
                     :base_stopping_power="shield_class.stopping_power"
-                    @update-binder="select_binder"
+                    @update-binder="select_binder" @alert-generated="handleAlert"
                 ></mek-shield-binder>
                 <mek-shield-reset-time 
                     v-if="type.name.toLowerCase()=='reactive'"
                     :reset-time="reset_time"
-                    @update-reset-time="select_reset"
+                    @update-reset-time="select_reset" @alert-generated="handleAlert"
                 ></mek-shield-reset-time>
                 <mek-shield-turns-in-use
                     v-if="type.name.toLowerCase()=='reactive'"
                     :turns-in-use="turns_in_use"
-                    @update-turns-in-use="select_turns"
+                    @update-turns-in-use="select_turns" @alert-generated="handleAlert"
                 ></mek-shield-turns-in-use>
             </span>
             <span class="mek-flex-col no-margin">
                 <mek-armor-type v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :armor-type="armor_type"
-                    @update-armor-type="select_armor_type"
+                    @update-armor-type="select_armor_type" @alert-generated="handleAlert"
                 ></mek-armor-type>
                 <mek-armor-ram
                     v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'"
                     :absorption="absorption"
-                    @update-absorption="select_absorption"
+                    @update-absorption="select_absorption" @alert-generated="handleAlert"
                 ></mek-armor-ram>
             </span>
             <span class="mek-flex-col no-margin" v-if="type.name.toLowerCase()=='reactive'">
                 <mek-shield-weakness
-                    @update-weakness="select_weakness"
+                    @update-weakness="select_weakness" @alert-generated="handleAlert"
                     :weakness-array="weakness_array"
                 ></mek-shield-weakness>
             </span>
@@ -153,6 +157,8 @@ export default
 
         obj.absorption={absorption:0,cost:1,armor_penalty:0};
         obj.cost_multipliers.absorption=1;
+
+        obj.hasAlert=false;
 
         return obj;
     },
@@ -291,7 +297,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=false;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
         },
         output_shield_data:function()
         {
@@ -365,6 +371,10 @@ export default
                     this.$store.commit("saveComponent",null);
                     break;
             }
+        },
+        handleAlert(_alert_status)
+        {
+            this.hasAlert=_alert_status;
         }
     },
     computed:
