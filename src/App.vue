@@ -37,8 +37,8 @@ export default {
   {
     "mek-design-components":()=>import(/* webpackChunkName: "mek_design-components" */"./design_components/mek_design-components.vue"),
     "mek-build-components":()=>import(/* webpackChunkName: "mek_build-components" */"./build_components/mek_build-components.vue"),
-    "mek-import-components":()=>import(/* webpackChunkName: "mek_import-components" */"./import_components/mek_import-component.vue"),
-    "mek-export-components":()=>import(/* webpackChunkName: "mek_export-components" */"./export_components/mek_export-component.vue"),
+    "mek-import-components":()=>import(/* webpackChunkName: "mek_import-component" */"./import_components/mek_import-component.vue"),
+    "mek-export-components":()=>import(/* webpackChunkName: "mek_export-component" */"./export_components/mek_export-component.vue"),
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"./app_components/mek_top_menu/mek_top-menu.vue"),
     //"mek-side-menu":()=>import(/* webpackChunkName: "side-menu" */"./design_components/mek_side_menu/mek_side-menu.vue"),
     "mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"./app_components/universal/mek_alert.vue"),
