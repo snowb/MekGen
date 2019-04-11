@@ -15,7 +15,7 @@
 import {mapGetters} from 'vuex';
 
 export default {
-  name: 'import-components',
+  name: 'import-component',
   components:
   {
     //"mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
