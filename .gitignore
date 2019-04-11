@@ -2,6 +2,7 @@
 node_modules
 dev-branch
 ./components/universal/mek-space-efficiency.orig.vue
+*.archive
 
 # local env files
 .env.local
