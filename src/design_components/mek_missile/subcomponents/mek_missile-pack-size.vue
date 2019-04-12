@@ -19,8 +19,7 @@
     ></mek-sub-component-table-->
 </template>
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin";
-import utility_mixin from "../../../mixins/utility_mixin";
+import selected_item_mixin from "@/mixins/selected_item_mixin";
 
 //import mek_sub_component_table from "../../universal/mek_sub-component-table.vue";
 export default

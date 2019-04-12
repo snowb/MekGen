@@ -1,6 +1,7 @@
 //data table module, raw data output for re-use in non-vue-component formats
-import servo_classes from "../universal/servo_classes_data";
-import {partial_validate, partial_has_feature, partial_get_feature, partial_cleaned_feature} from "../universal/mek_partial-function-data-module";
+import servo_classes from "@/data_table_modules/universal/servo_classes_data";
+import {partial_validate, partial_has_feature, partial_get_feature, partial_cleaned_feature} 
+    from "@/data_table_modules/universal/mek_partial-function-data-module";
 
 let class_data_table=[];
 let data_table_keys=["code","id","name","cost","kills","damage_bonus","throw_range"];

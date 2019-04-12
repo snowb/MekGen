@@ -31,9 +31,9 @@
 </template>
 
 <script>
-import utility_mixin from "../../mixins/utility_mixin";
-import component_computed_mixin from "../../mixins/component_computed_mixin";
-import component_methods_mixin from "../../mixins/component_methods_mixin";
+import utility_mixin from "@/mixins/utility_mixin";
+import component_computed_mixin from "@/mixins/component_computed_mixin";
+import component_methods_mixin from "@/mixins/component_methods_mixin";
 
 export default
 {
@@ -42,13 +42,19 @@ export default
     mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-magazine-select-gun":()=>import(/* webpackChunkName: "mek-magazine-select-gun" */"./subcomponents/mek_magazine-select-gun.vue"),
-        "mek-magazine-ammo-list":()=>import(/* webpackChunkName: "mek-magazine-ammo-list" */"./subcomponents/mek_magazine-ammo-list.vue"),
-        "mek-magazine-shots":()=>import(/* webpackChunkName: "mek-magazine-shots" */"./subcomponents/mek_magazine-shots.vue"),
+        "mek-magazine-select-gun":()=>
+        import(/* webpackChunkName: "mek-magazine-select-gun" */"./subcomponents/mek_magazine-select-gun.vue"),
+        "mek-magazine-ammo-list":()=>
+        import(/* webpackChunkName: "mek-magazine-ammo-list" */"./subcomponents/mek_magazine-ammo-list.vue"),
+        "mek-magazine-shots":()=>
+        import(/* webpackChunkName: "mek-magazine-shots" */"./subcomponents/mek_magazine-shots.vue"),
 
-        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
+        "mek-component-name":()=>
+        import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>
+        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>
+        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
 
     },
     data:function()

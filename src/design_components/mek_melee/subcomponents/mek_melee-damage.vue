@@ -7,20 +7,19 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin";
-import alerts_mixin from "../../../mixins/alerts_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 
 import {damage_data_table, cleaned_feature}
-    from "../../../data_table_modules/mek_melee/mek_melee-damage-data-module.js";
+    from "@/data_table_modules/mek_melee/mek_melee-damage-data-module.js";
 
 export default
 {
     name:"mek_melee_damage",
     props:["damage"],
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

@@ -8,7 +8,7 @@
     </div>
 </template>
 <script>
-import utility_mixin from "../../mixins/utility_mixin.js";
+import utility_mixin from "@/mixins/utility_mixin.js";
 
 export default
 {

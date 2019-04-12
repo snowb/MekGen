@@ -7,10 +7,10 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import alerts_mixin from "../../../mixins/alerts_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 
 import {damage_data_table, cleaned_feature}
-    from "../../../data_table_modules/mek_missile/mek_missile-damage-data-module.js";
+    from "@/data_table_modules/mek_missile/mek_missile-damage-data-module.js";
 export default
 {
     name:"mek_missile_damage",
@@ -18,7 +18,7 @@ export default
     mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

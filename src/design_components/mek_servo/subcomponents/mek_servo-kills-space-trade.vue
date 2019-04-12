@@ -20,11 +20,10 @@
 
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin.js";
-import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import alerts_mixin from "@/mixins/alerts_mixin.js";
 
 import {cleaned_feature} 
-    from "../../../data_table_modules/mek_servo/mek_servo-kills-space-trade-data-module.js";
+    from "@/data_table_modules/mek_servo/mek_servo-kills-space-trade-data-module.js";
 
 import 'vue-awesome/icons/plus-square';
 import Icon from 'vue-awesome/components/Icon';
@@ -32,7 +31,7 @@ import Icon from 'vue-awesome/components/Icon';
 export default
 {
     name:"mek_servo_kills_space_trade",
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     props:["base_kills","space_modifier","kills_modifier","base_space"],
     components:
     {

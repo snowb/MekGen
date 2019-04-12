@@ -6,20 +6,19 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin.js";
-import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import alerts_mixin from "@/mixins/alerts_mixin.js";
 
 import {create_class_data_table, class_data_table, cleaned_feature} 
-    from "../../../data_table_modules/mek_servo/mek_servo-class-data-module.js";
+    from "@/data_table_modules/mek_servo/mek_servo-class-data-module.js";
 
 export default 
 {
     name:"mek_servo_class",
     props:["servoClass","servoType"],
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue"),
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue"),
     },
     data:()=>
     {

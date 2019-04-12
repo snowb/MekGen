@@ -18,11 +18,10 @@
 
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin.js";
-import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import alerts_mixin from "@/mixins/alerts_mixin.js";
 
 import {cleaned_feature}
-    from "../../../data_table_modules/mek_melee/mek_melee-entangle-range-data-module.js";
+    from "@/data_table_modules/mek_melee/mek_melee-entangle-range-data-module.js";
 
 import 'vue-awesome/icons/plus-square';
 import Icon from 'vue-awesome/components/Icon';
@@ -30,7 +29,7 @@ import Icon from 'vue-awesome/components/Icon';
 export default
 {
     name:"mek_melee_entangle_range",
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     props:["base_damage","range_modifier","damage_modifier"],
     components:
     {

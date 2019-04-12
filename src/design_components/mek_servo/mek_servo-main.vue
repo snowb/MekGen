@@ -61,9 +61,9 @@
 </template>
 
 <script>
-import utility_mixin from "../../mixins/utility_mixin.js";
-import component_methods_mixin from "../../mixins/component_methods_mixin";
-import component_computed_mixin from "../../mixins/component_computed_mixin";
+import utility_mixin from "@/mixins/utility_mixin.js";
+import component_methods_mixin from "@/mixins/component_methods_mixin";
+import component_computed_mixin from "@/mixins/component_computed_mixin";
 
 export default
 {
@@ -81,13 +81,13 @@ export default
         "mek-servo-class":()=>import(/* webpackChunkName: "mek_servo-class" */"./subcomponents/mek_servo-class.vue"),
         "mek-servo-kills-space-trade":()=>import(/* webpackChunkName: "mek_servo-kills-space-trade" */"./subcomponents/mek_servo-kills-space-trade.vue"),
 
-        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
 
-        "mek-armor":()=>import(/* webpackChunkName: "mek_armor" */"../universal/mek_armor.vue"),
-        "mek-armor-type":()=>import(/* webpackChunkName: "mek_armor-type" */"../universal/mek_armor-type.vue"),
-        "mek-armor-ram":()=>import(/* webpackChunkName: "mek_armor-ram" */"../universal/mek_armor-RAM.vue"),
+        "mek-armor":()=>import(/* webpackChunkName: "mek_armor" */"@/design_components/universal/mek_armor.vue"),
+        "mek-armor-type":()=>import(/* webpackChunkName: "mek_armor-type" */"@/design_components/universal/mek_armor-type.vue"),
+        "mek-armor-ram":()=>import(/* webpackChunkName: "mek_armor-ram" */"@/design_components/universal/mek_armor-RAM.vue"),
         
     },
     data:function()

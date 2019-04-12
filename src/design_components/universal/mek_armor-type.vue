@@ -9,12 +9,12 @@
 </template>
 
 <script>
-import selected_item_mixin from "../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../mixins/utility_mixin.js";
-import alerts_mixin from "../../mixins/alerts_mixin.js";
+import selected_item_mixin from "@/mixins/selected_item_mixin.js";
+import utility_mixin from "@/mixins/utility_mixin.js";
+import alerts_mixin from "@/mixins/alerts_mixin.js";
 
 import {armor_type_data_table, cleaned_feature} 
-    from "../../data_table_modules/mek_armor/mek_armor-type-data-module.js"
+    from "@/data_table_modules/mek_armor/mek_armor-type-data-module.js"
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 

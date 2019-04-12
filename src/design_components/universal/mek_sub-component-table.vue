@@ -95,7 +95,7 @@
     </span>
 </template>
 <script>
-import selected_item_mixin from "../../mixins/selected_item_mixin";
+import selected_item_mixin from "@/mixins/selected_item_mixin";
 
 export default 
 {

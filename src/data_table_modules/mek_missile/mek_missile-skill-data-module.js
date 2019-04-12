@@ -1,5 +1,6 @@
 //data table module, raw data output for re-use in non-vue-component formats
-import {partial_validate, partial_has_feature, partial_get_feature, partial_cleaned_feature} from "../universal/mek_partial-function-data-module";
+import {partial_validate, partial_has_feature, partial_get_feature, partial_cleaned_feature} 
+    from "@/data_table_modules/universal/mek_partial-function-data-module";
 
 //create new skill_data_table
 let skill_data_table=

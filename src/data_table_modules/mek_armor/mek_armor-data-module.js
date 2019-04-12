@@ -1,6 +1,6 @@
 //data table module, raw data output for re-use in non-vue-component formats
-import servo_classes_data from "../universal/servo_classes_data.js";
-import {partial_validate, partial_has_feature, partial_get_feature} from "../universal/mek_partial-function-data-module";
+import servo_classes_data from "@/data_table_modules/universal/servo_classes_data.js";
+import {partial_validate, partial_has_feature, partial_get_feature} from "@/data_table_modules/universal/mek_partial-function-data-module";
 
 //create new armor_table based on servo_classes_data
 let default_data={name:"None",cost:0,stopping_power:0,code:0};

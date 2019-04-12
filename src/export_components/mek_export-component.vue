@@ -30,7 +30,7 @@ export default {
   name: 'export-component',
   components:
   {
-    "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
+    "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
   },
   data:function()
   {

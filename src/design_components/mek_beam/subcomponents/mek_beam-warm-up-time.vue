@@ -9,9 +9,9 @@
 </template>
 
 <script>
-import alerts_mixin from "../../../mixins/alerts_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 import {warm_up_data_table, cleaned_feature}
-    from "../../../data_table_modules/mek_beam/mek_beam-warm-up-data-module.js";
+    from "@/data_table_modules/mek_beam/mek_beam-warm-up-data-module.js";
 
 export default 
 {
@@ -20,7 +20,7 @@ export default
     mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

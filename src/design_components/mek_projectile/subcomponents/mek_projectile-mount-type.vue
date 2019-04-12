@@ -31,8 +31,8 @@
 </template>
 
 <script>
-import selected_item_mixin from "../../../mixins/selected_item_mixin.js";
-import utility_mixin from "../../../mixins/utility_mixin.js";
+import selected_item_mixin from "@/mixins/selected_item_mixin.js";
+import utility_mixin from "@/mixins/utility_mixin.js";
 
 export default 
 {
@@ -41,7 +41,7 @@ export default
     mixins:[selected_item_mixin,utility_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

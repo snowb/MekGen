@@ -7,10 +7,10 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import servo_classes_mixin from "../../../mixins/servo_classes_mixin.js";
-import alerts_mixin from "../../../mixins/alerts_mixin.js";
+import servo_classes_mixin from "@/mixins/servo_classes_mixin.js";
+import alerts_mixin from "@/mixins/alerts_mixin.js";
 import { class_data_table, cleaned_feature, create_class_data_table } 
-    from "../../../data_table_modules/mek_shield/mek_shield-class-data-module";
+    from "@/data_table_modules/mek_shield/mek_shield-class-data-module";
 
 export default 
 {
@@ -19,7 +19,7 @@ export default
     mixins:[servo_classes_mixin,alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

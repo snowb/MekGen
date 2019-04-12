@@ -7,10 +7,10 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import alerts_mixin from "../../../mixins/alerts_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 
 import {feature_data_table, cleaned_feature, filter_data_table} 
-    from "../../../data_table_modules/mek_beam/mek_beam-feature-data-module.js";
+    from "@/data_table_modules/mek_beam/mek_beam-feature-data-module.js";
 
 export default 
 {
@@ -19,7 +19,7 @@ export default
     mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

@@ -8,19 +8,18 @@
     ></mek-sub-component-table>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin";
-import alerts_mixin from "../../../mixins/alerts_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 import { turns_data_table, cleaned_feature } 
-    from "../../../data_table_modules/mek_emw/mek_emw-turns-in-use-data-module";
+    from "@/data_table_modules/mek_emw/mek_emw-turns-in-use-data-module";
 
 export default 
 {
     name:"mek_emw_turns_in_use",
     props:["turnsInUse"],
-    mixins:[utility_mixin,alerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {

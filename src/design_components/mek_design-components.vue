@@ -18,7 +18,7 @@ export default {
   name: 'design',
   components:
   {
-    "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"../app_components/mek_top_menu/mek_top-menu.vue"),
+    "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-side-menu":()=>import(/* webpackChunkName: "side-menu" */"./mek_side_menu/mek_side-menu.vue"),
     //"mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"../app_components/universal/mek_alert.vue"),
 

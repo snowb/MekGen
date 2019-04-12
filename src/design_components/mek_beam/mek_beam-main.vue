@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import utility_mixin from "../../mixins/utility_mixin";
-import component_computed_mixin from "../../mixins/component_computed_mixin";
-import component_methods_mixin from "../../mixins/component_methods_mixin";
+import utility_mixin from "@/mixins/utility_mixin";
+import component_computed_mixin from "@/mixins/component_computed_mixin";
+import component_methods_mixin from "@/mixins/component_methods_mixin";
 
 export default
 {
@@ -96,10 +96,10 @@ export default
         "mek-beam-wide-angle":()=>import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
         "mek-beam-feature":()=>import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
 
-        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek-component-stats" */"../universal/mek_component-stats.vue")
+        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek-component-stats" */"@/design_components/universal/mek_component-stats.vue")
     },
     data:function()
     {

@@ -36,13 +36,13 @@
 
 </template>
 <script>
-import utility_mixin from "../../mixins/utility_mixin.js";
-import component_methods_mixin from "../../mixins/component_methods_mixin";
-import component_computed_mixin from "../../mixins/component_computed_mixin";
-import alerts_mixin from "../../mixins/alerts_mixin";
+import utility_mixin from "@/mixins/utility_mixin.js";
+import component_methods_mixin from "@/mixins/component_methods_mixin";
+import component_computed_mixin from "@/mixins/component_computed_mixin";
+import alerts_mixin from "@/mixins/alerts_mixin";
 
 import {reflector_data_table, cleaned_feature} 
-    from "../../data_table_modules/mek_reflector/mek_reflector-data-module.js";
+    from "@/data_table_modules/mek_reflector/mek_reflector-data-module.js";
 
 export default 
 {
@@ -51,12 +51,16 @@ export default
     mixins:[utility_mixin, component_methods_mixin, component_computed_mixin, alerts_mixin],
     components:
     {
-        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"../universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
-
-        "mek-sub-component-table":()=>import("../universal/mek_sub-component-table.vue")
+        "mek-space-efficiency":()=>
+        import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>
+        import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>
+        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>
+        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        "mek-sub-component-table":()=>
+        import(/* webpackChunkName: "mel_sub-component-table" */"@/design_components/universal/mek_sub-component-table.vue")
     },
     data()
     {

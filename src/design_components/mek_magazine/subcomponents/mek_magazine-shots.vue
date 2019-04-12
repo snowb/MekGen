@@ -11,13 +11,12 @@
     </span>
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin";
 
 export default
 {
     name:"mek_magazine_shots",
     props:["shots"],
-    mixins:[utility_mixin],
+    mixins:[],
     data:function()
     {
         let obj={};

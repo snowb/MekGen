@@ -9,16 +9,15 @@
     <!--- uses dropdown for selection, have not written a pkey based dropdown option ...--->
 </template>
 <script>
-import utility_mixin from "../../../mixins/utility_mixin";
 
 export default
 {
     name:"mek_magazine_select_gun",
     props:["selectedGun"],
-    mixins:[utility_mixin],
+    mixins:[],
     components:
     {
-        "mek-sub-component-table":()=>import("../../universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {
