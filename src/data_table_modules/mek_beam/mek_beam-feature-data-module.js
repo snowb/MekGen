@@ -10,7 +10,7 @@ let raw_feature_data_table=
     {feature:"Variable Anti-Missile",cost:1.8,exclusive_anti_missile:true},
     {feature:"Anti-Personnel",cost:1.0,exclusive_personnel:true},
     {feature:"Variable Anti-Personnel",cost:1.8,exclusive_personnel:true},
-    {feature:"Anti-Missile & Personnel",cost:1.6,exclusive_personnel:true,exclusive_anti_missile:true},
+    {feature:"Anti-Missile Anti-Personnel",cost:1.6,exclusive_personnel:true,exclusive_anti_missile:true},
     {feature:"All Purpose",cost:2.6,exclusive_personnel:true,exclusive_anti_missile:true},
     {feature:"Fragile",cost:1},
     {feature:"Long Range",cost:1.33},
@@ -29,7 +29,7 @@ let data_cached=false;
 let filter_data_table=(_burst_value)=>
 {
     data_cached=false;
-    if(_burst_value>1)
+    if(_burst_value>1||_burst_value=="__INFINITY__")
     {
         feature_data_table=raw_feature_data_table;
         return;
