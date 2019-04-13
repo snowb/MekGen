@@ -214,6 +214,7 @@ export default
                         this.ingest_data(JSON.parse(this.original_component));
                         break;
                     }
+                    // eslint-disable-next-line
                 case "clear":
                     this.uuid=null;
                     this.selected_servo_type.type="Torso";
