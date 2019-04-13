@@ -9,7 +9,6 @@ let partial_validate=(_data_table,_validation_keys)=>(_data)=>
 {//_data_table: Array, array of data to validate against
     //_validation_keys: Array, keys to be compared between passed in data and data_table
     //_data: Object, data to be compared to data table 
-    let isRAM=_data_table[0].absorption!==undefined;
     if(typeof _data==="undefined" || !Array.isArray(_validation_keys) || _validation_keys.length==0)
     {
         return false;
