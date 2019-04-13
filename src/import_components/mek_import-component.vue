@@ -2,6 +2,7 @@
     <div id="app" style="display:inline-flex-col;">
       <div class="json_container" contenteditable="true" @input="updateJSON($event.target.textContent)">
       </div>
+      (copy and paste JSON data from Export tab)
       <div class="mek-button-container">
         <span :class="{'mek-button':!importClicked,'mek-button-clicked':importClicked}" 
             @click="importJSON" @animationend="importClicked=false"
@@ -46,11 +47,9 @@ export default {
 .json_container
 {
     align-self: baseline;
-    display:inline-flex;
-    flex-direction:column;
     border-radius: 7px;
     padding: 10px;
-    background-color: #eee; /* rgb(170, 170, 170); */
+    background-color: #eee;
     height: 100%;
     -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(0, 0, 0) 0px 0px 5px 2px inset;
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(0, 0, 0) 0px 0px 5px 2px inset;
