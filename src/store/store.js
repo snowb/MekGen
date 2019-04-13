@@ -45,12 +45,12 @@ let store= new Vuex.Store(
                 else
                 {
                     //let copyComponent=JSON.parse(JSON.stringify(_component));//make deep copy
-                    let copyComponent=_component;//make deep copy
-                    copyComponent=this.cleanComponent(copyComponent);//clean values: ^[\w\d-_. ]+$ else null'd 
+                    //let copyComponent=_component;//make copy
+                    let copyComponent=this.cleanComponent(_component);//clean values: ^[\w\d-_. ]+$ else null'd 
                     let category=copyComponent.component_category;
                     let type=copyComponent.component_type;
-                    let uuid=copyComponent.uuid;
-                    if(typeof category!=="undefined" && typeof type!=="undefined" && typeof uuid!=="undefined")
+                    let uuid=copyComponent.uuid!==undefined?copyComponent.uuid:this.create_uuid();
+                    if(typeof category!=="undefined" && typeof type!=="undefined")
                     {
                         if(typeof _state.component_list[category]==="undefined")
                         {
@@ -172,5 +172,13 @@ store.cleanComponent=function(_component)
     }
     return _component;
 }
+
+store.create_uuid=function()
+        {
+            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+            )
+              
+        }
 
 export default store;
