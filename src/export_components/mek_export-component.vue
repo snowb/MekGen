@@ -7,16 +7,16 @@
               size="sm" color="d" color-offset="rgb"
           ></mek-top-menu>
           <span v-if="targetTypeTab!=''" class="mek-flex-row">
-                <span class="menu_container">
-                  <span v-for="(id,key) in componentList" :key="key" class="component clickable_ecm"
-                    @click="selectComponent(key)" :class="selected(key)"
-                  >
-                    {{id}}
-                  </span>
-                  <span class="invisible_pad_ecm">{{invisiblePad}}</span>
-                </span>
-              <div class="json_container">
-                {{displayedComponent}}
+            <span class="menu_container">
+              <span v-for="(id,key) in componentList" :key="key" class="component clickable_ecm"
+                @click="selectComponent(key)" :class="selected(key)"
+              >
+                {{id}}
+              </span>
+              <span class="invisible_pad_ecm">{{invisiblePad}}</span>
+            </span>
+            <div class="json_container">
+              {{displayedComponent}}
             </div>
           </span>
         </div>
