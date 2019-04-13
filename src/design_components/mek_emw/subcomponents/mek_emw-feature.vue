@@ -16,7 +16,7 @@ export default
 {
     name:"mek_melee_feature",
     props:["featureArray","infiniteUse"],
-    mixins:[lerts_mixin],
+    mixins:[alerts_mixin],
     components:
     {
         "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
