@@ -5,13 +5,13 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 //create new ram_data_table
 let ram_data_table=
 [
-    {absorption:0,cost:1.0,armor_penalty:0},
+    {absorption:0,cost:1,armor_penalty:0},
     {absorption:0.2,cost:1.5,armor_penalty:0},
     {absorption:0.25,cost:1.8,armor_penalty:0.2},
     {absorption:0.33,cost:2.2,armor_penalty:0.25},
     {absorption:0.5,cost:2.5,armor_penalty:0.33},
 ];
-let default_data={absorption:0,cost:1.0,armor_penalty:0};
+let default_data={absorption:0,cost:1,armor_penalty:0};
 let data_table_keys=["absorption","cost","armor_penalty"];
 
 //data validator for ram_data_table
