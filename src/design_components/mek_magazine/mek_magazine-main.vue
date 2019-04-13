@@ -134,8 +134,8 @@ export default
                     if(this.original_component!==null)
                     {
                         this.ingest_data(JSON.parse(this.original_component));
+                        break;
                     }
-                    break;
                 case "clear":
                     this.uuid=null;
                     this.component_name=null;

@@ -87,19 +87,31 @@ export default
     mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-beam-damage":()=>import(/* webpackChunkName: "mek_beam-damage" */"./subcomponents/mek_beam-damage.vue"),
-        "mek-beam-accuracy":()=>import(/* webpackChunkName: "mek_beam-accuracy" */"./subcomponents/mek_beam-accuracy.vue"),
-        "mek-beam-burst-value":()=>import(/* webpackChunkName: "mek_beam-burst-value" */"./subcomponents/mek_beam-burst-value.vue"),
-        "mek-beam-range-mod":()=>import(/* webpackChunkName: "mek_beam-range-mod" */"./subcomponents/mek_beam-range-mod.vue"),
-        "mek-beam-shots":()=>import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
-        "mek-beam-warm-up-time":()=>import(/* webpackChunkName: "mek_beam-warm-up-time" */"./subcomponents/mek_beam-warm-up-time.vue"),
-        "mek-beam-wide-angle":()=>import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
-        "mek-beam-feature":()=>import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
+        "mek-beam-damage":()=>
+        import(/* webpackChunkName: "mek_beam-damage" */"./subcomponents/mek_beam-damage.vue"),
+        "mek-beam-accuracy":()=>
+        import(/* webpackChunkName: "mek_beam-accuracy" */"./subcomponents/mek_beam-accuracy.vue"),
+        "mek-beam-burst-value":()=>
+        import(/* webpackChunkName: "mek_beam-burst-value" */"./subcomponents/mek_beam-burst-value.vue"),
+        "mek-beam-range-mod":()=>
+        import(/* webpackChunkName: "mek_beam-range-mod" */"./subcomponents/mek_beam-range-mod.vue"),
+        "mek-beam-shots":()=>
+        import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
+        "mek-beam-warm-up-time":()=>
+        import(/* webpackChunkName: "mek_beam-warm-up-time" */"./subcomponents/mek_beam-warm-up-time.vue"),
+        "mek-beam-wide-angle":()=>
+        import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
+        "mek-beam-feature":()=>
+        import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
 
-        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek-component-stats" */"@/design_components/universal/mek_component-stats.vue")
+        "mek-space-efficiency":()=>
+        import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>
+        import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>
+        import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>
+        import(/* webpackChunkName: "mek-component-stats" */"@/design_components/universal/mek_component-stats.vue")
     },
     data:function()
     {
@@ -215,8 +227,8 @@ export default
                     if(this.original_component!==null)
                     {
                         this.ingest_data(JSON.parse(this.original_component));
+                        break;
                     }
-                    break;
                 case "clear":
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
