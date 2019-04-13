@@ -222,7 +222,7 @@ export default
                     this.$set(this,"selected_armor",{name:"None",cost:0,stopping_power:0,code:0});
                     this.$set(this,"selected_armor_type",{type:"Standard",damage_coefficient:1,cost:1});
                     this.cost_multipliers.armor_type=1;
-                    this.$set(this,"selected_absorption",{absorption:0,cost:1,armor_penalty:1});
+                    this.$set(this,"selected_absorption",{absorption:0,cost:1,armor_penalty:0});
                     this.cost_multipliers.absorption=1;
                     this.$set(this,"kills_space_trade",{space_modifier:0,kills_modifier:0,cost:0});
                     this.component_name=null;

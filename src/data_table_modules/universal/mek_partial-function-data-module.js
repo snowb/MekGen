@@ -9,15 +9,16 @@ let partial_validate=(_data_table,_validation_keys)=>(_data)=>
 {//_data_table: Array, array of data to validate against
     //_validation_keys: Array, keys to be compared between passed in data and data_table
     //_data: Object, data to be compared to data table 
+    let isRAM=_data_table[0].absorption!==undefined;
     if(typeof _data==="undefined" || !Array.isArray(_validation_keys) || _validation_keys.length==0)
     {
         return false;
     }
     let valid=_data_table.some((_val)=>
     {
-        return !_validation_keys.some((_keys)=>
-        {//returns true on invalid data, Not the return to return True if matching valid value is found
-            return _data[_keys]!=_val[_keys];
+        return _validation_keys.every((_keys)=>
+        {//return true if all validation_keys in _data match an element in _data_table
+            return _data[_keys]==_val[_keys];
         });
     });
     return valid;

@@ -13,7 +13,7 @@
               >
                 {{id}}
               </span>
-              <span class="invisible_pad_ecm">{{invisiblePad}}</span>
+              <span class="invisible_pad_ecm">{{invisiblePad()}}</span>
             </span>
             <div class="json_container">
               {{displayedComponent}}
@@ -23,11 +23,12 @@
     </div>
 </template>
 <script>
-
+import utility_mixin from "@/mixins/utility_mixin";
 import {mapGetters} from 'vuex';
 
 export default {
   name: 'export-component',
+  mixins:[utility_mixin],
   components:
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
@@ -119,18 +120,20 @@ export default {
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
     margin-right: 10px;
     text-align: left;
+    max-width: 20vw;
 }
 .component
 {
     font-weight: bold;
     background-color: #aaa;
-    white-space: nowrap;
+    /* white-space: nowrap; */
     /* align-self: baseline; */
     margin: 2px 5px;
 }
 .clickable_ecm
 {
     cursor: pointer;
+    white-space: normal;
 }
 .clickable_ecm:hover
 {
@@ -147,6 +150,7 @@ export default {
     height:0px;
     line-height:0px;
     font-weight:bold;
+    white-space: normal;
 }
 .selected_ecm
 {
@@ -157,6 +161,7 @@ export default {
     box-shadow: inset -1px -1px 1px 1px white !important;
     padding: 2px 5px;
     margin: 0px;
+    white-space: normal;
 }
 .json_container
 {
