@@ -301,6 +301,7 @@ export default
                 return _name+_val.feature+" ";
             },emw_name);
 
+            emw_name+=this.selected_damage.damage+"K ";
             emw_name=this.is_beam_shield ? emw_name.replace(/ $/,"") : emw_name+"EMW";
 
             return emw_name;

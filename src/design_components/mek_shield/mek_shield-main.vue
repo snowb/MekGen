@@ -468,6 +468,7 @@ export default
                 fullname+=this.type.name.toLowerCase()=="active"?" Active":"";
                 fullname+=this.absorption!==null&&this.absorption.absorption>0?" Absorbing":"";
                 fullname+=this.armor_type!==null&&this.armor_type.type.toLowerCase()!="standard" ? " "+this.armor_type.type : "";
+                fullname+=" "+this.round(this.calculate_stopping_power(),2)+"SP";
                 fullname+=this.binder!==null&&this.binder.space>0?" Binder":" Shield";
             }
             else if(this.type.name.toLowerCase()=="reactive")
@@ -486,7 +487,8 @@ export default
                     }
                     return _name;
                 },"");
-                fullname+=" "+exclusive_name+" "+partialname;
+                let sp_k_name = this.is_ablative ? this.shield_class.kills+"K" : this.shield_class.stopping_power+"SP";
+                fullname+=" "+exclusive_name+" "+sp_k_name+" "+partialname;
             }
             fullname=fullname.replace(/\s+/g," ");
             return fullname;

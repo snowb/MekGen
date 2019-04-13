@@ -26,7 +26,7 @@ export default
 {
     name:"mek_pack_size",
     props:["pack"],
-    mixins:[selected_item_mixin,utility_mixin],
+    mixins:[selected_item_mixin],
     /* components:
     {
         "mek-sub-component-table":mek_sub_component_table

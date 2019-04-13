@@ -292,7 +292,7 @@ export default
             },projectile_name);
 
             //projectile_name=projectile_name+" "+this.selected_mount_type.mount_type+" Gun";
-            projectile_name=projectile_name.length>0?projectile_name+" Gun":"Gun";
+            projectile_name+=this.selected_damage.damage+"K Gun";
 
             return projectile_name.replace(/\s+/g," ");
         }

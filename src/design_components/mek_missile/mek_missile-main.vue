@@ -366,6 +366,7 @@ export default
                         this.is_bomb ? " Bomb" :
                         " Missile"
 
+            missile_name+=this.selected_damage.damage+"K";
             missile_name=missile_name+type+" Pack";
             
             return missile_name+" ("+this.selected_pack_size+")";

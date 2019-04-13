@@ -332,6 +332,8 @@ export default
                 return _name+_val.feature+" ";
             },beam_name);
 
+            beam_name+=!isHydro ? " "+this.selected_damage.damage+"K": "";
+
             beam_name+= isHydro?" Hydro":
                         isMegaBeam?" Mega-Beam":
                         " Beam";

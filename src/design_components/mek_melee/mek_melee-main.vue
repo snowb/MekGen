@@ -263,6 +263,7 @@ export default
                 _name+=_val.name+" ";
                 return _name;
             },"");
+            name+=this.selected_damage.damage+"K ";
             return name+"Melee";
         }
     }
