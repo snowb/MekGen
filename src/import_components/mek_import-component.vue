@@ -1,8 +1,5 @@
 <template>
     <div id="app" style="display:inline-flex-col;">
-      <div class="json_container" contenteditable="true" @input="updateJSON($event.target.textContent)">
-      </div>
-      (copy and paste JSON data from Export tab)
       <div class="mek-button-container">
         <span :class="{'mek-button':!importClicked,'mek-button-clicked':importClicked}" 
             @click="importJSON" @animationend="importClicked=false"
@@ -11,6 +8,9 @@
             Import
         </span>
       </div>
+      <!--div class="json_container" contenteditable="true" @input="updateJSON($event.target.textContent)">
+      </div-->
+      <textarea :style="{'height':textAreaHeight}" class="json_container" @input="updateJSON" placeholder="(copy and paste JSON data from Export tab)"></textarea>
     </div>
 </template>
 <script>
@@ -25,20 +25,26 @@ export default {
     let obj={};
     obj.jsonData="";
     obj.importClicked=false;
+    obj.textArea=null;
+    obj.textAreaHeight="auto";
     return obj;
   },
   methods:
   {
     updateJSON(_data)
     {
-      this.jsonData=_data;
+      this.textAreaHeight="auto";
+      this.textArea=_data.target;
+      this.jsonData=_data.target.value;
+      this.textAreaHeight=this.textArea.scrollHeight+"px";
     },
     importJSON()
     {
       this.importClicked=true;
-      this.$store.commit("saveComponent",JSON.parse(this.jsonData.replace(/\s/g,"")));
+      this.$store.commit("saveComponent",JSON.parse(this.jsonData));
       this.jsonData="";
-    }
+    },
+   
   }
 }
 </script>
@@ -58,7 +64,9 @@ export default {
     overflow-wrap:break-word;
     word-break: break-all;
     text-align:left;
-    min-width: 10vw;
+    min-width: 95vw;
+    max-width: 95vw;
+    overflow-y: hidden;
 }
 @media all and (max-width:500px)
 {
