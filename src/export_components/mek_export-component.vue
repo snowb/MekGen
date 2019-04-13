@@ -25,7 +25,7 @@
 <script>
 import utility_mixin from "@/mixins/utility_mixin";
 import {mapGetters} from 'vuex';
-
+//
 export default {
   name: 'export-component',
   mixins:[utility_mixin],
