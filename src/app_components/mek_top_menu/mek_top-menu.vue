@@ -36,7 +36,7 @@ export default
                         backgroundImage:this.background_image,
                         color:this.text_color,
                         padding:this.padding_size,
-                        margin:"auto"};
+                        };
             }
             else if(_data=="nonselected")
             {
