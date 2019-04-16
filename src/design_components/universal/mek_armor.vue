@@ -13,7 +13,7 @@ import servo_classes_mixin from "@/mixins/servo_classes_mixin.js";
 import selected_item_mixin from "@/mixins/selected_item_mixin.js";
 import utility_mixin from "@/mixins/utility_mixin.js";
 
-import {armor_data_table, cleaned_feature} 
+import {armor_data_table, cleaned_feature, filter_data_table} 
     from "@/data_table_modules/mek_armor/mek_armor-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
@@ -45,11 +45,9 @@ export default
     {
         armor_table()
         {
-            let new_armor_table=armor_data_table.filter((_val)=>
-            {
-                return _val.code<=this.maxArmor;
-            },this);
-            return new_armor_table;
+            filter_data_table(this.maxArmor);
+
+            return armor_data_table;
         },
         selected_keys()
         {
