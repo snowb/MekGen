@@ -100,6 +100,13 @@ let store= new Vuex.Store(
                 Vue.set(_state,"alert_messages",[]);
             }
         },
+        actions:
+        {
+            importComponent(_context, _component)
+            {
+                _context.commit("saveComponent",_component);
+            }
+        },
         getters:
         {
             componentList: _state => _state.component_list,
@@ -136,49 +143,23 @@ let store= new Vuex.Store(
         }
     });
 
-store.cleanComponent=function(_component)
-{
-    if(Array.isArray(_component))
+//load cleanComponent method from module
+import(/* webpackChunkName: "clean_component_module" */"./modules/clean_component_module")
+.then((_module)=>
     {
-        _component.forEach((_element)=>
-        {
-            if(Array.isArray(_element) || typeof _element==="object")
-            {
-                _element=store.cleanComponent(_element);
-            }
-            else if(!/^[\w\d-_.() ]+$/.test(_element) || _element==="")
-            {
-                _element=null;
-            }
-        });
-    }
-    else if(typeof _component==="object")
+        store.cleanComponent=_module.cleanComponent;
+    });
+//load create_uuid method from module
+import(/* webpackChunkName: "create_uuid" */"./modules/create_uuid_module")
+.then((_module)=>
     {
-        for(let prop in _component)
-        {
-            if(Array.isArray(_component[prop]) || typeof _component[prop]==="object")
-            {
-                _component[prop]=store.cleanComponent(_component[prop]);
-            }
-            else if(!/^[\w\d-_.() ]+$/.test(_component[prop]) || _component[prop]==="")
-            {
-                _component[prop]=null;
-            }
-        }
-    }
-    else if(!/^[\w\d-_.() ]+$/.test(_component) || _component==="")
+        store.create_uuid=_module.create_uuid;
+    });
+//load mek_armor validators from module
+import(/* webpackChunkName: "mek_armor_validators" */"./modules/mek_armor_validators")
+.then((_module)=>
     {
-        _component=null;
-    }
-    return _component;
-}
-
-store.create_uuid=function()
-        {
-            return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-                (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-            )
-              
-        }
+        store.mek_armor_validators=_module.mek_armor_validators;
+    });
 
 export default store;
