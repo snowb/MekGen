@@ -104,7 +104,9 @@ let store= new Vuex.Store(
         {
             importComponent(_context, _component)
             {
+                this.validateComponent(_component);
                 _context.commit("saveComponent",_component);
+                //console.log(this.getImportAlerts());
             }
         },
         getters:
@@ -155,11 +157,14 @@ import(/* webpackChunkName: "create_uuid" */"./modules/create_uuid_module")
     {
         store.create_uuid=_module.create_uuid;
     });
-//load mek_armor validators from module
-import(/* webpackChunkName: "mek_armor_validators" */"./modules/mek_armor_validators")
+
+//load master validator method
+import(/* webpackChunkName: "mek_master_validator" */"./modules/mek_master_validator")
 .then((_module)=>
     {
-        store.mek_armor_validators=_module.mek_armor_validators;
+        store.validateComponent=_module.validateComponent;
+        store.getImportAlerts=_module.getAlerts;
     });
+
 
 export default store;
