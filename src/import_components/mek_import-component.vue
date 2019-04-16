@@ -41,7 +41,7 @@ export default {
     importJSON()
     {
       this.importClicked=true;
-      this.$store.commit("saveComponent",JSON.parse(this.jsonData));
+      this.$store.dispatch("importComponent",JSON.parse(this.jsonData));
       this.jsonData="";
     },
    
