@@ -14,7 +14,7 @@ import utility_mixin from "@/mixins/utility_mixin.js";
 import alerts_mixin from "@/mixins/alerts_mixin.js";
 
 import {ram_data_table, cleaned_feature} 
-    from "@/data_table_modules/mek_armor/mek_energy_absorbing_armor-data-module.js";
+    from "@/data_table_modules/mek_armor/mek_armor-RAM-data-module.js";
 
 import mek_sub_component_table from "./mek_sub-component-table.vue";
 export default 
