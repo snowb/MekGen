@@ -134,6 +134,7 @@ let validateComponent=(_component)=>
                 break;
         }
    }
+   return cleanedComponent;
 };
 
 let getAlerts=()=>alerts;
