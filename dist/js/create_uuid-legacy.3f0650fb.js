@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["create_uuid"],{c0e5:function(e,n,r){"use strict";r.r(n),r.d(n,"create_uuid",function(){return t});r("34ef"),r("6b54"),r("a481"),r("cadf"),r("551c"),r("f751"),r("097d");var t=function(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,function(e){return(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16)})}}}]);
+//# sourceMappingURL=create_uuid-legacy.3f0650fb.js.map
