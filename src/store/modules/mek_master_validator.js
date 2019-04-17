@@ -75,7 +75,7 @@ let validateComponent=(_component)=>
                 //features
                 //efficiency!?
                 break;
-            case "emw":
+            case "melee":
                 //damage
                 //accuracy
                 //entangle range trade
