@@ -20,6 +20,7 @@ let importValidator=(_module_name, _validator_prop_name)=>
 let module_list=
 [
     {module_name:"./mek_armor_validators",validator_prop_name:"mek_armor"},
+    {module_name:"./mek_servo_validators",validator_prop_name:"mek_servo"},
 ];
 module_list.forEach((_val)=>
 {
@@ -30,9 +31,28 @@ let validateServo=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
+    //validate servo-type
+    validatedData=validators.mek_servo.type("type",_component.selected_servo_type);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_servo_type=validatedData.data;
     //validate servo-class
+    validators.mek_servo.create_class_table(_component.selected_servo_type.type);
+    validatedData=validators.mek_servo.servo("code",_component.selected_servo_class);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_servo_class=validatedData.data;
     //validate servo-kills-space-trade
-    //valid servo-type
+    let trade_formatted=
+        {
+            kills:_component.kills_space_trade.kills_modifier,
+            space:_component.kills_space_trade.space_modifier,
+            cost:_component.kills_space_trade.cost
+        };
+    validatedData=validators.mek_servo.trade(
+        trade_formatted,
+        _component.selected_servo_class.kills,
+        _component.selected_servo_class.space);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.kills_space_trade=validatedData.data;
     //validate armor
     validators.mek_armor.armor_filter(_component.selected_servo_class.code+2);
     validatedData=validators.mek_armor.armor("code",_component.selected_armor);
