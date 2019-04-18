@@ -41,12 +41,12 @@ export default
         ],
     components:
     {
-        "mek-locomotion-type":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_locomotion-type.vue"),
-        "mek-locomotion-class":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_locomotion-class.vue"),
+        "mek-locomotion-type":()=>import(/* webpackChunkName: "mek_locomotion-type" */"./subcomponents/mek_locomotion-type.vue"),
+        "mek-locomotion-class":()=>import(/* webpackChunkName: "mek_locomotion-class" */"./subcomponents/mek_locomotion-class.vue"),
 
-        "mek-component-name":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
     },
     data:function()
     {

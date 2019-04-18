@@ -43,18 +43,18 @@ export default
     components:
     {
         "mek-magazine-select-gun":()=>
-        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_magazine-select-gun.vue"),
+        import(/* webpackChunkName: "mek_magazine-select-gun" */"./subcomponents/mek_magazine-select-gun.vue"),
         "mek-magazine-ammo-list":()=>
-        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_magazine-ammo-list.vue"),
+        import(/* webpackChunkName: "mek_magazine-ammo-list" */"./subcomponents/mek_magazine-ammo-list.vue"),
         "mek-magazine-shots":()=>
-        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_magazine-shots.vue"),
+        import(/* webpackChunkName: "mek_magazine-shots" */"./subcomponents/mek_magazine-shots.vue"),
 
         "mek-component-name":()=>
-        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
+        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
 
     },
     data:function()

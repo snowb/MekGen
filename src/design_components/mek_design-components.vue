@@ -19,33 +19,33 @@ export default {
   components:
   {
     "mek-top-menu":()=>
-    import(/* webpackChunkName: "[request]" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
+    import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-side-menu":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_side_menu/mek_side-menu.vue"),
-    //"mek-alert":()=>import(/* webpackChunkName: "[request]" */"../app_components/universal/mek_alert.vue"),
+    import(/* webpackChunkName: "mek_side-menu" */"./mek_side_menu/mek_side-menu.vue"),
+    //"mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"../app_components/universal/mek_alert.vue"),
 
     "mek-servo":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_servo/mek_servo-main.vue"),
+    import(/* webpackChunkName: "mek_servo-main" */"./mek_servo/mek_servo-main.vue"),
     "mek-melee":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_melee/mek_melee-main.vue"),
+    import(/* webpackChunkName: "mek_melee-main" */"./mek_melee/mek_melee-main.vue"),
     "mek-projectile":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_projectile/mek_projectile-main.vue"),
+    import(/* webpackChunkName: "mek_projectile-main" */"./mek_projectile/mek_projectile-main.vue"),
     "mek-magazine":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_magazine/mek_magazine-main.vue"),
+    import(/* webpackChunkName: "mek_magazine-main" */"./mek_magazine/mek_magazine-main.vue"),
     "mek-missile":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_missile/mek_missile-main.vue"),
+    import(/* webpackChunkName: "mek_missile-main" */"./mek_missile/mek_missile-main.vue"),
     "mek-emw":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_emw/mek_emw-main.vue"),
+    import(/* webpackChunkName: "mek_emw-main" */"./mek_emw/mek_emw-main.vue"),
     "mek-beam":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_beam/mek_beam-main.vue"),
+    import(/* webpackChunkName: "mek_beam-main" */"./mek_beam/mek_beam-main.vue"),
     "mek-energy-pool":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_energy_pool/mek_energy_pool-main.vue"),
+    import(/* webpackChunkName: "mek_energy_pool-main" */"./mek_energy_pool/mek_energy_pool-main.vue"),
     "mek-shield":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_shield/mek_shield-main.vue"),
+    import(/* webpackChunkName: "mek_shield-main" */"./mek_shield/mek_shield-main.vue"),
     "mek-reflector":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_reflector/mek_reflector-main.vue"),
+    import(/* webpackChunkName: "mek_reflector-main" */"./mek_reflector/mek_reflector-main.vue"),
     "mek-locomotion":()=>
-    import(/* webpackChunkName: "[request]" */"./mek_locomotion/mek_locomotion-main.vue")
+    import(/* webpackChunkName: "mek_locomotion-main" */"./mek_locomotion/mek_locomotion-main.vue")
   },
   data:function()
   {

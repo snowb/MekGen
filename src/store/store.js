@@ -146,20 +146,20 @@ let store= new Vuex.Store(
     });
 
 //load cleanComponent method from module
-import(/* webpackChunkName: "[request]" */"./modules/clean_component_module")
+import(/* webpackChunkName: "clean_component_module" */"./modules/clean_component_module")
 .then((_module)=>
     {
         store.cleanComponent=_module.cleanComponent;
     });
 //load create_uuid method from module
-import(/* webpackChunkName: "[request]" */"./modules/create_uuid_module")
+import(/* webpackChunkName: "create_uuid_module" */"./modules/create_uuid_module")
 .then((_module)=>
     {
         store.create_uuid=_module.create_uuid;
     });
 
 //load master validator method
-import(/* webpackChunkName: "[request]" */"./modules/validators/mek_master_validator")
+import(/* webpackChunkName: "mek_master_validator" */"./modules/validators/mek_master_validator")
 .then((_module)=>
     {
         store.validateComponent=_module.validateComponent;
