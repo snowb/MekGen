@@ -83,27 +83,27 @@ export default
     components:
     {
         "mek-projectile-damage":()=>
-        import(/* webpackChunkName: "mek-projectile-damage" */"./subcomponents/mek_projectile-damage.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-damage.vue"),
         "mek-projectile-accuracy":()=>
-        import(/* webpackChunkName: "mek-projectile-accuracy" */"./subcomponents/mek_projectile-accuracy.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-accuracy.vue"),
         "mek-projectile-multi-feed":()=>
-        import(/* webpackChunkName: "mek-projectile-multi-feed" */"./subcomponents/mek_projectile-multi-feed.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-multi-feed.vue"),
         "mek-projectile-range-mod":()=>
-        import(/* webpackChunkName: "mek-projectile-range-mod" */"./subcomponents/mek_projectile-range-mod.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-range-mod.vue"),
         "mek-projectile-burst-value":()=>
-        import(/* webpackChunkName: "mek-projectile-burst-value" */"./subcomponents/mek_projectile-burst-value.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-burst-value.vue"),
         "mek-projectile-feature":()=>
-        import(/* webpackChunkName: "mek-projectile-feature" */"./subcomponents/mek_projectile-feature.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_projectile-feature.vue"),
         //"mek-projectile-mount-type":mek_projectile_mount_type,
 
         "mek-space-efficiency":()=>
-        import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
     },
     data:function()
     {

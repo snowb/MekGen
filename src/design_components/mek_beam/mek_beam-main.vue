@@ -88,30 +88,30 @@ export default
     components:
     {
         "mek-beam-damage":()=>
-        import(/* webpackChunkName: "mek_beam-damage" */"./subcomponents/mek_beam-damage.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-damage.vue"),
         "mek-beam-accuracy":()=>
-        import(/* webpackChunkName: "mek_beam-accuracy" */"./subcomponents/mek_beam-accuracy.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-accuracy.vue"),
         "mek-beam-burst-value":()=>
-        import(/* webpackChunkName: "mek_beam-burst-value" */"./subcomponents/mek_beam-burst-value.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-burst-value.vue"),
         "mek-beam-range-mod":()=>
-        import(/* webpackChunkName: "mek_beam-range-mod" */"./subcomponents/mek_beam-range-mod.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-range-mod.vue"),
         "mek-beam-shots":()=>
-        import(/* webpackChunkName: "mek_beam-shots" */"./subcomponents/mek_beam-shots.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-shots.vue"),
         "mek-beam-warm-up-time":()=>
-        import(/* webpackChunkName: "mek_beam-warm-up-time" */"./subcomponents/mek_beam-warm-up-time.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-warm-up-time.vue"),
         "mek-beam-wide-angle":()=>
-        import(/* webpackChunkName: "mek_beam-wide-angle" */"./subcomponents/mek_beam-wide-angle.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-wide-angle.vue"),
         "mek-beam-feature":()=>
-        import(/* webpackChunkName: "mek_beam-feature" */"./subcomponents/mek_beam-feature.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_beam-feature.vue"),
 
         "mek-space-efficiency":()=>
-        import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "mek-component-stats" */"@/design_components/universal/mek_component-stats.vue")
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue")
     },
     data:function()
     {

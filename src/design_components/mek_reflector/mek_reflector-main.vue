@@ -52,15 +52,15 @@ export default
     components:
     {
         "mek-space-efficiency":()=>
-        import(/* webpackChunkName: "mek-space-efficiency" */"../universal/mek-space-efficiency.vue"),
+        import(/* webpackChunkName: "[request]" */"../universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek_component-name" */"../universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "[request]" */"../universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
         "mek-sub-component-table":()=>
-        import(/* webpackChunkName: "mel_sub-component-table" */"@/design_components/universal/mek_sub-component-table.vue")
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_sub-component-table.vue")
     },
     data()
     {

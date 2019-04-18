@@ -55,14 +55,14 @@ export default
     mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-energy-pool-pool":()=>import(/* webpackChunkName: "mek-energy-pool-pool" */"./subcomponents/mek_energy_pool-pool.vue"),
-        "mek-energy-pool-size":()=>import(/* webpackChunkName: "mek-energy-pool-size" */"./subcomponents/mek_energy_pool-size.vue"),
-        "mek-energy-pool-feature":()=>import(/* webpackChunkName: "mek-energy-pool-feature" */"./subcomponents/mek_energy_pool-feature.vue"),
+        "mek-energy-pool-pool":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_energy_pool-pool.vue"),
+        "mek-energy-pool-size":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_energy_pool-size.vue"),
+        "mek-energy-pool-feature":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_energy_pool-feature.vue"),
 
-        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
+        "mek-space-efficiency":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "[request]" */"../universal/mek_component-stats.vue"),
 
     },
     data:function()

@@ -62,22 +62,22 @@ export default
     components:
     {
         "mek-melee-damage":()=>
-        import(/* webpackChunkName: "mek-melee-damage" */"./subcomponents/mek_melee-damage.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_melee-damage.vue"),
         "mek-melee-accuracy":()=>
-        import(/* webpackChunkName: "mek-melee-accuracy" */"./subcomponents/mek_melee-accuracy.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_melee-accuracy.vue"),
         "mek-melee-feature":()=>
-        import(/* webpackChunkName: "mek-melee-feature" */"./subcomponents/mek_melee-feature.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_melee-feature.vue"),
         "mek-melee-entangle-range":()=>
-        import(/* webpackChunkName: "mek-melee-entangle-range" */"./subcomponents/mek_melee-entangle-range.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_melee-entangle-range.vue"),
 
         "mek-space-efficiency":()=>
-        import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
 
     },
     data:function()

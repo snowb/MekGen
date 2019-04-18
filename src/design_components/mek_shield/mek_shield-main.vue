@@ -104,21 +104,21 @@ export default
         ],
     components:
     {
-        "mek-shield-type":()=>import(/* webpackChunkName: "mek-shield-type" */"./subcomponents/mek_shield-type.vue"),
-        "mek-shield-class":()=>import(/* webpackChunkName: "mek-shield-class" */"./subcomponents/mek_shield-class.vue"),
-        "mek-shield-defense-ability":()=>import(/* webpackChunkName: "mek-shield-defense-ability" */"./subcomponents/mek_shield-defense-ability.vue"),
-        "mek-shield-binder":()=>import(/* webpackChunkName: "mek-shield-binder" */"./subcomponents/mek_shield-binder.vue"),
-        "mek-shield-reset-time":()=>import(/* webpackChunkName: "mek-shield-reset-time" */"./subcomponents/mek_shield-reset-time.vue"),
-        "mek-shield-turns-in-use":()=>import(/* webpackChunkName: "mek-shield-turns-in-use" */"./subcomponents/mek_shield-turns-in-use.vue"),
-        "mek-shield-weakness":()=>import(/* webpackChunkName: "mek-shield-weakness" */"./subcomponents/mek_shield-weakness.vue"),
+        "mek-shield-type":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-type.vue"),
+        "mek-shield-class":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-class.vue"),
+        "mek-shield-defense-ability":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-defense-ability.vue"),
+        "mek-shield-binder":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-binder.vue"),
+        "mek-shield-reset-time":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-reset-time.vue"),
+        "mek-shield-turns-in-use":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-turns-in-use.vue"),
+        "mek-shield-weakness":()=>import(/* webpackChunkName: "[request]" */"./subcomponents/mek_shield-weakness.vue"),
         
-        "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
-        "mek-save-reset-component":()=>import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
-        "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        "mek-space-efficiency":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-save-reset-component":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
+        "mek-component-stats":()=>import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
 
-        "mek-armor-type":()=>import(/* webpackChunkName: "mek_armor-type" */"../universal/mek_armor-type.vue"),
-        "mek-armor-ram":()=>import(/* webpackChunkName: "mek_armor-RAM" */"../universal/mek_armor-RAM.vue")
+        "mek-armor-type":()=>import(/* webpackChunkName: "[request]" */"../universal/mek_armor-type.vue"),
+        "mek-armor-ram":()=>import(/* webpackChunkName: "[request]" */"../universal/mek_armor-RAM.vue")
     },
     data:function()
     {

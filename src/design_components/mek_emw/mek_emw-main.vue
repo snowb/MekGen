@@ -75,24 +75,24 @@ export default
     components:
     {
         "mek-emw-damage":()=>
-        import(/* webpackChunkName: "mek-emw-damage" */"./subcomponents/mek_emw-damage.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_emw-damage.vue"),
         "mek-emw-accuracy":()=>
-        import(/* webpackChunkName: "mek-emw-accuracy" */"./subcomponents/mek_emw-accuracy.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_emw-accuracy.vue"),
         "mek-emw-attack-factor":()=>
-        import(/* webpackChunkName: "mek-emw-attack-factor" */"./subcomponents/mek_emw-attack-factor.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_emw-attack-factor.vue"),
         "mek-emw-turns-in-use":()=>
-        import(/* webpackChunkName: "mek-emw-turns-in-use" */"./subcomponents/mek_emw-turns-in-use.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_emw-turns-in-use.vue"),
         "mek-emw-feature":()=>
-        import(/* webpackChunkName: "mek-emw-feature" */"./subcomponents/mek_emw-feature.vue"),
+        import(/* webpackChunkName: "[request]" */"./subcomponents/mek_emw-feature.vue"),
 
         "mek-space-efficiency":()=>
-        import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek_component-name" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek_save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
-        import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
+        import(/* webpackChunkName: "[request]" */"@/design_components/universal/mek_component-stats.vue"),
 
     },
     data:function()
