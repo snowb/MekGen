@@ -61,7 +61,7 @@ let validateServo=(_component)=>
     //validate armor-type
     validatedData=validators.mek_armor.type("damage_coefficient",_component.selected_armor_type);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_aselected_armor_typermor=validatedData.data;
+    cleanedComponent.selected_armor_type=validatedData.data;
     //validate RAM
     validatedData=validators.mek_armor.RAM("absorption",_component.selected_absorption);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
