@@ -30,7 +30,7 @@ export default
     {
         let obj={}
         obj.pkey="damage_coefficient";
-        obj.alert=[];
+        obj.alerts=[];
         return obj;
     },
     methods:
