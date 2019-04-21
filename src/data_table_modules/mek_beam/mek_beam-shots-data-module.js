@@ -31,13 +31,19 @@ let shots_validate=(_data)=>
     data_cached=true;
     cached_validate=partial_validate(shots_data_table, data_table_keys);
     return cached_validate(_data);
-}
+};
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(shots_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(shots_data_table)(_pkey,_data);
+};
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(shots_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(shots_data_table, has_feature)(_pkey,_data);
+};
 
 //completed function for returning cleaed data
 let cleaned_feature=
@@ -62,11 +68,9 @@ let filter_shots_data_table=(_mag_fed)=>
         default_data={shots:15,cost:1};
     }
     //reset all functions for new table
-    has_feature=partial_has_feature(shots_data_table);
-    get_feature=partial_get_feature(shots_data_table, has_feature);
+    data_cached=false;
     cleaned_feature=
         partial_cleaned_feature(shots_validate, has_feature, get_feature, default_data, "Mek_Beam-Shots");
-    data_cached=false;
 };
 filter_shots_data_table(false);
 
