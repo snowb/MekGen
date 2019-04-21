@@ -69,6 +69,7 @@ export default
 
         obj.uuid=null;
         obj.component_name=null;
+        obj.custom_component_name=false;
         obj.component_category="equipment";
         obj.component_type="reflector";
         obj.original_component=null;
@@ -86,6 +87,12 @@ export default
     },
     methods:
     {
+        updateComponentName(_name)
+        {
+            this.component_name=_name;
+            this.custom_component_name=true;
+            this.component_changed=true;
+        },
         select_reflector(_reflector)
         {
             this.$set(this,"selected_reflector",JSON.parse(JSON.stringify(_reflector)));
@@ -99,6 +106,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="reflector";
             return_data.component_name=this.component_name===null?this.reflector_name:this.component_name;
+            return_data.custom_component_name=this.custom_component_name;
 
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
 
@@ -117,7 +125,7 @@ export default
         {
             let alertMessage="Reflector is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.reflector_name)
+            if(!this.custom_component_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }

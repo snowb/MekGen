@@ -62,6 +62,7 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
+        obj.custom_component_name=false;
         obj.component_category="equipment";
         obj.component_type="magazine";
         obj.original_component=null;
@@ -88,6 +89,7 @@ export default
         updateComponentName(_name)
         {
             this.component_name=_name;
+            this.custom_component_name=true;
             this.component_changed=true;
         },
         updateGun(_selected_gun,_gun_name_change)
@@ -155,6 +157,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="magazine";//specific equipment type
             return_data.component_name=this.component_name===null?this.magazine_name:this.component_name;
+            return_data.custom_component_name=this.custom_component_name;
 
             return_data.selected_gun=JSON.parse(JSON.stringify(this.selected_gun));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
@@ -175,7 +178,7 @@ export default
         {
             let alertMessage="Magazine is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.magazine_name)
+            if(!this.custom_component_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }

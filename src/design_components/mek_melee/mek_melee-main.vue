@@ -85,6 +85,7 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
+        obj.custom_component_name=false;
         obj.component_category="equipment";
         obj.component_type="melee";
         obj.original_component=null;
@@ -119,6 +120,7 @@ export default
         updateComponentName(_name)
         {
             this.component_name=_name;
+            this.custom_component_name=true;
             this.component_changed=true;
         },
         updateEfficiencies(_data)
@@ -165,6 +167,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="melee";
             return_data.component_name=this.component_name===null?this.melee_name:this.component_name;
+            return_data.custom_component_name=this.custom_component_name;
 
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
@@ -194,7 +197,7 @@ export default
         {
             let alertMessage="Melee is not valid, resetting.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.melee_name)
+            if(!this.custom_component_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }

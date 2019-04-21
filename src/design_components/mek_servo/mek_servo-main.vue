@@ -95,6 +95,7 @@ export default
         let obj={};
         obj.uuid=null;
         obj.component_name=null;
+        obj.custom_component_name=false;
         obj.component_category="equipment";
         obj.component_type="servo";
         obj.original_component=null;
@@ -124,6 +125,12 @@ export default
     },
     methods:
     {
+        updateComponentName(_name)
+        {
+            this.component_name=_name;
+            this.custom_component_name=true;
+            this.component_changed=true;
+        },
         updateServoType(_servo_type)
         {   
             this.component_type=_servo_type.type;
@@ -168,7 +175,7 @@ export default
         {
             let alertMessage="Torso bad, resetting to 'standard' shield.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.servo_name)
+            if(!this.custom_component_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
@@ -182,6 +189,8 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="servo";
             return_data.component_name=this.component_name===null?this.servo_name:this.component_name;
+            return_data.custom_component_name=this.custom_component_name;
+
             return_data.selected_servo_type=JSON.parse(JSON.stringify(this.selected_servo_type));
             return_data.selected_servo_class=JSON.parse(JSON.stringify(this.selected_servo_class));
             return_data.selected_armor=JSON.parse(JSON.stringify(this.selected_armor));

@@ -126,6 +126,7 @@ export default
         obj.uuid=null;
         obj.type={name:"Standard"};
         obj.component_name=null;
+        obj.custom_component_name=false;
         obj.component_category="equipment";
         obj.component_type="shield";
         obj.original_component=null;
@@ -273,6 +274,7 @@ export default
         updateComponentName:function(_name)
         {
             this.component_name=_name;
+            this.custom_component_name=true;
             this.component_changed=true;
         },
         calculate_stopping_power:function()
@@ -293,7 +295,7 @@ export default
         {
             let alertMessage="Shield Has No Type, resetting to 'standard' shield.";
             this.universal_ingest_data(_data_object,alertMessage);
-            if(this.component_name==this.shield_name)
+            if(!this.custom_component_name)
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
@@ -307,6 +309,8 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="shield";
             return_data.component_name=this.component_name===null?this.shield_name:this.component_name;
+            return_data.custom_component_name=this.custom_component_name;
+
             return_data.type=JSON.parse(JSON.stringify(this.type));
             return_data.shield_class=JSON.parse(JSON.stringify(this.shield_class));
             return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
