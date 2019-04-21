@@ -43,31 +43,31 @@ let get_feature=partial_get_feature(shots_data_table, has_feature);
 let cleaned_feature=
     partial_cleaned_feature(shots_validate, has_feature, get_feature, default_data, "Mek_Beam-Shots");
 
-    let filter_shots_data_table=(_mag_fed)=>
+let filter_shots_data_table=(_mag_fed)=>
+{
+    if(!_mag_fed)
     {
-        if(!_mag_fed)
+        shots_data_table=raw_shots_data_table.filter((_val)=>
         {
-            shots_data_table=raw_shots_data_table.filter((_val)=>
-            {
-                return _val.shots!=15;
-            });
-            default_data={shots:"__INFINITY__",cost:1};
-        }
-        else
+            return _val.shots!=15;
+        });
+        default_data={shots:"__INFINITY__",cost:1};
+    }
+    else
+    {
+        shots_data_table=raw_shots_data_table.filter((_val)=>
         {
-            shots_data_table=raw_shots_data_table.filter((_val)=>
-            {
-                return _val.shots!=0 && _val.shots!="__INFINITY__";
-            });
-            default_data={shots:15,cost:1};
-        }
-        //reset all functions for new table
-        has_feature=partial_has_feature(shots_data_table);
-        get_feature=partial_get_feature(shots_data_table, has_feature);
-        cleaned_feature=
-            partial_cleaned_feature(shots_validate, has_feature, get_feature, default_data, "Mek_Beam-Shots");
-        data_cached=false;
-    };
-    filter_shots_data_table(false);
+            return _val.shots!=0 && _val.shots!="__INFINITY__";
+        });
+        default_data={shots:15,cost:1};
+    }
+    //reset all functions for new table
+    has_feature=partial_has_feature(shots_data_table);
+    get_feature=partial_get_feature(shots_data_table, has_feature);
+    cleaned_feature=
+        partial_cleaned_feature(shots_validate, has_feature, get_feature, default_data, "Mek_Beam-Shots");
+    data_cached=false;
+};
+filter_shots_data_table(false);
 
 export {shots_data_table, shots_validate, has_feature, get_feature, cleaned_feature, filter_shots_data_table};
