@@ -89,10 +89,21 @@ let validateBeam=(_component)=>
      * implement runValidator forEach loop of above
      * 
      */
-    //validate damage
-    validatedData=validators.mek_beam.damage("damage",_component.selected_damage);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_damage=validatedData.data;
+    let componentsToValiate=
+    [
+        {validator:validators.mek_beam.damage,pkey:"damage",component_prop:"selected_damage"},
+        {validator:validators.mek_beam.burst_value,pkey:"burst_value",component_prop:"selected_burst_value"},
+        {validator:validators.mek_beam.accuracy,pkey:"accuracy",component_prop:'selected_accuracy'},
+        {validator:validators.mek_beam.warm_up,pkey:"time",component_prop:'selected_warm_up_time'},
+        {validator:validators.mek_beam.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
+    ];
+    componentsToValiate.forEach((_val)=>
+    {//loop thru and validate mek_beam damage, burst_val, accuracy, warm_up, wide_angle
+        validatedData=runValidator(_val.validator,_val.pkey,_component[_val.component_prop]);
+        cleanedComponent[_val.component_prop]=validatedData.data;
+        alerts=alerts.concat(validatedData.alerts);
+    });
+
     //extract base range for range_mod update
     let base_range=cleanedComponent.selected_damage.range;
     //update range_mod table
@@ -101,10 +112,6 @@ let validateBeam=(_component)=>
     validatedData=validators.mek_beam.range_mod("range_mod",_component.selected_range_mod);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
     cleanedComponent.selected_range_mod=validatedData.data;
-    //validate burst_value
-    validatedData=validators.mek_beam.burst_value("burst_value",_component.selected_burst_value);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_burst_value=validatedData.data;
     //extract BV for feature data table update
     let burst_value=cleanedComponent.selected_burst_value.burst_value;
     //update feature table
@@ -121,18 +128,6 @@ let validateBeam=(_component)=>
     validatedData=validators.mek_beam.shots("shots",_component.selected_shots);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
     cleanedComponent.selected_shots=validatedData.data;
-    //validate accuracy
-    validatedData=validators.mek_beam.accuracy("accuracy",_component.selected_accuracy);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_accuracy=validatedData.data;
-    //validate warm-up
-    validatedData=validators.mek_beam.warm_up("time",_component.selected_warm_up_time);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_warm_up_time=validatedData.data;
-    //validate wide-angle
-    validatedData=validators.mek_beam.wide_angle("angle",_component.selected_wide_angle);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_wide_angle=validatedData.data;
 
     return cleanedComponent;
 };
