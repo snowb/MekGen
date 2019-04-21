@@ -85,7 +85,7 @@ let validateBeam=(_component)=>
     //validate range mod
     validatedData=validators.mek_beam.range_mod("range_mod",_component.selected_range_mod);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
-    cleanedComponent.selected_damage=validatedData.data;
+    cleanedComponent.selected_range_mod=validatedData.data;
     //validate burst_value
     validatedData=validators.mek_beam.burst_value("burst_value",_component.selected_burst_value);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
