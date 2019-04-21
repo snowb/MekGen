@@ -21,6 +21,7 @@ let module_list=
 [
     {module_name:"./mek_armor_validators",validator_prop_name:"mek_armor"},
     {module_name:"./mek_servo_validators",validator_prop_name:"mek_servo"},
+    {module_name:"./mek_beam_validators",validator_prop_name:"mek_beam"},
 ];
 module_list.forEach((_val)=>
 {
@@ -69,6 +70,58 @@ let validateServo=(_component)=>
     return cleanedComponent;
 };
 
+let validateBeam=(_component)=>
+{
+    let cleanedComponent=_component;
+    let validatedData;
+    //validate damage
+    validatedData=validators.mek_beam.damage("damage",_component.selected_damage);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_damage=validatedData.data;
+    //extract base range for range_mod update
+    let base_range=cleanedComponent.selected_damage.range;
+    //update range_mod table
+    validators.mek_beam.update_range_mod(base_range);
+    //validate range mod
+    validatedData=validators.mek_beam.range_mod("range_mod",_component.selected_range_mod);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_damage=validatedData.data;
+    //validate burst_value
+    validatedData=validators.mek_beam.burst_value("burst_value",_component.selected_burst_value);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_burst_value=validatedData.data;
+    //extract BV for feature data table update
+    let burst_value=cleanedComponent.selected_burst_value.burst_value;
+    //update feature table
+    validators.mek_beam.filter_feature(burst_value);
+    //validate features
+    validatedData=validators.mek_beam.feature(_component.feature_array,"feature");
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.feature_array=validatedData.cleaned_array;
+    //extract if Mag-Fed
+    let magFed=cleanedComponent.feature_array.some(_val=>_val.feature=="Mag-Fed");
+    //update shots table
+    validators.mek_beam.update_shots(magFed);
+    //validate shots
+    validatedData=validators.mek_beam.shots("shots",_component.selected_shots);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_shots=validatedData.data;
+    //validate accuracy
+    validatedData=validators.mek_beam.accuracy("accuracy",_component.selected_accuracy);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_accuracy=validatedData.data;
+    //validate warm-up
+    validatedData=validators.mek_beam.warm_up("time",_component.selected_warm_up_time);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_warm_up_time=validatedData.data;
+    //validate wide-angle
+    validatedData=validators.mek_beam.wide_angle("angle",_component.selected_wide_angle);
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.selected_wide_angle=validatedData.data;
+
+    return cleanedComponent;
+};
+
 let validateComponent=(_component)=>
 {
     //console.log(_component);
@@ -95,6 +148,7 @@ let validateComponent=(_component)=>
                 cleanedComponent=validateServo(_component);
                 break;
             case "beam":
+                cleanedComponent=validateBeam(_component);
                 //damage
                 //accuracy
                 //brust val
