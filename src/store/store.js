@@ -106,7 +106,7 @@ let store= new Vuex.Store(
             {
                 let cleanedComponent=this.validateComponent(_component);
                 _context.commit("saveComponent",cleanedComponent);
-                console.log(this.getImportAlerts());
+                console.log(cleanedComponent, this.getImportAlerts());
             }
         },
         getters:
