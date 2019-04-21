@@ -52,19 +52,19 @@ let feature_validate=(_data)=>
     data_cached=true;
     cached_validate=partial_validate(feature_data_table, data_table_keys);
     return cached_validate(_data);
-}
+};
 
 //completed function for checking if data has data
 let has_feature=(_pkey,_data)=>
 {
     return partial_has_feature(feature_data_table)(_pkey,_data);
-}
+};
 
 //completed function for returning matching data
 let get_feature=(_pkey,_data)=>
 {
     return partial_get_feature(feature_data_table, has_feature)(_pkey,_data);
-}
+};
 
 let is_exclusive_feature=function(_exclusive_target, _pkey, _pkey_value)
 {

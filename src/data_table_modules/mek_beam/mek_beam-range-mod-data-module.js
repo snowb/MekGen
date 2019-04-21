@@ -44,7 +44,7 @@ let range_mod_validate=(_data)=>
     data_cached=true;
     cached_validate=partial_validate(range_mod_data_table, data_table_keys);
     return cached_validate(_data);
-}
+};
 
 //completed function for checking if data has data
 let has_feature=partial_has_feature(range_mod_data_table);

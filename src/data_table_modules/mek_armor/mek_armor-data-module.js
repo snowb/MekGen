@@ -36,7 +36,7 @@ let armor_validate=(_data)=>
     data_cached=true;
     cached_validate=partial_validate(armor_data_table, data_table_keys);
     return cached_validate(_data);
-}
+};
 
 //completed function for checking if data has data
 let has_feature=(_pkey,_data)=>
@@ -48,7 +48,7 @@ let has_feature=(_pkey,_data)=>
 let get_feature=(_pkey,_data)=>
 {
     return partial_get_feature(armor_data_table, has_feature)(_pkey,_data);
-}
+};
 
 let cleaned_feature=
     partial_cleaned_feature(armor_validate, has_feature, get_feature, default_data, "Mek_Armor");
