@@ -19,9 +19,9 @@ let importValidator=(_module_name, _validator_prop_name)=>
 
 let module_list=
 [
-    {module_name:"./mek_armor_validators",validator_prop_name:"mek_armor"},
-    {module_name:"./mek_servo_validators",validator_prop_name:"mek_servo"},
-    {module_name:"./mek_beam_validators",validator_prop_name:"mek_beam"},
+    {module_name:"./mek_armor_validator",validator_prop_name:"mek_armor"},
+    {module_name:"./mek_servo_validator",validator_prop_name:"mek_servo"},//import mek_servo component validator
+    {module_name:"./mek_beam_validator",validator_prop_name:"mek_beam"},
 ];
 module_list.forEach((_val)=>
 {
@@ -31,52 +31,6 @@ module_list.forEach((_val)=>
 let runValidator=(_validator, _pkey, _component)=>
 {
     return _validator(_pkey,_component);
-};
-
-let validateServo=(_component)=>
-{
-    let cleanedComponent=_component;
-    let validatedData;
-    let componentsToValiate=
-    [
-        {validator:validators.mek_servo.type,pkey:"type",component_prop:"selected_servo_type"},
-        {validator:validators.mek_armor.type,pkey:"damage_coefficient",component_prop:"selected_armor_type"},
-        {validator:validators.mek_armor.RAM,pkey:"absorption",component_prop:'selected_absorption'},
-    ];
-    componentsToValiate.forEach((_val)=>
-    {//loop thru and validate mek_servo-type, mek_armor-type, and mek_armor-RAM
-        validatedData=runValidator(_val.validator,_val.pkey,_component[_val.component_prop]);
-        cleanedComponent[_val.component_prop]=validatedData.data;
-        alerts=alerts.concat(validatedData.alerts);
-    });
-    //update mek_servo class table based on mek servo type
-    validators.mek_servo.create_class_table(_component.selected_servo_type.type);
-    //validate servo-class
-    validatedData=validators.mek_servo.servo("code",_component.selected_servo_class);
-    alerts=alerts.concat(validatedData.alerts);
-    cleanedComponent.selected_servo_class=validatedData.data;
-    //generate properly formatted kill-space-trade data
-    let trade_formatted=
-        {
-            kills:_component.kills_space_trade.kills_modifier,
-            space:_component.kills_space_trade.space_modifier,
-            cost:_component.kills_space_trade.cost
-        };
-    //validate servo-kills-space-trade
-    validatedData=validators.mek_servo.trade(
-        trade_formatted,
-        _component.selected_servo_class.kills,
-        _component.selected_servo_class.space);
-    alerts=alerts.concat(validatedData.alerts);
-    cleanedComponent.kills_space_trade=validatedData.data;
-    //update armor based on servo class
-    validators.mek_armor.armor_filter(_component.selected_servo_class.code+2);
-    //validate armor
-    validatedData=validators.mek_armor.armor("code",_component.selected_armor);
-    alerts=alerts.concat(validatedData.alerts);
-    cleanedComponent.selected_armor=validatedData.data;
-
-    return cleanedComponent;
 };
 
 let validateBeam=(_component)=>
@@ -155,7 +109,9 @@ let validateComponent=(_component)=>
         switch(_component.component_type)
         {
             case "servo":
-                cleanedComponent=validateServo(_component);
+                //cleanedComponent=validateServo(_component);
+                cleanedComponent=validators.mek_servo.validateComponent(_component);
+                alerts.concat(validators.mek_servo.getAlerts());
                 break;
             case "beam":
                 cleanedComponent=validateBeam(_component);
