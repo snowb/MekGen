@@ -92,7 +92,6 @@ export default
                     this.$emit("update-efficiencies",validated_efficiency.data);
                 }
                 //do something with the alerts
-                console.log(this.raw_space)
                 if(this.selected_method=="to_space")
                 {
                     return this.raw_space - validated_efficiency.data.modifier;
