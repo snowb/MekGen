@@ -72,8 +72,8 @@
                 <div slot="col1-row4" v-if="absorption.absorption!=0">Absorption: {{absorption.absorption*100}}%</div>
                 <div slot="col2-row1" v-if="type.name.toLowerCase()=='standard' || type.name.toLowerCase()=='active'">Binder Space: {{round(binder.space,3)}}</div>
                 <div slot="col2-row1" v-if="type.name.toLowerCase()=='reactive'">Weakness(es):<div style="max-width:150px;margin-left:10px;">{{feature_list}}</div></div>
-                <div slot="col2-row2" v-if="type.name.toLowerCase()=='reactive'">Reset Time: {{reset_time.time}}</div>
-                <div slot="col2-row3" v-if="type.name.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time}}</div>
+                <div slot="col2-row2" v-if="type.name.toLowerCase()=='reactive'">Reset Time: {{reset_time.time=="__NIL__"?"Nil":reset_time.time}}</div>
+                <div slot="col2-row3" v-if="type.name.toLowerCase()=='reactive'">Turns in Use: {{turns_in_use.time=="__INFINITY__"?"Infinite":turns_in_use.time}}</div>
                 <div slot="col2-row4" v-if="type.name.toLowerCase()=='reactive'">Surge Damage: {{surge_damage}}</div>
                 <div slot="col3-row1">Base Space: {{raw_space}}</div>
                 <div slot="col3-row2">Space: {{space_cost}}</div>
