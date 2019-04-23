@@ -37,10 +37,12 @@
 import selected_item_mixin from "@/mixins/selected_item_mixin";
 import utility_mixin from "@/mixins/utility_mixin";
 
+import {validate_efficiency} from "@/data_table_modules/universal/mek_space-efficiency-data-module";
+
 export default 
 {
     name:"mek_space_efficiency",
-    props:["space_efficiency","raw_space"],
+    props:["space_efficiency","raw_space","component_name"],
     mixins:[selected_item_mixin, utility_mixin],
     data:function()
     {
@@ -83,17 +85,20 @@ export default
         {
             get()
             {
-                if(this.space_efficiency.modifier>=this.raw_space)
+
+                let validated_efficiency=validate_efficiency(this.space_efficiency,this.raw_space,this.component_name)
+                if(validated_efficiency.update)
                 {
-                    this.select_efficiency(0);
-                    return 0;
+                    this.$emit("update-efficiencies",validated_efficiency.data);
                 }
+                //do something with the alerts
+                console.log(this.raw_space)
                 if(this.selected_method=="to_space")
                 {
-                    return this.raw_space - this.space_efficiency.modifier;
+                    return this.raw_space - validated_efficiency.data.modifier;
                 }
 
-                return this.space_efficiency.modifier;
+                return validated_efficiency.data.modifier;
             },
             set(_value)
             {
