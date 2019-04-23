@@ -33,6 +33,7 @@ let validateComponent=(_component)=>
 {
     //console.log(_component);
     let cleanedComponent;
+    alerts=[];//reset parent alerts
 
     //console.log(cleanedComponent.selected_armor)
     /* *
@@ -54,11 +55,11 @@ let validateComponent=(_component)=>
             case "servo":
                 //cleanedComponent=validateServo(_component);
                 cleanedComponent=validators.mek_servo.validateComponent(_component);
-                alerts.concat(validators.mek_servo.getAlerts());
+                alerts=alerts.concat(validators.mek_servo.getAlerts());
                 break;
             case "beam":
                 cleanedComponent=validators.mek_beam.validateComponent(_component);
-                alerts.concat(validators.mek_beam.getAlerts());
+                alerts=alerts.concat(validators.mek_beam.getAlerts());
                 //efficiency!?
                 break;
             case "emw":
