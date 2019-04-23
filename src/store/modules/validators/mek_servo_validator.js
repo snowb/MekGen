@@ -48,13 +48,13 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let componentsToValiate=
+    let componentsToValidate=
     [
         {validator:validators.servo_type,pkey:"type",component_prop:"selected_servo_type"},
         {validator:validators.armor_type,pkey:"damage_coefficient",component_prop:"selected_armor_type"},
         {validator:validators.armor_RAM,pkey:"absorption",component_prop:'selected_absorption'},
     ];
-    componentsToValiate.forEach((_val)=>
+    componentsToValidate.forEach((_val)=>
     {//loop thru and validate mek_servo-type, mek_armor-type, and mek_armor-RAM
         validatedData=runValidator(_val.validator,_val.pkey,_component[_val.component_prop]);
         cleanedComponent[_val.component_prop]=validatedData.data;
