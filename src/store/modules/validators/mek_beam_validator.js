@@ -52,6 +52,12 @@ import(/* webpackChunkName: "mek_beam-wide-angle-data-module" */"@/data_table_mo
     validators.wide_angle=_module.cleaned_feature;
 });
 
+import(/* webpackChunkName: "mek_space-efficiency-data-module" */"@/data_table_modules/universal/mek_space-efficiency-data-module")
+.then((_module)=>
+{
+    validators.space_efficiency=_module.validate_efficiency;
+});
+
 let runValidator=(_validator, _pkey, _component)=>
 {
     return _validator(_pkey,_component);
@@ -106,6 +112,18 @@ let validateComponent=(_component)=>
     validatedData=validators.shots("shots",_component.selected_shots);
     if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
     cleanedComponent.selected_shots=validatedData.data;
+    //validate space efficiency
+    let cost_multiplier=Object.entries(cleanedComponent.cost_multiplier).reduce((_multi, _val)=>
+    {
+        return _multi*_val[1];
+    },1);
+    let total_cost=cleanedComponent.selected_damage.cost * cost_multiplier;
+    validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Beam");
+    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    cleanedComponent.efficiencies.space=validatedData.data;
+    //update static values
+    cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
+    cleanedComponent.weight=cleanedComponent.damage_capacity/2;
 
     return cleanedComponent;
 };
@@ -115,4 +133,4 @@ let getAlerts=()=>
     return alerts;
 };
 
-export {validateComponent,getAlerts};
+export {validateComponent, getAlerts};
