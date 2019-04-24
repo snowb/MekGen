@@ -41,7 +41,7 @@
                     ></mek-projectile-feature>
                 <mek-space-efficiency style="align-self:baseline;"
                     :space_efficiency="efficiencies.space"
-                    :raw_space="raw_space"
+                    :raw_space="raw_space" component_name="Mek-Projectile"
                     @update-efficiencies="updateEfficiencies"
                 ></mek-space-efficiency>
             </div>                

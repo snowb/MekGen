@@ -40,7 +40,7 @@
                     ></mek-beam-wide-angle>
                     <mek-space-efficiency style="align-self:baseline;"
                         :space_efficiency="efficiencies.space"
-                        :raw_space="raw_space"
+                        :raw_space="raw_space" component_name="Mek-Beam"
                         @update-efficiencies="updateEfficiencies" 
                     ></mek-space-efficiency>
                 </div>

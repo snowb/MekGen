@@ -32,7 +32,7 @@
                     ></mek-missile-skill>
                     <mek-space-efficiency style="align-self:baseline;"
                         :space_efficiency="efficiencies.space"
-                        :raw_space="raw_space"
+                        :raw_space="raw_space" component_name="Mek-Missile"
                         @update-efficiencies="updateEfficiencies"
                     ></mek-space-efficiency>
                 </div>

@@ -19,7 +19,7 @@
             </div>
             <mek-space-efficiency style="align-self:flex-start;"
                 :space_efficiency="efficiencies.space"
-                :raw_space="raw_space"
+                :raw_space="raw_space" component_name="Mek-Energy_Pool"
                 @update-efficiencies="updateEfficiencies"
             ></mek-space-efficiency>          
         </div>

@@ -14,7 +14,7 @@
             <span class="mek-flex-col no-margin">
                 <mek-space-efficiency
                     :space_efficiency="efficiencies.space"
-                    :raw_space="raw_space"
+                    :raw_space="raw_space" component_name="Mek-Reflector"
                     @update-efficiencies="updateEfficiencies"
                 ></mek-space-efficiency>
             </span>

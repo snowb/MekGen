@@ -23,7 +23,7 @@
             ></mek-melee-entangle-range>
             <mek-space-efficiency style="align-self:start;"
                 :space_efficiency="efficiencies.space"
-                :raw_space="raw_space"
+                :raw_space="raw_space" component_name="Mek-Melee"
                 @update-efficiencies="updateEfficiencies"
             ></mek-space-efficiency>
         </div>
