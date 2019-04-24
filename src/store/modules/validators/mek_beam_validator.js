@@ -58,15 +58,37 @@ import(/* webpackChunkName: "mek_space-efficiency-data-module" */"@/data_table_m
     validators.space_efficiency=_module.validate_efficiency;
 });
 
-let runValidator=(_validator, _pkey, _component)=>
+let runValidator=(_validator_data, _component)=>
 {
-    return _validator(_pkey,_component);
+    return validators[_validator_data.validator](_validator_data.pkey,_component[_validator_data.component_prop]);
+};
+
+let updateMultipliers=(_updateList, _component)=>
+{
+    let component=_component;
+    if(_updateList.length==0)
+    {
+        return component;
+    }
+    _updateList.forEach((_component_prop)=>
+    {
+        if(_component_prop=="feature_array")
+        {
+            component.cost_multipliers.feature=_component[_component_prop].reduce((_cm, _feat)=>
+            {
+                return _cm = _cm * _feat.cost;
+            },1);
+        }
+        component.cost_multipliers[_component_prop]=_component[_component_prop].cost;
+    });
+    return component;
 };
 
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
+    let updateList=[];
     /**
      * 
      * implement array-of-objects componentsToValidate
@@ -75,26 +97,30 @@ let validateComponent=(_component)=>
      */
     let componentsToValidate=
     [
-        {validator:validators.damage,pkey:"damage",component_prop:"selected_damage"},
-        {validator:validators.burst_value,pkey:"burst_value",component_prop:"selected_burst_value"},
-        {validator:validators.accuracy,pkey:"accuracy",component_prop:'selected_accuracy'},
-        {validator:validators.warm_up,pkey:"time",component_prop:'selected_warm_up_time'},
-        {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
+        {validator:"damage",pkey:"damage",component_prop:"selected_damage"},
+        {validator:"burst_value",pkey:"burst_value",component_prop:"selected_burst_value"},
+        {validator:"accuracy",pkey:"accuracy",component_prop:'selected_accuracy'},
+        {validator:"warm_up",pkey:"time",component_prop:'selected_warm_up_time'},
+        {validator:"wide_angle",pkey:"angle",component_prop:'selected_wide_angle'},
     ];
     componentsToValidate.forEach((_val)=>
     {//loop thru and validate mek_beam damage, burst_val, accuracy, warm_up, wide_angle
-        validatedData=runValidator(_val.validator,_val.pkey,_component[_val.component_prop]);
+        validatedData=runValidator(_val, cleanedComponent);
         cleanedComponent[_val.component_prop]=validatedData.data;
         alerts=alerts.concat(validatedData.alerts);
+        if(validatedData.update && _val.component_prop!="selected_damage")
+        {
+            updateList.push(_val.component_prop);
+        }
     });
-
     //extract base range for range_mod update
     let base_range=cleanedComponent.selected_damage.range;
     //update range_mod table
     validators.update_range_mod(base_range);
     //validate range mod
     validatedData=validators.range_mod("range_mod",_component.selected_range_mod);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    alerts=alerts.concat(validatedData.alerts);
+    if(validatedData.update){updateList.push("selected_range_mod");}
     cleanedComponent.selected_range_mod=validatedData.data;
     //extract BV for feature data table update
     let burst_value=cleanedComponent.selected_burst_value.burst_value;
@@ -102,7 +128,8 @@ let validateComponent=(_component)=>
     validators.filter_feature(burst_value);
     //validate features
     validatedData=validators.feature(_component.feature_array,"feature");
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    alerts=alerts.concat(validatedData.alerts);
+    if(validatedData.update){updateList.push("feature_array");}
     cleanedComponent.feature_array=validatedData.cleaned_array;
     //extract if Mag-Fed
     let magFed=cleanedComponent.feature_array.some(_val=>_val.feature=="Mag-Fed");
@@ -110,16 +137,19 @@ let validateComponent=(_component)=>
     validators.update_shots(magFed);
     //validate shots
     validatedData=validators.shots("shots",_component.selected_shots);
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    alerts=alerts.concat(validatedData.alerts);
+    if(validatedData.update){updateList.push("selected_shots");}
     cleanedComponent.selected_shots=validatedData.data;
+    //update cost_multipliers for components needing update
+    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
-    let cost_multiplier=Object.entries(cleanedComponent.cost_multiplier).reduce((_multi, _val)=>
+    cleanedComponent.cost_multiplier=Object.entries(cleanedComponent.cost_multiplier).reduce((_multi, _val)=>
     {
         return _multi*_val[1];
     },1);
-    let total_cost=cleanedComponent.selected_damage.cost * cost_multiplier;
+    let total_cost=cleanedComponent.selected_damage.cost * cleanedComponent.cost_multiplier;
     validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Beam");
-    if(validatedData.update){alerts=alerts.concat(validatedData.alerts);}
+    alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
     //update static values
     cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
