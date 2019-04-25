@@ -107,12 +107,13 @@ export default
         obj.cost_multipliers={};
 
         obj.selected_armor={name:"None",cost:0,stopping_power:0,code:0};
+        obj.cost_multipliers.armor={};
         
         obj.selected_armor_type={type:"Standard",damage_coefficient:1,cost:1};
-        obj.cost_multipliers.armor_type=1;
+        obj.cost_multipliers.armor.armor_type=1;
 
         obj.selected_absorption={absorption:0,cost:1,armor_penalty:0};
-        obj.cost_multipliers.absorption=1;
+        obj.cost_multipliers.armor.absorption=1;
 
         obj.kills_space_trade={};
         obj.kills_space_trade.space_modifier=0;
@@ -155,13 +156,13 @@ export default
         updateArmorType(_armor_type)
         {
             this.$set(this,"selected_armor_type",JSON.parse(JSON.stringify(_armor_type)));
-            this.cost_multipliers.armor_type=this.selected_armor_type.cost;
+            this.cost_multipliers.armor.armor_type=this.selected_armor_type.cost;
             this.component_changed=true;
         },
         updateAbsorption(_absorption)
         {
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
-            this.cost_multipliers.absorption=this.selected_absorption.cost;
+            this.cost_multipliers.armor.absorption=this.selected_absorption.cost;
             this.component_changed=true;
         },
         updateExtraSpace(_kills_space_trade)
@@ -200,7 +201,7 @@ export default
             return_data.kills_space_trade=JSON.parse(JSON.stringify(this.kills_space_trade));
             
             return_data.cost=this.cost;
-            return_data.cost_multiplier=this.cost_multiplier;
+            return_data.armor_cost_multiplier=this.armor_cost_multiplier;
             return_data.weight=this.weight;
             return_data.total_kills=this.total_kills;
             return_data.available_space=this.available_space;
@@ -268,7 +269,7 @@ export default
         },
         cost()
         {
-            return this.selected_servo_class.cost + (this.selected_armor.cost*this.cost_multiplier) + this.kills_space_trade.cost;
+            return this.selected_servo_class.cost + (this.selected_armor.cost*this.armor_cost_multiplier) + this.kills_space_trade.cost;
         },
         available_space()
         {
@@ -299,6 +300,15 @@ export default
         is_leg()
         {
             return this.selected_servo_type.type.toLowerCase()=="leg";
+        },
+        armor_cost_multiplier()
+        {
+            let cost_multiplier=1;
+            for(let multi in this.cost_multipliers.armor)
+            {
+                cost_multiplier*=this.cost_multipliers.armor[multi];
+            }
+            return this.round(cost_multiplier,2);
         }
     }
 };
