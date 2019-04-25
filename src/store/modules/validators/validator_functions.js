@@ -52,4 +52,14 @@ let updateMultipliers=(_updateList, _component)=>
     return component;
 };
 
-export {loopValidators, updateMultipliers};
+let round=(_number, _decimals)=>
+{
+    if(typeof _decimals==="undefined" || +_decimals==0)
+    {
+        return Math.round(+_number)
+    }
+    let multiplier=10 ** +_decimals;
+    return Math.round(+_number * multiplier)/multiplier;
+};
+
+export {loopValidators, updateMultipliers, round};
