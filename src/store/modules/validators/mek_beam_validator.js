@@ -71,6 +71,7 @@ let validateComponent=(_component)=>
     let validatedData;
     let updateList=[];
     let loopAlerts;
+    alerts=[];
     //loop thru independent validations
     let componentsToValidate=
     [

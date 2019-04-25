@@ -52,6 +52,7 @@ let validateComponent=(_component)=>
     let validatedData;
     let updateList=[];
     let loopAlerts;
+    alerts=[];
     let componentsToValidate=
     [
         {validator:validators.servo_type,pkey:"type",component_prop:"selected_servo_type",skipUpdateList:true},
