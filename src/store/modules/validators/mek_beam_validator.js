@@ -58,73 +58,30 @@ import(/* webpackChunkName: "mek_space-efficiency-data-module" */"@/data_table_m
     validators.space_efficiency=_module.validate_efficiency;
 });
 
-let loopValidators=(_validators, _component)=>
+let loopValidators, updateMultipliers;
+import(/* webpackChunkName: "validator_functions" */"./validator_functions")
+.then((_module)=>
 {
-    let cleanedComponent=_component;
-    let updateList=[];
-    _validators.forEach((_val)=>
-    {//loop thru and validate mek_beam damage, burst_val, accuracy, warm_up, wide_angle
-        let validatedData=runValidator(_val, cleanedComponent);
-        cleanedComponent[_val.component_prop]=validatedData.data;
-        alerts=alerts.concat(validatedData.alerts);
-        if(validatedData.update && _val.component_prop!="selected_damage")
-        {
-            updateList.push(_val.component_prop);
-        }
-    });
-
-    return {updateList:updateList, cleanedComponent:cleanedComponent};
-};
-
-let runValidator=(_validator_data, _component)=>
-{
-    let validatorInstance=validators[_validator_data.validator];
-    let pkeyInstance=_validator_data.pkey;
-    let propInstance=_component[_validator_data.component_prop];
-
-    if(_validator_data.component_prop=="feature_array")
-    {
-        return validatorInstance(propInstance, pkeyInstance); 
-    }
-    return validatorInstance(pkeyInstance, propInstance);
-};
-
-let updateMultipliers=(_updateList, _component)=>
-{
-    let component=_component;
-    if(_updateList.length==0)
-    {
-        return component;
-    }
-    _updateList.forEach((_component_prop)=>
-    {
-        if(_component_prop=="feature_array")
-        {
-            component.cost_multipliers.feature=_component[_component_prop].reduce((_cm, _feat)=>
-            {
-                return _cm = _cm * _feat.cost;
-            },1);
-        }
-        component.cost_multipliers[_component_prop]=_component[_component_prop].cost;
-    });
-    return component;
-};
+    ({loopValidators, updateMultipliers} = _module);
+});
 
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
     let updateList=[];
+    let loopAlerts;
     //loop thru independent validations
     let componentsToValidate=
     [
-        {validator:"damage",pkey:"damage",component_prop:"selected_damage"},
-        {validator:"burst_value",pkey:"burst_value",component_prop:"selected_burst_value"},
-        {validator:"accuracy",pkey:"accuracy",component_prop:'selected_accuracy'},
-        {validator:"warm_up",pkey:"time",component_prop:'selected_warm_up_time'},
-        {validator:"wide_angle",pkey:"angle",component_prop:'selected_wide_angle'},
+        {validator:validators.damage,pkey:"damage",component_prop:"selected_damage",skipUpdateList:true},
+        {validator:validators.burst_value,pkey:"burst_value",component_prop:"selected_burst_value"},
+        {validator:validators.accuracy,pkey:"accuracy",component_prop:'selected_accuracy'},
+        {validator:validators.warm_up,pkey:"time",component_prop:'selected_warm_up_time'},
+        {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
     ];
-    ({updateList, cleanedComponent} = loopValidators(componentsToValidate, cleanedComponent));
+    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    alerts=alerts.concat(loopAlerts)
     //update range_mod table
     validators.update_range_mod(cleanedComponent.selected_damage.range);
     //update feature table
@@ -136,11 +93,12 @@ let validateComponent=(_component)=>
     //loop thru dependent validations
     componentsToValidate=
     [
-        {validator:"range_mod",pkey:"range_modifier",component_prop:"selected_range_mod"},
-        {validator:"feature",pkey:"feature",component_prop:"feature_array"},
-        {validator:"shots",pkey:"shots",component_prop:'selected_shots'},
+        {validator:validators.range_mod,pkey:"range_modifier",component_prop:"selected_range_mod"},
+        {validator:validators.feature,pkey:"feature",component_prop:"feature_array"},
+        {validator:validators.shots,pkey:"shots",component_prop:'selected_shots'},
     ];
-    ({updateList, cleanedComponent} = loopValidators(componentsToValidate, cleanedComponent));
+    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    alerts=alerts.concat(loopAlerts)
     //update cost_multipliers for components needing update
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
