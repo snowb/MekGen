@@ -20,33 +20,46 @@ import(/* webpackChunkName: "mek_servo-type-data-module" */"@/data_table_modules
     validators.servo_type=_module.cleaned_feature;
 });
 
-import(/* webpackChunkName: "mek_armor_validator" */"./mek_armor_validator")
+import(/* webpackChunkName: "mek_armor-data-module" */"@/data_table_modules/mek_armor/mek_armor-data-module.js")
 .then((_module)=>
 {
-    validators.armor=_module.validators;
+    validators.armor=_module.cleaned_feature;
+    validators.armor_filter=_module.filter_data_table;
 });
 
-let runValidator=(_validator, _pkey, _component)=>
+import(/* webpackChunkName: "mek_armor-type-data-module" */"@/data_table_modules/mek_armor/mek_armor-type-data-module.js")
+.then((_module)=>
 {
-    return _validator(_pkey,_component);
-};
+    validators.armor_type=_module.cleaned_feature;
+});
+
+import(/* webpackChunkName: "mek_armor-RAM-data-module" */"@/data_table_modules/mek_armor/mek_armor-RAM-data-module.js")
+.then((_module)=>
+{
+    validators.armor_RAM=_module.cleaned_feature;
+});
+
+let loopValidators, updateMultipliers, round;
+import(/* webpackChunkName: "validator_functions" */"./validator_functions")
+.then((_module)=>
+{
+    ({loopValidators, updateMultipliers, round} = _module);
+});
 
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
+    let updateList=[];
+    let loopAlerts;
     let componentsToValidate=
     [
-        {validator:validators.servo_type,pkey:"type",component_prop:"selected_servo_type"},
-        {validator:validators.armor.type,pkey:"damage_coefficient",component_prop:"selected_armor_type"},
-        {validator:validators.armor.RAM,pkey:"absorption",component_prop:'selected_absorption'},
+        {validator:validators.servo_type,pkey:"type",component_prop:"selected_servo_type",skipUpdateList:true},
+        {validator:validators.armor_type,pkey:"damage_coefficient",component_prop:"selected_armor_type",},
+        {validator:validators.armor_RAM,pkey:"absorption",component_prop:'selected_absorption'},
     ];
-    componentsToValidate.forEach((_val)=>
-    {//loop thru and validate mek_servo-type, mek_armor-type, and mek_armor-RAM
-        validatedData=runValidator(_val.validator,_val.pkey,_component[_val.component_prop]);
-        cleanedComponent[_val.component_prop]=validatedData.data;
-        alerts=alerts.concat(validatedData.alerts);
-    });
+    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    alerts=alerts.concat(loopAlerts)
     //update mek_servo class table based on mek servo type
     validators.create_class_table(_component.selected_servo_type.type);
     //validate servo-class
@@ -67,12 +80,27 @@ let validateComponent=(_component)=>
         _component.selected_servo_class.space);
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.kills_space_trade=validatedData.data;
+    // update total kills and available_space
+    cleanedComponent.total_kills=cleanedComponent.selected_servo_class.kills + cleanedComponent.kills_space_trade.kills_modifier;
+    cleanedComponent.available_space=cleanedComponent.selected_servo_class.space + cleanedComponent.kills_space_trade.space_modifier;
     //update armor based on servo class
-    validators.armor.armor_filter(_component.selected_servo_class.code+2);
+    validators.armor_filter(_component.selected_servo_class.code+2);
     //validate armor
-    validatedData=validators.armor.armor("code",_component.selected_armor);
+    validatedData=validators.armor("code",_component.selected_armor);
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.selected_armor=validatedData.data;
+
+    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
+    //validate space efficiency
+    let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
+    {//calc new cost_mulitplier
+        return _multi*_val[1];
+    },1);
+    cleanedComponent.cost_multiplier.armor=round(cost_mulitplier,2);
+    cleanedComponent.weight=(cleanedComponent.total_kills + cleanedComponent.selected_armor.stopping_power)/2;
+    cleanedComponent.cost=cleanedComponent.selected_servo_class.cost
+                          + (cleanedComponent.selected_armor.cost * cleanedComponent.cost_multiplier.armor)
+                          + cleanedComponent.kills_space_trade.cost;
 
     return cleanedComponent;
 };
