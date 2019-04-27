@@ -33,7 +33,6 @@ let validateComponent=(_component)=>
     //console.log(_component);
     let cleanedComponent;
     let validator_prop="";
-    let alerts=[];//reset parent alerts
 
     //console.log(cleanedComponent.selected_armor)
     /* *

@@ -1,7 +1,6 @@
 let loopValidators=(_validators, _component)=>
 {
     let cleanedComponent=_component;
-    let updateList=[];
     let alerts=[];
     _validators.forEach((_val)=>
     {
