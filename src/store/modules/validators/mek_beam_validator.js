@@ -1,5 +1,4 @@
 let validators={};
-let alerts=[];
 
 import(/* webpackChunkName: "mek_beam-accuracy-data-module" */"@/data_table_modules/mek_beam/mek_beam-accuracy-data-module")
 .then((_module)=>
@@ -69,10 +68,9 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=[];
-    let finalUpdateList=[];
+    let updateList=["burst_value","accuracy","warm_up_time","wide_angle","range_mod","feature","shots"];
     let loopAlerts;
-    alerts=[];
+    let alerts=[];
     //loop thru independent validations
     let componentsToValidate=
     [
@@ -82,8 +80,7 @@ let validateComponent=(_component)=>
         {validator:validators.warm_up,pkey:"time",component_prop:'selected_warm_up_time'},
         {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
     ];
-    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    finalUpdateList=finalUpdateList.concat(updateList);
+    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
     alerts=alerts.concat(loopAlerts)
     //update range_mod table
     validators.update_range_mod(cleanedComponent.selected_damage.range);
@@ -100,11 +97,10 @@ let validateComponent=(_component)=>
         {validator:validators.feature,pkey:"feature",component_prop:"feature_array"},
         {validator:validators.shots,pkey:"shots",component_prop:'selected_shots'},
     ];
-    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    finalUpdateList=finalUpdateList.concat(updateList);
+    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
     alerts=alerts.concat(loopAlerts)
     //update cost_multipliers for components needing update
-    cleanedComponent=updateMultipliers(finalUpdateList,cleanedComponent);
+    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
     let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
@@ -119,12 +115,7 @@ let validateComponent=(_component)=>
     cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
 
-    return cleanedComponent;
+    return {data:cleanedComponent, alerts:alerts};
 };
 
-let getAlerts=()=>
-{
-    return alerts;
-};
-
-export {validateComponent, getAlerts};
+export {validateComponent};

@@ -1,5 +1,3 @@
-let alerts=[];
-
 let validators={};
 //load mek_armor validators from module
 // import(/* webpackChunkName: "[request]" */"./mek_armor_validators")
@@ -35,7 +33,7 @@ let validateComponent=(_component)=>
     //console.log(_component);
     let cleanedComponent;
     let validator_prop="";
-    alerts=[];//reset parent alerts
+    let alerts=[];//reset parent alerts
 
     //console.log(cleanedComponent.selected_armor)
     /* *
@@ -123,13 +121,10 @@ let validateComponent=(_component)=>
         }
         if(validator_prop!=="")
         {
-            cleanedComponent=validators[validator_prop].validateComponent(_component);
-            alerts=alerts.concat(validators[validator_prop].getAlerts());
+            cleanedComponent=validators[validator_prop].validateComponent(_component)
         }    
    }
    return cleanedComponent;
 };
 
-let getAlerts=()=>alerts;
-
-export {validateComponent, getAlerts};
+export {validateComponent};

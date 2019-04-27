@@ -1,5 +1,4 @@
 let validators={};
-let alerts=[];
 
 import(/* webpackChunkName: "mek_servo-class-data-module" */"@/data_table_modules/mek_servo/mek_servo-class-data-module.js")
 .then((_module)=>
@@ -50,18 +49,16 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=[];//for tracking cost_multiplier props that may need updating
-    let finalUpdateList=[];
+    let updateList=["armor_type","absorption"];
     let loopAlerts;
-    alerts=[];
+    let alerts=[];
     let componentsToValidate=
     [
         {validator:validators.servo_type,pkey:"type",component_prop:"selected_servo_type",skipUpdateList:true},
         {validator:validators.armor_type,pkey:"damage_coefficient",component_prop:"selected_armor_type",},
         {validator:validators.armor_RAM,pkey:"absorption",component_prop:'selected_absorption'},
     ];
-    ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    finalUpdateList=finalUpdateList.concat(updateList);
+    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
     alerts=alerts.concat(loopAlerts)
     //update mek_servo class table based on mek servo type
     validators.create_class_table(_component.selected_servo_type.type);
@@ -93,7 +90,7 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.selected_armor=validatedData.data;
 
-    cleanedComponent=updateMultipliers(finalUpdateList,cleanedComponent);
+    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
     let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
@@ -105,12 +102,7 @@ let validateComponent=(_component)=>
                           + (cleanedComponent.selected_armor.cost * cleanedComponent.cost_multiplier.armor)
                           + cleanedComponent.kills_space_trade.cost;
 
-    return cleanedComponent;
+    return {data:cleanedComponent, alerts:alerts};
 };
 
-let getAlerts=()=>
-{
-    return alerts;
-};
-
-export {validateComponent, getAlerts};
+export {validateComponent};

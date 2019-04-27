@@ -105,8 +105,8 @@ let store= new Vuex.Store(
             importComponent(_context, _component)
             {
                 let cleanedComponent=this.validateComponent(_component);
-                _context.commit("saveComponent",cleanedComponent);
-                console.log(cleanedComponent, this.getImportAlerts());
+                _context.commit("saveComponent",cleanedComponent.data);
+                console.log(cleanedComponent, cleanedComponent.alerts);
             }
         },
         getters:
@@ -163,7 +163,6 @@ import(/* webpackChunkName: "mek_master_validator" */"./modules/validators/mek_m
 .then((_module)=>
     {
         store.validateComponent=_module.validateComponent;
-        store.getImportAlerts=_module.getAlerts;
     });
 
 
