@@ -8,12 +8,11 @@ let loopValidators=(_validators, _component)=>
         let validatedData=runValidator(_val, cleanedComponent);
         cleanedComponent[_val.component_prop]=validatedData.data;
         alerts=alerts.concat(validatedData.alerts);
-        if(validatedData.update && _val.skipUpdateList)
+        if(validatedData.update && !_val.skipUpdateList)
         {
             updateList.push(_val.component_prop);
         }
     });
-
     return {updateList:updateList, cleanedComponent:cleanedComponent, loopAlerts:alerts};
 };
 
