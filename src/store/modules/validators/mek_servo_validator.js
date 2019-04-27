@@ -50,7 +50,8 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=[];
+    let updateList=[];//for tracking cost_multiplier props that may need updating
+    let finalUpdateList=[];
     let loopAlerts;
     alerts=[];
     let componentsToValidate=
@@ -60,6 +61,7 @@ let validateComponent=(_component)=>
         {validator:validators.armor_RAM,pkey:"absorption",component_prop:'selected_absorption'},
     ];
     ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    finalUpdateList=finalUpdateList.concat(updateList);
     alerts=alerts.concat(loopAlerts)
     //update mek_servo class table based on mek servo type
     validators.create_class_table(_component.selected_servo_type.type);
@@ -91,7 +93,7 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.selected_armor=validatedData.data;
 
-    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
+    cleanedComponent=updateMultipliers(finalUpdateList,cleanedComponent);
     //validate space efficiency
     let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier

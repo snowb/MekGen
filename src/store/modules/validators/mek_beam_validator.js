@@ -70,6 +70,7 @@ let validateComponent=(_component)=>
     let cleanedComponent=_component;
     let validatedData;
     let updateList=[];
+    let finalUpdateList=[];
     let loopAlerts;
     alerts=[];
     //loop thru independent validations
@@ -82,6 +83,7 @@ let validateComponent=(_component)=>
         {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
     ];
     ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    finalUpdateList=finalUpdateList.concat(updateList);
     alerts=alerts.concat(loopAlerts)
     //update range_mod table
     validators.update_range_mod(cleanedComponent.selected_damage.range);
@@ -99,9 +101,10 @@ let validateComponent=(_component)=>
         {validator:validators.shots,pkey:"shots",component_prop:'selected_shots'},
     ];
     ({updateList, cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    finalUpdateList=finalUpdateList.concat(updateList);
     alerts=alerts.concat(loopAlerts)
     //update cost_multipliers for components needing update
-    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
+    cleanedComponent=updateMultipliers(finalUpdateList,cleanedComponent);
     //validate space efficiency
     let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
