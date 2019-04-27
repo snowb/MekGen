@@ -5,9 +5,12 @@ let loopValidators=(_validators, _component)=>
     _validators.forEach((_val)=>
     {
         let validatedData=runValidator(_val, cleanedComponent);
-        cleanedComponent[_val.component_prop]=validatedData.data;
+        cleanedComponent[_val.component_prop]=_val.component_prop=="feature_array"
+                    ? validatedData.cleaned_array
+                    : validatedData.data;
         alerts=alerts.concat(validatedData.alerts);
     });
+
     return {cleanedComponent:cleanedComponent, loopAlerts:alerts};
 };
 
@@ -36,7 +39,7 @@ let updateMultipliers=(_updateList, _component)=>
     {
         if(_component_prop=="feature_array")
         {
-            component.cost_multipliers.feature=_component[_component_prop].reduce((_cm, _feat)=>
+            component.cost_multipliers.feature_array=_component[_component_prop].reduce((_cm, _feat)=>
             {
                 return _cm = _cm * _feat.cost;
             },1);

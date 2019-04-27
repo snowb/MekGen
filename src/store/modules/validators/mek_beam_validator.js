@@ -81,6 +81,7 @@ let validateComponent=(_component)=>
         {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
     ];
     ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
+    
     alerts=alerts.concat(loopAlerts)
     //update range_mod table
     validators.update_range_mod(cleanedComponent.selected_damage.range);
@@ -91,6 +92,7 @@ let validateComponent=(_component)=>
     //update shots table
     validators.update_shots(magFed);
     //loop thru dependent validations
+
     componentsToValidate=
     [
         {validator:validators.range_mod,pkey:"range_modifier",component_prop:"selected_range_mod"},
@@ -98,7 +100,8 @@ let validateComponent=(_component)=>
         {validator:validators.shots,pkey:"shots",component_prop:'selected_shots'},
     ];
     ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    alerts=alerts.concat(loopAlerts)
+    alerts=alerts.concat(loopAlerts);
+
     //update cost_multipliers for components needing update
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
