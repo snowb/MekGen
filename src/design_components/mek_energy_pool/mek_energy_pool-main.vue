@@ -90,8 +90,8 @@ export default
         obj.efficiencies.space.modifier=0;
 
         obj.cost_multipliers={};
-        obj.cost_multipliers.portfolio_size=1;
-        obj.cost_multipliers.feature=1;
+        obj.cost_multipliers.selected_portfolio_size=1;
+        obj.cost_multipliers.feature_array=1;
 
         obj.hasAlert=false;
 
@@ -123,13 +123,13 @@ export default
         {
             this.selected_portfolio_size.cost=_size.cost;
             this.selected_portfolio_size.size=_size.size;
-            this.cost_multipliers.portfolio_size=_size.cost;
+            this.cost_multipliers.selected_portfolio_size=_size.cost;
             this.component_changed=true;
         },
         updateFeature(_featureArray)
         {
             this.$set(this,"feature_array",_featureArray);
-            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.energy_pool_name;
             this.damage_capacity=this.fragile ? 1 : this.selected_energy_pool.damage_capacity;
         },

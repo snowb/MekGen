@@ -138,12 +138,12 @@ export default
         obj.efficiencies.space.modifier=0;
 
         obj.cost_multipliers={};
-        obj.cost_multipliers.accuracy=1;
-        obj.cost_multipliers.feature=1;
-        obj.cost_multipliers.smart=1;
-        obj.cost_multipliers.skill=1;
-        obj.cost_multipliers.range_mod=1;
-        obj.cost_multipliers.blast_radius=1;
+        obj.cost_multipliers.selected_accuracy=1;
+        obj.cost_multipliers.feature_array=1;
+        obj.cost_multipliers.selected_smart=1;
+        obj.cost_multipliers.selected_skill=1;
+        obj.cost_multipliers.selected_range_mod=1;
+        obj.cost_multipliers.selected_blast_radius=1;
 
         obj.hasAlert=false;
 
@@ -183,13 +183,13 @@ export default
         updateAccuracy(_accuracy)
         {
             this.$set(this,"selected_accuracy",_accuracy);
-            this.cost_multipliers.accuracy=_accuracy.cost;
+            this.cost_multipliers.selected_accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
         {//console.log(_range_mod)
             this.$set(this,"selected_range_mod",_range_mod);
-            this.cost_multipliers.range_mod=_range_mod.cost;
+            this.cost_multipliers.selected_range_mod=_range_mod.cost;
             this.selected_range_mod.type=typeof _range_mod.type!=="undefined" ? _range_mod.type : null;
 
             if(this.is_mine || this.is_bomb)
@@ -206,25 +206,25 @@ export default
         updateSmart(_smart)
         {
             this.$set(this,"selected_smart",_smart);
-            this.cost_multipliers.smart=_smart.cost;
+            this.cost_multipliers.selected_smart=_smart.cost;
             this.component_changed=true;
         },
         updateSkill(_skill)
         {
             this.$set(this,"selected_skill",_skill);
-            this.cost_multipliers.smart=_skill.cost;
+            this.cost_multipliers.selected_skill=_skill.cost;
             this.component_changed=true;
         },
         updateBlastRadius(_blast)
         {
             this.$set(this,"selected_blast_radius",_blast);
-            this.cost_multipliers.blast_radius=_blast.cost;
+            this.cost_multipliers.selected_blast_radius=_blast.cost;
             this.component_changed=true;
         },
         updateFeature(_featureArray)
         {
             this.$set(this,"feature_array",_featureArray);
-            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.missile_name;
 
             if(this.has_duration)

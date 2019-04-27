@@ -148,7 +148,7 @@ export default
         obj.cost_multipliers.turns_in_use=1;
 
         obj.weakness_array=[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}];
-        obj.cost_multipliers.weakness=1;
+        obj.cost_multipliers.weakness_array=1;
 
         obj.efficiencies={};
         obj.efficiencies.space={modifier:0,cost:0};
@@ -203,7 +203,7 @@ export default
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}]);
-                this.cost_multipliers.weakness=1;
+                this.cost_multipliers.weakness_array=1;
             }
             else if(type=="standard")
             {
@@ -216,7 +216,7 @@ export default
                 this.cost_multipliers.turns_in_use=1;
 
                 this.$set(this,"weakness_array",[{weakness:"All",monicker:"Shield",cost:1,exclusive:false}]);
-                this.cost_multipliers.weakness=1;
+                this.cost_multipliers.weakness_array=1;
             }
             this.component_changed=true;
         },
@@ -254,7 +254,7 @@ export default
         select_weakness:function(_weakness_obj)
         {
             this.$set(this,"weakness_array",_weakness_obj);
-            this.cost_multipliers.weakness=this.weakness_array.reduce(function(_cost_multi,_val)
+            this.cost_multipliers.weakness_array=this.weakness_array.reduce(function(_cost_multi,_val)
             {
                 _cost_multi*=_val.cost;
                 return _cost_multi;
@@ -424,7 +424,7 @@ export default
             multiplier*=this.cost_multipliers.binder;
             multiplier*=this.cost_multipliers.reset_time;
             multiplier*=this.cost_multipliers.turns_in_use;
-            multiplier*=this.cost_multipliers.weakness;
+            multiplier*=this.cost_multipliers.weakness_array;
 
             return this.round(multiplier,2);
         },

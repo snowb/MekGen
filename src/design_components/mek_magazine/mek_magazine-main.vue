@@ -73,6 +73,7 @@ export default
 
         obj.cost_multipliers={};
         obj.cost_multipliers["High-Ex"]=1;
+        obj.cost_multipliers.feature_array=1;
 
         obj.efficiencies={};
         obj.efficiencies.space={};
@@ -108,6 +109,7 @@ export default
                 return _newobj;
             },{});
             this.$set(this,"cost_multipliers",cost_multiplier);
+            this.cost_multipliers.feature_array=cost_multiplier;
             this.component_changed=true;
         },
         updateShots(_selected_shots)

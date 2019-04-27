@@ -104,8 +104,8 @@ export default
         obj.efficiencies.space.modifier=0;
 
         obj.cost_multipliers={};
-        obj.cost_multipliers.accuracy=1;
-        obj.cost_multipliers.feature=1;
+        obj.cost_multipliers.selected_accuracy=1;
+        obj.cost_multipliers.feature_array=1;
 
         obj.entangle={};
         obj.entangle.range_modifier=0;
@@ -139,13 +139,13 @@ export default
         {
             this.selected_accuracy.accuracy=_accuracy.accuracy;
             this.selected_accuracy.cost=_accuracy.cost;
-            this.cost_multipliers.accuracy=_accuracy.cost;
+            this.cost_multipliers.selected_accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateFeature(_featureArray)
         {
             this.$set(this,"feature_array",_featureArray);
-            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             if(!this.isEntangle)
             {
                 this.entangle.range_modifier=0;
