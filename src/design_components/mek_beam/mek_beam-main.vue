@@ -144,12 +144,13 @@ export default
         obj.efficiencies.space.modifier=0;
 
         obj.cost_multipliers={};
-        obj.cost_multipliers.accuracy=1;
-        obj.cost_multipliers.feature=1;
-        obj.cost_multipliers.shots=1;
+        obj.cost_multipliers.selected_accuracy=1;
+        obj.cost_multipliers.feature_array=1;
+        obj.cost_multipliers.selected_shots=1;
         obj.cost_multipliers.wide_angle=1;
-        obj.cost_multipliers.warm_up_time=1;
-        obj.cost_multipliers.burst_value=1;
+        obj.cost_multipliers.selected_warm_up_time=1;
+        obj.cost_multipliers.selected_range_mod=1;
+        obj.cost_multipliers.selected_burst_value=1;
 
         obj.hasAlert=false;
 
@@ -177,43 +178,43 @@ export default
         updateAccuracy(_accuracy)
         {
             this.$set(this,"selected_accuracy",_accuracy);
-            this.cost_multipliers.accuracy=_accuracy.cost;
+            this.cost_multipliers.selected_accuracy=_accuracy.cost;
             this.component_changed=true;
         },
         updateBurstValue(_burst_value)
         {
             this.$set(this,"selected_burst_value",_burst_value);
-            this.cost_multipliers.burst_value=_burst_value.cost;
+            this.cost_multipliers.selected_burst_value=_burst_value.cost;
             this.component_changed=true;
         },
         updateRangeMod(_range_mod)
         {
             this.$set(this,"selected_range_mod",_range_mod);
-            this.cost_multipliers.range_mod=_range_mod.cost;
+            this.cost_multipliers.selected_range_mod=_range_mod.cost;
             this.component_changed=true;
         },
         updateShots(_shots)
         {
             this.$set(this,"selected_shots",_shots);
-            this.cost_multipliers.shots=_shots.cost;
+            this.cost_multipliers.selected_shots=_shots.cost;
             this.component_changed=true;
         },
         updateWarmUpTime(_warm_up_time)
         {
             this.$set(this,"selected_warm_up_time",_warm_up_time);
-            this.cost_multipliers.warm_up_time=_warm_up_time.cost;
+            this.cost_multipliers.selected_warm_up_time=_warm_up_time.cost;
             this.component_changed=true;
         },
         updateWideAngle(_wide_angle)
         {
             this.$set(this,"selected_wide_angle",_wide_angle);
-            this.cost_multipliers.wide_angle=_wide_angle.cost;
+            this.cost_multipliers.selected_wide_angle=_wide_angle.cost;
             this.component_changed=true;
         },
         updateFeature(_featureArray)
         {
             this.$set(this,"feature_array",_featureArray);
-            this.cost_multipliers.feature=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.projectile_name;
             this.damage_capacity=this.fragile ? 1 : this.selected_damage.damage;
         },
