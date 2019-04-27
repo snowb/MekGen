@@ -95,7 +95,7 @@ let validateComponent=(_component)=>
 
     componentsToValidate=
     [
-        {validator:validators.range_mod,pkey:"range_modifier",component_prop:"selected_range_mod"},
+        {validator:validators.range_mod,pkey:"range_mod",component_prop:"selected_range_mod"},
         {validator:validators.feature,pkey:"feature",component_prop:"feature_array"},
         {validator:validators.shots,pkey:"shots",component_prop:'selected_shots'},
     ];
