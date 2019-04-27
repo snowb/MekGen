@@ -68,7 +68,7 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=["burst_value","accuracy","warm_up_time","wide_angle","range_mod","feature","shots"];
+    let updateList=["selected_burst_value","selected_accuracy","selected_warm_up_time","selected_wide_angle","selected_range_mod","feature_array","selected_shots"];
     let loopAlerts;
     let alerts=[];
     //loop thru independent validations

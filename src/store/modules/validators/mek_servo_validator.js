@@ -49,7 +49,7 @@ let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=["armor_type","absorption"];
+    let updateList=["selected_armor_type","selected_absorption"];
     let loopAlerts;
     let alerts=[];
     let componentsToValidate=
