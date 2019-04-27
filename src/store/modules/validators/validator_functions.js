@@ -39,12 +39,15 @@ let updateMultipliers=(_updateList, _component)=>
     {
         if(_component_prop=="feature_array")
         {
-            component.cost_multipliers.feature_array=_component[_component_prop].reduce((_cm, _feat)=>
+            component.cost_multipliers.feature_array=_component.feature_array.reduce((_cm, _feat)=>
             {
-                return _cm = _cm * _feat.cost;
+                return _cm * _feat.cost;
             },1);
         }
-        component.cost_multipliers[_component_prop]=_component[_component_prop].cost;
+        else
+        {
+            component.cost_multipliers[_component_prop]=_component[_component_prop].cost;
+        }
     });
     return component;
 };
