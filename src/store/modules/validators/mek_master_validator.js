@@ -23,6 +23,7 @@ let module_list=
     //{module_name:"./mek_armor_validator",validator_prop_name:"mek_armor"},
     {module_name:"./mek_servo_validator",validator_prop_name:"mek_servo"},//import mek_servo validator
     {module_name:"./mek_beam_validator",validator_prop_name:"mek_beam"},//import mek_beam validator
+    {module_name:"./mek_emw_validator",validator_prop_name:"mek_emw"},//import mek_emw validator
 ];
 module_list.forEach((_val)=>
 {
@@ -33,6 +34,7 @@ let validateComponent=(_component)=>
 {
     //console.log(_component);
     let cleanedComponent;
+    let validator_prop="";
     alerts=[];//reset parent alerts
 
     //console.log(cleanedComponent.selected_armor)
@@ -53,22 +55,13 @@ let validateComponent=(_component)=>
         switch(_component.component_type)
         {
             case "servo":
-                //cleanedComponent=validateServo(_component);
-                cleanedComponent=validators.mek_servo.validateComponent(_component);
-                alerts=alerts.concat(validators.mek_servo.getAlerts());
+                validator_prop="mek_servo";
                 break;
             case "beam":
-                cleanedComponent=validators.mek_beam.validateComponent(_component);
-                alerts=alerts.concat(validators.mek_beam.getAlerts());
-                //efficiency!?
+                validator_prop="mek_beam";
                 break;
             case "emw":
-                //damage
-                //accuracy
-                //atk factor
-                //turns in use
-                //features
-                //efficiency!?
+                validator_prop="mek_emw";
                 break;
             case "melee":
                 //damage
@@ -128,6 +121,11 @@ let validateComponent=(_component)=>
                 //class
                 break;
         }
+        if(validator_prop!=="")
+        {
+            cleanedComponent=validators[validator_prop].validateComponent(_component);
+            alerts=alerts.concat(validators[validator_prop].getAlerts());
+        }    
    }
    return cleanedComponent;
 };
