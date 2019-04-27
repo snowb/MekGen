@@ -105,11 +105,12 @@ let validateComponent=(_component)=>
     //update cost_multipliers for components needing update
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
-    let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
+    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
         return _multi*_val[1];
     },1);
-    cleanedComponent.cost_multiplier=round(cost_mulitplier,2);
+    
+    cleanedComponent.cost_multiplier=round(cost_multiplier,2);
     let total_cost=cleanedComponent.selected_damage.cost * cleanedComponent.cost_multiplier;
     validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Beam");
     alerts=alerts.concat(validatedData.alerts);

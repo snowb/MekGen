@@ -92,11 +92,11 @@ let validateComponent=(_component)=>
 
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
-    let cost_mulitplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
+    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
         return _multi*_val[1];
     },1);
-    cleanedComponent.cost_multiplier.armor=round(cost_mulitplier,2);
+    cleanedComponent.cost_multiplier.armor=round(cost_multiplier,2);
     cleanedComponent.weight=(cleanedComponent.total_kills + cleanedComponent.selected_armor.stopping_power)/2;
     cleanedComponent.cost=cleanedComponent.selected_servo_class.cost
                           + (cleanedComponent.selected_armor.cost * cleanedComponent.cost_multiplier.armor)
