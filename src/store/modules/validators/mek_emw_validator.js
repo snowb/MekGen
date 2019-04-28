@@ -86,11 +86,18 @@ let validateComponent=(_component)=>
     cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
 
-    /**
-     * 
-     * add beam_shield prop update
-     * 
-     */
+    let isBeamShield=cleanedComponent.feature_array.some((_feat)=>
+    {
+        return /.*beam.*shield.*/gi.test(_feat.feature);
+    });
+    if(isBeamShield)
+    {
+        cleanedComponent.beam_shield={};
+
+        cleanedComponent.beam_shield.stopping_power=cleanedComponent.selected_damage.damage;
+        cleanedComponent.beam_shield.defense_accuracy=cleanedComponent.selected_accuracy.accuracy-2;
+        cleanedComponent.beam_shield.damage=cleanedComponent.selected_damage.damage/2;
+    }
 
     return {data:cleanedComponent,alerts:alerts};
 };
