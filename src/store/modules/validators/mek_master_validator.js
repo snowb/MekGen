@@ -22,6 +22,7 @@ let module_list=
     {module_name:"./mek_servo_validator",validator_prop_name:"mek_servo"},//import mek_servo validator
     {module_name:"./mek_beam_validator",validator_prop_name:"mek_beam"},//import mek_beam validator
     {module_name:"./mek_emw_validator",validator_prop_name:"mek_emw"},//import mek_emw validator
+    {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
 ];
 module_list.forEach((_val)=>
 {
@@ -92,11 +93,8 @@ let validateComponent=(_component)=>
                 //ammo table/feature
                 //shots (>0)
                 break;
-            case "energy_pool":
-                //energy_pool
-                //portfolio size
-                //feature
-                //efficiency!?
+            case "energy-pool":
+                validator_prop="mek_energy_pool";
                 break;
             case "shield":
                 //class
