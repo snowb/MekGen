@@ -52,7 +52,7 @@
                 <div slot="col3-row3">Weight: {{weight}} tons</div>
                 
                 <div slot="col4-row1">Base Cost: {{base_cost}}</div>
-                <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
+                <div slot="col4-row2">Multiplier: x{{armor_cost_multiplier}}</div>
                 <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
             <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
@@ -227,13 +227,13 @@ export default
                     // eslint-disable-next-line
                 case "clear":
                     this.uuid=null;
-                    this.selected_servo_type.type="Torso";
-                    this.$set(this,"selected_servo_class",{code:1,name:"Superlight",space:2,cost:2,kills:2})
+                    this.$set(this,"selected_servo_type",{type:"Torso"});
+                    this.$set(this,"selected_servo_class",{code:1,name:"Superlight",space:2,cost:2,kills:2,id:"SL"})
                     this.$set(this,"selected_armor",{name:"None",cost:0,stopping_power:0,code:0});
                     this.$set(this,"selected_armor_type",{type:"Standard",damage_coefficient:1,cost:1});
-                    this.cost_multipliers.armor_type=1;
+                    this.cost_multipliers.armor.armor_type=1;
                     this.$set(this,"selected_absorption",{absorption:0,cost:1,armor_penalty:0});
-                    this.cost_multipliers.absorption=1;
+                    this.cost_multipliers.armor.absorption=1;
                     this.$set(this,"kills_space_trade",{space_modifier:0,kills_modifier:0,cost:0});
                     this.component_name=null;
                     this.$store.commit("saveComponent",null);
