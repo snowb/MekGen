@@ -98,7 +98,7 @@ let validateComponent=(_component)=>
         cleanedComponent.beam_shield.defense_accuracy=cleanedComponent.selected_accuracy.accuracy-2;
         cleanedComponent.beam_shield.damage=cleanedComponent.selected_damage.damage/2;
     }
-
+    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
     return {data:cleanedComponent,alerts:alerts};
 };
 

@@ -106,6 +106,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="reflector";
             return_data.component_name=this.component_name===null?this.reflector_name:this.component_name;
+            return_data.custom_name=this.component_name===null?false:true;
             return_data.custom_component_name=this.custom_component_name;
 
             return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));

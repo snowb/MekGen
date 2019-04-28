@@ -15,11 +15,11 @@ import(/* webpackChunkName: "mek_locomotion-type-data-module" */
     validators.type=_module.cleaned_feature;
 });
 
-let loopValidators, updateMultipliers, round;
+let loopValidators;
 import(/* webpackChunkName: "validator_functions" */"./validator_functions")
 .then((_module)=>
 {
-    ({loopValidators, updateMultipliers, round} = _module);
+    ({loopValidators} = _module);
 });
 
 let validateComponent=(_component)=>
@@ -46,7 +46,7 @@ let validateComponent=(_component)=>
 
     cleanedComponent.damage_capacity=cleanedComponent.selected_locomotion_class.kills;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
-
+    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
     return {data:cleanedComponent,alerts:alerts};
 };
 

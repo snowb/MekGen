@@ -103,6 +103,7 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="locomotion";
             return_data.component_name=this.component_name===null?this.locomotion_name:this.component_name;
+            return_data.custom_name=this.component_name===null?false:true;
             return_data.custom_component_name=this.custom_component_name;
             return_data.selected_locomotion_type=JSON.parse(JSON.stringify(this.selected_locomotion_type));
             return_data.selected_locomotion_class=JSON.parse(JSON.stringify(this.selected_locomotion_class));
