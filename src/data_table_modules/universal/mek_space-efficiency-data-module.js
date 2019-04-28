@@ -35,7 +35,7 @@ let validate_efficiency=(_efficiency, _raw_space, _parent_component_name)=>
     update=true;
     data.modifier=data.cost*2;
   }
-  if(isNaN(data.cost))
+  if(isNaN(data.cost) || data.cost!=(data.modifier/2))
   {
     alerts.push(parent_component_name+" - Mek_Space-Efficiency:");
     alerts.push("**** Missing Cost, reseting based on Modifier.");
@@ -49,13 +49,6 @@ let validate_efficiency=(_efficiency, _raw_space, _parent_component_name)=>
     update=true;
     data.modifier=0;
     data.cost=0;
-  }
-  if(data.cost!=(data.modifier/2))
-  {
-    alerts.push(parent_component_name+" - Mek_Space-Efficiency:");
-    alerts.push("**** Modifier/Cost inconsistent. Reseting to Modifier.");
-    update=true;
-    data.cost=data.modifier/2;
   }
 
   return {update:update,data:data,alerts:alerts};
