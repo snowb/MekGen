@@ -9,7 +9,7 @@ let locomotion_data_table=
     {type:"Treads"},
 ];
 let data_table_keys=["type"];
-let default_data={type:"Wheel"};
+let default_data={type:"Wheels"};
 
 //data validator for locomotion_data_table
 //call partial_validate with appropriate data for full validate
