@@ -239,11 +239,11 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    this.selected_damage.damage=1;
-                    this.selected_accuracy.accuracy=1;
-                    this.selected_attack_factor.attack_factor="__NIL__";
-                    this.selected_turns_in_use.turns="__INFINITY__";
                     this.$set(this,"feature_array",[]);
+                    this.$set(this,"selected_damage",{damage:1,cost:1});
+                    this.$set(this,"selected_turns_in_use",{turns:"__INFINITY__",cost:1});
+                    this.$set(this,"selected_attack_factor",{attack_factor:"__NIL__",cost:1});
+                    this.$set(this,"selected_accuracy",{accuracy:1,cost:1,defense_ability:-1});
                     this.$store.commit("saveComponent",null);
                     break;
             }
@@ -299,13 +299,12 @@ export default
         emw_name()
         {
             let emw_name=this.selected_attack_factor.attack_factor!="__NIL__"?"Automated ":"";
-
+            emw_name+=this.selected_damage.damage+"K ";
             emw_name=this.feature_array.reduce((_name,_val)=>
             {
                 return _name+_val.feature+" ";
             },emw_name);
 
-            emw_name+=this.selected_damage.damage+"K ";
             emw_name=this.is_beam_shield ? emw_name.replace(/ $/,"") : emw_name+"EMW";
 
             return emw_name;
