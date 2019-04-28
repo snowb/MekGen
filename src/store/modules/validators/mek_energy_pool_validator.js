@@ -1,13 +1,13 @@
 let validators={};
 
-import(/* webpackChunkName: "mek_energy_pool-accuracy-data-module" */
+import(/* webpackChunkName: "mek_energy_pool-size-data-module" */
     "@/data_table_modules/mek_energy_pool/mek_energy_pool-size-data-module")
 .then((_module)=>
 {
     validators.size=_module.cleaned_feature;
 });
 
-import(/* webpackChunkName: "mek_energy_pool-damage-data-module" */
+import(/* webpackChunkName: "mek_energy_pool-pool-data-module" */
     "@/data_table_modules/mek_energy_pool/mek_energy_pool-pool-data-module")
 .then((_module)=>
 {
