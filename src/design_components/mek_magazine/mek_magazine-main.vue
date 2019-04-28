@@ -72,7 +72,6 @@ export default
         obj.feature_array=[{type:"High-Ex",cost:1,effect:"Standard"}];
 
         obj.cost_multipliers={};
-        obj.cost_multipliers["High-Ex"]=1;
         obj.cost_multipliers.feature_array=1;
 
         obj.efficiencies={};
@@ -103,12 +102,10 @@ export default
         updateAmmo(_selected_ammo)
         {
             this.$set(this,"feature_array",_selected_ammo);
-            let cost_multiplier=_selected_ammo.reduce((_newobj,_val)=>
+            let cost_multiplier=_selected_ammo.reduce((_cm,_val)=>
             {
-                _newobj[_val.type]=_val.cost;
-                return _newobj;
-            },{});
-            this.$set(this,"cost_multipliers",cost_multiplier);
+                return _cm*=_val.cost;
+            },1);
             this.cost_multipliers.feature_array=cost_multiplier;
             this.component_changed=true;
         },
@@ -165,6 +162,7 @@ export default
             return_data.selected_gun=JSON.parse(JSON.stringify(this.selected_gun));
             return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
             return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
+            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
             return_data.hasBlast=JSON.parse(JSON.stringify(this.hasBlast));
 
             return_data.cost=this.cost;
