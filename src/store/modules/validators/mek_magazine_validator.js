@@ -8,11 +8,11 @@ import(/* webpackChunkName: "mek_ammo-list-data-module" */
     validators.ammo=_module.cleaned_feature;
 });
 
-let loopValidators, updateMultipliers, round;
+let loopValidators, updateMultipliers;
 import(/* webpackChunkName: "validator_functions" */"./validator_functions")
 .then((_module)=>
 {
-    ({loopValidators, updateMultipliers, round} = _module);
+    ({loopValidators, updateMultipliers} = _module);
 });
 
 let validateComponent=(_component)=>
