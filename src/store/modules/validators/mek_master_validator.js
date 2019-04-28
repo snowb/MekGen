@@ -23,6 +23,7 @@ let module_list=
     {module_name:"./mek_beam_validator",validator_prop_name:"mek_beam"},//import mek_beam validator
     {module_name:"./mek_emw_validator",validator_prop_name:"mek_emw"},//import mek_emw validator
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
+    {module_name:"./mek_locomotion_validator",validator_prop_name:"mek_locomotion"},//import mek_locomotion validator
 ];
 module_list.forEach((_val)=>
 {
@@ -112,8 +113,7 @@ let validateComponent=(_component)=>
                 //efficiency!?
                 break;
             case "locomotion":
-                //type
-                //class
+                validator_prop="mek_locomotion";
                 break;
         }
         if(validator_prop!=="")
