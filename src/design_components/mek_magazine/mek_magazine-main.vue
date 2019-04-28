@@ -147,6 +147,7 @@ export default
                     this.$set(this,"selected_gun",{name:"",cost:1,uuid:null})
                     this.$set(this,"feature_array",[{type:"High-Ex",cost:1}]);
                     this.$set(this,"selected_shots",1);
+                    this.cost_multipliers.feature_array=1;
                     this.$store.commit("saveComponent",null);
                     break;
             }

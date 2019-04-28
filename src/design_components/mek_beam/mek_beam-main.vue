@@ -245,6 +245,13 @@ export default
                     this.$set(this,"selected_shots",{shots:"__INFINITY__",cost:1});
                     this.$set(this,"selected_warm_up_time",{time:0,cost:1});
                     this.$set(this,"selected_wide_angle",{angle:"__NIL__",cost:1});
+                    this.cost_multipliers.selected_accuracy=1;
+                    this.cost_multipliers.feature_array=1;
+                    this.cost_multipliers.selected_shots=1;
+                    this.cost_multipliers.wide_angle=1;
+                    this.cost_multipliers.selected_warm_up_time=1;
+                    this.cost_multipliers.selected_range_mod=1;
+                    this.cost_multipliers.selected_burst_value=1;
                     this.$store.commit("saveComponent",null);
                     break;
             }

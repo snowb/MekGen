@@ -222,11 +222,12 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    this.entangle.damage_modifier=0;
-                    this.entangle.range_modifier=0;
-                    this.selected_damage.damage=1;
-                    this.selected_accuracy.accuracy=0;
                     this.$set(this,"feature_array",[]);
+                    this.$set(this,"selected_damage",{damage:1,cost:0.5});
+                    this.$set(this,"selected_accuracy",{accuracy:0,cost:1});
+                    this.$set(this,"entangle",{range_modifier:0,damage_capacity:0});
+                    this.cost_multipliers.selected_accuracy=1;
+                    this.cost_multipliers.feature_array=1;
                     this.$store.commit("saveComponent",null);
                     break;
             }

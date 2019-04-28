@@ -223,6 +223,11 @@ export default
                     this.$set(this,"selected_burst_value",{burst_value:1,cost:1});
                     //this.mount_type.mount_type="Servo-Mounted";
                     this.$set(this,"feature_array",[]);
+                    this.cost_multipliers.selected_accuracy=1;
+                    this.cost_multipliers.feature_array=1;
+                    this.cost_multipliers.selected_multi_feed=1;
+                    this.cost_multipliers.selected_burst_value=1;
+                    this.cost_multipliers.selected_range_mod=1;
                     this.$store.commit("saveComponent",null);
                     break;
             }

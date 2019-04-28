@@ -150,6 +150,7 @@ export default
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
+                    this.$set(this,"selected_reflector",{quality_value:1, cost:1})
                     this.$store.commit("saveComponent",null);
                     break;
             }

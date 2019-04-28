@@ -244,6 +244,10 @@ export default
                     this.$set(this,"selected_turns_in_use",{turns:"__INFINITY__",cost:1});
                     this.$set(this,"selected_attack_factor",{attack_factor:"__NIL__",cost:1});
                     this.$set(this,"selected_accuracy",{accuracy:1,cost:1,defense_ability:-1});
+                    this.cost_multipliers.selected_accuracy=1;
+                    this.cost_multipliers.feature_array=1;
+                    this.cost_multipliers.selected_attack_factor=1;
+                    this.cost_multipliers.selected_turns_in_use=1;
                     this.$store.commit("saveComponent",null);
                     break;
             }
