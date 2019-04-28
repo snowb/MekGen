@@ -46,7 +46,7 @@ let validateComponent=(_component)=>
 
     cleanedComponent.damage_capacity=cleanedComponent.selected_locomotion_class.kills;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
-    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
+    
     return {data:cleanedComponent,alerts:alerts};
 };
 

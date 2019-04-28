@@ -309,7 +309,6 @@ export default
             return_data.component_category="equipment";
             return_data.component_type="shield";
             return_data.component_name=this.component_name===null?this.shield_name:this.component_name;
-            return_data.custom_name=this.component_name===null?false:true;
             return_data.custom_component_name=this.custom_component_name;
 
             return_data.type=JSON.parse(JSON.stringify(this.type));

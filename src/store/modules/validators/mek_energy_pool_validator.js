@@ -69,7 +69,7 @@ let validateComponent=(_component)=>
     });
     cleanedComponent.damage_capacity=isFragile ? 1 : cleanedComponent.selected_energy_pool.damage_capacity;
     cleanedComponent.weight=cleanedComponent.selected_energy_pool.damage_capacity/2;
-    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
+
     return {data:cleanedComponent,alerts:alerts};
 };
 

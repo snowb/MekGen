@@ -118,7 +118,6 @@ let validateComponent=(_component)=>
     //update static values
     cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
-    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
 
     return {data:cleanedComponent, alerts:alerts};
 };

@@ -101,7 +101,7 @@ let validateComponent=(_component)=>
     cleanedComponent.cost=cleanedComponent.selected_servo_class.cost
                           + (cleanedComponent.selected_armor.cost * cleanedComponent.cost_multiplier.armor)
                           + cleanedComponent.kills_space_trade.cost;
-    cleanedComponent.component_name=cleanedComponent.custom_name ? cleanedComponent.component_name : null;
+
     return {data:cleanedComponent, alerts:alerts};
 };
 
