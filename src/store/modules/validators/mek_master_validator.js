@@ -24,6 +24,7 @@ let module_list=
     {module_name:"./mek_emw_validator",validator_prop_name:"mek_emw"},//import mek_emw validator
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
     {module_name:"./mek_locomotion_validator",validator_prop_name:"mek_locomotion"},//import mek_locomotion validator
+    {module_name:"./mek_magazine_validator",validator_prop_name:"mek_magazine"},//import mek_magazine validator
 ];
 module_list.forEach((_val)=>
 {
@@ -90,9 +91,7 @@ let validateComponent=(_component)=>
                 //efficiency!?
                 break;
             case "magazine":
-                //gun??
-                //ammo table/feature
-                //shots (>0)
+                validator_prop="mek_magazine";
                 break;
             case "energy-pool":
                 validator_prop="mek_energy_pool";
