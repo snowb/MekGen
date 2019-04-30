@@ -159,11 +159,11 @@ export default
             return_data.component_name=this.component_name===null?this.magazine_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.selected_gun=JSON.parse(JSON.stringify(this.selected_gun));
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
-            return_data.selected_shots=JSON.parse(JSON.stringify(this.selected_shots));
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.hasBlast=JSON.parse(JSON.stringify(this.hasBlast));
+            return_data.selected_gun=this.selected_gun;
+            return_data.feature_array=this.feature_array;
+            return_data.selected_shots=this.selected_shots;
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.hasBlast=this.hasBlast;
 
             return_data.cost=this.cost;
             return_data.base_cost=this.base_cost;
@@ -173,7 +173,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {
