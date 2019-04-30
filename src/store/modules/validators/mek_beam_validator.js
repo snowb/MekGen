@@ -74,7 +74,7 @@ let validateComponent=(_component)=>
     //loop thru independent validations
     let componentsToValidate=
     [
-        {validator:validators.damage,pkey:"damage",component_prop:"selected_damage",skipUpdateList:true},
+        {validator:validators.damage,pkey:"damage",component_prop:"selected_damage"},
         {validator:validators.burst_value,pkey:"burst_value",component_prop:"selected_burst_value"},
         {validator:validators.accuracy,pkey:"accuracy",component_prop:'selected_accuracy'},
         {validator:validators.warm_up,pkey:"time",component_prop:'selected_warm_up_time'},
