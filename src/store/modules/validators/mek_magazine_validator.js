@@ -8,17 +8,16 @@ import(/* webpackChunkName: "mek_ammo-list-data-module" */
     validators.ammo=_module.cleaned_feature;
 });
 
-let loopValidators, updateMultipliers;
+let updateMultipliers;
 import(/* webpackChunkName: "validator_functions" */"./validator_functions")
 .then((_module)=>
 {
-    ({loopValidators, updateMultipliers} = _module);
+    ({updateMultipliers} = _module);
 });
 
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
-    let loopAlerts;
     let updateList=["feature_array"];
     let alerts=[];
     let hasBlastRadius=cleanedComponent.feature_array.some((_feat)=>
@@ -26,13 +25,10 @@ let validateComponent=(_component)=>
         return /blast/gi.test(_feat.feature);
     });
     validators.filter_data_table(hasBlastRadius);
-    //loop thru independent validations
-    let componentsToValidate=
-    [
-        {validator:validators.ammo,pkey:"type",component_prop:"feature_array"},
-    ];
-    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    alerts=alerts.concat(loopAlerts)
+    //validate ammo array
+    let validatedData=validators.ammo(cleanedComponent.feature_array,"type");
+    cleanedComponent.feature_array=validatedData.cleaned_array;
+    alerts=alerts.concat(validatedData.alerts);
 
     //update cost_multipliers for components needing update
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
