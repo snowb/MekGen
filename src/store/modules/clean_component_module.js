@@ -8,7 +8,7 @@ let cleanComponent=function(_component)
             {
                 _element=this.cleanComponent(_element);
             }
-            else if(!/^[\w\d-_.() ]+$/.test(_element) || _element==="")
+            else if(!/^[\w\d-_.()/ ]+$/.test(_element) || _element==="")
             {
                 _element=null;
             }
@@ -22,13 +22,13 @@ let cleanComponent=function(_component)
             {
                 _component[prop]=this.cleanComponent(_component[prop]);
             }
-            else if(!/^[\w\d-_.() ]+$/.test(_component[prop]) || _component[prop]==="")
+            else if(!/^[\w\d-_.()/ ]+$/.test(_component[prop]) || _component[prop]==="")
             {
                 _component[prop]=null;
             }
         }
     }
-    else if(!/^[\w\d-_.() ]+$/.test(_component) || _component==="")
+    else if(!/^[\w\d-_.()/ ]+$/.test(_component) || _component==="")
     {
         _component=null;
     }
