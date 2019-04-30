@@ -15,34 +15,21 @@ import(/* webpackChunkName: "mek_locomotion-type-data-module" */
     validators.type=_module.cleaned_feature;
 });
 
-let loopValidators;
-import(/* webpackChunkName: "validator_functions" */"./validator_functions")
-.then((_module)=>
-{
-    ({loopValidators} = _module);
-});
-
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
-    let loopAlerts;
+    let validatedData;
     let alerts=[];
-    //loop thru independent validations
-    let componentsToValidate=
-    [
-        {validator:validators.type,pkey:"type",component_prop:"selected_locomotion_type"},
-    ];
-    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    alerts=alerts.concat(loopAlerts)
+    //validate type
+    validatedData=validators.type("type",cleanedComponent.selected_locomotion_type);
+    cleanedComponent.selected_locomotion_type=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
     //update class data
     validators.create_class_table(cleanedComponent.selected_locomotion_type.type);
     //validate class data
-    componentsToValidate=
-    [
-        {validator:validators.class,pkey:"name",component_prop:"selected_locomotion_class"},
-    ];
-    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    alerts=alerts.concat(loopAlerts)
+    validatedData=validators.class("name",cleanedComponent.selected_locomotion_class);
+    cleanedComponent.selected_locomotion_class=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
 
     cleanedComponent.damage_capacity=cleanedComponent.selected_locomotion_class.kills;
     cleanedComponent.weight=cleanedComponent.damage_capacity/2;
