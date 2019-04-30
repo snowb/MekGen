@@ -35,23 +35,9 @@ module_list.forEach((_val)=>
 
 let validateComponent=(_component)=>
 {
-    //console.log(_component);
     let cleanedComponent;
     let validator_prop="";
 
-    //console.log(cleanedComponent.selected_armor)
-    /* *
-    *
-    * need to find a good way to 'scan' a provided component, with focused validation
-    * likely need to have a decent switch for component_category
-    * then component_type
-    * then mass-validate known props
-    *   also need to check for undefined?  
-    * 
-    * 
-    * finally return the cleaned/validate component
-    * 
-    * */
    if(_component.component_category=="equipment")
    {//validate equipment
         switch(_component.component_type)
