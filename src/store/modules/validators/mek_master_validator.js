@@ -25,6 +25,7 @@ let module_list=
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
     {module_name:"./mek_locomotion_validator",validator_prop_name:"mek_locomotion"},//import mek_locomotion validator
     {module_name:"./mek_magazine_validator",validator_prop_name:"mek_magazine"},//import mek_magazine validator
+    {module_name:"./mek_melee_validator",validator_prop_name:"mek_melee"},//import mek_melee validator
 ];
 module_list.forEach((_val)=>
 {
@@ -64,11 +65,7 @@ let validateComponent=(_component)=>
                 validator_prop="mek_emw";
                 break;
             case "melee":
-                //damage
-                //accuracy
-                //entangle range trade
-                //features
-                //efficiency!?
+                validator_prop="mek_melee";
                 break;
             case "missile":
                 //damage
