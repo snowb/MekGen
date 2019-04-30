@@ -172,13 +172,13 @@ export default
             return_data.component_name=this.component_name===null?this.energy_pool_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.efficiencies=this.efficiencies;
 
-            return_data.selected_energy_pool=JSON.parse(JSON.stringify(this.selected_energy_pool));
-            return_data.selected_portfolio_size=JSON.parse(JSON.stringify(this.selected_portfolio_size));
+            return_data.selected_energy_pool=this.selected_energy_pool;
+            return_data.selected_portfolio_size=this.selected_portfolio_size;
             return_data.selected_portfolio_size.size=this.selected_portfolio_size.size===Infinity?"Infinity":this.selected_portfolio_size.size;
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
+            return_data.feature_array=this.feature_array;
 
             return_data.selected_morphable=this.selected_morphable
 
@@ -189,7 +189,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {

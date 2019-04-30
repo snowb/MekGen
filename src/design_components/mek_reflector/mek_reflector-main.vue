@@ -95,7 +95,7 @@ export default
         },
         select_reflector(_reflector)
         {
-            this.$set(this,"selected_reflector",JSON.parse(JSON.stringify(_reflector)));
+            this.$set(this,"selected_reflector",_reflector);
             this.component_changed=true;
         },
         output_reflector_data()
@@ -108,10 +108,10 @@ export default
             return_data.component_name=this.component_name===null?this.reflector_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.efficiencies=this.efficiencies;
 
-            return_data.selected_reflector=JSON.parse(JSON.stringify(this.selected_reflector));
-            return_data.damage_capacity=JSON.parse(JSON.stringify(this.damage_capacity));
+            return_data.selected_reflector=this.selected_reflector;
+            return_data.damage_capacity=this.damage_capacity;
 
             return_data.cost=this.cost;
 
@@ -119,7 +119,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {

@@ -104,8 +104,8 @@ export default
             return_data.component_type="locomotion";
             return_data.component_name=this.component_name===null?this.locomotion_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
-            return_data.selected_locomotion_type=JSON.parse(JSON.stringify(this.selected_locomotion_type));
-            return_data.selected_locomotion_class=JSON.parse(JSON.stringify(this.selected_locomotion_class));
+            return_data.selected_locomotion_type=this.selected_locomotion_type;
+            return_data.selected_locomotion_class=this.selected_locomotion_class;
 
             return_data.damage_capacity=return_data.selected_locomotion_class.kills;
             return_data.cost=this.cost;
@@ -113,7 +113,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=this.hasAlert;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         componentSaveReset:function(_action)
         {

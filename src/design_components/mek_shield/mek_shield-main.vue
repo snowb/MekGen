@@ -311,10 +311,10 @@ export default
             return_data.component_name=this.component_name===null?this.shield_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.type=JSON.parse(JSON.stringify(this.type));
-            return_data.shield_class=JSON.parse(JSON.stringify(this.shield_class));
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.type=this.type;
+            return_data.shield_class=this.shield_class;
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.efficiencies=this.efficiencies;
             
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -324,24 +324,24 @@ export default
             switch(this.type.name.toLowerCase())
             {
                 case "standard":
-                    return_data.defense_ability=JSON.parse(JSON.stringify(this.defense_ability));
+                    return_data.defense_ability=this.defense_ability;
                     // eslint-disable-next-line
                 case "active":
-                    return_data.binder=JSON.parse(JSON.stringify(this.binder));
-                    return_data.armor_type=JSON.parse(JSON.stringify(this.armor_type));
-                    return_data.absorption=JSON.parse(JSON.stringify(this.absorption));
+                    return_data.binder=this.binder;
+                    return_data.armor_type=this.armor_type;
+                    return_data.absorption=this.absorption;
                     break;
                 case "reactive":
-                    return_data.reset_time=JSON.parse(JSON.stringify(this.reset_time));
-                    return_data.turns_in_use=JSON.parse(JSON.stringify(this.turns_in_use));
+                    return_data.reset_time=this.reset_time;
+                    return_data.turns_in_use=this.turns_in_use;
                     return_data.turns_in_use.time=return_data.turns_in_use.time===null?"Infinity":return_data.turns_in_use.time;
-                    return_data.weakness_array=JSON.parse(JSON.stringify(this.weakness_array));
+                    return_data.weakness_array=this.weakness_array;
                     return_data.surge_damage=this.surge_damage;
                     break;
             }
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         componentSaveReset:function(_action)
         {

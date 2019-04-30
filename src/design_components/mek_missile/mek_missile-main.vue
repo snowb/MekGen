@@ -294,21 +294,21 @@ export default
             return_data.component_name=this.component_name===null?this.missile_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.efficiencies=this.efficiencies;
 
             /* generic prop saves 
-            return_data.selected_property1=JSON.parse(JSON.stringify(this.selected_property1));
-            return_data.selected_property2=JSON.parse(JSON.stringify(this.selected_property2));
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
+            return_data.selected_property1=this.selected_property1;
+            return_data.selected_property2=this.selected_property2;
+            return_data.feature_array=this.feature_array;
             */
-            return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
+            return_data.selected_damage=this.selected_damage;
             return_data.selected_pack_size=this.selected_pack_size;
-            return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
-            return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
-            return_data.selected_smart=JSON.parse(JSON.stringify(this.selected_smart));
-            return_data.selected_skill=JSON.parse(JSON.stringify(this.selected_skill));
-            return_data.selected_blast_radius=JSON.parse(JSON.stringify(this.selected_blast_radius));
+            return_data.selected_accuracy=this.selected_accuracy;
+            return_data.selected_range_mod=this.selected_range_mod;
+            return_data.selected_smart=this.selected_smart;
+            return_data.selected_skill=this.selected_skill;
+            return_data.selected_blast_radius=this.selected_blast_radius;
 
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -318,7 +318,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {

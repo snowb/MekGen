@@ -242,16 +242,16 @@ export default
             return_data.component_name=this.component_name===null?this.projectile_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.efficiencies=this.efficiencies;
 
-            return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
-            return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
-            return_data.selected_range_mod=JSON.parse(JSON.stringify(this.selected_range_mod));
-            return_data.selected_multi_feed=JSON.parse(JSON.stringify(this.selected_multi_feed));
-            return_data.selected_burst_value=JSON.parse(JSON.stringify(this.selected_burst_value));
-            //return_data.selected_mount_type=JSON.parse(JSON.stringify(this.selected_mount_type));
+            return_data.selected_damage=this.selected_damage;
+            return_data.selected_accuracy=this.selected_accuracy;
+            return_data.feature_array=this.feature_array;
+            return_data.selected_range_mod=this.selected_range_mod;
+            return_data.selected_multi_feed=this.selected_multi_feed;
+            return_data.selected_burst_value=this.selected_burst_value;
+            //return_data.selected_mount_type=this.selected_mount_type;
 
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -261,7 +261,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {

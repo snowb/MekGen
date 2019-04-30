@@ -192,13 +192,13 @@ export default
             return_data.component_name=this.component_name===null?this.servo_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.selected_servo_type=JSON.parse(JSON.stringify(this.selected_servo_type));
-            return_data.selected_servo_class=JSON.parse(JSON.stringify(this.selected_servo_class));
-            return_data.selected_armor=JSON.parse(JSON.stringify(this.selected_armor));
-            return_data.selected_armor_type=JSON.parse(JSON.stringify(this.selected_armor_type));
-            return_data.selected_absorption=JSON.parse(JSON.stringify(this.selected_absorption));
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.kills_space_trade=JSON.parse(JSON.stringify(this.kills_space_trade));
+            return_data.selected_servo_type=this.selected_servo_type;
+            return_data.selected_servo_class=this.selected_servo_class;
+            return_data.selected_armor=this.selected_armor;
+            return_data.selected_armor_type=this.selected_armor_type;
+            return_data.selected_absorption=this.selected_absorption;
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.kills_space_trade=this.kills_space_trade;
             
             return_data.cost=this.cost;
             return_data.armor_cost_multiplier=this.armor_cost_multiplier;
@@ -208,7 +208,7 @@ export default
 
             this.$nextTick(()=>{this.component_changed=this.hasAlert;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         componentSaveReset:function(_action)
         {

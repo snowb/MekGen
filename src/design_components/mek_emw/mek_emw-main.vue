@@ -183,16 +183,16 @@ export default
             return_data.component_name=this.component_name===null?this.emw_name:this.component_name;
             return_data.custom_component_name=this.custom_component_name;
 
-            return_data.cost_multipliers=JSON.parse(JSON.stringify(this.cost_multipliers));
-            return_data.efficiencies=JSON.parse(JSON.stringify(this.efficiencies));
+            return_data.cost_multipliers=this.cost_multipliers;
+            return_data.efficiencies=this.efficiencies;
 
-            return_data.selected_damage=JSON.parse(JSON.stringify(this.selected_damage));
-            return_data.selected_accuracy=JSON.parse(JSON.stringify(this.selected_accuracy));
-            return_data.selected_turns_in_use=JSON.parse(JSON.stringify(this.selected_turns_in_use));
+            return_data.selected_damage=this.selected_damage;
+            return_data.selected_accuracy=this.selected_accuracy;
+            return_data.selected_turns_in_use=this.selected_turns_in_use;
             //return_data.selected_turns_in_use.turns=this.selected_turns_in_use.turns===Infinity?"Infinity":this.selected_turns_in_use.turns;
 
-            return_data.selected_attack_factor=JSON.parse(JSON.stringify(this.selected_attack_factor));
-            return_data.feature_array=JSON.parse(JSON.stringify(this.feature_array));
+            return_data.selected_attack_factor=this.selected_attack_factor;
+            return_data.feature_array=this.feature_array;
 
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
@@ -202,12 +202,12 @@ export default
 
             if(this.is_beam_shield)
             {
-                return_data.beam_shield=JSON.parse(JSON.stringify(this.beam_shield));
+                return_data.beam_shield=this.beam_shield;
             }
 
             this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
-            return return_data;
+            return JSON.parse(this.original_component);
         },
         ingest_data(_data_object)
         {
