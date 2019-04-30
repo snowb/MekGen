@@ -26,6 +26,7 @@ let module_list=
     {module_name:"./mek_locomotion_validator",validator_prop_name:"mek_locomotion"},//import mek_locomotion validator
     {module_name:"./mek_magazine_validator",validator_prop_name:"mek_magazine"},//import mek_magazine validator
     {module_name:"./mek_melee_validator",validator_prop_name:"mek_melee"},//import mek_melee validator
+    {module_name:"./mek_reflector_validator",validator_prop_name:"mek_reflector"},//import mek_reflector validator
 ];
 module_list.forEach((_val)=>
 {
@@ -105,8 +106,7 @@ let validateComponent=(_component)=>
                 //efficiency!?
                 break;
             case "reflector":
-                //quality
-                //efficiency!?
+                validator_prop="mek_reflector"
                 break;
             case "locomotion":
                 validator_prop="mek_locomotion";
