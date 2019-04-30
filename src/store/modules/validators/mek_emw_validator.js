@@ -63,13 +63,10 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(loopAlerts)
     //update feature table
     validators.filter_feature(cleanedComponent.selected_turns_in_use.turns=="__INFINITY__");
-    //loop thru dependent validations
-    componentsToValidate=
-    [
-        {validator:validators.feature,pkey:"feature",component_prop:"feature_array"},
-    ];
-    ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    alerts=alerts.concat(loopAlerts)
+    //validate feature_array
+    validatedData=validators.feature(cleanedComponent.feature_array,"feature");
+    cleanedComponent.feature_array=validatedData.cleaned_array;
+    alerts=alerts.concat(validatedData.alerts);
     //update cost_multipliers for components needing update
     cleanedComponent=updateMultipliers(updateList,cleanedComponent);
     //validate space efficiency
