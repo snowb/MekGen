@@ -45,11 +45,69 @@ import(/* webpackChunkName: "validator_functions" */"./validator_functions")
     ({loopValidators, updateMultipliers, round} = _module);
 });
 
+validators.derived=(_component)=>
+{//component unique derived value validation
+    let cleanedComponent=_component;
+    let alerts=[];
+    let updateList=["selected_armor_type","selected_absorption"];
+    //update multipliers
+    let validatedData=updateMultipliers(updateList,cleanedComponent);
+    cleanedComponent.cost_multipliers.armor=validatedData.data;
+    alerts.concat(validatedData.alerts);
+    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers.armor).reduce((_multi, _val)=>
+    {//calc new cost_multiplier
+        return _multi*_val[1];
+    },1);
+    cost_multiplier=round(cost_multiplier,2);
+    if(cleanedComponent.armor_cost_multiplier!=cost_multiplier)
+    {//correct cost_multiplier if mismatch
+        alerts.push("Mek-Servo: cost_multiplier.armor");
+        alerts.push("**** Invalid Armor Cost Multiplier. Correcting. ****");
+        cleanedComponent.armor_cost_multiplier=cost_multiplier;
+    }
+    let newCost=cleanedComponent.selected_servo_class.cost
+                + (cleanedComponent.selected_armor.cost * cleanedComponent.armor_cost_multiplier)
+                + cleanedComponent.kills_space_trade.cost;
+    if(cleanedComponent.cost!=newCost)
+    {//correct cost if mismatch
+        alerts.push("Mek-Servo: cost");
+        alerts.push("**** Invalid Cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+    let newWeight=(cleanedComponent.total_kills + cleanedComponent.selected_armor.stopping_power)/2;
+    if(cleanedComponent.weight!=newWeight)
+    {//correct weight if mismatch
+        alerts.push("Mek-Servo: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=newWeight;
+    }
+    // update total kills
+    let newTotalKills=cleanedComponent.selected_servo_class.kills 
+                        + cleanedComponent.kills_space_trade.kills_modifier;
+    if(cleanedComponent.total_kills!=newTotalKills)
+    {
+        alerts.push("Mek-Servo: total_kills");
+        alerts.push("**** Invalid Total Kills. Correcting. ****");
+        cleanedComponent.total_kills=newTotalKills
+    }
+    // update available_space
+    let newAvailSpace=cleanedComponent.selected_servo_class.space 
+                        + cleanedComponent.kills_space_trade.space_modifier;
+    if(cleanedComponent.available_space!=newAvailSpace)
+    {
+        alerts.push("Mek-Servo: available_space");
+        alerts.push("**** Invalid Available Space. Correcting. ****");
+        cleanedComponent.available_space=newAvailSpace
+    }
+        
+    return {data:cleanedComponent,alerts:alerts}
+};
+
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=["selected_armor_type","selected_absorption"];
+    //let updateList=["selected_armor_type","selected_absorption"];
     let loopAlerts;
     let alerts=[];
     let componentsToValidate=
@@ -80,27 +138,16 @@ let validateComponent=(_component)=>
         _component.selected_servo_class.space);
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.kills_space_trade=validatedData.data;
-    // update total kills and available_space
-    cleanedComponent.total_kills=cleanedComponent.selected_servo_class.kills + cleanedComponent.kills_space_trade.kills_modifier;
-    cleanedComponent.available_space=cleanedComponent.selected_servo_class.space + cleanedComponent.kills_space_trade.space_modifier;
     //update armor based on servo class
     validators.armor_filter(_component.selected_servo_class.code+2);
     //validate armor
     validatedData=validators.armor("code",_component.selected_armor);
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.selected_armor=validatedData.data;
-
-    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
-    //validate space efficiency
-    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
-    {//calc new cost_mulitplier
-        return _multi*_val[1];
-    },1);
-    cleanedComponent.cost_multiplier.armor=round(cost_multiplier,2);
-    cleanedComponent.weight=(cleanedComponent.total_kills + cleanedComponent.selected_armor.stopping_power)/2;
-    cleanedComponent.cost=cleanedComponent.selected_servo_class.cost
-                          + (cleanedComponent.selected_armor.cost * cleanedComponent.cost_multiplier.armor)
-                          + cleanedComponent.kills_space_trade.cost;
+    //validate derived data
+    validatedData=validators.derived(cleanedComponent);
+    cleanedComponent=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
 
     return {data:cleanedComponent, alerts:alerts};
 };
