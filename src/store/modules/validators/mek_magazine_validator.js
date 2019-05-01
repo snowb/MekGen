@@ -31,7 +31,9 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(validatedData.alerts);
 
     //update cost_multipliers for components needing update
-    cleanedComponent=updateMultipliers(updateList,cleanedComponent);
+    validatedData=updateMultipliers(updateList,cleanedComponent);
+    cleanedComponent.cost_multipliers=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
     //validate space efficiency
     cleanedComponent.cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
     {//calc new cost_mulitplier
