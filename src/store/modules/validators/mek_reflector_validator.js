@@ -12,6 +12,34 @@ import(/* webpackChunkName: "mek_space-efficiency-data-module" */"@/data_table_m
     validators.space_efficiency=_module.validate_efficiency;
 });
 
+validators.derived=(_component)=>
+{
+    let cleanedComponent=_component;
+    let alerts=[];
+    //update static values
+    if(cleanedComponent.damage_capacity!=cleanedComponent.selected_reflector.quality_value)
+    {//validate damage capacity
+        alerts.push("Mek-Reflector: damage_capacity");
+        alerts.push("**** Invalid Damage Capacity. Correcting. ****");
+        cleanedComponent.damage_capacity=cleanedComponent.selected_reflector.quality_value;
+    }
+    if(cleanedComponent.weight!=cleanedComponent.damage_capacity/2)
+    {//validate weight
+        alerts.push("Mek-Reflector: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=cleanedComponent.damage_capacity/2;
+    }
+    let newCost=cleanedComponent.selected_reflector.cost + cleanedComponent.efficiencies.space.cost;
+    if(cleanedComponent.cost!=newCost)
+    {//validate weight
+        alerts.push("Mek-Reflector: cost");
+        alerts.push("**** Invalid Cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+
+    return {data:cleanedComponent,alerts:alerts};
+};
+
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
@@ -26,9 +54,9 @@ let validateComponent=(_component)=>
     validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Reflector");
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
-    //update static values
-    cleanedComponent.damage_capacity=cleanedComponent.selected_reflector.quality_value;
-    cleanedComponent.weight=cleanedComponent.damage_capacity/2;
+    validatedData=validators.derived(cleanedComponent);
+    cleanedComponent=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
 
     return {data:cleanedComponent, alerts:alerts};
 };
