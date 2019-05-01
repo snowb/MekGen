@@ -28,28 +28,41 @@ let runValidator=(_validator_data, _component)=>
     return validatorInstance(pkeyInstance, propInstance);
 };
 
-let updateMultipliers=(_updateList, _component)=>
+let updateMultipliers=(_updateList, _component, _name)=>
 {
     let component=_component;
+    let alerts=[];
+    let data={};
     if(_updateList.length==0)
     {
-        return component;
+        return {data:component, alerts:alerts};
     }
     _updateList.forEach((_component_prop)=>
     {
         if(_component_prop=="feature_array")
         {
-            component.cost_multipliers.feature_array=_component.feature_array.reduce((_cm, _feat)=>
+            let feature_array_cost_multiplier=_component.feature_array.reduce((_cm, _feat)=>
             {
                 return _cm * _feat.cost;
             },1);
+            if(component.cost_multipliers.feature_array!=feature_array_cost_multiplier)
+            {
+                alerts.push(_name+": cost_multipliers."+_component_prop);
+                alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
+                data.feature_array=feature_array_cost_multiplier;
+            }   
         }
         else
         {
-            component.cost_multipliers[_component_prop]=_component[_component_prop].cost;
+            if(component.cost_multipliers[_component_prop]!=_component[_component_prop].cost)
+            {
+                alerts.push(_name+": cost_multipliers."+_component_prop);
+                alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
+                data[_component_prop]=_component[_component_prop].cost;
+            }   
         }
     });
-    return component;
+    return {data:data, alerts:alerts};
 };
 
 let round=(_number, _decimals)=>
