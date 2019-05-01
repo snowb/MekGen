@@ -170,7 +170,7 @@ export default
         },
         weight()
         {
-            return this.round((this.selected_reflector.cost / 2),2);
+            return this.round((this.selected_reflector.quality_value / 2),2);
         },
         damage_capacity()
         {
