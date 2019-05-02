@@ -8,12 +8,54 @@ import(/* webpackChunkName: "mek_ammo-list-data-module" */
     validators.ammo=_module.cleaned_feature;
 });
 
-let updateMultipliers;
+let updateMultipliers, round;
 import(/* webpackChunkName: "validator_functions" */"./validator_functions")
 .then((_module)=>
 {
-    ({updateMultipliers} = _module);
+    ({updateMultipliers, round} = _module);
 });
+
+validators.derive=(_component)=>
+{
+    let cleanedComponent=_component;
+    let alerts=[];
+
+    let newShots=parseInt(cleanedComponent.selected_shots);
+    if(cleanedComponent.selected_shots!=newShots)
+    {//validate shots
+        alerts.push("Mek-Magazine: selected_shots");
+        alerts.push("**** Invalid Selected Shots. Correcting. ****");
+        cleanedComponent.selected_shots=isNaN(newShots) ? 1 : newShots;
+    }
+    let newBaseCost=round(cleanedComponent.selected_gun.cost*0.01*cleanedComponent.selected_shots);
+    if(cleanedComponent.base_cost!=newBaseCost)
+    {//validate base_cost
+        alerts.push("Mek-Magazine: base_cost");
+        alerts.push("**** Invalid Base Cost. Correcting. ****");
+        cleanedComponent.base_cost=newBaseCost;
+    }
+    if(cleanedComponent.damage_capacity!=newBaseCost)
+    {//validate damage_capacity
+        alerts.push("Mek-Magazine: damage_capacity");
+        alerts.push("**** Invalid Base Damage Capacity. Correcting. ****");
+        cleanedComponent.damage_capacity=newBaseCost;
+    }
+    let newCost=newBaseCost * cleanedComponent.cost_multiplier;
+    if(cleanedComponent.cost!=newCost)
+    {//validate cost
+        alerts.push("Mek-Magazine: cost");
+        alerts.push("**** Invalid Cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+    let newWeight=newBaseCost/2;
+    if(cleanedComponent.weight!=newWeight)
+    {//validate weight
+        alerts.push("Mek-Magazine: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=newWeight;
+    }
+    return {data:cleanedComponent,alerts:alerts};
+};
 
 let validateComponent=(_component)=>
 {
@@ -25,6 +67,12 @@ let validateComponent=(_component)=>
         return /blast/gi.test(_feat.feature);
     });
     validators.filter_data_table(hasBlastRadius);
+    if(cleanedComponent.hasBlast!=hasBlastRadius)
+    {//validate blast radius prop
+        alerts.push("Mek-Magazine: hasBlast");
+        alerts.push("**** Invalid hasBlast. Correcting. ****");
+        cleanedComponent.hasBlast=hasBlastRadius;
+    }
     //validate ammo array
     let validatedData=validators.ammo(cleanedComponent.feature_array,"type");
     cleanedComponent.feature_array=validatedData.cleaned_array;
