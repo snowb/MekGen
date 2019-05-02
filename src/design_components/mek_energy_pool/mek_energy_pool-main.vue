@@ -182,7 +182,7 @@ export default
 
             return_data.selected_morphable=this.selected_morphable
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.selected_energy_pool.damage_capacity;
             return_data.damage_capacity=this.damage_capacity;
@@ -215,7 +215,7 @@ export default
             //core cost prop
             return this.round(this.selected_energy_pool.cost * this.cost_multiplier,2);
         },
-        cost:function()
+        cost()
         {
             let subtotal_cost=this.selected_energy_pool.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
