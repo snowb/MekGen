@@ -32,10 +32,10 @@ let updateMultipliers=(_updateList, _component, _name)=>
 {
     let component=_component;
     let alerts=[];
-    let data={};
+    let data=_component.cost_multipliers;
     if(_updateList.length==0)
     {
-        return {data:component, alerts:alerts};
+        return {data:data, alerts:alerts};
     }
     _updateList.forEach((_component_prop)=>
     {
@@ -50,7 +50,7 @@ let updateMultipliers=(_updateList, _component, _name)=>
                 alerts.push(_name+": cost_multipliers."+_component_prop);
                 alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
                 data.feature_array=feature_array_cost_multiplier;
-            }   
+            }
         }
         else
         {
