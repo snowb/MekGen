@@ -34,6 +34,53 @@ import(/* webpackChunkName: "validator_functions" */"./validator_functions")
     ({loopValidators, updateMultipliers, round} = _module);
 });
 
+validators.derived=(_component)=>
+{
+    let cleanedComponent=_component;
+    let alerts=[];
+    //update static values
+    let isFragile=cleanedComponent.feature_array.some((_val)=>
+    {
+        return _val.feature=="Fragile";
+    });
+    let newDamageCapacity=isFragile?1:cleanedComponent.selected_energy_pool.damage_capacity;
+    if(cleanedComponent.damage_capacity!=newDamageCapacity)
+    {//validate damage capacity
+        alerts.push("Mek-Energy_Pool: damage_capacity");
+        alerts.push("**** Invalid Damage Capacity. Correcting. ****");
+        cleanedComponent.damage_capacity=newDamageCapacity;
+    }
+    let newWeight=cleanedComponent.selected_energy_pool.damage_capacity/2;
+    if(cleanedComponent.weight!=newWeight)
+    {//validate weight
+        alerts.push("Mek-Energy_Pool: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=newWeight;
+    }
+    let newCost=(cleanedComponent.selected_energy_pool.cost * cleanedComponent.cost_multiplier)
+            + cleanedComponent.efficiencies.space.cost;
+    if(cleanedComponent.cost!=newCost)
+    {//validate weight
+        alerts.push("Mek-Energy_Pool: cost");
+        alerts.push("**** Invalid Cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+    let isMorphable=cleanedComponent.feature_array.some((_val)=>
+    {
+        return _val.feature=="Morphable";
+    });
+    switch(true)
+    {
+        case isMorphable && (cleanedComponent.selected_morphable===undefined || !cleanedComponent.selected_morphable):
+        case !isMorphable && cleanedComponent.selected_morphable:
+            alerts.push("Mek-Energy_Pool: Morphable");
+            alerts.push("**** Invalid Morphable data. Correcting. ****");
+            cleanedComponent.selected_morphable=isMorphable;
+    }
+
+    return {data:cleanedComponent,alerts:alerts};
+};
+
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
@@ -64,13 +111,10 @@ let validateComponent=(_component)=>
     validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Energy_Pool");
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
-    //update static values
-    let isFragile=cleanedComponent.feature_array.some((_feat)=>
-    {
-        return _feat.feature=="Fragile";
-    });
-    cleanedComponent.damage_capacity=isFragile ? 1 : cleanedComponent.selected_energy_pool.damage_capacity;
-    cleanedComponent.weight=cleanedComponent.selected_energy_pool.damage_capacity/2;
+    //update derived values
+    validatedData=validators.derived(cleanedComponent);
+    cleanedComponent=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
 
     return {data:cleanedComponent,alerts:alerts};
 };

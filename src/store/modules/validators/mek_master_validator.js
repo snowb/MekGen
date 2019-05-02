@@ -27,6 +27,7 @@ let module_list=
     {module_name:"./mek_magazine_validator",validator_prop_name:"mek_magazine"},//import mek_magazine validator
     {module_name:"./mek_melee_validator",validator_prop_name:"mek_melee"},//import mek_melee validator
     {module_name:"./mek_reflector_validator",validator_prop_name:"mek_reflector"},//import mek_reflector validator
+    {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
 ];
 module_list.forEach((_val)=>
 {
