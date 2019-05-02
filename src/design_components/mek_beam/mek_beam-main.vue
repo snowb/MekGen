@@ -281,7 +281,7 @@ export default
 
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
-            return_data.weight=this.weight;
+            return_data.weight=this.selected_damage.damage/2;
             return_data.final_damage=this.final_damage;
             return_data.damage_capacity=this.damage_capacity;
 

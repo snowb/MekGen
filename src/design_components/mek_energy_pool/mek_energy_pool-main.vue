@@ -184,7 +184,7 @@ export default
 
             return_data.cost=this.total_cost;
             return_data.cost_multiplier=this.cost_multiplier;
-            return_data.weight=this.weight;
+            return_data.weight=this.selected_energy_pool.damage_capacity;
             return_data.damage_capacity=this.damage_capacity;
 
             this.$nextTick(()=>{this.component_changed=false;});
