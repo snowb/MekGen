@@ -132,6 +132,7 @@ export default
             this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
             this.energy_pool_name;
             this.damage_capacity=this.fragile ? 1 : this.selected_energy_pool.damage_capacity;
+            this.selected_morphable=this.feature_array.some((_val)=>{return _val.feature=="Morphable"});
         },
         componentSaveReset:function(_action)
         {
@@ -184,7 +185,7 @@ export default
 
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
-            return_data.weight=this.selected_energy_pool.damage_capacity;
+            return_data.weight=this.selected_energy_pool.damage_capacity/2;
             return_data.damage_capacity=this.damage_capacity;
 
             this.$nextTick(()=>{this.component_changed=false;});
