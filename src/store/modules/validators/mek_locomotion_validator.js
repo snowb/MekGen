@@ -15,6 +15,33 @@ import(/* webpackChunkName: "mek_locomotion-type-data-module" */
     validators.type=_module.cleaned_feature;
 });
 
+validators.derived=(_component)=>
+{
+    let cleanedComponent=_component;
+    let alerts=[];
+    let newDamageCapacity=cleanedComponent.selected_locomotion_class.kills;
+    if(cleanedComponent.damage_capacity!=newDamageCapacity)
+    {//validate damage_capacity
+        alerts.push("Mek-Locomotion: damage_capacity");
+        alerts.push("**** Invalid Damage Capacity. Correcting. ****");
+        cleanedComponent.damage_capacity=newDamageCapacity;
+    }
+    if(cleanedComponent.weight!=newDamageCapacity/2)
+    {//validate weight
+        alerts.push("Mek-Locomotion: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=newDamageCapacity/2;
+    }
+    let newCost=cleanedComponent.selected_locomotion_class.cost;
+    if(cleanedComponent.cost!=newCost)
+    {//validate cost
+        alerts.push("Mek-Locomotion: cost");
+        alerts.push("**** Invalid Cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+    return {data:cleanedComponent,alerts:alerts};
+};
+
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
@@ -30,9 +57,9 @@ let validateComponent=(_component)=>
     validatedData=validators.class("name",cleanedComponent.selected_locomotion_class);
     cleanedComponent.selected_locomotion_class=validatedData.data;
     alerts=alerts.concat(validatedData.alerts);
-
-    cleanedComponent.damage_capacity=cleanedComponent.selected_locomotion_class.kills;
-    cleanedComponent.weight=cleanedComponent.damage_capacity/2;
+    validatedData=validators.derived(cleanedComponent);
+    cleanedComponent=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
     
     return {data:cleanedComponent,alerts:alerts};
 };
