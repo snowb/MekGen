@@ -37,6 +37,12 @@ import(/* webpackChunkName: "validator_functions" */"./validator_functions")
     ({loopValidators, updateMultipliers, round} = _module);
 });
 
+/***
+ * 
+ * implement validators.derived
+ * 
+ */
+
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
