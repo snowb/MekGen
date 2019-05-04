@@ -67,14 +67,14 @@ validators.derived=(_component, _isVarBeamShield, _isBeamShield)=>
         alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
         cleanedComponent.cost_multiplier=round(cost_multiplier,2);
     }
-    let newDamageCapacity=cleanedComponent.selected_damage.cost/4;
+    let newDamageCapacity=round(cleanedComponent.selected_damage.cost/4,2);
     if(cleanedComponent.damage_capacity!=newDamageCapacity)
     {
         alerts.push("Mek-EMW: damage_capacity");
         alerts.push("**** Invalid Damage Capacity. Correcting. ****");
         cleanedComponent.damage_capacity=newDamageCapacity;
     }
-    let newWeight=newDamageCapacity/2;
+    let newWeight=round(newDamageCapacity/2,2);
     if(cleanedComponent.weight!=newWeight)
     {
         alerts.push("Mek-EMW: weight");

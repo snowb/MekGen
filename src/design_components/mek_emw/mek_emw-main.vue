@@ -147,7 +147,7 @@ export default
         {
             this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
-            this.damage_capacity=_damage.cost/4;
+            this.damage_capacity=this.round(_damage.cost/4,2);
         },
         updateAccuracy(_accuracy)
         {

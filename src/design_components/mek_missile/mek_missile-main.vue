@@ -178,7 +178,7 @@ export default
             let size=_missiles>0 ? _missiles : 1;
             this.$set(this,"selected_pack_size",size);
             this.component_changed=true;
-            this.damage_capacity=this.round((this.selected_damage.damage*_missiles)/15,1);
+            this.damage_capacity=this.round((this.selected_damage.damage*_missiles)/15,2);
         },
         updateAccuracy(_accuracy)
         {
