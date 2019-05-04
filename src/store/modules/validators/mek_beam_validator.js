@@ -114,7 +114,7 @@ validators.derived=(_component)=>
     if(cleanedComponent.cost!=newCost)
     {
         alerts.push("Mek-Beam: cost");
-        alerts.push("**** Invalid cost. Correcting. ****");
+        alerts.push("**** Invalid Cost. Correcting. ****");
         cleanedComponent.cost=newCost;
     }
 
