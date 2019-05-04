@@ -68,6 +68,7 @@ validators.derived=(_component)=>
     let newCost=cleanedComponent.selected_servo_class.cost
                 + (cleanedComponent.selected_armor.cost * cleanedComponent.armor_cost_multiplier)
                 + cleanedComponent.kills_space_trade.cost;
+    newCost=round(newCost,2);
     if(cleanedComponent.cost!=newCost)
     {//correct cost if mismatch
         alerts.push("Mek-Servo: cost");

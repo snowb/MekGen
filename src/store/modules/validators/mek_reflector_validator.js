@@ -12,6 +12,13 @@ import(/* webpackChunkName: "mek_space-efficiency-data-module" */"@/data_table_m
     validators.space_efficiency=_module.validate_efficiency;
 });
 
+let round;
+import(/* webpackChunkName: "validator_functions" */"./validator_functions")
+.then((_module)=>
+{
+    ({round} = _module);
+});
+
 validators.derived=(_component)=>
 {
     let cleanedComponent=_component;
@@ -30,6 +37,7 @@ validators.derived=(_component)=>
         cleanedComponent.weight=cleanedComponent.damage_capacity/2;
     }
     let newCost=cleanedComponent.selected_reflector.cost + cleanedComponent.efficiencies.space.cost;
+    newCost=round(newCost,2);
     if(cleanedComponent.cost!=newCost)
     {//validate weight
         alerts.push("Mek-Reflector: cost");
@@ -50,8 +58,8 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.selected_reflector=validatedData.data;
 
-    let total_cost=cleanedComponent.selected_reflector.cost;
-    validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Reflector");
+    let base_cost=cleanedComponent.selected_reflector.cost;
+    validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, base_cost, "Mek-Reflector");
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
     validatedData=validators.derived(cleanedComponent);

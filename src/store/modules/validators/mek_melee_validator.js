@@ -65,8 +65,8 @@ let validateComponent=(_component)=>
     },1);
     cleanedComponent.cost_multiplier=round(cost_multiplier,2);
 
-    let total_cost=cleanedComponent.selected_damage.cost * cleanedComponent.cost_multiplier;
-    validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, total_cost, "Mek-Melee");
+    let base_cost=cleanedComponent.selected_damage.cost * cleanedComponent.cost_multiplier;
+    validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, base_cost, "Mek-Melee");
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
     //update static values

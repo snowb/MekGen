@@ -41,6 +41,7 @@ validators.derive=(_component)=>
         cleanedComponent.damage_capacity=newBaseCost;
     }
     let newCost=newBaseCost * cleanedComponent.cost_multiplier;
+    newCost=round(newCost,2);
     if(cleanedComponent.cost!=newCost)
     {//validate cost
         alerts.push("Mek-Magazine: cost");
@@ -87,6 +88,7 @@ let validateComponent=(_component)=>
     {//calc new cost_mulitplier
         return _multi*_val[1];
     },1);
+    cleanedComponent.cost_multiplier=round(cleanedComponent.cost_multiplier,2);
     cleanedComponent.cost=cleanedComponent.selected_gun.cost * cleanedComponent.cost_multiplier;
     
     return {data:cleanedComponent,alerts:alerts};

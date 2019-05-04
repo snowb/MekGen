@@ -59,6 +59,7 @@ validators.derived=(_component)=>
     }
     let newCost=(cleanedComponent.selected_energy_pool.cost * cleanedComponent.cost_multiplier)
             + cleanedComponent.efficiencies.space.cost;
+    newCost=round(newCost,2);
     if(cleanedComponent.cost!=newCost)
     {//validate weight
         alerts.push("Mek-Energy_Pool: cost");

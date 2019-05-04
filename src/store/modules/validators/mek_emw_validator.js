@@ -60,6 +60,7 @@ validators.derived=(_component, _isVarBeamShield, _isBeamShield)=>
     {//calc new cost_multiplier
         return _multi*_val[1];
     },1);
+    cost_multiplier=round(cost_multiplier,2);
     if(cleanedComponent.cost_multiplier!=cost_multiplier)
     {
         alerts.push("Mek-EMW: cost_multiplier");
@@ -80,7 +81,8 @@ validators.derived=(_component, _isVarBeamShield, _isBeamShield)=>
         alerts.push("**** Invalid Weight. Correcting. ****");
         cleanedComponent.weight=newWeight;
     }
-    let newCost=cleanedComponent.selected_damage.cost * cost_multiplier;
+    let newCost=(cleanedComponent.selected_damage.cost * cost_multiplier) + cleanedComponent.efficiencies.space.cost;
+    newCost=round(newCost,2);
     if(cleanedComponent.cost!=newCost)
     {
         alerts.push("Mek-EMW: cost");
