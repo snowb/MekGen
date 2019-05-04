@@ -147,7 +147,7 @@ export default
         {
             this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
-            this.damage_capacity=_damage.damage/4;
+            this.damage_capacity=_damage.cost/4;
         },
         updateAccuracy(_accuracy)
         {
@@ -198,7 +198,7 @@ export default
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
-            return_data.damage_capacity=this.selected_damage.damage/4;
+            return_data.damage_capacity=this.damage_capacity;
 
             if(this.is_beam_shield)
             {
@@ -297,9 +297,9 @@ export default
             if(this.is_beam_shield)
             {
                 let obj={};
-                obj.stopping_power=this.selected_damage.damage;
+                obj.stopping_power=this.selected_damage.cost;
                 obj.defense_accuracy=this.selected_accuracy.accuracy-2;
-                obj.damage=this.selected_damage.damage/2;
+                obj.damage=this.selected_damage.damage;
                 return obj;
             }
             return null;

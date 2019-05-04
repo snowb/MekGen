@@ -24,9 +24,10 @@ export default
     data:function()
     {
         let obj={};
-        obj.pkey="damage";
+        obj.pkey="cost";
         obj.alerts=[];
         obj.suppressAlerts=false;
+        obj.updateDamge=false;
         return obj;
     },
     methods:
@@ -55,11 +56,12 @@ export default
                 });
                 this.publishAlerts();
             }
-            if(cleaned_data.update)
+            if(cleaned_data.update || this.updateDamge)
             {
                 this.$emit("alert-generated",true);
                 this.select_damage(cleaned_data.data);
             }
+            this.updateDamge=false;
             return cleaned_data.key_list;
         }
     },
@@ -70,6 +72,7 @@ export default
             if(_newval!=_oldval)
             {
                 this.suppressAlerts=true;
+                this.updateDamge=true;
             }
         }
     }
