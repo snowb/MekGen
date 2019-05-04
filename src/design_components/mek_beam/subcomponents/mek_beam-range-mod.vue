@@ -27,6 +27,7 @@ export default
         let obj={}
         obj.alerts=[];
         obj.suppressAlerts=false;
+        obj.updatedBaseRange=false;
         obj.pkey="range_mod";
         return obj;
     },
@@ -56,11 +57,12 @@ export default
                 });
                 this.publishAlerts();
             }
-            if(cleaned_data.update)
-            {
+            if(cleaned_data.update || this.updatedBaseRange)
+            {   
                 this.$emit("alert-generated",true);
                 this.select_range_mod(cleaned_data.data);
             }
+            this.updatedBaseRange=false;
             return cleaned_data.key_list;
         }
     },
@@ -71,6 +73,7 @@ export default
             if(_newval!=_oldval)
             {
                 this.suppressAlerts=true;
+                this.updatedBaseRange=true;
             }
         }
     }
