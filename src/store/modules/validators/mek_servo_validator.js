@@ -51,9 +51,9 @@ validators.derived=(_component)=>
     let alerts=[];
     let updateList=["selected_armor_type","selected_absorption"];
     //update multipliers
-    let validatedData=updateMultipliers(updateList,cleanedComponent);
+    let validatedData=updateMultipliers(updateList,cleanedComponent,"Mek-Servo");
     cleanedComponent.cost_multipliers.armor=validatedData.data;
-    alerts.concat(validatedData.alerts);
+    alerts=alerts.concat(validatedData.alerts);
     let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers.armor).reduce((_multi, _val)=>
     {//calc new cost_multiplier
         return _multi*_val[1];
