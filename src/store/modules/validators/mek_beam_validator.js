@@ -69,12 +69,67 @@ import(/* webpackChunkName: "validator_functions" */"./validator_functions")
  * implement validators.derived
  * 
  */
+validators.derived=(_component)=>
+{
+    let cleanedComponent=_component;
+    let alerts=[];
+    let validatedData;
+    let updateList=["selected_burst_value","selected_accuracy","selected_warm_up_time","selected_wide_angle","selected_range_mod","feature_array","selected_shots"];
+    //update cost_multipliers for components needing update
+    validatedData=updateMultipliers(updateList,cleanedComponent,"Mek-Beam");
+    cleanedComponent.cost_multipliers=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);
+    //update cost_multiplier
+    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
+    {//calc new cost_multiplier
+        return _multi*_val[1];
+    },1);
+    cost_multiplier=round(cost_multiplier,2);
+    if(cleanedComponent.cost_multiplier!=cost_multiplier)
+    {
+        alerts.push("Mek-Beam: cost_multiplier");
+        alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
+        cleanedComponent.cost_multiplier=round(cost_multiplier,2);
+    }
+    let newDamageCapacity=cleanedComponent.selected_damage.damage;
+    if(cleanedComponent.damage_capacity!=newDamageCapacity)
+    {
+        alerts.push("Mek-Beam: damage_capacity");
+        alerts.push("**** Invalid Damage Capacity. Correcting. ****");
+        cleanedComponent.damage_capacity=newDamageCapacity;
+    }
+    let isFragile=cleanedComponent.feature_array.some((_val)=>
+    {
+        return _val.feature=="Fragile";
+    });
+    let newWeight=isFragile ? 1 : newDamageCapacity/2;
+    if(cleanedComponent.weight!=newWeight)
+    {
+        alerts.push("Mek-Beam: weight");
+        alerts.push("**** Invalid Weight. Correcting. ****");
+        cleanedComponent.weight=newWeight;
+    }
+    let magFed=cleanedComponent.feature_array.some((_val)=>
+    {
+        return _val.feature=="Mag-Fed";
+    });
+    magFed=magFed ? 1 : 0;
+    let newCost=(cleanedComponent.selected_damage.cost * cost_multiplier) + cleanedComponent.efficiencies.space.cost + magFed;
+    newCost=round(newCost,2);
+    if(cleanedComponent.cost!=newCost)
+    {
+        alerts.push("Mek-Beam: cost");
+        alerts.push("**** Invalid cost. Correcting. ****");
+        cleanedComponent.cost=newCost;
+    }
+
+    return {data:cleanedComponent, alerts:alerts};
+};
 
 let validateComponent=(_component)=>
 {
     let cleanedComponent=_component;
     let validatedData;
-    let updateList=["selected_burst_value","selected_accuracy","selected_warm_up_time","selected_wide_angle","selected_range_mod","feature_array","selected_shots"];
     let loopAlerts;
     let alerts=[];
     //loop thru independent validations
@@ -87,7 +142,6 @@ let validateComponent=(_component)=>
         {validator:validators.wide_angle,pkey:"angle",component_prop:'selected_wide_angle'},
     ];
     ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
-    
     alerts=alerts.concat(loopAlerts)
     //update range_mod table
     validators.update_range_mod(cleanedComponent.selected_damage.range);
@@ -108,24 +162,15 @@ let validateComponent=(_component)=>
     ({cleanedComponent, loopAlerts} = loopValidators(componentsToValidate, cleanedComponent));
     alerts=alerts.concat(loopAlerts);
 
-    //update cost_multipliers for components needing update
-    validatedData=updateMultipliers(updateList,cleanedComponent,"Mek-Beam");
-    cleanedComponent.cost_multipliers=validatedData.data;
-    alerts=alerts.concat(validatedData.alerts);
-    //validate space efficiency
-    let cost_multiplier=Object.entries(cleanedComponent.cost_multipliers).reduce((_multi, _val)=>
-    {//calc new cost_mulitplier
-        return _multi*_val[1];
-    },1);
-    
-    cleanedComponent.cost_multiplier=round(cost_multiplier,2);
+    //update derived values, and cost_multi
+    validatedData=validators.derived(cleanedComponent);
+    cleanedComponent=validatedData.data;
+    alerts=alerts.concat(validatedData.alerts);   
     let base_cost=cleanedComponent.selected_damage.cost * cleanedComponent.cost_multiplier;
+    //validate space efficiency
     validatedData=validators.space_efficiency(cleanedComponent.efficiencies.space, base_cost, "Mek-Beam");
     alerts=alerts.concat(validatedData.alerts);
     cleanedComponent.efficiencies.space=validatedData.data;
-    //update static values
-    cleanedComponent.damage_capacity=cleanedComponent.selected_damage.damage;
-    cleanedComponent.weight=cleanedComponent.damage_capacity/2;
 
     return {data:cleanedComponent, alerts:alerts};
 };
