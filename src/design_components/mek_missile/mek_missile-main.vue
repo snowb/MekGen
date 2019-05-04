@@ -310,7 +310,7 @@ export default
             return_data.selected_skill=this.selected_skill;
             return_data.selected_blast_radius=this.selected_blast_radius;
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
