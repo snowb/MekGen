@@ -50,17 +50,16 @@ let updateMultipliers=(_updateList, _component, _name)=>
             if(component.cost_multipliers.feature_array!=feature_array_cost_multiplier)
             {
                 alerts.push(_name+": "+rootPropName+_component_prop);
-                alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
+                alerts.push("**** Invalid Cost Multiplier["+_component_prop+"]. Correcting. ****");
                 data.feature_array=feature_array_cost_multiplier;
             }
         }
         else
         {
-            
             if(data[_component_prop]!=component[_component_prop].cost)
             {
                 alerts.push(_name+": "+rootPropName+_component_prop);
-                alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
+                alerts.push("**** Invalid Cost Multiplier["+_component_prop+"]. Correcting. ****");
                 data[_component_prop]=component[_component_prop].cost;
             }   
         }
