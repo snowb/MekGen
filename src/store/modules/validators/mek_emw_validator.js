@@ -52,7 +52,7 @@ validators.derived=(_component, _isVarBeamShield, _isBeamShield)=>
     let validatedData;
     let updateList=["selected_turns_in_use","selected_accuracy","selected_attack_factor","feature_array"];
     //update cost_multipliers for components needing update
-    validatedData=updateMultipliers(updateList,cleanedComponent);
+    validatedData=updateMultipliers(updateList,cleanedComponent,"Mek-EMW");
     cleanedComponent.cost_multipliers=validatedData.data;
     alerts=alerts.concat(validatedData.alerts);
     //update cost_multiplier

@@ -55,7 +55,7 @@ let validateComponent=(_component)=>
     alerts=alerts.concat(loopAlerts)
 
     //update cost_multipliers for components needing update
-    validatedData=updateMultipliers(updateList,cleanedComponent);
+    validatedData=updateMultipliers(updateList,cleanedComponent,"Mek-Melee");
     cleanedComponent.cost_multipliers=validatedData.data;
     alerts=alerts.concat(validatedData.alerts);
     //validate space efficiency
