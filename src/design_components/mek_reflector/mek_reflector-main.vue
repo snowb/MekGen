@@ -178,7 +178,7 @@ export default
         },
         cost:function()
         {
-            return this.selected_reflector.cost + this.efficiencies.space.cost;
+            return this.round(this.selected_reflector.cost + this.efficiencies.space.cost,2);
         },
         reflector_name()
         {

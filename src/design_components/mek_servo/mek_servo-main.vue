@@ -269,8 +269,10 @@ export default
         },
         cost()
         {
-            return this.selected_servo_class.cost + (this.selected_armor.cost*this.armor_cost_multiplier) + this.kills_space_trade.cost;
-        },
+            let cost=this.selected_servo_class.cost + (this.selected_armor.cost*this.armor_cost_multiplier) + this.kills_space_trade.cost;
+            return this.round(cost,2);
+        }
+        ,
         available_space()
         {
             return this.selected_servo_class.space + this.kills_space_trade.space_modifier;
