@@ -15,7 +15,7 @@ let cleaned_feature=(_base_damage, _range_mod, _damage_mod)=>
         case _damage_mod<0:
         case (_base_damage - _damage_mod)<0:
             alerts.push("Mek_Melee-Entangle-Range: "+json_data);
-            alert.push("**** Invalid data. Reseting. ****");
+            alerts.push("**** Invalid data. Reseting. ****");
             update=true;
             break;
         default:
