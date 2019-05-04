@@ -110,10 +110,10 @@ export default
         obj.cost_multipliers.armor={};
         
         obj.selected_armor_type={type:"Standard",damage_coefficient:1,cost:1};
-        obj.cost_multipliers.armor.armor_type=1;
+        obj.cost_multipliers.armor.selected_armor_type=1;
 
         obj.selected_absorption={absorption:0,cost:1,armor_penalty:0};
-        obj.cost_multipliers.armor.absorption=1;
+        obj.cost_multipliers.armor.selected_absorption=1;
 
         obj.kills_space_trade={};
         obj.kills_space_trade.space_modifier=0;
@@ -156,13 +156,13 @@ export default
         updateArmorType(_armor_type)
         {
             this.$set(this,"selected_armor_type",JSON.parse(JSON.stringify(_armor_type)));
-            this.cost_multipliers.armor.armor_type=this.selected_armor_type.cost;
+            this.cost_multipliers.armor.selected_armor_type=this.selected_armor_type.cost;
             this.component_changed=true;
         },
         updateAbsorption(_absorption)
         {
             this.$set(this,"selected_absorption",JSON.parse(JSON.stringify(_absorption)));
-            this.cost_multipliers.armor.absorption=this.selected_absorption.cost;
+            this.cost_multipliers.armor.selected_absorption=this.selected_absorption.cost;
             this.component_changed=true;
         },
         updateExtraSpace(_kills_space_trade)

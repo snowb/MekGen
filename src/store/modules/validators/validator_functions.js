@@ -32,7 +32,9 @@ let updateMultipliers=(_updateList, _component, _name)=>
 {
     let component=_component;
     let alerts=[];
-    let data=_component.cost_multipliers;
+    //let data=_component.cost_multipliers;
+    let data=component.cost_multipliers.armor ||  component.cost_multipliers;
+    let rootPropName=component.cost_multipliers.armor ? "cost_multipliers.armor." : "cost_multipliers.";
     if(_updateList.length==0)
     {
         return {data:data, alerts:alerts};
@@ -41,24 +43,25 @@ let updateMultipliers=(_updateList, _component, _name)=>
     {
         if(_component_prop=="feature_array")
         {
-            let feature_array_cost_multiplier=_component.feature_array.reduce((_cm, _feat)=>
+            let feature_array_cost_multiplier=component.feature_array.reduce((_cm, _feat)=>
             {
                 return _cm * _feat.cost;
             },1);
             if(component.cost_multipliers.feature_array!=feature_array_cost_multiplier)
             {
-                alerts.push(_name+": cost_multipliers."+_component_prop);
+                alerts.push(_name+": "+rootPropName+_component_prop);
                 alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
                 data.feature_array=feature_array_cost_multiplier;
             }
         }
         else
         {
-            if(component.cost_multipliers[_component_prop]!=_component[_component_prop].cost)
+            
+            if(data[_component_prop]!=component[_component_prop].cost)
             {
-                alerts.push(_name+": cost_multipliers."+_component_prop);
+                alerts.push(_name+": "+rootPropName+_component_prop);
                 alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
-                data[_component_prop]=_component[_component_prop].cost;
+                data[_component_prop]=component[_component_prop].cost;
             }   
         }
     });
