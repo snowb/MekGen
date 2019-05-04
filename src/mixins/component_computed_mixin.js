@@ -11,7 +11,17 @@ export default
             let cost_multiplier=1;
             for(let multi in this.cost_multipliers)
             {
-                cost_multiplier*=this.cost_multipliers[multi];
+                if(typeof this.cost_multipliers[multi]==="object")
+                {
+                    for(let submulti in this.cost_multipliers[multi])
+                    {
+                        cost_multiplier*=this.cost_multipliers[multi][submulti];
+                    }
+                }
+                else
+                {
+                    cost_multiplier*=this.cost_multipliers[multi];
+                }
             }
             return this.round(cost_multiplier,2);
         },
