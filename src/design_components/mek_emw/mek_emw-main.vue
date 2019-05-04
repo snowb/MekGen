@@ -6,7 +6,7 @@
         ></mek-component-name>
         <div class="mek-inline-flex-row">
             <mek-emw-damage @update-damage="updateDamage" @alert-generated="handleAlert"
-                :damage="selected_damage"
+                :damage="selected_damage" :nv-beam-shield="is_nonvariable_beam_shield"
             ></mek-emw-damage>
             <mek-emw-accuracy 
                 @update-accuracy="updateAccuracy" @alert-generated="handleAlert"
@@ -198,7 +198,7 @@ export default
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.weight;
             return_data.final_damage=this.final_damage;
-            return_data.damage_capacity=this.selected_damage.damage;
+            return_data.damage_capacity=this.selected_damage.damage/4;
 
             if(this.is_beam_shield)
             {
@@ -287,6 +287,10 @@ export default
             {
                 return /variable beam/gi.test(_val.feature);
             });
+        },
+        is_nonvariable_beam_shield()
+        {
+            return this.is_beam_shield && !this.is_variable_beam_shield;
         },
         beam_shield()
         {

@@ -9,13 +9,13 @@
 <script>
 import alerts_mixin from "@/mixins/alerts_mixin";
 
-import { damage_data_table, cleaned_feature } 
+import { damage_data_table, cleaned_feature, create_damage_data_table } 
     from "@/data_table_modules/mek_emw/mek_emw-damage-data-module";
 
 export default
 {
     name:"mek_emw_damage",
-    props:["damage"],
+    props:["damage","nvBeamShield"],
     mixins:[alerts_mixin],
     components:
     {
@@ -41,6 +41,7 @@ export default
     {
         damage_table()
         {
+            create_damage_data_table(this.nvBeamShield);
             return damage_data_table;
         },
         selected_keys()
@@ -60,6 +61,16 @@ export default
                 this.select_damage(cleaned_data.data);
             }
             return cleaned_data.key_list;
+        }
+    },
+    watch:
+    {
+        "nvBeamShield":function(_newval,_oldval)
+        {//must track changes in blastRadius to disable alerts for removed features on cleaned_feat
+            if(_newval!=_oldval)
+            {
+                this.suppressAlerts=true;
+            }
         }
     }
 }
