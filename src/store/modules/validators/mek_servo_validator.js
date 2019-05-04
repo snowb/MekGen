@@ -76,6 +76,7 @@ validators.derived=(_component)=>
         cleanedComponent.cost=newCost;
     }
     let newWeight=(cleanedComponent.total_kills + cleanedComponent.selected_armor.stopping_power)/2;
+    newWeight=round(newWeight,2);
     if(cleanedComponent.weight!=newWeight)
     {//correct weight if mismatch
         alerts.push("Mek-Servo: weight");

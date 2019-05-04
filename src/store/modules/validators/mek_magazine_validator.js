@@ -48,7 +48,7 @@ validators.derive=(_component)=>
         alerts.push("**** Invalid Cost. Correcting. ****");
         cleanedComponent.cost=newCost;
     }
-    let newWeight=newBaseCost/2;
+    let newWeight=round(newBaseCost/2,2);
     if(cleanedComponent.weight!=newWeight)
     {//validate weight
         alerts.push("Mek-Magazine: weight");
