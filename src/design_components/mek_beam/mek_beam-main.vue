@@ -147,7 +147,7 @@ export default
         obj.cost_multipliers.selected_accuracy=1;
         obj.cost_multipliers.feature_array=1;
         obj.cost_multipliers.selected_shots=1;
-        obj.cost_multipliers.wide_angle=1;
+        obj.cost_multipliers.selected_wide_angle=1;
         obj.cost_multipliers.selected_warm_up_time=1;
         obj.cost_multipliers.selected_range_mod=1;
         obj.cost_multipliers.selected_burst_value=1;
@@ -173,7 +173,7 @@ export default
         {
             this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
-            this.damage_capacity=_damage.damage;
+            this.damage_capacity= this.fragile ? 1 : _damage.damage;
         },
         updateAccuracy(_accuracy)
         {
@@ -248,7 +248,7 @@ export default
                     this.cost_multipliers.selected_accuracy=1;
                     this.cost_multipliers.feature_array=1;
                     this.cost_multipliers.selected_shots=1;
-                    this.cost_multipliers.wide_angle=1;
+                    this.cost_multipliers.selected_wide_angle=1;
                     this.cost_multipliers.selected_warm_up_time=1;
                     this.cost_multipliers.selected_range_mod=1;
                     this.cost_multipliers.selected_burst_value=1;
@@ -279,7 +279,7 @@ export default
             return_data.selected_wide_angle=this.selected_wide_angle;
             return_data.feature_array=this.feature_array;
 
-            return_data.cost=this.total_cost;
+            return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.weight=this.selected_damage.damage/2;
             return_data.final_damage=this.final_damage;
