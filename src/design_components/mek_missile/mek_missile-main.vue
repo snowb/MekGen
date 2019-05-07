@@ -9,7 +9,7 @@
             <mek-missile-damage @update-damage="updateDamage" @alert-generated="handleAlert"
                 :damage="selected_damage"
             ></mek-missile-damage>
-            <mek-missile-pack-size :pack="selected_pack_size" 
+            <mek-missile-pack-size :pack="selected_pack_size.size" 
                 @update-pack-size="updatePackSize" @alert-generated="handleAlert"
                 style="align-self:flex-end;"
             ></mek-missile-pack-size>
@@ -120,7 +120,7 @@ export default
         obj.component_changed=true;
 
         obj.selected_damage={damage:1,cost:0.1,range:4};
-        obj.selected_pack_size=1;
+        obj.selected_pack_size={size:1,cost:1};
         obj.selected_accuracy={accuracy:0,cost:1};
         obj.selected_range_mod={range_mod:1,cost:1,id:6};
         obj.selected_smart={smart:"__NIL__",cost:1};
@@ -144,6 +144,7 @@ export default
         obj.cost_multipliers.selected_skill=1;
         obj.cost_multipliers.selected_range_mod=1;
         obj.cost_multipliers.selected_blast_radius=1;
+        obj.cost_multipliers.selected_pack_size=1;
 
         obj.hasAlert=false;
 
@@ -166,7 +167,7 @@ export default
         {
             this.$set(this,"selected_damage",_damage);
             this.component_changed=true;
-            this.damage_capacity=this.round(this.selected_pack_size*_damage.damage/15,2);
+            this.damage_capacity=this.round(this.selected_pack_size.size*_damage.damage/15,2);
 
             if(this.has_duration)
             {
@@ -176,9 +177,10 @@ export default
         updatePackSize(_missiles)
         {
             let size=_missiles>0 ? _missiles : 1;
-            this.$set(this,"selected_pack_size",size);
+            this.$set(this,"selected_pack_size",{size:size,cost:size});
             this.component_changed=true;
             this.damage_capacity=this.round((this.selected_damage.damage*_missiles)/15,2);
+            this.cost_multipliers.selected_pack_size=size;
         },
         updateAccuracy(_accuracy)
         {
@@ -225,6 +227,7 @@ export default
         {
             this.$set(this,"feature_array",_featureArray);
             this.cost_multipliers.feature_array=this.feature_array.reduce((_multi,_val)=>{return _multi*=_val.cost},1);
+            this.cost_multipliers.feature_array=this.round(this.cost_multipliers.feature_array,2);
             this.missile_name;
 
             if(this.has_duration)
@@ -265,7 +268,7 @@ export default
                     //this.selected_property2.keyProp=1;
                     //this.$set(this,"feature_array",[]);
                     this.smoke_scatter_duration=null;
-                    this.selected_pack_size=1;
+                    this.$set(this,"selected_pack_size",{size:1,cost:1});
                     this.$set(this,"feature_array",[]);
                     this.$set(this,"selected_damage",{damage:1,cost:0.1,range:4});
                     this.$set(this,"selected_damage",{damage:1,cost:0.1,range:4});
@@ -300,8 +303,8 @@ export default
             /* generic prop saves 
             return_data.selected_property1=this.selected_property1;
             return_data.selected_property2=this.selected_property2;
-            return_data.feature_array=this.feature_array;
             */
+            return_data.feature_array=this.feature_array;
             return_data.selected_damage=this.selected_damage;
             return_data.selected_pack_size=this.selected_pack_size;
             return_data.selected_accuracy=this.selected_accuracy;
@@ -349,14 +352,14 @@ export default
             //core cost prop
             let cost_multiplier=this.has_feature("nuclear") ? this.cost_multiplier/1000 : this.cost_multiplier;
 
-            return this.round(this.selected_damage.cost * cost_multiplier * this.selected_pack_size,2);
+            return this.round(this.selected_damage.cost * cost_multiplier * this.selected_pack_size.size,2);
         },
         cost:function()
         {
             let subtotal_cost=this.selected_damage.cost * this.cost_multiplier;
             subtotal_cost += this.efficiencies.space.cost;
 
-            return this.round(subtotal_cost * this.selected_pack_size,2);
+            return this.round(subtotal_cost * this.selected_pack_size.size,2);
         },
         missile_name()
         {
@@ -380,7 +383,7 @@ export default
             missile_name+=this.selected_damage.damage+"K";
             missile_name=missile_name+type+" Pack";
             
-            return missile_name+" ("+this.selected_pack_size+")";
+            return missile_name+" ("+this.selected_pack_size.size+")";
         },
         is_bomb()
         {
