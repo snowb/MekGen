@@ -28,6 +28,7 @@ let module_list=
     {module_name:"./mek_melee_validator",validator_prop_name:"mek_melee"},//import mek_melee validator
     {module_name:"./mek_reflector_validator",validator_prop_name:"mek_reflector"},//import mek_reflector validator
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
+    {module_name:"./mek_missile_validator",validator_prop_name:"mek_missile"},//import mek_missile validator
 ];
 module_list.forEach((_val)=>
 {
@@ -56,15 +57,7 @@ let validateComponent=(_component)=>
                 validator_prop="mek_melee";
                 break;
             case "missile":
-                //damage
-                //accuracy
-                //range mod
-                //pack size (>0)
-                //smart
-                //skill (only with Smart >=1)
-                //blast radius
-                //features
-                //efficiency!?
+                validator_prop="mek_missile";
                 break;
             case "projectile":
                 //damage
