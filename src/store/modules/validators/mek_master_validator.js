@@ -29,6 +29,7 @@ let module_list=
     {module_name:"./mek_reflector_validator",validator_prop_name:"mek_reflector"},//import mek_reflector validator
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
     {module_name:"./mek_missile_validator",validator_prop_name:"mek_missile"},//import mek_missile validator
+    {module_name:"./mek_projectile_validator",validator_prop_name:"mek_projectile"},//import mek_projectile validator
 ];
 module_list.forEach((_val)=>
 {
@@ -60,13 +61,7 @@ let validateComponent=(_component)=>
                 validator_prop="mek_missile";
                 break;
             case "projectile":
-                //damage
-                //accuracy
-                //burst val
-                //multi-feed
-                //range mod
-                //features
-                //efficiency!?
+                validator_prop="mek_projectile";
                 break;
             case "magazine":
                 validator_prop="mek_magazine";
