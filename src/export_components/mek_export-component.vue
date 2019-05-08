@@ -25,7 +25,7 @@
 <script>
 import utility_mixin from "@/mixins/utility_mixin";
 import {mapGetters} from 'vuex';
-import {compress} from './mek_json_compress';
+//import {compress} from './mek_json_compress';
 //
 export default {
   name: 'export-component',
