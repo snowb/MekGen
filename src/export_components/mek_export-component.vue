@@ -25,6 +25,7 @@
 <script>
 import utility_mixin from "@/mixins/utility_mixin";
 import {mapGetters} from 'vuex';
+import {compress} from './mek_json_compress';
 //
 export default {
   name: 'export-component',
@@ -91,6 +92,7 @@ export default {
       {
         return "{}";
       }
+      //console.log(compress(this.selectedComponent))
       return JSON.stringify(this.selectedComponent);
     },
     ...mapGetters(
