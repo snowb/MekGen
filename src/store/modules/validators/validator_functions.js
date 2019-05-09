@@ -7,6 +7,8 @@ let loopValidators=(_validators, _component)=>
         let validatedData=runValidator(_val, cleanedComponent);
         cleanedComponent[_val.component_prop]=_val.component_prop=="feature_array"
                     ? validatedData.cleaned_array
+                    : _val.component_prop=="weakness_array"
+                    ? validatedData.cleaned_array
                     : validatedData.data;
         alerts=alerts.concat(validatedData.alerts);
     });
