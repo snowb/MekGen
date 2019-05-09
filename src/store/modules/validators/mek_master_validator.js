@@ -30,6 +30,7 @@ let module_list=
     {module_name:"./mek_energy_pool_validator",validator_prop_name:"mek_energy_pool"},//import mek_energy_pool validator
     {module_name:"./mek_missile_validator",validator_prop_name:"mek_missile"},//import mek_missile validator
     {module_name:"./mek_projectile_validator",validator_prop_name:"mek_projectile"},//import mek_projectile validator
+    {module_name:"./mek_shield_validator",validator_prop_name:"mek_shield"},//import mek_shielde validator
 ];
 module_list.forEach((_val)=>
 {
@@ -70,15 +71,7 @@ let validateComponent=(_component)=>
                 validator_prop="mek_energy_pool";
                 break;
             case "shield":
-                //class
-                //def ability, STANDARD ONLY
-                //binder, STD and ACTVE ONLY
-                //armor type, STD and ACTVE ONLY
-                //RAM, STD and ACTVE ONLY
-                //weakness, REACTIVE ONLY
-                //reset time, REACTIVE ONLY
-                //turns in use, REACTIVE ONLY
-                //efficiency!?
+                validator_prop="mek_shield"
                 break;
             case "reflector":
                 validator_prop="mek_reflector"
