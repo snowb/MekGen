@@ -26,6 +26,6 @@ let get_feature=partial_get_feature(da_data_table, has_feature);
 
 //completed function for returning cleaed data
 let cleaned_feature=
-    partial_cleaned_feature(da_validate, has_feature, get_feature, default_data, "Mek_Shield-Defense-Accuracy");
+    partial_cleaned_feature(da_validate, has_feature, get_feature, default_data, "Mek_Shield-Defense-Ability");
 
 export {da_data_table, da_validate, has_feature, get_feature, cleaned_feature};
