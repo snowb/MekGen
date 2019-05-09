@@ -319,7 +319,7 @@ export default
             return_data.cost=this.cost;
             return_data.cost_multiplier=this.cost_multiplier;
             return_data.is_ablative=this.is_ablative;
-            return_data.weight=this.weight;
+            return_data.weight=this.shield_class.stopping_power/2;
 
             switch(this.type.name.toLowerCase())
             {
