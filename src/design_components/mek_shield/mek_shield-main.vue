@@ -159,6 +159,8 @@ export default
         obj.absorption={absorption:0,cost:1,armor_penalty:0};
         obj.cost_multipliers.absorption=1;
 
+        obj.armor_multipliers=1;
+
         obj.hasAlert=false;
 
         return obj;
@@ -314,6 +316,7 @@ export default
             return_data.type=this.type;
             return_data.shield_class=this.shield_class;
             return_data.cost_multipliers=this.cost_multipliers;
+            return_data.armor_multipliers=this.cost_multipliers.armor_type*this.cost_multipliers.absorption;
             return_data.efficiencies=this.efficiencies;
             
             return_data.cost=this.cost;
@@ -334,7 +337,7 @@ export default
                 case "reactive":
                     return_data.reset_time=this.reset_time;
                     return_data.turns_in_use=this.turns_in_use;
-                    return_data.turns_in_use.time=return_data.turns_in_use.time===null?"Infinity":return_data.turns_in_use.time;
+                    //return_data.turns_in_use.time=return_data.turns_in_use.time===null?"Infinity":return_data.turns_in_use.time;
                     return_data.weakness_array=this.weakness_array;
                     return_data.surge_damage=this.surge_damage;
                     break;
@@ -495,7 +498,7 @@ export default
                 let sp_k_name = this.is_ablative ? this.shield_class.kills+"K" : this.shield_class.stopping_power+"SP";
                 fullname+=" "+exclusive_name+" "+sp_k_name+" "+partialname;
             }
-            fullname=fullname.replace(/\s+/g," ");
+            fullname=fullname.replace(/\s+/g," ").trim();
             return fullname;
         },
     }
