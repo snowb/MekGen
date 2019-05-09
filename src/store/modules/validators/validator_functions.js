@@ -21,7 +21,7 @@ let runValidator=(_validator_data, _component)=>
     let pkeyInstance=_validator_data.pkey;
     let propInstance=_component[_validator_data.component_prop];
 
-    if(_validator_data.component_prop=="feature_array")
+    if(["feature_array","weakness_array"].includes(_validator_data.component_prop))
     {
         return validatorInstance(propInstance, pkeyInstance); 
     }
@@ -41,17 +41,17 @@ let updateMultipliers=(_updateList, _component, _name)=>
     }
     _updateList.forEach((_component_prop)=>
     {
-        if(_component_prop=="feature_array")
+        if(["feature_array","weakness_array"].includes(_component_prop))
         {
-            let feature_array_cost_multiplier=component.feature_array.reduce((_cm, _feat)=>
+            let feature_array_cost_multiplier=component[_component_prop].reduce((_cm, _feat)=>
             {
                 return _cm * _feat.cost;
             },1);
-            if(component.cost_multipliers.feature_array!=feature_array_cost_multiplier)
+            if(component.cost_multipliers[_component_prop]!=feature_array_cost_multiplier)
             {
                 alerts.push(_name+": "+rootPropName+_component_prop);
                 alerts.push("**** Invalid Cost Multiplier["+_component_prop+"]. Correcting. ****");
-                data.feature_array=feature_array_cost_multiplier;
+                data[_component_prop]=feature_array_cost_multiplier;
             }
         }
         else
