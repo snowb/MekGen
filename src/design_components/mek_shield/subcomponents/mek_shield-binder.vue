@@ -28,6 +28,7 @@ export default
         obj.alerts=[];
         obj.suppressAlerts=false;
         obj.pkey="stopping_power_modifier";
+        obj.updateBinder=false;
         return obj;
     },
     methods:
@@ -56,11 +57,12 @@ export default
                 });
                 this.publishAlerts();
             }
-            if(cleaned_data.update)
+            if(cleaned_data.update || this.updateBinder)
             {
                 this.$emit("alert-generated",true);
                 this.select_binder(cleaned_data.data);
             }
+            this.updateBinder=false;
             return cleaned_data.key_list;
         }
     },
@@ -71,6 +73,7 @@ export default
             if(_newval!=_oldval)
             {
                 this.suppressAlerts=true;
+                this.updateBinder=true;
             }
         }
     }

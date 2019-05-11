@@ -13,7 +13,8 @@ let raw_binder_data_table=
     {stopping_power_modifier:0.66,cost:1.2,space:0},
     {stopping_power_modifier:0.75,cost:1.1,space:0}
 ];
-
+let data_table_keys=["stopping_power_modifier","cost","space"];
+let default_data={stopping_power_modifier:0,cost:1,space:0};
 let data_cached=false;
 let create_binder_data_table=function(_base_stopping_power)
 {
@@ -30,8 +31,7 @@ let create_binder_data_table=function(_base_stopping_power)
     });
 };
 create_binder_data_table(5);
-let data_table_keys=["stopping_power_modifier","cost","space"];
-let default_data={stopping_power_modifier:0,cost:1,space:0};
+
 
 let cached_validate=partial_validate(binder_data_table, data_table_keys);
 //data validator for binder_data_table  
@@ -48,10 +48,16 @@ let binder_validate=(_data)=>
 }
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(binder_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(binder_data_table)(_pkey,_data);
+};
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(binder_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(binder_data_table, has_feature)(_pkey,_data);
+};
 
 //completed function for returning cleaed data
 let cleaned_feature=
