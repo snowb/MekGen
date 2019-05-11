@@ -109,13 +109,18 @@ validators.derived = (_component) => {
     alerts.push("**** Invalid Cost Multiplier. Correcting. ****");
     cleanedComponent.cost_multiplier = round(cost_multiplier, 2);
   }
+  let armor_multiplier=cleanedComponent.cost_multipliers.armor_type*cleanedComponent.cost_multipliers.absorption;
+  if (cleanedComponent.armor_multiplier != armor_multiplier) {
+    alerts.push("Mek-Shield: armor_multiplier");
+    alerts.push("**** Invalid Armor Multiplier. Correcting. ****");
+    cleanedComponent.armor_multiplier = round(armor_multiplier, 2);
+  }
   let newWeight = cleanedComponent.shield_class.stopping_power/2;
   if (cleanedComponent.weight != newWeight) {
     alerts.push("Mek-Shield: weight");
     alerts.push("**** Invalid Weight. Correcting. ****");
     cleanedComponent.weight = newWeight;
   }
-  let armor_multiplier=cleanedComponent.cost_multipliers.armor_type*cleanedComponent.cost_multipliers.absorption;
   let newCost = (cleanedComponent.shield_class.cost * cost_multiplier * armor_multiplier) + cleanedComponent.efficiencies.space.cost;
   newCost = round(newCost, 2);
   if (cleanedComponent.cost != newCost) {

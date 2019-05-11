@@ -159,8 +159,6 @@ export default
         obj.absorption={absorption:0,cost:1,armor_penalty:0};
         obj.cost_multipliers.absorption=1;
 
-        obj.armor_multipliers=1;
-
         obj.hasAlert=false;
 
         return obj;
@@ -316,7 +314,7 @@ export default
             return_data.type=this.type;
             return_data.shield_class=this.shield_class;
             return_data.cost_multipliers=this.cost_multipliers;
-            return_data.armor_multipliers=this.cost_multipliers.armor_type*this.cost_multipliers.absorption;
+            return_data.armor_multiplier=this.armor_multiplier;
             return_data.efficiencies=this.efficiencies;
             
             return_data.cost=this.cost;
@@ -369,6 +367,7 @@ export default
                     this.cost_multipliers.defense_ability=1;
                     this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
                     this.cost_multipliers.binder=1;
+                    this.armor_multiplier=1;
                     this.efficiencies.space.modifier=0;
                     this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1});
                     this.cost_multipliers.armor_type=1;
@@ -430,6 +429,10 @@ export default
             multiplier*=this.cost_multipliers.weakness_array;
 
             return this.round(multiplier,2);
+        },
+        armor_multiplier()
+        {
+            return this.cost_multipliers.armor_type*this.cost_multipliers.absorption;
         },
         raw_space:function()
         {
