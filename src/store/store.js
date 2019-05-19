@@ -50,6 +50,7 @@ let store= new Vuex.Store(
                     let category=copyComponent.component_category;
                     let type=copyComponent.component_type;
                     let uuid=copyComponent.uuid!==undefined?copyComponent.uuid:this.create_uuid();
+                    copyComponent.uuid=uuid;
                     if(typeof category!=="undefined" && typeof type!=="undefined")
                     {
                         if(typeof _state.component_list[category]==="undefined")
