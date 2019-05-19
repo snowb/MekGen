@@ -1,6 +1,6 @@
 {
   "name": "mekton_mek_generator",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
