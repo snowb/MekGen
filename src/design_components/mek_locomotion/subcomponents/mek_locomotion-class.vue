@@ -1,6 +1,6 @@
 <template>
     <mek-sub-component-table
-        :items="class_table" :headers="{name:'Nype',cost:'Cost',kills:'Kills'}" 
+        :items="class_table" :headers="{name:'Name',cost:'Cost',kills:'Kills'}" 
         :selected-keys="selected_keys" :pkey="pkey" :name="locomotionType+' Class'" 
         flow="pkey-col" :show-headers="true"
         @update-selected-data="select_class"
