@@ -15,8 +15,15 @@
               </span>
               <span class="invisible_pad_ecm">{{invisiblePad()}}</span>
             </span>
-            <div class="json_container">
-              {{displayedComponent}}
+            <div class="json_parent_container">
+              <span class="json_header">MekJSON</span>
+              <div class="json_container">
+                {{displayedComponent}}
+              </div>
+              <span class="json_header" v-show="displayedCompressedComponent!==''">Condensed MekJSON</span>
+              <div class="json_container" v-show="displayedCompressedComponent!==''">
+                {{displayedCompressedComponent}}
+              </div>
             </div>
           </span>
         </div>
@@ -26,6 +33,7 @@
 import utility_mixin from "@/mixins/utility_mixin";
 import {mapGetters} from 'vuex';
 //import {compress} from './mek_json_compress';
+import {condense} from '@/data_table_modules/import_export/json_condensor_functions';
 //
 export default {
   name: 'export-component',
@@ -90,10 +98,17 @@ export default {
     {
       if(this.selectedComponent==""||this.selectedComponent===null||this.selectedComponent===undefined)
       {
-        return "{}";
+        return "Select an item to view";
       }
-      //console.log(compress(this.selectedComponent))
       return JSON.stringify(this.selectedComponent);
+    },
+    displayedCompressedComponent()
+    {
+      if(this.selectedComponent==""||this.selectedComponent===null||this.selectedComponent===undefined)
+      {
+        return "";
+      }
+      return JSON.stringify(condense(this.selectedComponent));
     },
     ...mapGetters(
         {
@@ -111,75 +126,92 @@ export default {
 <style scoped>
 .menu_container
 {
-    white-space: nowrap;
-    display:inline-flex;
-    flex-direction:column;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: rgb(170, 170, 170);
-    height: 100%;
-    -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    margin-right: 10px;
-    text-align: left;
-    max-width: 20vw;
+  white-space: nowrap;
+  display:inline-flex;
+  flex-direction:column;
+  border-radius: 7px;
+  padding: 10px;
+  background-color: rgb(170, 170, 170);
+  height: 100%;
+  -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  margin-right: 10px;
+  text-align: left;
+  max-width: 20vw;
 }
 .component
 {
-    font-weight: bold;
-    background-color: #aaa;
-    /* white-space: nowrap; */
-    /* align-self: baseline; */
-    margin: 2px 5px;
+  font-weight: bold;
+  background-color: #aaa;
+  /* white-space: nowrap; */
+  /* align-self: baseline; */
+  margin: 2px 5px;
 }
 .clickable_ecm
 {
-    cursor: pointer;
-    white-space: normal;
+  cursor: pointer;
+  white-space: normal;
 }
 .clickable_ecm:hover
 {
-    background-color: white;
-    color: #222;
-    border-radius: 7px;
-    box-shadow: inset 1px 1px 1px 1px #222;
-    padding: 2px 5px;
-    margin: 0px;
+  background-color: white;
+  color: #222;
+  border-radius: 7px;
+  box-shadow: inset 1px 1px 1px 1px #222;
+  padding: 2px 5px;
+  margin: 0px;
 }
 .invisible_pad_ecm
 {
-    visibility:hidden;
-    height:0px;
-    line-height:0px;
-    font-weight:bold;
-    white-space: normal;
+  visibility:hidden;
+  height:0px;
+  line-height:0px;
+  font-weight:bold;
+  white-space: normal;
 }
 .selected_ecm
 {
-    background-color: #222 !important;
-    color: #fff !important;
-    font-weight:bold;
-    border-radius: 7px;
-    box-shadow: inset -1px -1px 1px 1px white !important;
-    padding: 2px 5px;
-    margin: 0px;
-    white-space: normal;
+  background-color: #222 !important;
+  color: #fff !important;
+  font-weight:bold;
+  border-radius: 7px;
+  box-shadow: inset -1px -1px 1px 1px white !important;
+  padding: 2px 5px;
+  margin: 0px;
+  white-space: normal;
+}
+.json_parent_container
+{
+  align-self: baseline;
+  display:inline-flex;
+  flex-direction:column;
+}
+.json_header
+{
+  align-self:baseline;
+  margin:10px 0px -2px 10px;
+  padding: 5px;
+  background-color: rgb(170, 170, 170);
+  border-radius: 7px 7px 0px 0px;
+  -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  font-weight: bold;
 }
 .json_container
 {
-    align-self: baseline;
-    display:inline-flex;
-    flex-direction:column;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: rgb(170, 170, 170);
-    height: 100%;
-    -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    margin-right: 10px;
-    max-width: 75vw;
-    overflow-wrap:break-word;
-    word-break: break-all;
-    text-align:left;
+  align-self: baseline;
+  /* display:inline-flex;
+  flex-direction:column */;
+  border-radius: 7px;
+  padding: 10px;
+  background-color: rgb(170, 170, 170);
+  height: 100%;
+  -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  margin-right: 10px;
+  max-width: 75vw;
+  overflow-wrap:break-word;
+  word-break: break-all;
+  text-align:left;
 }
 </style>
