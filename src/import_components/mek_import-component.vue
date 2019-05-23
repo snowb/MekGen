@@ -11,6 +11,11 @@
       <!--div class="json_container" contenteditable="true" @input="updateJSON($event.target.textContent)">
       </div-->
       <textarea :style="{'height':textAreaHeight}" class="json_container" @input="updateJSON" placeholder="(copy and paste JSON data from Export tab)"></textarea>
+      <div v-if="Array.isArray(importAlertMessages)">
+        <div v-for="(msg,index) in importAlertMessages" :key="'iam'+index">
+          {{msg}}
+        </div>
+      </div>
     </div>
 </template>
 <script>
@@ -44,7 +49,24 @@ export default {
       this.$store.dispatch("importComponent",JSON.parse(this.jsonData));
       this.jsonData="";
     },
-   
+    resetImportAlert()
+    {
+        this.$store.commit("resetImportAlertMessages");
+    },
+    test()
+    {
+      return this.$store.getters.importAlertMessages;
+    }
+  },
+  computed:
+  {
+    importAlertMessages()
+    {
+      let importAlertMessages=this.$store.getters.importAlertMessages;
+      //this.$set(this,"showAlert",!!importAlertMessages && importAlertMessages.length>0)
+      return importAlertMessages;
+    },
+
   }
 }
 </script>

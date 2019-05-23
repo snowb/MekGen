@@ -32,7 +32,8 @@ let store= new Vuex.Store(
             currentAppTab:"mek-design-components",
             currentTypeTab:"",
             selected_component:null,
-            alert_messages:[]
+            alert_messages:[],
+            import_alert_messages:[]
         },
         mutations:
         {
@@ -99,7 +100,22 @@ let store= new Vuex.Store(
             resetAlertMessages(_state)
             {
                 Vue.set(_state,"alert_messages",[]);
-            }
+            },
+            saveImportAlerts(_state, _message)
+            {
+                if(Array.isArray(_message))
+                {
+                    Vue.set(_state,"import_alert_messages",_state.import_alert_messages.concat(_message));
+                }
+                else if(typeof _message==="string")
+                {
+                    _state.import_alert_messages.push(_message);
+                }
+            },
+            resetImportAlertMessages(_state)
+            {
+                Vue.set(_state,"import_alert_messages",[]);
+            },
         },
         actions:
         {
@@ -107,8 +123,7 @@ let store= new Vuex.Store(
             {
                 let cleanedComponent=this.validateComponent(_component);
                 _context.commit("saveComponent",cleanedComponent.data);
-                // eslint-disable-next-line
-                console.log(cleanedComponent, cleanedComponent.alerts);
+                _context.commit("saveImportAlerts",cleanedComponent.alerts);
             }
         },
         getters:
@@ -135,6 +150,7 @@ let store= new Vuex.Store(
                 return _state.selected_component===null?null:_state.components[_state.selected_component];
             },
             alertMessages:(_state)=>{return _state.alert_messages},
+            importAlertMessages:(_state)=>{return _state.import_alert_messages},
             getComponentByType:(_state)=>(_category,_type)=>
             {
                 if(typeof _state.component_list[_category]==="undefined" || typeof _state.component_list[_category][_type]==="undefined")
