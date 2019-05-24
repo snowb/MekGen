@@ -33,6 +33,7 @@ let compress_array=(_array, _pkey)=>
 let condense=(_component)=>
 {
   let condensed_object={};
+  condensed_object.condense=true;
   let component_type=_component.component_type;
   for(let property in _component)
   {
