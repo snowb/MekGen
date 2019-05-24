@@ -11,11 +11,11 @@
       <!--div class="json_container" contenteditable="true" @input="updateJSON($event.target.textContent)">
       </div-->
       <textarea :style="{'height':textAreaHeight}" class="json_container" @input="updateJSON" placeholder="(copy and paste JSON data from Export tab)"></textarea>
-      <div v-if="Array.isArray(importAlertMessages)">
+      <span v-if="Array.isArray(importAlertMessages) && showAlert" class="subsection_container">
         <div v-for="(msg,index) in importAlertMessages" :key="'iam'+index">
           {{msg}}
         </div>
-      </div>
+      </span>
     </div>
 </template>
 <script>
@@ -32,6 +32,7 @@ export default {
     obj.importClicked=false;
     obj.textArea=null;
     obj.textAreaHeight="auto";
+    obj.showAlert=false;
     return obj;
   },
   methods:
@@ -41,11 +42,15 @@ export default {
       this.textAreaHeight="auto";
       this.textArea=_data.target;
       this.jsonData=_data.target.value;
-      this.textAreaHeight=this.textArea.scrollHeight+"px";
+      this.$nextTick(()=>
+      {
+        this.textAreaHeight=(this.textArea.scrollHeight)+"px";
+      });
     },
     importJSON()
     {
       this.importClicked=true;
+      this.resetImportAlert();
       this.$store.dispatch("importComponent",JSON.parse(this.jsonData));
       this.jsonData="";
     },
@@ -53,20 +58,15 @@ export default {
     {
         this.$store.commit("resetImportAlertMessages");
     },
-    test()
-    {
-      return this.$store.getters.importAlertMessages;
-    }
   },
   computed:
   {
     importAlertMessages()
     {
       let importAlertMessages=this.$store.getters.importAlertMessages;
-      //this.$set(this,"showAlert",!!importAlertMessages && importAlertMessages.length>0)
+      this.$set(this,"showAlert",!!importAlertMessages && importAlertMessages.length>0)
       return importAlertMessages;
     },
-
   }
 }
 </script>
@@ -153,5 +153,16 @@ export default {
     border-radius: 30px;
     border: 1px solid #222;
     box-shadow: inset 0px 0px 1px 1px #222;
+}
+.subsection_container
+{
+    display:inline-block;
+    font-weight: bold;
+    position: relative;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: rgb(170, 170, 170);
+    height: 100%;
+    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
 }
 </style>
