@@ -367,7 +367,6 @@ export default
                     this.cost_multipliers.defense_ability=1;
                     this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
                     this.cost_multipliers.binder=1;
-                    this.armor_multiplier=1;
                     this.efficiencies.space.modifier=0;
                     this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1});
                     this.cost_multipliers.armor_type=1;
