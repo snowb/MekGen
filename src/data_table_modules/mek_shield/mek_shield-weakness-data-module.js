@@ -98,6 +98,7 @@ let cleaned_weakness=function(_weakness_array, _pkey)
             alerts.push("Mek_Shield-Weakness: "+JSON.stringify(_val))
             alerts.push("**** Invalid data, attempting to reset. ****")
             clean_weakness=get_weakness(_pkey,_val[_pkey]);
+            _val=clean_feature;//replace current value with correct value
             update=true;
             //attempt to set to corrected weakness
         }

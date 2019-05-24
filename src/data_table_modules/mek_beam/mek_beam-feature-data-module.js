@@ -139,6 +139,7 @@ let cleaned_feature=function(_feature_array, _pkey)
             alerts.push("Mek_Beam-Feature: "+JSON.stringify(_val))
             alerts.push("**** Invalid data, attempting to reset. ****")
             clean_feature=get_feature(_pkey,_val[_pkey]);
+            _val=clean_feature;//replace current value with correct value
             update=true;
             //attempt to set to corrected feature
         }
