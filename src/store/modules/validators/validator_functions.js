@@ -35,6 +35,7 @@ let updateMultipliers=(_updateList, _component, _name)=>
     let component=_component;
     let alerts=[];
     //let data=_component.cost_multipliers;
+    component.cost_multipliers=component.cost_multipliers || {};
     let data=component.cost_multipliers.armor ||  component.cost_multipliers;
     let rootPropName=component.cost_multipliers.armor ? "cost_multipliers.armor." : "cost_multipliers.";
     if(_updateList.length==0)
