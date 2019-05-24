@@ -36,113 +36,113 @@ maps.universal_map=addShortNameKeys(maps.universal_map);
 
 maps.beam_map=
 {
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
-  selected_damage:{short_name:"sd",pkey:"damage",short_pkey:"dm"}, 
-  selected_accuracy:{short_name:"sa",pkey:"accuracy",short_pkey:"ac"},
-  selected_warm_up_time:{short_name:"swut",pkey:"time",short_pkey:"tm"},
-  selected_wide_angle:{short_name:"swa",pkey:"angle",short_pkey:"ang"},
-  selected_shots:{short_name:"ss",pkey:"shots",short_pkey:"sh"},
-  selected_burst_value:{short_name:"sbv",pkey:"burst_value",short_pkey:"bv"},
-  selected_range_mod:{short_name:"srm",pkey:"range_mod",short_pkey:"rm"},
+  feature_array:{short_name:"fa",pkey:"feature"},
+  selected_damage:{short_name:"sd",pkey:"damage"}, 
+  selected_accuracy:{short_name:"sa",pkey:"accuracy"},
+  selected_warm_up_time:{short_name:"swut",pkey:"time"},
+  selected_wide_angle:{short_name:"swa",pkey:"angle"},
+  selected_shots:{short_name:"ss",pkey:"shots"},
+  selected_burst_value:{short_name:"sbv",pkey:"burst_value"},
+  selected_range_mod:{short_name:"srm",pkey:"range_mod"},
 };
 maps.beam_map=addShortNameKeys(maps.beam_map);
 
 maps.emw_map=
 {
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
-  selected_damage:{short_name:"sd",pkey:"damage",short_pkey:"dm"}, 
-  selected_attack_factor:{short_name:"saf",pkey:"attack_factor",short_pkey:"af"},
-  selected_turns_in_use:{short_name:"stiu",pkey:"turns",short_pkey:"tn"},
+  feature_array:{short_name:"fa",pkey:"feature"},
+  selected_damage:{short_name:"sd",pkey:"damage"}, 
+  selected_attack_factor:{short_name:"saf",pkey:"attack_factor"},
+  selected_turns_in_use:{short_name:"stiu",pkey:"turns"},
 };
 maps.emw_map=addShortNameKeys(maps.emw_map);
 
 maps.energy_pool_map=
 {
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
-  selected_energy_pool:{short_name:"sep",pkey:"power_available",short_pkey:"pa"},
-  selected_portfolio_size:{short_name:"sps",pkey:"size",short_pkey:"sz"},
+  feature_array:{short_name:"fa",pkey:"feature"},
+  selected_energy_pool:{short_name:"sep",pkey:"power_available"},
+  selected_portfolio_size:{short_name:"sps",pkey:"size"},
 };
 maps.energy_pool_map=addShortNameKeys(maps.energy_pool_map);
 
 maps.locomotion_map=
 {
-  selected_locomotion_type:{short_name:"slt",pkey:"type",short_pkey:"ty"},
-  selected_locomotion_class:{short_name:"slc",pkey:"name",short_pkey:"nm"},
-  slt:{short_name:"selected_locomotion_type",pkey:"type",short_pkey:"ty"},
-  slc:{short_name:"selected_locomotion_class",pkey:"name",short_pkey:"nm"},
+  selected_locomotion_type:{short_name:"slt",pkey:"type"},
+  selected_locomotion_class:{short_name:"slc",pkey:"name"},
+  slt:{short_name:"selected_locomotion_type",pkey:"type"},
+  slc:{short_name:"selected_locomotion_class",pkey:"name"},
 };
 
 maps.magazine_map=
 {
-  selected_gun:{short_name:"sg",pkey:"uuid",short_pkey:"uuid"},
-  feature_array:{short_name:"fa",pkey:"type",short_pkey:"t"},
+  selected_gun:{short_name:"sg",pkey:"uuid"},
+  feature_array:{short_name:"fa",pkey:"type"},
   selected_shots:{short_name:"ss"}
 };
 maps.magazine_map=addShortNameKeys(maps.magazine_map);
 
 maps.melee_map=
 {
-  selected_damage:{short_name:"sd",pkey:"damage",short_pkey:"dm"}, 
-  selected_accuracy:{short_name:"sa",pkey:"accuracy",short_pkey:"ac"},
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
+  selected_damage:{short_name:"sd",pkey:"damage"}, 
+  selected_accuracy:{short_name:"sa",pkey:"accuracy"},
+  feature_array:{short_name:"fa",pkey:"feature"},
   entangle:{short_name:"ent"},
 };
 maps.melee_map=addShortNameKeys(maps.melee_map);
 
 maps.missile_map=
 {
-  selected_damage:{short_name:"sd",pkey:"damage",short_pkey:"dm"}, 
-  selected_accuracy:{short_name:"sa",pkey:"accuracy",short_pkey:"ac"},
-  selected_pack_size:{short_name:"sps",pkey:"size",short_pkey:"sz"},
-  selected_range_mod:{short_name:"srm",pkey:"id",short_pkey:"id"},
-  selected_smart:{short_name:"sm",pkey:"smart",short_pkey:"sm"},
-  selected_skill:{short_name:"ss",pkey:"skill",short_pkey:"sk"},
-  selected_blast_radius:{short_name:"sbr",pkey:"blast_radius",short_pkey:"br"},
+  selected_damage:{short_name:"sd",pkey:"damage"}, 
+  selected_accuracy:{short_name:"sa",pkey:"accuracy"},
+  selected_pack_size:{short_name:"sps",pkey:"size"},
+  selected_range_mod:{short_name:"srm",pkey:"id"},
+  selected_smart:{short_name:"sm",pkey:"smart"},
+  selected_skill:{short_name:"ss",pkey:"skill"},
+  selected_blast_radius:{short_name:"sbr",pkey:"blast_radius"},
   smoke_scatter_duration:{short_name:"ssd"},
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
+  feature_array:{short_name:"fa",pkey:"feature"},
 };
 maps.missile_map=addShortNameKeys(maps.missile_map);
 
 maps.projectile_map=
 {
-  selected_damage:{short_name:"sd",pkey:"damage",short_pkey:"dm"}, 
-  selected_accuracy:{short_name:"sa",pkey:"accuracy",short_pkey:"ac"},
-  selected_range_mod:{short_name:"srm",pkey:"range_mod",short_pkey:"rm"},
-  selected_burst_value:{short_name:"sbv",pkey:"burst_value",short_pkey:"bv"},
-  feature_array:{short_name:"fa",pkey:"feature",short_pkey:"ft"},
-  selected_multi_feed:{short_name:"smf",pkey:"feeds",short_pkey:"fd"}
+  selected_damage:{short_name:"sd",pkey:"damage"}, 
+  selected_accuracy:{short_name:"sa",pkey:"accuracy"},
+  selected_range_mod:{short_name:"srm",pkey:"range_mod"},
+  selected_burst_value:{short_name:"sbv",pkey:"burst_value"},
+  feature_array:{short_name:"fa",pkey:"feature"},
+  selected_multi_feed:{short_name:"smf",pkey:"feeds"}
 };
 maps.projectile_map=addShortNameKeys(maps.projectile_map);
 
 maps.reflector_map=
 {
-  selected_reflector:{short_name:"sr",pkey:"quality_value",short_pkey:"qv"},
-  sr:{long_name:"selected_reflector",pkey:"quality_value",short_pkey:"qv"},
+  selected_reflector:{short_name:"sr",pkey:"quality_value"},
+  sr:{long_name:"selected_reflector",pkey:"quality_value"},
 };
 
 maps.servo_map=
 {
-  selected_servo_type:{short_name:"sst",pkey:"type",short_pkey:"ty"},
-  selected_servo_class:{short_name:"ssc",pkey:"code",short_pkey:"cd"},
-  selected_armor:{short_name:"sar",pkey:"stopping_power",short_pkey:"sp"},
-  selected_armor_type:{short_name:"sat",pkey:"damage_coefficient",short_pkey:"dc"},
-  selected_absorption:{short_name:"sab",pkey:"absorption",short_pkey:"ab"},
+  selected_servo_type:{short_name:"sst",pkey:"type"},
+  selected_servo_class:{short_name:"ssc",pkey:"code"},
+  selected_armor:{short_name:"sar",pkey:"code"},
+  selected_armor_type:{short_name:"sat",pkey:"damage_coefficient"},
+  selected_absorption:{short_name:"sab",pkey:"absorption"},
   kills_space_trade:{short_name:"kst"}
 };
 maps.servo_map=addShortNameKeys(maps.servo_map);
 
 maps.shield_map=
 {
-  shield_class:{short_name:"sc",pkey:"stopping_power",short_pkey:"sp"},
+  shield_class:{short_name:"sc",pkey:"stopping_power"},
   //or for ablative
-  //shield_class:{short_name:"sc",pkey:"kills",short_pkey:"kl"},
-  defense_ability:{short_name:"da",pkey:"da",short_pkey:"da"},
-  binder:{short_name:"bnd",pkey:"stopping_power_modifier",short_pkey:"spm"},
-  reset_time:{short_name:"rt",pkey:"time",short_pkey:"tm"},
-  turns_in_use:{short_name:"tiu",pkey:"time",short_pkey:"tm"},
-  weakness_array:{short_name:"wa",pkey:"weakness",short_pkey:"wk"},
-  armor_type:{short_name:"at",pkey:"damage_coefficient",short_pkey:"dc"},
-  absorption:{short_name:"ab",pkey:"absorption",short_pkey:"ab"},
+  //shield_class:{short_name:"sc",pkey:"kills"},
+  defense_ability:{short_name:"da",pkey:"da"},
+  binder:{short_name:"bnd",pkey:"stopping_power_modifier"},
+  reset_time:{short_name:"rt",pkey:"time"},
+  turns_in_use:{short_name:"tiu",pkey:"time"},
+  weakness_array:{short_name:"wa",pkey:"weakness"},
+  armor_type:{short_name:"at",pkey:"damage_coefficient"},
+  absorption:{short_name:"ab",pkey:"absorption"},
 };
 maps.shield_map=addShortNameKeys(maps.shield_map);
 
