@@ -116,9 +116,21 @@ let store= new Vuex.Store(
         {
             importComponent(_context, _component)
             {
-                let cleanedComponent=this.validateComponent(_component);
+                let cleanedComponent;
+                if(_component.condense)
+                {
+                    cleanedComponent=this.embiggen(_component);
+                }
+                cleanedComponent=this.validateComponent(cleanedComponent);
                 _context.commit("saveComponent",cleanedComponent.data);
-                _context.commit("saveImportAlerts",cleanedComponent.alerts);
+                if(_component.condense)
+                {
+                    _context.commit("saveImportAlerts",["**** Condensed MekJSON Import. Alerts suppressed ****"]);
+                }
+                else
+                {
+                    _context.commit("saveImportAlerts",cleanedComponent.alerts);
+                }
             }
         },
         getters:
@@ -176,6 +188,13 @@ import(/* webpackChunkName: "mek_master_validator" */"./modules/validators/mek_m
 .then((_module)=>
     {
         store.validateComponent=_module.validateComponent;
+    });
+
+//load json embiggen method
+import(/* webpackChunkName: "json_embiggen_functions" */"@/data_table_modules/import_export/json_embiggen_functions")
+.then((_module)=>
+    {
+        store.embiggen=_module.embiggen;
     });
 
 
