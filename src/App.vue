@@ -8,7 +8,7 @@
                 <component :is="targetAppTab" style="margin-top:5px;"></component>
             </span>
         </span>
-        <mek-alert></mek-alert>
+        <mek-alert :floating="true" :persist="false" store-alert-property="alertMessages"></mek-alert>
     </div>
 </template>
 <script>

@@ -1,11 +1,11 @@
 <template>
-    <transition :nothing="alertMessage" name="alert" @enter="showAlert=false" @after-leave="resetAlert">
-        <span class="alert mek-flex-col" v-if="showAlert">
+    <transition :nothing="alertMessage" name="alert" @enter="showAlert=persist?true:false" @after-leave="resetAlert">
+        <span :class="{alert_float:floating,alert_nonfloat:!floating}" class="mek-flex-col" v-if="showAlert" style="position:absolute;">
             <div class="metallic_background">
                 <div class="subsection_container">
                     <div class="subsection_header">Alert</div>
                     <div v-if="Array.isArray(alertMessage)">
-                        <span v-for="(msg,index) in alertMessage" :key="'msg'+index" style="display:block;">
+                        <span v-for="(msg,index) in alertMessage" :key="'msg'+index" class="alert_element">
                             {{alertMessage[index]}}
                         </span>
                     </div>
@@ -22,7 +22,7 @@
 export default
 {
     name:"mek_alert",
-    props:[],
+    props:["floating","storeAlertProperty","persist"],
     components:
     {
     },
@@ -36,14 +36,22 @@ export default
     {
         resetAlert()
         {
-            this.$store.commit("resetAlertMessages");
+            switch(this.storeAlertProperty)
+            {
+                case "alertMessages":
+                    this.$store.commit("resetAlertMessages");
+                    break;
+                case "importAlertMessages":
+                    this.$store.commit("resetImportAlertMessages");
+                    break;
+            }
         }
     },
     computed:
     {
         alertMessage()
         {
-            let alertMessages=this.$store.getters.alertMessages;
+            let alertMessages=this.$store.getters[this.storeAlertProperty];
             this.$set(this,"showAlert",!!alertMessages && alertMessages.length>0)
             return alertMessages;
         }
@@ -51,12 +59,23 @@ export default
 }
 </script>
 <style scoped>
-.alert
+.alert_float
 {
     position:absolute;
     left:25%;
     font-weight: bold;
     font-size: 125%;
+}
+.alert_nonfloat
+{
+    position: relative;
+    font-weight: bold;
+    font-size: 125%;
+}
+.alert_element
+{
+    display: block;
+    text-align: left;
 }
 .metallic_background
 {
