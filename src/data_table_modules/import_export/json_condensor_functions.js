@@ -52,6 +52,13 @@ let condense=(_component)=>
         condensed_object[maps.melee_map[property].short_name]=
         { rm:_component[property].range_modifier, dm:_component[property].damage_modifier };
         break;
+      
+      case valid_property(property, component_type) && property=="kills_space_trade":
+        condensed_object[maps.servo_map[property].short_name]=
+        { km:_component[property].kills_modifier, 
+          sm:_component[property].space_modifier, 
+          ct: _component[property].cost};
+        break;
 
       case valid_property(property, component_type) && ["feature_array","weakness_array"].includes(property):
         condensed_object[get_short_name(property,component_type)]=compress_array(_component[property], get_pkey(property,component_type));
