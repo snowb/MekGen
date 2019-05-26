@@ -9,26 +9,10 @@
             </span>
         </span>
         <mek-alert :floating="true" :persist="false" store-alert-property="alertMessages"></mek-alert>
+        <mek-options-container></mek-options-container>
     </div>
 </template>
 <script>
-// eslint-disable-next-line
-console.log("****\n"+
-"Mekton Mek Generator\n"+
-"Build Date-Time: "+process.env.VUE_APP_BUILD_DATE);
-if(process.env.NODE_ENV=="production")
-{
-    // eslint-disable-next-line
-    console.log("'Prod' Build Version: "+process.env.VUE_APP_VERSION);
-}
-else
-{
-    // eslint-disable-next-line
-    console.log("Dev Commit Count: "+process.env.VUE_APP_COMMIT_COUNT);
-}
-// eslint-disable-next-line
-console.log("****");
-
 import {mapGetters} from 'vuex';
 
 export default {
@@ -41,6 +25,7 @@ export default {
     "mek-export-components":()=>import(/* webpackChunkName: "mek_export-component" */"./export_components/mek_export-component.vue"),
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"./app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"./app_components/universal/mek_alert.vue"),
+    "mek-options-container":()=>import(/* webpackChunkName: "mek_options-container" */"./app_components/options/mek_options-container.vue"),
   },
   data:function()
   {
@@ -84,9 +69,20 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+html
+{
+    min-height:100%;
+    min-width:100%;
+    margin: 0;
+    padding: 0;
+}
 body
 {
     background-image:url('./assets/hexagon.svg');
+    min-height:100%;
+    min-width:100%;
+    margin: 0;
+    padding: 0;
 }
 .mek-flex-row
 {
