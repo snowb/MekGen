@@ -12,7 +12,7 @@
     ****<br/>
     <br/>
     <br/>
-    R. Talsorian Games reserves all rights to Mek, Mekton, MektonZeta material.
+    <a target="_blank" href="https://rtalsoriangames.com/">R. Talsorian Games</a> reserves all rights to <a target="_blank" href="https://rtalsoriangames.com/mekton/">Mek, Mekton, MektonZeta</a> material.
     <br/>
     <br/>
     Mekton Mek Generator built by <a target="_blank" href="https://github.com/snowb/MekGen">snowb</a>
