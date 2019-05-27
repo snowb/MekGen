@@ -1,12 +1,17 @@
 <template>
   <div>
     <div :class={fullscreen:isFullscreen,hidden:!isFullscreen}>
-      <span class="display_area">
-        <mek-top-menu @focus-section="focusSection" :section="targetOptionTab" :section-list="sectionList"
-          color="dddddd" color-offset="rgb" size="sm" 
-        ></mek-top-menu>
-        <component :is="targetOptionTab" style="margin-top:5px;"></component>
-      </span>
+      <div class="display_area">
+        <div class="metallic_background_small_oc">
+          <mek-top-menu @focus-section="focusSection" :section="targetOptionTab" :section-list="sectionList"
+            color="dddddd" color-offset="rgb" size="sm" class="subsection_header_small_oc"
+          ></mek-top-menu>
+          <span class="close_btn" @click="isFullscreen=false">&nbsp;X&nbsp;</span>
+          <div class="subsection_container_oc">
+            <component :is="targetOptionTab" style="margin-top:5px;"></component>
+          </div>
+        </div>
+      </div>
     </div>
     <svg  style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
       <linearGradient id="gradient" gradientTransform="rotate(70)">
@@ -63,10 +68,29 @@ export default {
 }
 </script>
 <style scoped>
+.close_btn
+{
+  position:absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #e2e2e2;
+  font-weight:bold;
+  border-radius: 7px;
+  box-shadow: inset -1px -1px 1px 1px white;
+  padding: 0px 5px;
+}
+.close_btn:hover
+{
+    background-color: white;
+    color: #222;
+    border-radius: 7px;
+    box-shadow: inset 1px 1px 1px 1px #222;
+}
 .display_area
 {
-  margin: 25px;
-  padding: 25px;
+  margin-top:25px;
   background-color:white; 
   display:inline-block;
   position: absolute;
@@ -115,5 +139,47 @@ export default {
   {
     transform: rotate(360deg)
   }
+}
+
+.metallic_background_small_oc
+{
+    background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
+        rgba(255, 129, 110,1) 49%, 
+        rgba(255, 129, 110,1) 51%, 
+        rgba(185,0,0,1) 100%);
+    height: 100%;
+    width: 100%;
+    padding:5px;
+    border-radius: 7px;
+    box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
+    /* padding-top:34px; */
+}
+.subsection_container_oc
+{
+    position: relative;
+    border-radius: 7px;
+    padding: 10px;
+    background-color: rgb(170, 170, 170);
+    height: 100%;
+    width: 100%;
+    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+}
+.subsection_header_small_oc
+{
+    /* font-weight: bold; */
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+    /*top: -34px; */
+/*     font-family: Arial Black, sans-serif;
+    font-size: 110%; */
+    /* border: 1px solid black; */
+    padding: 2px 10px;
+    border-radius: 7px;
+/*     box-shadow: rgba(255, 255, 255, 0.5) -1px -1px 1px 1px inset, rgba(0,0,0,0.5) 1px 1px 1px 3px inset;
+    color: #ddd;
+    text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
+    background-color: rgba(0,0,0,0.2); */
+    white-space: nowrap;
 }
 </style>
