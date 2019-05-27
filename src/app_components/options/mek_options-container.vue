@@ -149,6 +149,7 @@ export default {
         rgba(185,0,0,1) 100%);
     height: 100%;
     width: 100%;
+    min-width: 230px;
     padding:5px;
     border-radius: 7px;
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
