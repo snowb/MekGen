@@ -29,12 +29,12 @@
 </template>
 <script>
 export default {
-  name: "mek_options-container",
+  name: "mek_settings-container",
   components:
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
-    "mek-options-about":()=>import(/* webpackChunkName: "mek_options-about" */"./mek_options-about.vue"),
-    "mek-options-options":()=>import(/* webpackChunkName: "mek_options-options" */"./mek_options-options.vue"),
+    "mek-settings-about":()=>import(/* webpackChunkName: "mek_settings-about" */"./mek_settings-about.vue"),
+    "mek-settings-options":()=>import(/* webpackChunkName: "mek_settings-options" */"./mek_settings-options.vue"),
   },
   props:[],
   mixins:[],
@@ -44,10 +44,10 @@ export default {
     obj.isFullscreen=false;
     obj.sectionList=
     [
-      {id:"mek-options-about",name:"About"},
-      {id:"mek-options-options",name:"Options"},
+      {id:"mek-settings-about",name:"About"},
+      {id:"mek-settings-options",name:"Options"},
     ];
-    obj.targetOptionTab="mek-options-about";
+    obj.targetOptionTab="mek-settings-about";
     return obj;
   },
   methods:
@@ -115,8 +115,8 @@ export default {
   max-width: 25px;
   max-height: 25px;
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 1%;
+  top: 1%;
 }
 #svg
 {

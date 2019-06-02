@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-  name:"mek-options-about",
+  name:"mek-settings-about",
   props:[],
   data:function()
   {

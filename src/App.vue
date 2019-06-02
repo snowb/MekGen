@@ -1,5 +1,5 @@
 <template>
-    <div id="app" style="display:inline-flex;">
+    <div id="app" class="app">
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetAppTab" :section-list="sectionList"
                 color="dd0000" color-offset="rgb" size="lg"
@@ -9,7 +9,7 @@
             </span>
         </span>
         <mek-alert :floating="true" :persist="false" store-alert-property="alertMessages"></mek-alert>
-        <mek-options-container></mek-options-container>
+        <mek-settings-container></mek-settings-container>
     </div>
 </template>
 <script>
@@ -25,7 +25,7 @@ export default {
     "mek-export-components":()=>import(/* webpackChunkName: "mek_export-component" */"./export_components/mek_export-component.vue"),
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"./app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-alert":()=>import(/* webpackChunkName: "mek_alert" */"./app_components/universal/mek_alert.vue"),
-    "mek-options-container":()=>import(/* webpackChunkName: "mek_options-container" */"./app_components/options/mek_options-container.vue"),
+    "mek-settings-container":()=>import(/* webpackChunkName: "mek_settings-container" */"./app_components/settings/mek_settings-container.vue"),
   },
   data:function()
   {
@@ -110,5 +110,10 @@ body
     display:inline-flex; 
     flex-direction: column; 
     text-align: center;
+}
+.app
+{
+    display: inline-flex; 
+    position: absolute;
 }
 </style>
