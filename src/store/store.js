@@ -116,7 +116,7 @@ let store= new Vuex.Store(
         {
             importComponent(_context, _component)
             {
-                let cleanedComponent;
+                let cleanedComponent=_component;
                 if(_component.condense)
                 {
                     cleanedComponent=this.embiggen(_component);
