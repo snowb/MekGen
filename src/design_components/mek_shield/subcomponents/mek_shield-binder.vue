@@ -1,7 +1,7 @@
 <template>
     <mek-sub-component-table
         :items="binder_table" :pkey="pkey" :selected-keys="selected_keys"
-        :headers="{stopping_power_modifier:'-SP',space:'+Space',cost:'Cost'}"
+        :headers="{stopping_power_modifier:'-SP',new_stopping_power:'New SP',space:'+Space',cost:'Cost'}"
         name="Binder" flow="pkey-row" :show-headers="true"
         :format="{stopping_power_modifier:'percent',cost:'multiplier'}"
         @update-selected-data="select_binder"

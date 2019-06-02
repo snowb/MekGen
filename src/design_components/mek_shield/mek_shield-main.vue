@@ -138,7 +138,7 @@ export default
         obj.cost_multipliers={};
         obj.cost_multipliers.defense_ability=1;
         
-        obj.binder={cost:1,space:0,stopping_power_modifier:0};
+        obj.binder={cost:1,space:0,stopping_power_modifier:0,new_stopping_power:5};
         obj.cost_multipliers.binder=1;
 
         obj.reset_time={time:2,cost:1};
@@ -271,27 +271,27 @@ export default
             this.$set(this,"absorption",_absorption);
             this.cost_multipliers.absorption=this.absorption.cost;
         },
-        updateComponentName:function(_name)
+        updateComponentName(_name)
         {
             this.component_name=_name;
             this.custom_component_name=true;
             this.component_changed=true;
         },
-        calculate_stopping_power:function()
+        calculate_stopping_power()
         {
-            let sp_modifier=this.absorption!=0 ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
-            return this.shield_class.stopping_power - (this.shield_class.stopping_power * sp_modifier);
+            let sp_modifier=this.absorption.absorption!=0 ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
+            return this.shield_class.stopping_power - Math.floor(this.shield_class.stopping_power * sp_modifier);
         },
         weighted_stopping_power()
         {
-            return this.shield_class.stopping_power - (this.shield_class.stopping_power * this.binder.stopping_power_modifier);
+            return this.shield_class.stopping_power - Math.floor(this.shield_class.stopping_power * this.binder.stopping_power_modifier);
         },
-        updateEfficiencies:function(_data)
+        updateEfficiencies(_data)
         {
             this.$set(this.efficiencies,"space",_data);
             this.component_changed=true
         },
-        ingest_data:function(_data_object)
+        ingest_data(_data_object)
         {
             let alertMessage="Shield Has No Type, resetting to 'standard' shield.";
             this.universal_ingest_data(_data_object,alertMessage);
@@ -301,7 +301,7 @@ export default
                 }
             this.$nextTick(()=>{this.component_changed=this.hasAlert;});
         },
-        output_shield_data:function()
+        output_shield_data()
         {
             let return_data={};
             this.uuid=this.uuid===null ? this.create_uuid() : this.uuid;
@@ -344,7 +344,7 @@ export default
             this.original_component=JSON.stringify(return_data);
             return JSON.parse(this.original_component);
         },
-        componentSaveReset:function(_action)
+        componentSaveReset(_action)
         {
             let action=_action=="reset" && this.original_component==null?"clear":_action;
             switch(action)
@@ -365,7 +365,7 @@ export default
                     this.$set(this,"shield_class",{code:1,stopping_power:5,kills:25,cost:5,id:"SL",name:"Superlight"});
                     this.$set(this,"defense_ability",{da:-2,cost:1,name:"Medium"});
                     this.cost_multipliers.defense_ability=1;
-                    this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0});
+                    this.$set(this,"binder",{cost:1,space:0,stopping_power_modifier:0,new_stopping_power:5});
                     this.cost_multipliers.binder=1;
                     this.efficiencies.space.modifier=0;
                     this.$set(this,"armor_type",{type:"Standard",damage_coefficient:1,cost:1});
@@ -385,7 +385,7 @@ export default
     },
     computed:
     {
-        is_ablative:function()
+        is_ablative()
         {
             if(this.weakness_array===null || this.weakness_array.length==0)
             {
@@ -402,7 +402,7 @@ export default
 
             return isAblative;
         },
-        surge_damage:function()
+        surge_damage()
         {
             if(this.weakness_array===null || this.weakness_array.length==0)
             {
@@ -418,7 +418,7 @@ export default
             });
             return isSurge ? this.shield_class.stopping_power : null;
         },
-        cost_multiplier:function()
+        cost_multiplier()
         {
             let multiplier=1;
             multiplier*=this.cost_multipliers.defense_ability;
@@ -433,7 +433,7 @@ export default
         {
             return this.cost_multipliers.armor_type*this.cost_multipliers.absorption;
         },
-        raw_space:function()
+        raw_space()
         {
             if(this.type.name.toLowerCase()=="standard")
             {
@@ -450,7 +450,7 @@ export default
             }
             return undefined;
         },
-        cost:function()
+        cost()
         {
             let subtotal_cost=this.shield_class.cost * this.cost_multiplier;
             subtotal_cost *= this.cost_multipliers.armor_type;
@@ -464,7 +464,7 @@ export default
         {
             return this.round(this.weighted_stopping_power(this.shield_class.code)/2,2);
         },
-        shield_name:function()
+        shield_name()
         {
             let fullname="";
             if(this.type.name.toLowerCase()=="standard")
