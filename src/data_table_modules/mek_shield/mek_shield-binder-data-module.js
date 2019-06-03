@@ -22,7 +22,7 @@ let create_binder_data_table=function(_base_stopping_power)
     let base_stopping_power=_base_stopping_power===undefined?5:_base_stopping_power;
     binder_data_table=raw_binder_data_table.map((_elem)=>
     {
-        let new_stopping_power=base_stopping_power - Math.floor(base_stopping_power*_elem.stopping_power_modifier);
+        let new_stopping_power=base_stopping_power - Math.ceil(base_stopping_power*_elem.stopping_power_modifier);
         let space = (base_stopping_power - new_stopping_power)*2;
         return {
             stopping_power_modifier:_elem.stopping_power_modifier,

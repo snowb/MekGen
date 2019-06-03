@@ -280,11 +280,11 @@ export default
         calculate_stopping_power()
         {
             let sp_modifier=this.absorption.absorption!=0 ? this.absorption.armor_penalty + this.binder.stopping_power_modifier : this.binder.stopping_power_modifier;
-            return this.shield_class.stopping_power - Math.floor(this.shield_class.stopping_power * sp_modifier);
+            return this.shield_class.stopping_power - Math.ceil(this.shield_class.stopping_power * sp_modifier);
         },
         weighted_stopping_power()
         {
-            return this.shield_class.stopping_power - Math.floor(this.shield_class.stopping_power * this.binder.stopping_power_modifier);
+            return this.shield_class.stopping_power - Math.ceil(this.shield_class.stopping_power * this.binder.stopping_power_modifier);
         },
         updateEfficiencies(_data)
         {
