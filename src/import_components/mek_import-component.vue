@@ -100,22 +100,19 @@ export default {
 .mek-button-container
 {
     align-self:center;
-    font-size: 150%;
     font-weight: bold;
-    margin:5px;
-    margin-top: 10px;
+    margin: 10px 1px;
 }
 .mek-button
 {
     padding: 5px 15px 5px 15px;
-    margin: 5px;
     border: 1px solid #222;
-
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.7);
     color: #e2e2e2;
     border-radius: 30px;
     box-shadow: inset -1px -1px 1px 1px white;
+    font-size: 125%;
 }
 .mek-button:hover
 {
