@@ -21,7 +21,7 @@ let store= new Vuex.Store(
                 }
             },
             currentDesignTab:"mek-shield",
-            currentBuildTab:"mek-nothing",
+            currentBuildTab:"mek-build-frame",
             currentImportTab:"equipment",
             currentExportTab:"equipment",
             currentAppTab:"mek-design-components",
