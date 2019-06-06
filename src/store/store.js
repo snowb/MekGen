@@ -136,6 +136,14 @@ let store= new Vuex.Store(
         getters:
         {
             componentList: _state => _state.component_list,
+            listByCategoryAndType:(_state)=>(_category, _type)=>
+            {
+                if(_state.component_list[_category]===undefined || _state.component_list[_category][_type]===undefined)
+                {
+                    return [];
+                }
+                return _state.component_list[_category][_type];
+            },
             categoryList:_state=>Object.keys(_state.component_list),
             typeList:(_state)=>(_category)=>
             {
