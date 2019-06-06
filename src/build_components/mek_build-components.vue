@@ -1,10 +1,11 @@
 <template>
-    <div style="">
+    <div style="display:flex; margin-top:5px;">
+        <mek-build-side-menu></mek-build-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetBuildTab" :section-list="sectionList"></mek-top-menu>
-            <span id="build-main">
+            <div id="build-main">
                 <component :is="targetBuildTab"></component>
-            </span>
+            </div>
         </span>
         <!--mek-alert></mek-alert-->
     </div>
@@ -17,8 +18,8 @@ export default {
   name: 'build',
   components:
   {
-    "mek-top-menu":()=>import(/* webpackChunkName: "[request]" */"../app_components/mek_top_menu/mek_top-menu.vue"),
-    //"mek-side-menu":()=>import(/* webpackChunkName: "[request]" */"./mek_side_menu/mek_side-menu.vue"),
+    "mek-top-menu":()=>import(/* webpackChunkName: "mek-top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
+    "mek-build-side-menu":()=>import(/* webpackChunkName: "mek_build-side-menu" */"@/build_components/mek_build_side_menu/mek_build-side-menu.vue"),
     //"mek-alert":()=>import(/* webpackChunkName: "[request]" */"../app_components/universal/mek_alert.vue"),
     
     "mek-build-frame":()=>import(/* webpackChunkName: "mek_build-frame" */"@/build_components/mek_frame/mek_build-frame.vue"),
