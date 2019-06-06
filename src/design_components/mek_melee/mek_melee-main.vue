@@ -153,11 +153,13 @@ export default
             }
 
             this.melee_name;
+            this.component_changed=true;
         },
         updateDamageAndRange(_modifier)
         {
             this.entangle.range_modifier=_modifier.range;
             this.entangle.damage_modifier=_modifier.damage;
+            this.component_changed=true;
         },
         output_melee_data()
         {
