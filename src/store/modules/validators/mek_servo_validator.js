@@ -129,9 +129,11 @@ let validateComponent=(_component)=>
     //generate properly formatted kill-space-trade data
     let trade_formatted=
         {
-            kills:_component.kills_space_trade.kills_modifier,
-            space:_component.kills_space_trade.space_modifier,
-            cost:_component.kills_space_trade.cost
+            kills_modifier:_component.kills_space_trade.kills_modifier,
+            space_modifier:_component.kills_space_trade.space_modifier,
+            cost:_component.kills_space_trade.cost,
+            kills:_component.kills_space_trade.kills,
+            space:_component.kills_space_trade.space
         };
     //validate servo-kills-space-trade
     validatedData=validators.servo_trade(

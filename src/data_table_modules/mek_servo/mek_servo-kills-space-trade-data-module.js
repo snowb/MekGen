@@ -9,7 +9,7 @@ let cleaned_feature=function(_kills_space_obj, _base_kills, _base_space)
     data.kills=_base_kills!==undefined?_base_kills:2;
     data.space=_base_space!==undefined?_base_space:2;
     let alerts=[];
-    let update=true;
+    let update=false;
 
     if(_base_kills===undefined)
     {
@@ -31,8 +31,8 @@ let cleaned_feature=function(_kills_space_obj, _base_kills, _base_space)
         return {data:data, update:update, alerts:alerts};
     }
 
-    data.kills_modifier=_kills_space_obj.kills;
-    data.space_modifier=_kills_space_obj.space;
+    data.kills_modifier=_kills_space_obj.kills_modifier;
+    data.space_modifier=_kills_space_obj.space_modifier;
     data.cost=_kills_space_obj;
     let new_kills=_base_kills + data.kills_modifier;
     let new_space=_base_space + data.space_modifier;

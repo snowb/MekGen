@@ -41,10 +41,13 @@ export default
     {
         let obj={};
         obj.selected_modifier={};
+        obj.selected_modifier.kills_modifier=0;
+        obj.selected_modifier.space_modifier=0;
+        obj.selected_modifier.cost=0;
         obj.selected_modifier.kills=0;
         obj.selected_modifier.space=0;
-        obj.selected_modifier.cost=0;
         obj.alerts=[];
+        obj.suppressAlerts=false;
         return obj;
     },
     methods:
@@ -55,16 +58,27 @@ export default
         },
         incrementProperty(_prop)
         {
-            //let prevKills=this.selected_modifier.kills;
-            //let prevSpace=this.selected_modifier.space;
-            this.selected_modifier.kills=_prop=="kills" ? this.selected_modifier.kills+1 : this.selected_modifier.kills-1;
-            this.selected_modifier.space=_prop=="space" ? this.selected_modifier.space+2 : this.selected_modifier.space-2;
+            this.selected_modifier.kills_modifier=_prop=="kills" ? this.selected_modifier.kills_modifier+1 : this.selected_modifier.kills_modifier-1;
+            this.selected_modifier.space_modifier=_prop=="space" ? this.selected_modifier.space_modifier+2 : this.selected_modifier.space_modifier-2;
+            this.selected_modifier.kills=this.base_kills + this.selected_modifier.kills_modifier;
+            this.selected_modifier.space=this.base_space + this.selected_modifier.space_modifier;
+            this.selected_modifier.cost=this.selected_modifier.kills_modifier>0 ? this.selected_modifier.kills_modifier*2 : 0;
 
             let cleaned_data=cleaned_feature(this.selected_modifier,this.base_kills,this.base_space);
-            this.selected_modifier.kills=cleaned_data.data.kills_modifier;
-            this.selected_modifier.space=cleaned_data.data.space_modifier;
+
+            this.selected_modifier.kills_modifier=cleaned_data.data.kills_modifier;
+            this.selected_modifier.space_modifier=cleaned_data.data.space_modifier;
             this.selected_modifier.cost=cleaned_data.data.cost;
-            this.publishAlerts();
+            this.selected_modifier.kills=cleaned_data.data.kills;
+            this.selected_modifier.space=cleaned_data.data.space;
+            if(cleaned_data.alerts.length>0 && !this.suppressAlerts)
+            {
+                cleaned_data.alerts.forEach((_alert)=>
+                {
+                    this.addAlert(_alert);
+                });
+                this.publishAlerts();
+            }
 
             this.selectExtraSpace();
         }
@@ -73,13 +87,16 @@ export default
     {
         checked_modifiers()
         {
-            this.selected_modifier.kills=this.kills_modifier;
-            this.selected_modifier.space=this.space_modifier;
+            this.selected_modifier.kills_modifier=this.kills_modifier;
+            this.selected_modifier.space_modifier=this.space_modifier;
+            this.selected_modifier.kills=this.base_kills + this.kills_modifier;
+            this.selected_modifier.space=this.base_space + this.space_modifier;
+            this.selected_modifier.cost=this.selected_modifier.kills_modifier>0 ? this.selected_modifier.kills_modifier*2 : 0;
 
             let cleaned_data=cleaned_feature(this.selected_modifier,this.base_kills,this.base_space);
 
             if(cleaned_data.update)
-            {
+            {console.log(JSON.stringify(this.selected_modifier),JSON.stringify(cleaned_data.data))
                 this.selected_modifier.kills=cleaned_data.data.kills_modifier;
                 this.selected_modifier.space=cleaned_data.data.space_modifier;
                 this.selected_modifier.cost=cleaned_data.data.cost;

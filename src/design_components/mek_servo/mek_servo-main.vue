@@ -118,6 +118,8 @@ export default
         obj.kills_space_trade={};
         obj.kills_space_trade.space_modifier=0;
         obj.kills_space_trade.kills_modifier=0;
+        obj.kills_space_trade.space=2;
+        obj.kills_space_trade.kills=2;
         obj.kills_space_trade.cost=0;
 
         obj.hasAlert=false;
@@ -167,8 +169,10 @@ export default
         },
         updateExtraSpace(_kills_space_trade)
         {
-            this.kills_space_trade.space_modifier=_kills_space_trade.space;
-            this.kills_space_trade.kills_modifier=_kills_space_trade.kills;
+            this.kills_space_trade.space_modifier=_kills_space_trade.space_modifier;
+            this.kills_space_trade.kills_modifier=_kills_space_trade.kills_modifier;
+            this.kills_space_trade.space=_kills_space_trade.space;
+            this.kills_space_trade.kills=_kills_space_trade.kills;
             this.kills_space_trade.cost=_kills_space_trade.cost;
             this.component_changed=true;
         },
@@ -180,7 +184,7 @@ export default
                 {//reset component_name if component generated
                     this.$set(this,"component_name",null);
                 }
-            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
+            this.$nextTick(()=>{this.component_changed=this.hasAlert});
         },
         output_data()
         {
@@ -206,7 +210,7 @@ export default
             return_data.total_kills=this.total_kills;
             return_data.available_space=this.available_space;
 
-            this.$nextTick(()=>{this.component_changed=this.hasAlert;});
+            this.$nextTick(()=>{this.component_changed=false;});
             this.original_component=JSON.stringify(return_data);
             return JSON.parse(this.original_component);
         },

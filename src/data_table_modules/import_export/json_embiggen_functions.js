@@ -35,6 +35,8 @@ let embiggen=(_component)=>
 {
   let embiggened_object={};
   let component_type=_component.ct;
+  let kst_kills=0;
+  let kst_space=0;
   for(let property in _component)
   {
     let subcomp_obj={};
@@ -55,10 +57,18 @@ let embiggen=(_component)=>
         break;
       
       case valid_property(property, component_type) && property=="kst":
-          embiggened_object[maps.servo_map[property].long_name]=
-        { kills_modifier:_component[property].km, 
-          space_modifier:_component[property].sm, 
-          cost: _component[property].ct};
+        kst_kills=_component.sst=="Torso"? _component.ssc*2
+                  : _component.sst=="Pod"? 0
+                  : _component.ssc*1;
+        kst_space=_component.sst=="Torso"? _component.ssc*2
+                  : _component.sst=="Pod"? _component.ssc*2
+                  : _component.ssc*1;
+        embiggened_object[maps.servo_map[property].long_name]=
+      { kills_modifier:_component[property].km, 
+        space_modifier:_component[property].sm, 
+        cost: _component[property].ct,
+        kills:kst_kills,
+        space:kst_space};
         break;
       
       case valid_property(property, component_type) && ["fa","wa"].includes(property):
