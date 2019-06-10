@@ -1,5 +1,6 @@
 <template>
   <div class="side_menu_container">
+    <div class="side_menu_header">Servos</div>
     <div v-for="(type,index) in servo_type_list" :key="type+index+'-idx'">
       <div v-if="listComponentsByType(type).length>0">
         <div class="type_header">{{type}}</div>
@@ -18,7 +19,7 @@ import {mapGetters} from 'vuex';
 
 export default 
 {
-  name:"mek_build_side_menu",
+  name:"mek_frame_side_menu",
   props:[],
   mixins:[],
   components:{},
@@ -85,18 +86,23 @@ export default
   /* width: 100px; */
   min-width: 100px;
 }
+.side_menu_header
+{
+  font-size: 110%;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0px 1px 0px #222;
+}
 .servo_item
 {
   border: thin solid black;
-  padding: 5px;
-  font-weight: bold;
+  padding: 2px;
   border-radius: 7px;
   cursor: pointer;
 }
 .type_header
 {
-  font-size: 110%;
   font-weight: bold;
-  text-decoration: underline;
+  margin-left: 10px;
 }
 </style>
