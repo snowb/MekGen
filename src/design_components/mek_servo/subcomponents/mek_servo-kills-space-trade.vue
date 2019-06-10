@@ -96,7 +96,7 @@ export default
             let cleaned_data=cleaned_feature(this.selected_modifier,this.base_kills,this.base_space);
 
             if(cleaned_data.update)
-            {console.log(JSON.stringify(this.selected_modifier),JSON.stringify(cleaned_data.data))
+            {
                 this.selected_modifier.kills=cleaned_data.data.kills_modifier;
                 this.selected_modifier.space=cleaned_data.data.space_modifier;
                 this.selected_modifier.cost=cleaned_data.data.cost;
