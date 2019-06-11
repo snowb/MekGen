@@ -1,7 +1,7 @@
 <template>
     <div id="app" style="display:inline-flex;">
         <mek-side-menu :sections="categoryObject('equipment')" title="Equipment" format="cut"
-            @side-menu-clicked="loadData"
+            @side-menu-clicked="loadData" clickable="true"
         ></mek-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetDesignTab" :section-list="sectionList"></mek-top-menu>
