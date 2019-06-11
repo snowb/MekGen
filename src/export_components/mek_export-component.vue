@@ -7,14 +7,9 @@
               size="sm" color="d" color-offset="rgb"
           ></mek-top-menu>
           <span v-if="targetTypeTab!=''" class="mek-flex-row">
-            <span class="menu_container">
-              <span v-for="(id,key) in componentList" :key="key" class="component clickable_ecm"
-                @click="selectComponent(key)" :class="selected(key)"
-              >
-                {{id}}
-              </span>
-              <span class="invisible_pad_ecm">{{invisiblePad()}}</span>
-            </span>
+            <mek-side-menu @side-menu-clicked="selectComponent" :sections="componentList"
+              format="full" list="true" clickable="true"
+            ></mek-side-menu>
             <div class="json_parent_container">
               <span class="json_header">MekJSON</span>
               <div class="json_container">
@@ -41,7 +36,8 @@ export default {
   components:
   {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
-  },
+    "mek-side-menu":()=>import(/* webpackChunkName: "mek_side-menu" */"@/app_components/mek_side_menu/mek_side-menu.vue"),
+ },
   data:function()
   {
     let obj={};

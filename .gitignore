@@ -4,6 +4,7 @@ dev-branch
 ./components/universal/mek-space-efficiency.orig.vue
 *.archive
 test_data
+scratch
 
 # local env files
 .env.local

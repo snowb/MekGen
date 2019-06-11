@@ -153,6 +153,10 @@ let store= new Vuex.Store(
                 }
                 return Object.keys(_state.component_list[_category]);
             },
+            categoryObject:(_state)=>(_category)=>
+            {
+                return _state.component_list[_category];
+            },
             getComponent: (_state)=>(_uuid)=>_state.components[_uuid],
             targetDesignTab: _state=>_state.currentDesignTab,
             targetBuildTab: _state=>_state.currentBuildTab,
