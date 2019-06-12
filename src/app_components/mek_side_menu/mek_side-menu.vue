@@ -1,32 +1,36 @@
 <template>
-  <div :class="container">
-    <div v-if="!list">
-      <div class="side_menu_header">{{title}}</div>
-      <div v-for="(section_value, section_key, section_idx) in sections" 
-        :key="'side-menu-section-'+section_key+'-'+section_idx"
-      >
-        <div v-if="displaySection(section_value)">
-          <div class="subsection_header" :class="subsection_header">{{section_key}}</div>
-          <div v-for="(item_value, item_key, item_idx) in section_value"
-            :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing item"
-            @click="emitClick(item_key)" :class="content" :data-text="item_value"
-            :draggable="draggable"
-          >
-            {{item_value}}
+  <div style="height: auto;">
+    <div :class="container" v-if="!collapsed">
+      <div v-if="!list" style="margin-right:5px;max-width:119px; overflow:hidden; text-overflow: ellipsis;">
+        <div class="side_menu_header">{{title}}</div>
+        <div v-for="(section_value, section_key, section_idx) in sections" 
+          :key="'side-menu-section-'+section_key+'-'+section_idx"
+        >
+          <div v-if="displaySection(section_value)">
+            <div class="subsection_header" :class="subsection_header">{{section_key}}</div>
+            <div v-for="(item_value, item_key, item_idx) in section_value"
+              :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing item"
+              @click="emitClick(item_key)" :class="content" :data-text="item_value"
+              :draggable="draggable"
+            >
+              {{item_value}}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
-      <div v-if="Object.keys(sections).length==0" class="no-data">No Data</div>
-      <div v-for="(item_value, item_key, item_idx) in sections"
-        :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing list item"
-        @click="emitClick(item_key)" :class="content" :data-text="item_value"
-        :draggable="draggable"
-      >
-        {{item_value}}
+      <div v-else style="margin-right:5px;">
+        <div v-if="Object.keys(sections).length==0" class="no-data">No Data</div>
+        <div v-for="(item_value, item_key, item_idx) in sections"
+          :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing list item"
+          @click="emitClick(item_key)" :class="content" :data-text="item_value"
+          :draggable="draggable"
+        >
+          {{item_value}}
+        </div>
       </div>
+      <div @click="collapsed=!collapsed" class="collapse_bar" title="collapse" v-if="collapsible">&nbsp;</div>
     </div>
+    <div @click="collapsed=!collapsed" class="collapsed_bar" v-else title="expand">&nbsp;</div>
   </div>
 </template>
 
@@ -35,12 +39,13 @@
 export default 
 {
   name:"mek_frame_side_menu",
-  props:["sections","format","title","draggable","list","clickable"],
+  props:["sections","format","title","draggable","list","clickable","collapsible"],
   mixins:[],
   components:{},
   data:()=>
   {
     let obj={};
+    obj.collapsed=false;
     return obj;
   },
   methods:
@@ -99,34 +104,61 @@ export default
 </script>
 
 <style scoped>
+.collapse_bar
+{
+  width: 10px;
+  background-color: #777;
+  border-radius: 7px 0px 0px 7px;
+  margin-right: 1px;
+  box-shadow: inset 0px 0px 3px #fff;
+  border: 1px solid black;
+  cursor: pointer;
+}
+.collapsed_bar
+{
+  width: 10px;
+  margin: 5px;
+  background-color: #777;
+  border-radius: 7px;
+  box-shadow: inset 0px 0px 3px #fff;
+  border: 1px solid black;
+  cursor: pointer;
+  height: 35px;
+}
 .side_menu_container_full
 {
   background-color: rgb(170,170,170);
-  padding: 5px;
-  margin: 5px;
+  padding: 5px 0px 5px 5px;
+  margin: 1px 5px 5px 5px;
   align-self: baseline;
   max-width:150px;
   border-radius: 7px;
-  height: 100%;
+  /* height: 100%; */
   -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
   box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
   /* min-width: 100px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .side_menu_container_cut
 {
-    white-space: nowrap;
-    display:inline-flex;
-    flex-direction:column;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: rgb(170, 170, 170);
-    height: 100%;
-    -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
-    margin-right: 10px;
-    min-width: 105px;
-    max-width: 105px;
-    width: 105px;
+  white-space: nowrap;
+  /* display:inline-flex; */
+  flex-direction:column;
+  border-radius: 7px;
+  padding: 5px 0px 5px 5px;
+  background-color: rgb(170, 170, 170);
+  /* height: 100%; */
+  -webkit-box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+  margin: 1px 5px 5px 5px;
+  min-width: 100px;
+  max-width: 150px;/* 119px */
+  /* width: 119px; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .side_menu_header
 {
@@ -135,6 +167,7 @@ export default
   text-align: center;
   box-shadow: 0px 1px 0px #222;
   text-transform: capitalize;
+  max-width: 100px;
 }
 .subsection_header
 {

@@ -1,7 +1,7 @@
 <template>
     <div style="display:flex; margin-top:5px;">
         <!---mek-frame-side-menu></mek-frame-side-menu--->
-        <mek-side-menu :sections="servoList" format="full" title="Servos" draggable="true"></mek-side-menu>
+        <mek-side-menu :sections="servoList" format="full" title="Servos" :draggable="true" :collapsible="true"></mek-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetBuildTab" :section-list="sectionList"></mek-top-menu>
             <div id="build-main">
