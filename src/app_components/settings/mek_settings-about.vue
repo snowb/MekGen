@@ -12,17 +12,17 @@
     ****<br/>
     <br/>
     <br/>
-    <a target="_blank" href="https://rtalsoriangames.com/">R. Talsorian Games</a> reserves all rights to <a target="_blank" href="https://rtalsoriangames.com/mekton/">Mek, Mekton, MektonZeta</a> material.
+    <a target="_blank" rel="noopener noreferrer" href="https://rtalsoriangames.com/">R. Talsorian Games</a> reserves all rights to <a target="_blank" rel="noopener noreferrer" href="https://rtalsoriangames.com/mekton/">Mek, Mekton, MektonZeta</a> material.
     <br/>
     <br/>
-    Mekton Mek Generator built by <a target="_blank" href="https://github.com/snowb/MekGen">snowb</a>
+    Mekton Mek Generator built by <a target="_blank" rel="noopener noreferrer" href="https://github.com/snowb/MekGen">snowb</a>
     <br/>
     <br/>
-    Settings-Work-Tool.svg icon made by <a target="_blank" href="https://www.flaticon.com/authors/egor-rumyantsev">Egor Rumyantsev</a> from <a target="_blank" href="https://www.flaticon.com">www.flaticon.com</a>
+    Settings-Work-Tool.svg icon made by <a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com/authors/egor-rumyantsev">Egor Rumyantsev</a> from <a target="_blank" rel="noopener noreferrer" href="https://www.flaticon.com">www.flaticon.com</a>
     <br/>
     <br/>
     MekGen built with:<br>
-    <a target="_blank" href="https://vuejs.org/">VueJS</a>, <a target="_blank" href="https://vuex.vuejs.org/">VueX</a>, and <a target="_blank" href="https://cli.vuejs.org/">VueCLI</a><br/>    
+    <a target="_blank" href="https://vuejs.org/">VueJS</a>, <a target="_blank" rel="noopener noreferrer" href="https://vuex.vuejs.org/">VueX</a>, and <a target="_blank" rel="noopener noreferrer" href="https://cli.vuejs.org/">VueCLI</a><br/>    
   </div>
 </template>
 <script>
