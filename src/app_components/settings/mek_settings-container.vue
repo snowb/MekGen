@@ -35,6 +35,7 @@ export default {
     "mek-top-menu":()=>import(/* webpackChunkName: "mek_top-menu" */"@/app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-settings-about":()=>import(/* webpackChunkName: "mek_settings-about" */"./mek_settings-about.vue"),
     "mek-settings-options":()=>import(/* webpackChunkName: "mek_settings-options" */"./mek_settings-options.vue"),
+    "mek-settings-links":()=>import(/* webpackChunkName: "mek_settings-links" */"./mek_settings-links.vue"),
   },
   props:[],
   mixins:[],
@@ -45,6 +46,7 @@ export default {
     obj.sectionList=
     [
       {id:"mek-settings-about",name:"About"},
+      {id:"mek-settings-links",name:"Links"},
       {id:"mek-settings-options",name:"Options"},
     ];
     obj.targetOptionTab="mek-settings-about";
@@ -149,7 +151,7 @@ export default {
         rgba(185,0,0,1) 100%);
     height: 100%;
     width: 100%;
-    min-width: 230px;
+    min-width: 300px;
     padding:5px;
     border-radius: 7px;
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;

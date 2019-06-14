@@ -17,6 +17,16 @@ import {mapGetters} from 'vuex';
 
 export default {
   name: 'app',
+  metaInfo:
+  {
+      title:"Mekton Mek Generator",
+      meta:
+      [
+          {name:"description", content:"Mekton Mek Generator App"},
+          {name:"keywords", content:"mek,mekton,mz+,mz,mekton zeta,mecha,mech,anime"},
+          {name:"author",content:"https://github.com/snowb"}
+      ]
+  },
   components:
   {
     "mek-design-components":()=>import(/* webpackChunkName: "mek_design-components" */"./design_components/mek_design-components.vue"),
