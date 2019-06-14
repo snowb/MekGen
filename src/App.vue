@@ -23,7 +23,7 @@ export default {
       meta:
       [
           {name:"description", content:"Mekton Mek Generator App"},
-          {name:"keywords", content:"mek,mekton,mz+,mz,mekton zeta,mecha,mech,anime"},
+          {name:"keywords", content:"mek,mekton,zeta,plus,mz+,mz,mecha,mech,anime,macross,gundam"},
           {name:"author",content:"https://github.com/snowb"}
       ]
   },

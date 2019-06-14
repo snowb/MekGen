@@ -1,7 +1,7 @@
 <template>
   <div>
     ****<br>
-    Mekton Mek Generator<br/>
+    <a target="_blank" rel="noopener noreferrer" href="https://github.com/snowb/MekGen">Mekton Mek Generator</a><br/>
     Build Date-Time: {{VUE_APP_BUILD_DATE}}<br/>
     <span v-if="NODE_ENV=='production'">
       'Prod' Build Version: {{VUE_APP_VERSION}}
