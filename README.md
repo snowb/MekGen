@@ -1,10 +1,8 @@
-# Mekton Mek Generator
+# [Mekton Mek Generator](https://snowb.github.io/MekGen/)
 
 This is a Vue/VueX based Mekton generator.
 Intent to have a fairly simple interface for creating Mek components and systems.
 As well as providing a simple means of savings and exporting/importing the created Mek or components. Eventually.
-
-[Mekton Mek Generator](https://snowb.github.io/MekGen/)
 
 TODO
 
