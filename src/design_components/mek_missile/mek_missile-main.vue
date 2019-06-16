@@ -103,7 +103,7 @@ export default
         "mek-component-name":()=>
         import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
-        import(/* webpackChunkName: "mek-save-reset-component" */"@/design_components/universal/mek-save-reset-component.vue"),
+        import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>
         import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
 
@@ -246,7 +246,7 @@ export default
         }, */
         componentSaveReset:function(_action)
         {
-            let action=_action=="reset" && this.original_component==null?"clear":_action;
+            let action=_action=="reset" && this.original_component==null?"new":_action;
             switch(action)
             {
                 case "save":
@@ -259,7 +259,7 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
-                case "clear":
+                case "new":
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;

@@ -2,19 +2,19 @@
     <div class="mek-button-container">
         <span :class="{'mek-button':!saveClicked,'mek-button-clicked':saveClicked}" 
             @click="button_clicked('save')" @animationend="saveClicked=false"
-            title="Save Equipment"
+            title="Save Equipment" v-if="showSave"
         >
             Save
         </span>
         <span :class="{'mek-button':!resetClicked,'mek-button-clicked':resetClicked}" 
             @click="button_clicked('reset')" @animationend="resetClicked=false"
-            title="Reset Equipment"
+            title="Reset Equipment" v-if="showReset"
         >
             Reset
         </span>
-        <span :class="{'mek-button':!clearClicked,'mek-button-clicked':clearClicked}" 
-            @click="button_clicked('clear')" @animationend="clearClicked=false"
-            title="Clear/New Equipment"
+        <span :class="{'mek-button':!newClicked,'mek-button-clicked':newClicked}" 
+            @click="button_clicked('new')" @animationend="newClicked=false"
+            title="Clear/New Equipment" v-if="showNew"
         >
             New
         </span>
@@ -25,7 +25,7 @@
 export default
 {
     name:"mek_save_reset_component",
-    props:[],
+    props:["activeButtons"],
     data:function()
     {
         let obj={};
@@ -33,7 +33,7 @@ export default
         obj.editMode=false;
         obj.saveClicked=false;
         obj.resetClicked=false;
-        obj.clearClicked=false;
+        obj.newClicked=false;
         return obj;
     },
     methods:
@@ -48,12 +48,31 @@ export default
             {
                 this.resetClicked=true;
             }
-            else if(_btn=="clear")
+            else if(_btn=="new")
             {
-                this.clearClicked=true;
+                this.newClicked=true;
             }
             this.$emit("save-reset-component",_btn);
         }
+    },
+    computed:
+    {
+        activeButtonsArray()
+        {
+            return this.activeButtons===undefined ? null : this.activeButtons.split(",");
+        },
+        showSave()
+        {
+            return this.activeButtons===undefined || this.activeButtonsArray.includes('save');
+        },
+        showReset()
+        {
+            return this.activeButtons===undefined || this.activeButtonsArray.includes('reset');
+        },
+        showNew()
+        {
+            return this.activeButtons===undefined || this.activeButtonsArray.includes('new');
+        },
     }
 }
 </script>
