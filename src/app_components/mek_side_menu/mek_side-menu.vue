@@ -19,6 +19,7 @@
         </div>
       </div>
       <div v-else style="margin-right:5px;">
+        <div v-if="title!==undefined" class="side_menu_header" style="margin-bottom:5px;">{{title}}</div>
         <div v-if="Object.keys(sections).length==0" class="no-data">No Data</div>
         <div v-for="(item_value, item_key, item_idx) in sections"
           :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing list item"
