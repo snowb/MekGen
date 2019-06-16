@@ -65,9 +65,21 @@ export default {
   computed:
   {
     ...mapGetters(
-        {
-            targetAppTab:'targetAppTab'
-        })
+    {
+        targetAppTab:'targetAppTab'
+    })
+  },
+  created()
+  {
+    let localStorageData=localStorage.getItem("mekgendata");
+    localStorageData=JSON.parse(localStorageData);
+    for(let key in localStorageData)
+    {
+        let importComponent={};
+        importComponent.fromLocalStorage=true;
+        importComponent.componentData=localStorageData[key];
+        this.$store.commit("saveComponent",importComponent);
+    }
   }
 }
 </script>

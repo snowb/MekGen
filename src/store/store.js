@@ -32,7 +32,7 @@ let store= new Vuex.Store(
         },
         mutations:
         {
-            saveComponent(_state,_component)
+            saveComponent(_state, _component)
             {
                 if(_component===null || typeof _component!=="object" || Array.isArray(_component))
                 {
@@ -40,9 +40,15 @@ let store= new Vuex.Store(
                 }
                 else
                 {
-                    //let copyComponent=JSON.parse(JSON.stringify(_component));//make deep copy
-                    //let copyComponent=_component;//make copy
-                    let copyComponent=this.cleanComponent(_component);//clean values: ^[\w\d-_. ]+$ else null'd 
+                    let copyComponent;
+                    if(_component.fromLocalStorage===undefined)
+                    {
+                        copyComponent=this.cleanComponent(_component);//clean values: ^[\w\d-_. ]+$ else null'd
+                    }
+                    else
+                    {
+                        copyComponent=this.cleanComponent(_component.componentData);//clean values: ^[\w\d-_. ]+$ else null'd
+                    }
                     let category=copyComponent.component_category;
                     let type=copyComponent.component_type;
                     let uuid=copyComponent.uuid!==undefined?copyComponent.uuid:this.create_uuid();
@@ -61,6 +67,11 @@ let store= new Vuex.Store(
                         Vue.set(_state.components,uuid,copyComponent);
                         _state.selected_component=uuid;
                     }
+                    //also save all components to localStorage
+                    if(_component.fromLocalStorage===undefined && this.storageAvailable('localStorage'))
+                    {
+                        this.saveToLocalStorage("mekgendata",JSON.stringify(_state.components));
+                    }  
                 }
             },
             showTab(_state, _payload)
@@ -183,11 +194,14 @@ let store= new Vuex.Store(
     });
 
 //load cleanComponent method from module
-import(/* webpackChunkName: "clean_component_module" */"./modules/clean_component_module")
-.then((_module)=>
-    {
-        store.cleanComponent=_module.cleanComponent;
-    });
+// import(/* webpackPreload: true, webpackMode:"eager", webpackChunkName:"clean_component_module" */"./modules/clean_component_module")
+// .then((_module)=>
+//     {
+//         store.cleanComponent=_module.cleanComponent;
+//     });
+//must use static import ensure it's valid
+import {cleanComponent} from "./modules/clean_component_module";
+store.cleanComponent=cleanComponent;
 //load create_uuid method from module
 import(/* webpackChunkName: "create_uuid_module" */"./modules/create_uuid_module")
 .then((_module)=>
@@ -208,6 +222,36 @@ import(/* webpackChunkName: "json_embiggen_functions" */"@/data_table_modules/im
     {
         store.embiggen=_module.embiggen;
     });
+    
+store.storageAvailable=(_type)=>
+{
+    var storage;
+    try {
+        storage = window[_type];
+        var x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch(e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+};
 
+store.saveToLocalStorage=(_key, _data)=>
+{
+    localStorage.setItem(_key,_data);
+}
 
 export default store;
