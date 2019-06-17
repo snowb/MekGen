@@ -1,0 +1,4 @@
+<svg width="10px" height="12px" xmlns="http://www.w3.org/2000/svg" id="expand_pips">
+  <path id="expand_pips1" fill="none" stroke="#555" d="M0,0 l6,6 l-6,6"/>
+  <path id="expand_pips2" fill="#555" stroke="#555" d="M0,4 l2,2 l-3,3M"/>
+</svg>
