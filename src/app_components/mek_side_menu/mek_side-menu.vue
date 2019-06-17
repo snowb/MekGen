@@ -31,7 +31,7 @@
       </div>
       <div @click="collapsed=!collapsed" class="collapse_bar" title="collapse" v-if="collapsible">&nbsp;</div>
     </div>
-    <div @click="collapsed=!collapsed" class="collapsed_bar" v-else title="expand">&nbsp;</div>
+    <div @click="collapsed=!collapsed" class="expand_bar" v-else title="expand">&nbsp;</div>
   </div>
 </template>
 
@@ -114,8 +114,9 @@ export default
   box-shadow: inset 0px 0px 3px #fff;
   border: 1px solid black;
   cursor: pointer;
+  background-image: url("../../assets/collapse_pips.svg");
 }
-.collapsed_bar
+.expand_bar
 {
   width: 10px;
   margin: 5px;
@@ -125,6 +126,7 @@ export default
   border: 1px solid black;
   cursor: pointer;
   height: 35px;
+  background-image: url("../../assets/expand_pips.svg");
 }
 .side_menu_container_full
 {
