@@ -1,10 +1,13 @@
 <template>
     <div style="display:flex; margin-top:5px;">
-        <mek-side-menu :sections="mekList" format="full" list="true" title="Meks" :draggable="true" :collapsible="true"></mek-side-menu>
+        <mek-side-menu :sections="mekList" format="full" list="true" title="Meks" 
+          :draggable="true" :collapsible="true" clickable="true"
+          @side-menu-clicked="mek_select"
+        ></mek-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetBuildTab" :section-list="sectionList"></mek-top-menu>
             <div id="build-main">
-                <component :is="targetBuildTab"></component>
+                <component :is="targetBuildTab" :selected-data="selected_data"></component>
             </div>
         </span>
         <!--mek-alert></mek-alert-->
@@ -28,10 +31,10 @@ export default {
   data:function()
   {
     let obj={};
-    obj.sectionList=
+    obj.fullSectionList=
     [
-      {id:"mek-build-general",name:"General"},
-      {id:"mek-build-frame",name:"Frame"},
+      {id:"mek-build-general",name:"Mek"},
+      //{id:"mek-build-frame",name:"Frame"},
     ];
     return obj;
   },
@@ -40,6 +43,10 @@ export default {
     focusSection:function(_section)
     {
         this.$store.commit("showTab",{prop:"currentBuildTab",tab:_section});
+    },
+    mek_select(_uuid)
+    {
+        this.$store.commit('selectMek',_uuid);
     }
   },
   computed:
@@ -48,35 +55,47 @@ export default {
     {
         targetBuildTab:'targetBuildTab',
         listByCategoryAndType:"listByCategoryAndType",
-        getComponent:"getComponent"
+        getComponent:"getComponent",
+        selectedMek:"selectedMek"
     }),
-    /* 
-    servo list needs to be moved to mek_build-frame component
-    servoList()
-    {
-      let servoList=this.listByCategoryAndType("equipment","servo");
-      
-      let componentList=Object.keys(servoList).map((_el)=>
-      {
-        return this.getComponent(_el);
-      },this);
-
-      let sectionsObject={};
-      componentList.forEach((_el)=>
-      {
-        if(sectionsObject[_el.selected_servo_type.type]===undefined)
-        {
-          sectionsObject[_el.selected_servo_type.type]={};
-        }
-        sectionsObject[_el.selected_servo_type.type][_el.uuid]=_el.component_name;
-      });
-
-      return sectionsObject;
-    }, */
     mekList()
     {
       let mekList=this.listByCategoryAndType("mek","mek");
       return mekList;
+    },
+    sectionList()
+    {
+      if(this.selectedMek===null)
+      {
+        return [{id:"mek-build-general",name:"Mek"}];
+      }
+      return this.fullSectionList;
+    },
+    getSelectedMek()
+    {//responsible for ingesting data from the store
+      let selectedMek=JSON.parse(JSON.stringify(this.$store.getters.selectedMek));
+      return selectedMek;
+    },
+    selected_data()
+    {
+      if(this.getSelectedMek===null || this.getSelectedMek===undefined)
+      {
+        return null;
+      }
+      let returnObj={};
+      switch(this.targetBuildTab)
+      {
+        case "mek-build-general":
+          for(let prop in this.getSelectedMek)
+          {
+            if(typeof this.getSelectedMek[prop]!=="object" && !Array.isArray(this.getSelectedMek[prop]))
+            {
+              returnObj[prop]=this.getSelectedMek[prop];
+            }
+          }
+          break;
+      }
+      return returnObj;
     }
   }
 }
