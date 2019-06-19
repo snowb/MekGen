@@ -20,7 +20,7 @@
       </div>
       <div v-else style="margin-right:5px;">
         <div v-if="title!==undefined" class="side_menu_header" style="margin-bottom:5px;">{{title}}</div>
-        <div v-if="Object.keys(sections).length==0" class="no-data">No Data</div>
+        <div v-if="sections===undefined || Object.keys(sections).length==0" class="no-data">No Data</div>
         <div v-for="(item_value, item_key, item_idx) in sections"
           :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing list item"
           @click="emitClick(item_key)" :class="content" :data-text="item_value"
@@ -100,6 +100,13 @@ export default
           return "content_full";
       }
     },
+  },
+  watch:
+  {
+    sections(_old, _new)
+    {
+      this.emitClick("");
+    }
   }
 }
 </script>
@@ -170,7 +177,7 @@ export default
   text-align: center;
   box-shadow: 0px 1px 0px #222;
   text-transform: capitalize;
-  max-width: 100px;
+  max-width: 150px;
 }
 .subsection_header
 {

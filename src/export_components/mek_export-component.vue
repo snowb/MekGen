@@ -42,17 +42,23 @@ export default {
   {
     let obj={};
     obj.selectedKey=null;
+    obj.focusedExportSection=null;
     return obj;
   },
   methods:
   {
     focusExportSection:function(_section)
     {
-        this.$store.commit("showTab",{prop:"currentExportTab",tab:_section});
+      if(_section!=this.focusedExportSection)
+      {
+        this.focusTypeSection('');
+      }
+      this.focusedExportSection=_section;
+      this.$store.commit("showTab",{prop:"currentExportTab",tab:_section});
     },
     focusTypeSection:function(_section)
     {
-        this.$store.commit("showTab",{prop:"currentTypeTab",tab:_section});
+      this.$store.commit("showTab",{prop:"currentTypeTab",tab:_section});
     },
     selectComponent(_key)
     {
