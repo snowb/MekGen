@@ -86,6 +86,15 @@ export default
                     _event.stopPropagation();
             }
         }
+    },
+    watch:
+    {
+        componentName(_new, _old)
+        {//seemingly only way to force text reset.
+            document.querySelector(".edit_name").innerText=this.componentName;
+            document.querySelector(".edit_name").innerHTML=this.componentName;
+            document.querySelector(".edit_name").textContent=this.componentName;
+        }
     }
 }
 </script>
