@@ -29,6 +29,7 @@ export default {
 
     "mek-build-frame":()=>import(/* webpackChunkName: "mek_build-frame" */"@/build_components/mek_frame/mek_build-frame.vue"),
     "mek-build-general":()=>import(/* webpackChunkName: "mek_build-general" */"@/build_components/mek_general/mek_build-general.vue"),
+    "mek-build-config":()=>import(/* webpackChunkName: "mek_build-config" */"@/build_components/mek_config/mek_build-config.vue"),
   },
   data:function()
   {
@@ -36,6 +37,7 @@ export default {
     obj.fullSectionList=
     [
       {id:"mek-build-general",name:"Mek"},
+      {id:"mek-build-config",name:"Config"},
       //{id:"mek-build-frame",name:"Frame"},
     ];
     obj.originalMek=null;
@@ -50,7 +52,7 @@ export default {
     },
     mek_select(_uuid)
     {
-        this.$store.commit('selectMek',_uuid);
+      this.$store.commit('selectMek',_uuid);
     },
     saveSelectedData(_type, _data)
     {
@@ -65,7 +67,9 @@ export default {
     },
     resetSelectedData()
     {
-      console.log('resetSelectedData',arguments)
+      this.workingMek=null;
+      this.originalMek=null;
+      this.$store.commit('saveComponent',null);
     }
   },
   computed:
@@ -83,12 +87,17 @@ export default {
       return mekList;
     },
     sectionList()
-    {
+    { 
+      let sectionList=[{id:"mek-build-general",name:"Mek"}];
       if(this.workingMek===null)
       {
-        return [{id:"mek-build-general",name:"Mek"}];
+        return sectionList;
       }
-      return this.fullSectionList;
+      if(this.workingMek.uuid!==undefined)
+      {
+        sectionList.push({id:"mek-build-config",name:"Config"});
+      }
+      return sectionList;
     },
     getSelectedMek()
     {//responsible for ingesting data from the store
