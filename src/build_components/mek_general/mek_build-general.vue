@@ -1,6 +1,6 @@
 <template>
 <span class="mek-inline-flex-col" style="width:100%;">
-    <mek-component-name :new-component="newComponent" :component-name="component_name||mek_name"
+    <mek-component-name :new-component="ingest_mek" :component-name="component_name||mek_name"
       :component-changed="component_changed"
       @update-component-name="updateComponentName"
     ></mek-component-name>
@@ -17,7 +17,7 @@ import component_methods_mixin from "@/mixins/component_methods_mixin";
 export default 
 {
   name:"mek_build-general",
-  props:[],
+  props:["selectedData"],
   mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
   components:
   {
@@ -78,14 +78,13 @@ export default
       return_data.component_type="mek";//specific equipment type
       return_data.component_name=this.custom_component_name?this.component_name:this.mek_name;
       return_data.custom_component_name=this.custom_component_name;
-
       this.$nextTick(()=>{this.component_changed=false;});
       this.original_component=JSON.stringify(return_data);
       return JSON.parse(this.original_component);
     },
     ingest_data(_data_object)
       {
-        let alertMessage="Beam is not valid, resetting.";
+        let alertMessage="Mek is not valid, resetting.";
         this.universal_ingest_data(_data_object,alertMessage);
         if(!this.custom_component_name)
           {//reset component_name if component generated
@@ -103,7 +102,21 @@ export default
     mek_name()
     {
       return this.custom_component_name ? this.component_name : "Unnamed Mek";
-    }
+    },
+    ingest_mek()
+    {
+      if(this.selectedData!==null)
+      {
+        if(this.selectedData.uuid!==this.uuid 
+          && this.selectedData.component_category==this.component_category
+          && this.selectedData.component_type==this.component_type)
+        {
+          this.ingest_data(this.selectedData);
+        }
+        return false;
+      }
+      return true;
+    },
   }
 }
 </script>
