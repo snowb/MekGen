@@ -68,6 +68,11 @@ export default
         case "new":
           this.uuid=null;
           this.component_name=null;
+          this.custom_component_name=false;
+          this.component_category="mek";
+          this.component_type="mek";
+          this.original_component=null;
+          this.component_changed=true;
           this.$emit("resetSelectedData");
           break;
       }

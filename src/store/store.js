@@ -38,6 +38,7 @@ let store= new Vuex.Store(
                 if(_component===null || typeof _component!=="object" || Array.isArray(_component))
                 {
                     Vue.set(_state,"selected_component",null);
+                    Vue.set(_state,"selected_mek",null);
                 }
                 else
                 {
