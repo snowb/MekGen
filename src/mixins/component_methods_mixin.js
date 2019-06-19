@@ -23,7 +23,7 @@ export default
                 {
                     if(typeof this[_property]!=="object" || this[_property]===null)
                     {
-                        this[_property]={};
+                        this.$set(this,_property,{})
                     }
                     for(let _sub_property in data_object[_property])
                     {
