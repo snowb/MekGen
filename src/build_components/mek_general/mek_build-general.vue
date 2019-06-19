@@ -43,9 +43,12 @@ export default
   {
     updateComponentName(_name)
     {
-      this.component_name=_name;
-      this.custom_component_name=true;
-      this.component_changed=true;
+      if(_name!=this.component_name)
+      {
+        this.component_name=_name;
+        this.custom_component_name=true;
+        this.component_changed=true;
+      }
     },
     componentSaveReset:function(_action)
     {
@@ -53,7 +56,7 @@ export default
       switch(action)
       {
         case "save":
-          this.$store.commit('saveComponent',this.output_data());
+          this.$emit("saveSelectedData","general",this.output_data());
           break;
         case "reset":
           if(this.original_component!==null)
@@ -65,7 +68,7 @@ export default
         case "new":
           this.uuid=null;
           this.component_name=null;
-          this.$store.commit("saveComponent",null);
+          this.$emit("resetSelectedData");
           break;
       }
     },
@@ -83,19 +86,19 @@ export default
       return JSON.parse(this.original_component);
     },
     ingest_data(_data_object)
-      {
-        let alertMessage="Mek is not valid, resetting.";
-        this.universal_ingest_data(_data_object,alertMessage);
-        if(!this.custom_component_name)
-          {//reset component_name if component generated
-            this.$set(this,"component_name",null);
-          }
-        this.$nextTick(()=>{this.component_changed=this.hasAlert;});
-      },
-    handleAlert(_alert_status)
-      {
-        this.hasAlert=_alert_status;
+    {
+      let alertMessage="Mek is not valid, resetting.";
+      this.universal_ingest_data(_data_object,alertMessage);
+      if(!this.custom_component_name)
+      {//reset component_name if component generated
+        this.$set(this,"component_name",null);
       }
+      this.$nextTick(()=>{this.component_changed=this.hasAlert;});
+    },
+    handleAlert(_alert_status)
+    {
+      this.hasAlert=_alert_status;
+    }
   },
   computed:
   {
@@ -117,7 +120,7 @@ export default
       }
       return true;
     },
-  }
+  },
 }
 </script>
 

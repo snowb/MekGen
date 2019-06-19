@@ -7,7 +7,9 @@
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetBuildTab" :section-list="sectionList"></mek-top-menu>
             <div id="build-main">
-                <component :is="targetBuildTab" :selected-data="selected_data"></component>
+                <component :is="targetBuildTab" :selected-data="selected_data" 
+                  @saveSelectedData="saveSelectedData" @resetSelectedData="resetSelectedData"
+                ></component>
             </div>
         </span>
         <!--mek-alert></mek-alert-->
@@ -36,6 +38,8 @@ export default {
       {id:"mek-build-general",name:"Mek"},
       //{id:"mek-build-frame",name:"Frame"},
     ];
+    obj.originalMek=null;
+    obj.workingMek=null;
     return obj;
   },
   methods:
@@ -47,6 +51,21 @@ export default {
     mek_select(_uuid)
     {
         this.$store.commit('selectMek',_uuid);
+    },
+    saveSelectedData(_type, _data)
+    {
+      if(_type=="general")
+      {
+        for(let prop in _data)
+        {
+          this.$set(this.workingMek,prop,_data[prop]);
+        }
+      }
+      this.$store.commit('saveComponent',this.workingMek);
+    },
+    resetSelectedData()
+    {
+      console.log('resetSelectedData',arguments)
     }
   },
   computed:
@@ -65,7 +84,7 @@ export default {
     },
     sectionList()
     {
-      if(this.selectedMek===null)
+      if(this.workingMek===null)
       {
         return [{id:"mek-build-general",name:"Mek"}];
       }
@@ -73,8 +92,9 @@ export default {
     },
     getSelectedMek()
     {//responsible for ingesting data from the store
-      let selectedMek=JSON.parse(JSON.stringify(this.$store.getters.selectedMek));
-      return selectedMek;
+      this.originalMek=JSON.parse(JSON.stringify(this.$store.getters.selectedMek));
+      this.workingMek=this.originalMek;
+      return this.originalMek;
     },
     selected_data()
     {
