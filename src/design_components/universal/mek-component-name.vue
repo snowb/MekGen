@@ -89,7 +89,7 @@ export default
     },
     watch:
     {
-        componentName(_new, _old)
+        componentName()
         {//seemingly only way to force text reset.
             document.querySelector(".edit_name").innerText=this.componentName;
             document.querySelector(".edit_name").innerHTML=this.componentName;
