@@ -27,6 +27,7 @@ let store= new Vuex.Store(
             currentAppTab:"mek-design-components",
             currentTypeTab:"",
             selected_component:null,
+            selected_mek:null,
             alert_messages:[],
             import_alert_messages:[]
         },
@@ -86,6 +87,13 @@ let store= new Vuex.Store(
                 if(typeof _uuid==="string")
                 {
                     Vue.set(_state,"selected_component",_uuid);
+                }
+            },
+            selectMek(_state, _uuid)
+            {
+                if(typeof _uuid==="string")
+                {
+                    Vue.set(_state,"selected_mek",_uuid);
                 }
             },
             clearComponent(_state)
@@ -178,6 +186,10 @@ let store= new Vuex.Store(
             selectedComponent: _state =>
             {
                 return _state.selected_component===null?null:_state.components[_state.selected_component];
+            },
+            selectedMek: _state =>
+            {
+                return _state.selected_mek===null?null:_state.components[_state.selected_mek];
             },
             alertMessages:(_state)=>{return _state.alert_messages},
             importAlertMessages:(_state)=>{return _state.import_alert_messages},
