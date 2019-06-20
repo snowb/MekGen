@@ -55,12 +55,12 @@ export default
     mixins:[utility_mixin, component_computed_mixin, component_methods_mixin],
     components:
     {
-        "mek-energy-pool-pool":()=>import(/* webpackChunkName: "mek_energy_pool-pool" */"./subcomponents/mek_energy_pool-pool.vue"),
-        "mek-energy-pool-size":()=>import(/* webpackChunkName: "mek_energy_pool-size" */"./subcomponents/mek_energy_pool-size.vue"),
-        "mek-energy-pool-feature":()=>import(/* webpackChunkName: "mek_energy_pool-feature" */"./subcomponents/mek_energy_pool-feature.vue"),
+        "mek-energy-pool-pool":()=>import(/* webpackChunkName: "mek_energy_pool-pool" */"@/design_components/subcomponents/mek_energy_pool-pool.vue"),
+        "mek-energy-pool-size":()=>import(/* webpackChunkName: "mek_energy_pool-size" */"@/design_components/subcomponents/mek_energy_pool-size.vue"),
+        "mek-energy-pool-feature":()=>import(/* webpackChunkName: "mek_energy_pool-feature" */"@/design_components/subcomponents/mek_energy_pool-feature.vue"),
 
         "mek-space-efficiency":()=>import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
-        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/app_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"../universal/mek_component-stats.vue"),
 

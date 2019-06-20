@@ -75,20 +75,20 @@ export default
     components:
     {
         "mek-emw-damage":()=>
-        import(/* webpackChunkName: "mek_emw-damage" */"./subcomponents/mek_emw-damage.vue"),
+        import(/* webpackChunkName: "mek_emw-damage" */"@/design_components/subcomponents/mek_emw-damage.vue"),
         "mek-emw-accuracy":()=>
-        import(/* webpackChunkName: "mek_emw-accuracy" */"./subcomponents/mek_emw-accuracy.vue"),
+        import(/* webpackChunkName: "mek_emw-accuracy" */"@/design_components/subcomponents/mek_emw-accuracy.vue"),
         "mek-emw-attack-factor":()=>
-        import(/* webpackChunkName: "mek_emw-attack-factor" */"./subcomponents/mek_emw-attack-factor.vue"),
+        import(/* webpackChunkName: "mek_emw-attack-factor" */"@/design_components/subcomponents/mek_emw-attack-factor.vue"),
         "mek-emw-turns-in-use":()=>
-        import(/* webpackChunkName: "mek_emw-turns-in-use" */"./subcomponents/mek_emw-turns-in-use.vue"),
+        import(/* webpackChunkName: "mek_emw-turns-in-use" */"@/design_components/subcomponents/mek_emw-turns-in-use.vue"),
         "mek-emw-feature":()=>
-        import(/* webpackChunkName: "mek_emw-feature" */"./subcomponents/mek_emw-feature.vue"),
+        import(/* webpackChunkName: "mek_emw-feature" */"@/design_components/subcomponents/mek_emw-feature.vue"),
 
         "mek-space-efficiency":()=>
         import(/* webpackChunkName: "mek-space-efficiency" */"@/design_components/universal/mek-space-efficiency.vue"),
         "mek-component-name":()=>
-        import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        import(/* webpackChunkName: "mek-component-name" */"@/app_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>
         import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>

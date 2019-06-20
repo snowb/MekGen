@@ -81,7 +81,7 @@ export default
         "mek-servo-class":()=>import(/* webpackChunkName: "mek_servo-class" */"./subcomponents/mek_servo-class.vue"),
         "mek-servo-kills-space-trade":()=>import(/* webpackChunkName: "mek_servo-kills-space-trade" */"./subcomponents/mek_servo-kills-space-trade.vue"),
 
-        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/design_components/universal/mek-component-name.vue"),
+        "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/app_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),
         "mek-component-stats":()=>import(/* webpackChunkName: "mek_component-stats" */"@/design_components/universal/mek_component-stats.vue"),
 

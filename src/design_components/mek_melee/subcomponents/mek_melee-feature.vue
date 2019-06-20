@@ -20,7 +20,7 @@ export default
     mixins:[alerts_mixin],
     components:
     {
-        "mek-sub-component-table":()=>import("@/design_components/universal/mek_sub-component-table.vue")
+        "mek-sub-component-table":()=>import("@/app_components/universal/mek_sub-component-table.vue")
     },
     data:function()
     {
