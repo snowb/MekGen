@@ -15,7 +15,7 @@
                             &nbsp;
                         </td>
                     </tr>
-                    <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
                         class="clickable_sct pad_sct"
                         :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
                         @click="updateSelectedData(items[index])"
@@ -38,7 +38,7 @@
                             </div>
                         </td>
                         <td>&nbsp;</td>
-                        <td v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                        <td v-for="(item,index) in items" :key="index+'-item-'+name"
                             class="clickable_sct pad_sct"
                             :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
                             @click="updateSelectedData(items[index])"
@@ -65,7 +65,7 @@
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
                         >
-                            {{itemDisplayedKeys[selectedIndices[0]][key]}}
+                            {{items[selectedIndices[0]][key]}}
                         </td>
                     </tr>
                     <tr class="invisible_pad_row_sct">
@@ -75,10 +75,52 @@
                     </tr>
                 </table>
                 <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown">
-                    <tr v-for="(item,index) in itemDisplayedKeys" :key="index+'-item-'+name"
+                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
                         class="clickable_sct pad_sct"
                         :class="selectedItemMultiple('selectedIndices',index,'selected_item_sct')"
                         @click="updateSelectedIndices(index);showDropdown=false"
+                    >
+                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                            {{formatOutput(item[key],key)}}
+                        </td>
+                    </tr>
+                    <tr class="invisible_pad_row_sct">
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
+                    </tr>
+                </table>
+                <table style="margin:auto;" v-if="flow=='dropdown-pkey'">
+                    <tr v-if="showHeaders" class="head_row_sct">
+                        <th v-for="(header,key) in headers" :key="key+'-header-'+name">
+                            {{header}}
+                        </th>
+                    </tr>
+                    <tr>
+                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                            &nbsp;
+                        </td>
+                    </tr>
+                    <tr class="pad selected_item_sct" @click="showDropdown=true"
+                        :style="hiddenDropDown"
+                    >
+                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
+                        >
+                            <!-- {{formatOutput(items[key],key)}} -->
+                            {{formatOutput(selectedDropdownPkey[key],key)}}
+                        </td>
+                    </tr>
+                    <tr class="invisible_pad_row_sct">
+                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                            {{largestKeyValues[key]}}
+                        </td>
+                    </tr>
+                </table>
+                <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown">
+                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
+                        class="clickable_sct pad_sct"
+                        :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
+                        @click="updateSelectedData(items[index]);showDropdown=false"
                     >
                         <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
                             {{formatOutput(item[key],key)}}
@@ -185,32 +227,32 @@ export default
     },
     computed:
     {
-        itemDisplayedKeys()
-        {
-            return this.items;
+        // itemDisplayedKeys()
+        // {
+        //     return this.items;
 
-            /* 
-            old way, only allows matching of displayed data
-            keeping here for now ... just in case
-            let headers=this.headers;
-            return this.items.reduce((_newArray,_elem)=>
-            {
-                let obj={};
-                for(let key in _elem)
-                {
-                    if(Object.keys(headers).includes(key))
-                    {
-                        obj[key]=_elem[key];
-                    }
-                }
-                _newArray.push(obj);
-                return _newArray;
-            },[]); 
-            */
-        },
+        //     /* 
+        //     old way, only allows matching of displayed data
+        //     keeping here for now ... just in case
+        //     let headers=this.headers;
+        //     return this.items.reduce((_newArray,_elem)=>
+        //     {
+        //         let obj={};
+        //         for(let key in _elem)
+        //         {
+        //             if(Object.keys(headers).includes(key))
+        //             {
+        //                 obj[key]=_elem[key];
+        //             }
+        //         }
+        //         _newArray.push(obj);
+        //         return _newArray;
+        //     },[]); 
+        //     */
+        // },
         largestKeyValues()
         {
-            return this.itemDisplayedKeys.reduce((_newObj,_elem)=>
+            return this.items.reduce((_newObj,_elem)=>
             {
                 for(let key in _elem)
                 {
@@ -234,6 +276,20 @@ export default
         colspan()
         {
             return Object.keys(this.headers).length
+        },
+        selectedDropdownPkey()
+        {
+            let selected_dropdown_pkey;
+            this.items.some((_el)=>
+            {
+                if(_el[this.pkey]==this.selectedKeys[0])
+                {
+                    selected_dropdown_pkey=_el;
+                    return true;
+                }
+                return false;
+            },this);
+            return selected_dropdown_pkey;
         }
     }
 }
