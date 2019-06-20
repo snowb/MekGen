@@ -41,8 +41,8 @@ export default
         ],
     components:
     {
-        "mek-locomotion-type":()=>import(/* webpackChunkName: "mek_locomotion-type" */"@/design_component/subcomponents/mek_locomotion-type.vue"),
-        "mek-locomotion-class":()=>import(/* webpackChunkName: "mek_locomotion-class" */"@/design_component/subcomponents/mek_locomotion-class.vue"),
+        "mek-locomotion-type":()=>import(/* webpackChunkName: "mek_locomotion-type" */"./subcomponents/mek_locomotion-type.vue"),
+        "mek-locomotion-class":()=>import(/* webpackChunkName: "mek_locomotion-class" */"./subcomponents/mek_locomotion-class.vue"),
 
         "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/app_components/universal/mek-component-name.vue"),
         "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),

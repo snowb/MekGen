@@ -16,7 +16,7 @@ import alerts_mixin from "@/mixins/alerts_mixin.js";
 import {ram_data_table, cleaned_feature} 
     from "@/data_table_modules/mek_armor/mek_armor-RAM-data-module.js";
 
-import mek_sub_component_table from "./mek_sub-component-table.vue";
+import mek_sub_component_table from "@/app_components/universal/mek_sub-component-table.vue";
 export default 
 {
     name: "mek_armor_ram",

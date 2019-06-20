@@ -16,7 +16,7 @@ import utility_mixin from "@/mixins/utility_mixin.js";
 import {armor_data_table, cleaned_feature, filter_data_table} 
     from "@/data_table_modules/mek_armor/mek_armor-data-module.js";
 
-import mek_sub_component_table from "./mek_sub-component-table.vue";
+import mek_sub_component_table from "@/app_components/universal/mek_sub-component-table.vue";
 export default 
 {
     name: "mek_armor",
