@@ -190,7 +190,7 @@ let store= new Vuex.Store(
             },
             selectedMek: _state =>
             {
-                return _state.selected_mek===null?null:_state.components[_state.selected_mek];
+                return _state.selected_mek===null?{}:_state.components[_state.selected_mek] || {};
             },
             alertMessages:(_state)=>{return _state.alert_messages},
             importAlertMessages:(_state)=>{return _state.import_alert_messages},
