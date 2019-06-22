@@ -1,16 +1,16 @@
 <template>
   <div style="height: auto;">
-    <div :class="container" v-if="!collapsed">
+    <div :class="container_class" v-if="!collapsed">
       <div v-if="!list" style="margin-right:5px;max-width:119px; overflow:hidden; text-overflow: ellipsis;">
         <div class="side_menu_header">{{title}}</div>
         <div v-for="(section_value, section_key, section_idx) in sections" 
           :key="'side-menu-section-'+section_key+'-'+section_idx"
         >
           <div v-if="displaySection(section_value)">
-            <div class="subsection_header" :class="subsection_header">{{section_key}}</div>
+            <div class="subsection_header" :class="subsection_header_class">{{section_key}}</div>
             <div v-for="(item_value, item_key, item_idx) in section_value"
               :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing item"
-              @click="emitClick(item_key)" :class="content" :data-text="item_value"
+              @click="emitClick(item_key)" :class="[content_class,selectedItem==item_key?'selected_class':'']" :data-text="item_value"
               :draggable="draggable"
             >
               {{item_value}}
@@ -23,7 +23,7 @@
         <div v-if="sections===undefined || Object.keys(sections).length==0" class="no-data">No Data</div>
         <div v-for="(item_value, item_key, item_idx) in sections"
           :key="'side-menu-content-'+item_key+'-'+item_idx" class="bottom_spacing list item"
-          @click="emitClick(item_key)" :class="content" :data-text="item_value"
+          @click="emitClick(item_key)" :class="[content_class,selectedItem==item_key?'selected_class':'']" :data-text="item_value"
           :draggable="draggable"
         >
           {{item_value}}
@@ -40,7 +40,7 @@
 export default 
 {
   name:"mek_frame_side_menu",
-  props:["sections","format","title","draggable","list","clickable","collapsible"],
+  props:["sections","format","title","draggable","list","clickable","collapsible","selectedItem"],
   mixins:[],
   components:{},
   data:()=>
@@ -65,7 +65,7 @@ export default
   },
   computed:
   {
-    container()
+    container_class()
     {
       switch(true)
       {
@@ -77,7 +77,7 @@ export default
           return "side_menu_container_full";
       }
     },
-    subsection_header()
+    subsection_header_class()
     {
       switch(true)
       {
@@ -88,7 +88,7 @@ export default
       }
       return "";
     },
-    content()
+    content_class()
     {
       switch(true)
       {
@@ -255,5 +255,13 @@ export default
 .item
 {
   text-align: start;
+}
+.selected_class
+{
+    background-color: #222 !important;
+    color: #fff !important;
+    font-weight:bold;
+    border-radius: 7px;
+    box-shadow: inset -1px -1px 1px 1px white !important;
 }
 </style>
