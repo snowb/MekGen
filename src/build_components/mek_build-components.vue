@@ -1,7 +1,7 @@
 <template>
     <div style="display:flex; margin-top:5px;">
-        <mek-side-menu :sections="mekList" format="full" list="true" title="Meks" 
-          :draggable="true" :collapsible="true" clickable="true"
+        <mek-side-menu :sections="mekList" format="full" :list="true" title="Meks" 
+          :draggable="true" :collapsible="true" :clickable="true" :selected-item="selected_uuid"
           @side-menu-clicked="mek_select"
         ></mek-side-menu>
         <span>
@@ -40,8 +40,9 @@ export default {
       {id:"mek-build-config",name:"Config"},
       //{id:"mek-build-frame",name:"Frame"},
     ];
-    obj.originalMek=null;
-    obj.workingMek=null;
+    obj.originalMek={};
+    obj.workingMek={};
+    obj.selected_uuid=null;
     return obj;
   },
   methods:
@@ -53,22 +54,32 @@ export default {
     mek_select(_uuid)
     {
       this.$store.commit('selectMek',_uuid);
+      this.selected_uuid=_uuid;
     },
     saveSelectedData(_type, _data)
     {
-      if(_type=="general")
+      let clonedData=JSON.parse(JSON.stringify(_data));
+      switch(_type)
       {
-        for(let prop in _data)
-        {
-          this.$set(this.workingMek,prop,_data[prop]);
-        }
+        case "general":
+          for(let prop in clonedData)
+          {
+            if(typeof clonedData[prop]!=="object" && !Array.isArray(clonedData[prop]))
+            {
+              this.$set(this.workingMek,prop,clonedData[prop]);
+            } 
+          }
+          break;
+        case "config":
+          this.$set(this.workingMek,"configurations",clonedData);
+          break;
       }
       this.$store.commit('saveComponent',this.workingMek);
     },
     resetSelectedData()
     {
-      this.workingMek=null;
-      this.originalMek=null;
+      this.workingMek={};
+      this.originalMek={};
       this.$store.commit('saveComponent',null);
     }
   },
@@ -100,8 +111,8 @@ export default {
       return sectionList;
     },
     getSelectedMek()
-    {//responsible for ingesting data from the store
-      this.originalMek=JSON.parse(JSON.stringify(this.$store.getters.selectedMek));
+    {//responsible for ingesting data from the store)
+      this.originalMek=JSON.parse(JSON.stringify(this.$store.getters.selectedMek)) || {};
       this.workingMek=this.originalMek;
       return this.originalMek;
     },
@@ -122,6 +133,9 @@ export default {
               returnObj[prop]=this.getSelectedMek[prop];
             }
           }
+          break;
+        case "mek-build-config":
+          returnObj=this.getSelectedMek.configurations;
           break;
       }
       return returnObj;
