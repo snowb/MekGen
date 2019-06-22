@@ -135,7 +135,7 @@ export default
                 {
                     _array.push(_el);
                 }
-                return _el;
+                return _array;
             },[]);
         }
     }

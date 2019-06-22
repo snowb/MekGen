@@ -70,7 +70,8 @@
                     <div slot="col4-row2">Multiplier: x{{round(cost_multiplier,2)}}</div>
                     <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
                 </mek-component-stats>
-                <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
+                <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+                ></mek-save-reset-component>
             </div>
         </span>
 </template>

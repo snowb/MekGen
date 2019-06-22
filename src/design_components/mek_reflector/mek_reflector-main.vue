@@ -30,7 +30,8 @@
                 <div slot="col3-row1">Base Cost: {{selected_reflector.cost}}</div>
                 <div slot="col3-row2" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
-            <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
+            <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+            ></mek-save-reset-component>
         </div>
     </span>
 

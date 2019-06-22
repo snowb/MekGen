@@ -24,7 +24,9 @@
                     <div slot="col3-row2">Multiplier: x{{cost_multiplier}}</div>
                     <div slot="col3-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
                 </mek-component-stats>
-                <mek-save-reset-component style="align-self:baseline;" @save-reset-component="componentSaveReset"></mek-save-reset-component>
+                <mek-save-reset-component style="align-self:baseline;" @save-reset-component="componentSaveReset"
+                    active-buttons="save,reset,new"
+                ></mek-save-reset-component>
             </span>
         </span>
     </span>

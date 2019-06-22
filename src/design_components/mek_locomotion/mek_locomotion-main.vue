@@ -18,7 +18,8 @@
                     <div slot="col1-row2">Total Weight: {{weight}} tons</div>
                     <div slot="col1-row3">Total Cost: {{cost}} tons</div>
                 </mek-component-stats>
-                <mek-save-reset-component @save-reset-component="componentSaveReset"></mek-save-reset-component>
+                <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+                ></mek-save-reset-component>
             </span>
         </span>
     </span>
