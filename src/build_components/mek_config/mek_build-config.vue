@@ -6,13 +6,19 @@
       :selected-item="working_uuid"
     ></mek-side-menu>
     <div class="mek-inline-flex-col">
+      <mek-component-name :new-component="newComponent" :component-name="selected_configuration.name||selected_configuration.config"
+        :component-changed="component_changed"
+        @update-component-name="updateComponentName"
+      ></mek-component-name>
       <mek-sub-component-table name="Configuration" flow="dropdown-pkey" pkey="config"
         :items="configurationForms" :show-headers="true" :headers="headers"
         :selected-keys="selectedConfigPkey"
         @update-selected-data="select_config"
       ></mek-sub-component-table>
       <!--- frame component ? --->
-      <mek-save-reset-component @save-reset-component="saveResetComponent"></mek-save-reset-component>
+      <mek-save-reset-component @save-reset-component="saveResetComponent"
+        :activeButtons="activeButtons"
+      ></mek-save-reset-component>
     </div>
   </div>
 </template>
@@ -26,6 +32,7 @@ export default
   {
     "mek-sub-component-table":()=>import(/* webpackChunkName: "mek_sub-component-table" */"@/app_components/universal/mek_sub-component-table.vue"),
     "mek-save-reset-component":()=>import(/* webpackChunkName: "mek-save-reset-component" */"@/app_components/universal/mek-save-reset-component.vue"),
+    "mek-component-name":()=>import(/* webpackChunkName: "mek-component-name" */"@/app_components/universal/mek-component-name.vue"),
     "mek-side-menu":()=>import(/* webpackChunkName: "mek_side-menu" */"@/app_components/mek_side_menu/mek_side-menu.vue"),
   },
   props:["selectedData"],
@@ -43,13 +50,24 @@ export default
     obj.selected_configuration={config:"Humanoid",cost:0};
     obj.working_configurations={};
     obj.working_uuid=null;
+
+    obj.component_changed=true;
+    obj.newComponent=true;
     return obj;
   },
   methods:
   {
+    updateComponentName(_name)
+    {
+      this.selected_configuration.name=_name;
+      this.component_changed=true;
+    },
     select_config(_config)
     {
+      let name=this.selected_configuration.name;
       this.selected_configuration=JSON.parse(JSON.stringify(_config));
+      this.selected_configuration.name=name;
+      this.component_changed=true;
     },
     saveResetComponent(_action)
     {
@@ -61,6 +79,8 @@ export default
           this.working_configurations[uuid]=temp_config;
           this.working_uuid=uuid;
           this.$emit("saveSelectedData","config",this.working_configurations);
+          this.newComponent=false;
+          this.component_changed=false;
           break;
         case "reset":
           if(this.working_uuid!==null)
@@ -72,6 +92,16 @@ export default
         case "new":
           this.working_uuid=null;
           this.selected_configuration={config:"Humanoid",cost:0};
+          this.newComponent=true;
+          this.component_changed=true;
+          break;
+        case "delete":
+          delete this.working_configurations[uuid];
+          this.working_uuid=null;
+          this.selected_configuration={config:"Humanoid",cost:0};
+          this.$emit("saveSelectedData","config",this.working_configurations);
+          this.newComponent=true;
+          this.component_changed=true;
           break;
       }
     },
@@ -88,6 +118,8 @@ export default
         default:
           this.selected_configuration=this.selectedData[_config];
           this.working_uuid=_config;
+          this.newComponent=false;
+          this.component_changed=false;
       }
     }
   },
@@ -110,10 +142,14 @@ export default
       }
       let obj=Object.keys(this.selectedData).reduce((_obj, _el)=>
       {
-        _obj[_el]=this.selectedData[_el].config;
+        _obj[_el]=this.selectedData[_el].name ? this.selectedData[_el].name : this.selectedData[_el].config;
         return _obj;
       },{});
       return obj;
+    },
+    activeButtons()
+    {
+      return "save,reset,new"+(this.working_uuid!==null?",delete":"");
     }
   },
 }

@@ -5,7 +5,8 @@
       @update-component-name="updateComponentName"
     ></mek-component-name>
     <mek-save-reset-component @save-reset-component="componentSaveReset"
-    style="align-self:start;"></mek-save-reset-component>
+      style="align-self:start;" activeButtons="save,reset,new"
+    ></mek-save-reset-component>
   </span>
 </template>
 
