@@ -75,9 +75,12 @@ export default {
         this.$store.commit("showTab",{prop:"currentDesignTab",tab:_section});
     },
     loadData(_uuid)
-    {
-        this.$store.commit("showTab",{prop:"currentDesignTab",tab:"mek-"+this.getComponent(_uuid).component_type});
-        this.$store.commit("selectComponent",_uuid);
+    {   
+        if(_uuid!="")
+        {
+            this.$store.commit("showTab",{prop:"currentDesignTab",tab:"mek-"+this.getComponent(_uuid).component_type});
+            this.$store.commit("selectComponent",_uuid);
+        }   
     }
   },
   computed:
