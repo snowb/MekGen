@@ -1,6 +1,6 @@
 <template>
     <div class="mek-button-container">
-        <span :class="{'mek-button':!saveClicked,'mek-button-clicked':saveClicked}" 
+        <!---span :class="{'mek-button':!saveClicked,'mek-button-clicked':saveClicked}" 
             @click="button_clicked('save')" @animationend="saveClicked=false"
             title="Save Equipment" v-if="showSave"
         >
@@ -17,7 +17,16 @@
             title="Clear/New Equipment" v-if="showNew"
         >
             New
+        </span--->
+
+        <span v-for="(btn,idx) in filteredButtonList" :key="'msrc-'+btn.event+idx"
+            :class="{'mek-button':!clickedTracker[btn.event],'mek-button-clicked':clickedTracker[btn.event]}" 
+            @click="button_clicked(btn.event)" @animationend="clickedTracker[btn.event]=false"
+            :title="btn.button+' Equipment'"
+        >
+            {{btn.button}}
         </span>
+
     </div>
 </template>
 <script>
@@ -29,30 +38,70 @@ export default
     data:function()
     {
         let obj={};
-        obj.showEdit=false;
         obj.editMode=false;
         obj.saveClicked=false;
         obj.resetClicked=false;
         obj.newClicked=false;
+        obj.buttonsList=
+        [
+            {event:"save",button:"Save",clicked:false},
+            {event:"reset",button:"Reset",clicked:false},
+            {event:"new",button:"New",clicked:false},
+            {event:"delete",button:"Delete",clicked:false}
+        ];
+        obj.clickedTracker=
+        {
+            "new":false,
+            "reset":false,
+            "save":false,
+        }
         return obj;
     },
     methods:
     {
         button_clicked:function(_btn)
         {
-            if(_btn=="save")
+            // if(_btn=="save")
+            // {
+            //     this.saveClicked=true;
+            //     this.clickedTracker.save=true;
+            // }
+            // else if(_btn=="reset")
+            // {
+            //     this.resetClicked=true;
+            // }
+            // else if(_btn=="new")
+            // {
+            //     this.newClicked=true;
+            // }
+            switch(_btn)
             {
-                this.saveClicked=true;
-            }
-            else if(_btn=="reset")
-            {
-                this.resetClicked=true;
-            }
-            else if(_btn=="new")
-            {
-                this.newClicked=true;
+                case "save":
+                    this.saveClicked=true;
+                    this.clickedTracker[_btn]=true;
+                    break;
+                case "reset":
+                    this.resetClicked=true;
+                    this.clickedTracker[_btn]=true;
+                    break;
+                case "new":
+                    this.newClicked=true;
+                    this.clickedTracker[_btn]=true;
+                    break;
             }
             this.$emit("save-reset-component",_btn);
+        },
+        setClickedClass(_event)
+        {
+            switch(_event)
+            {
+                case "save":
+                    return this.saveClicked ? 'mek-button-clicked' : 'mek-button';
+                case "reset":
+                    return this.resetClicked ? 'mek-button-clicked' : 'mek-button';
+                case "new":
+                    return this.resetClicked ? 'mek-button-clicked' : 'mek-button';
+            }
         }
     },
     computed:
@@ -73,6 +122,22 @@ export default
         {
             return this.activeButtons===undefined || this.activeButtonsArray.includes('new');
         },
+        filteredButtonList()
+        {
+            let activeButtonsArray=this.activeButtonsArray;
+            if(activeButtonsArray===null)
+            {
+                return this.buttonsList;
+            }
+            return this.buttonsList.reduce((_array, _el)=>
+            {
+                if(activeButtonsArray.includes(_el.event))
+                {
+                    _array.push(_el);
+                }
+                return _el;
+            },[]);
+        }
     }
 }
 </script>
