@@ -6,7 +6,7 @@
       :selected-item="working_uuid"
     ></mek-side-menu>
     <div class="mek-inline-flex-col">
-      <mek-component-name :new-component="newComponent" :component-name="selected_configuration.name||selected_configuration.config"
+      <mek-component-name :new-component="newComponent" :component-name="component_name||selected_configuration.config"
         :component-changed="component_changed"
         @update-component-name="updateComponentName"
       ></mek-component-name>
@@ -49,6 +49,7 @@ export default
     obj.headers={config:"Form",cost:"Cost"}
     obj.selected_configuration={config:"Humanoid",cost:0};
     obj.working_configurations={};
+    obj.component_name=null;
     obj.working_uuid=null;
 
     obj.component_changed=true;
@@ -59,7 +60,7 @@ export default
   {
     updateComponentName(_name)
     {
-      this.selected_configuration.name=_name;
+      this.component_name=_name;
       this.component_changed=true;
     },
     select_config(_config)
@@ -73,6 +74,7 @@ export default
     {
       let uuid=this.working_uuid ? this.working_uuid : this.create_short_uuid();
       let temp_config={uuid:uuid,...this.selected_configuration}
+      temp_config.name=this.component_name;
       switch(_action)
       {
         case "save":
@@ -83,23 +85,22 @@ export default
           this.component_changed=false;
           break;
         case "reset":
-          if(this.working_uuid!==null)
+          if(this.working_uuid)
           {
             this.selected_configuration=temp_config;
             break;
           }
         // eslint-disable-next-line
+        case "delete":
+          if(this.working_uuid)
+          {
+            delete this.working_configurations[uuid];
+            this.$emit("saveSelectedData","config",this.working_configurations);
+          }
+        // eslint-disable-next-line
         case "new":
           this.working_uuid=null;
           this.selected_configuration={config:"Humanoid",cost:0};
-          this.newComponent=true;
-          this.component_changed=true;
-          break;
-        case "delete":
-          delete this.working_configurations[uuid];
-          this.working_uuid=null;
-          this.selected_configuration={config:"Humanoid",cost:0};
-          this.$emit("saveSelectedData","config",this.working_configurations);
           this.newComponent=true;
           this.component_changed=true;
           break;
