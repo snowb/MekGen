@@ -5,7 +5,7 @@
       @update-component-name="updateComponentName"
     ></mek-component-name>
     <mek-save-reset-component @save-reset-component="componentSaveReset"
-      style="align-self:start;" activeButtons="save,reset,new"
+      style="align-self:start;" :activeButtons="activeButtons"
     ></mek-save-reset-component>
   </span>
 </template>
@@ -64,6 +64,12 @@ export default
           {
             this.ingest_data(JSON.parse(this.original_component));
             break;
+          }
+          // eslint-disable-next-line
+        case "delete":
+          if(this.uuid)
+          {
+            this.$emit("deleteSelectedData",{cateogry:"mek",type:"mek",uuid:this.uuid});
           }
           // eslint-disable-next-line
         case "new":
@@ -126,6 +132,10 @@ export default
       }
       return true;
     },
+    activeButtons()
+    {
+      return "save,reset,new"+(this.uuid!==null?",delete":"");
+    }
   },
 }
 </script>

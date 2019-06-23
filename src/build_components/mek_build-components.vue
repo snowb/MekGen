@@ -2,13 +2,14 @@
     <div style="display:flex; margin-top:5px;">
         <mek-side-menu :sections="mekList" format="full" :list="true" title="Meks" 
           :draggable="true" :collapsible="true" :clickable="true" :selected-item="selected_uuid"
-          @side-menu-clicked="mek_select"
+          @side-menu-clicked="mek_select" :key="sideMenuKey"
         ></mek-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetBuildTab" :section-list="sectionList"></mek-top-menu>
             <div id="build-main">
                 <component :is="targetBuildTab" :selected-data="selected_data" 
                   @saveSelectedData="saveSelectedData" @resetSelectedData="resetSelectedData"
+                  @deleteSelectedData="deleteSelectedData"
                 ></component>
             </div>
         </span>
@@ -43,6 +44,7 @@ export default {
     obj.originalMek={};
     obj.workingMek={};
     obj.selected_uuid=null;
+    obj.sideMenuKey="msm-"+Math.random()+"-key";
     return obj;
   },
   methods:
@@ -75,12 +77,21 @@ export default {
           break;
       }
       this.$store.commit('saveComponent',this.workingMek);
+      this.selected_uuid=this.workingMek.uuid;
+      this.sideMenuKey="msm-"+Math.random()+"-key";
     },
     resetSelectedData()
     {
       this.workingMek={};
       this.originalMek={};
+      this.selected_uuid=null;
       this.$store.commit('saveComponent',null);
+    },
+    deleteSelectedData(_component)
+    {
+      this.$store.commit("deleteComponent",_component);
+      this.sideMenuKey="msm-"+Math.random()+"-key";
+      this.selected_uuid=null;
     }
   },
   computed:
@@ -94,6 +105,7 @@ export default {
     }),
     mekList()
     {
+      this.sideMenuKey;
       let mekList=this.listByCategoryAndType("mek","mek");
       return mekList;
     },
@@ -140,6 +152,10 @@ export default {
       }
       return returnObj;
     }
+  },
+  beforeDestroy()
+  {
+    this.$store.commit('saveComponent',null);
   }
 }
 </script>

@@ -76,6 +76,26 @@ let store= new Vuex.Store(
                     }  
                 }
             },
+            deleteComponent(_state, _component_data)
+            {
+                let updateLocalStorage=false;
+                if( _state.component_list[_component_data.cateogry]
+                    && _state.component_list[_component_data.cateogry][_component_data.type]
+                    && _state.component_list[_component_data.cateogry][_component_data.type][_component_data.uuid])
+                {
+                    delete _state.component_list[_component_data.cateogry][_component_data.type][_component_data.uuid];
+                    updateLocalStorage=true;
+                }
+                if(_state.components[_component_data.uuid])
+                {
+                    delete _state.components[_component_data.uuid];
+                    updateLocalStorage=true;
+                }
+                if(updateLocalStorage && this.storageAvailable('localStorage'))
+                {
+                    this.saveToLocalStorage("mekgendata",JSON.stringify(_state.components));
+                }
+            },
             showTab(_state, _payload)
             {
                 if(typeof _payload.prop==="string" && typeof _payload.tab==="string" && _state[_payload.prop]!==undefined)
