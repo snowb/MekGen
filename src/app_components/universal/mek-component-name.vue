@@ -79,7 +79,7 @@ export default
                 case /^Enter$/i.test(_event.key):
                     _event.preventDefault();
                     _event.stopPropagation();
-                    //this.saveName();
+                    this.saveName();
                     break;
                 default:
                     _event.preventDefault();
