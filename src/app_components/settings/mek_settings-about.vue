@@ -1,13 +1,13 @@
-<template>
+<template functional>
   <div>
     ****<br>
     <a target="_blank" rel="noopener noreferrer" href="https://github.com/snowb/MekGen">Mekton Mek Generator</a><br/>
-    Build Date-Time: {{VUE_APP_BUILD_DATE}}<br/>
-    <span v-if="NODE_ENV=='production'">
-      'Prod' Build Version: {{VUE_APP_VERSION}}
+    Build Date-Time: {{props.functionalProps.VUE_APP_BUILD_DATE}}<br/>
+    <span v-if="props.functionalProps.NODE_ENV=='production'">
+      'Prod' Build Version: {{props.functionalProps.VUE_APP_VERSION}}
     </span>
     <span v-else>
-      Dev Commit Count: {{VUE_APP_COMMIT_COUNT}}
+      Dev Commit Count: {{props.functionalProps.VUE_APP_COMMIT_COUNT}}
     </span><br/>
     ****<br/>
     <br/>
@@ -28,16 +28,6 @@
 <script>
 export default {
   name:"mek-settings-about",
-  props:[],
-  data:function()
-  {
-    let obj={};
-    obj.VUE_APP_BUILD_DATE=process.env.VUE_APP_BUILD_DATE;
-    obj.VUE_APP_VERSION=process.env.VUE_APP_VERSION;
-    obj.VUE_APP_COMMIT_COUNT=process.env.VUE_APP_COMMIT_COUNT;
-    obj.NODE_ENV=process.env.NODE_ENV;
-    return obj;
-  }
 }
 </script>
 <style scoped>

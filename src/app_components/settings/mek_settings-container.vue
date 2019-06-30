@@ -8,7 +8,7 @@
           ></mek-top-menu>
           <span class="close_btn" @click="isFullscreen=false">&nbsp;X&nbsp;</span>
           <div class="subsection_container_oc">
-            <component :is="targetOptionTab" style="margin-top:5px;"></component>
+            <component :is="targetOptionTab" style="margin-top:5px;" :functionalProps="functionalProps"></component>
           </div>
         </div>
       </div>
@@ -50,6 +50,10 @@ export default {
       {id:"mek-settings-options",name:"Options"},
     ];
     obj.targetOptionTab="mek-settings-about";
+    obj.VUE_APP_BUILD_DATE=process.env.VUE_APP_BUILD_DATE;
+    obj.VUE_APP_VERSION=process.env.VUE_APP_VERSION;
+    obj.VUE_APP_COMMIT_COUNT=process.env.VUE_APP_COMMIT_COUNT;
+    obj.NODE_ENV=process.env.NODE_ENV;
     return obj;
   },
   methods:
@@ -61,11 +65,23 @@ export default {
     focusSection(_section)
     {
       this.targetOptionTab=_section;
-    }
+    },
   },
   computed:
   {
-
+    functionalProps()
+    {
+      let props={};
+      if(this.targetOptionTab=="mek-settings-about")
+      {
+        props.VUE_APP_BUILD_DATE=this.VUE_APP_BUILD_DATE;
+        props.VUE_APP_VERSION=this.VUE_APP_VERSION;
+        props.VUE_APP_COMMIT_COUNT=this.VUE_APP_COMMIT_COUNT;
+        props.NODE_ENV=this.NODE_ENV;
+        return props;
+      }
+      return undefined;
+    }
   }
 }
 </script>

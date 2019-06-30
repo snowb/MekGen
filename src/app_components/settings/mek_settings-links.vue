@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <div>
     <a target="_blank" rel="noopener noreferrer" href="https://rtalsoriangames.com/">R. Talsorian Games</a>.
     <br/>
@@ -12,14 +12,5 @@
 <script>
 export default {
   name:"mek-settings-links",
-  props:[],
-  data:function()
-  {
-    let obj={};
-    return obj;
-  }
 }
 </script>
-<style scoped>
-
-</style>
