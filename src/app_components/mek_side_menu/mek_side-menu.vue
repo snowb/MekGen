@@ -103,7 +103,7 @@ export default
   },
   watch:
   {
-    "sections":function(_new, _old)
+    "sections":function()
     {
       this.emitClick("");
     }
