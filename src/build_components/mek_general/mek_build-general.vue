@@ -69,7 +69,7 @@ export default
         case "delete":
           if(this.uuid)
           {
-            this.$emit("deleteSelectedData",{cateogry:"mek",type:"mek",uuid:this.uuid});
+            this.$emit("deleteSelectedData",{category:"mek",type:"mek",uuid:this.uuid});
           }
           // eslint-disable-next-line
         case "new":
