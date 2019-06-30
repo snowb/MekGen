@@ -78,7 +78,7 @@ export default {
       }
       this.$store.commit('saveComponent',this.workingMek);
       this.selected_uuid=this.workingMek.uuid;
-      this.sideMenuKey="msm-"+Math.random()+"-key";
+      this.sideMenuKey="mdc-msm-"+Math.random()+"-key";
     },
     resetSelectedData()
     {
@@ -90,7 +90,7 @@ export default {
     deleteSelectedData(_component)
     {
       this.$store.commit("deleteComponent",_component);
-      this.sideMenuKey="msm-"+Math.random()+"-key";
+      this.sideMenuKey="mbc-msm-"+Math.random()+"-key";
       this.selected_uuid=null;
     }
   },
