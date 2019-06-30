@@ -79,11 +79,11 @@ let store= new Vuex.Store(
             deleteComponent(_state, _component_data)
             {
                 let updateLocalStorage=false;
-                if( _state.component_list[_component_data.cateogry]
-                    && _state.component_list[_component_data.cateogry][_component_data.type]
-                    && _state.component_list[_component_data.cateogry][_component_data.type][_component_data.uuid])
+                if( _state.component_list[_component_data.category]
+                    && _state.component_list[_component_data.category][_component_data.type]
+                    && _state.component_list[_component_data.category][_component_data.type][_component_data.uuid])
                 {
-                    delete _state.component_list[_component_data.cateogry][_component_data.type][_component_data.uuid];
+                    delete _state.component_list[_component_data.category][_component_data.type][_component_data.uuid];
                     updateLocalStorage=true;
                 }
                 if(_state.components[_component_data.uuid])
