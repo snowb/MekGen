@@ -82,7 +82,7 @@
                 <div slot="col4-row1">Multiplier: x{{cost_multiplier}}</div>
                 <div slot="col4-row1" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
-            <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+            <mek-save-reset-component @save-reset-component="componentSaveReset" :active-buttons="activeButtons"
             ></mek-save-reset-component>
         </div>
     </span>
@@ -361,6 +361,19 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
+                    }
+                    // eslint-disable-next-line
                 case "new":
                     this.uuid=null;
                     this.select_type({name:"Standard"});
@@ -505,6 +518,10 @@ export default
             fullname=fullname.replace(/\s+/g," ").trim();
             return fullname;
         },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
+        }
     }
 }
 </script>

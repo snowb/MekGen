@@ -25,7 +25,7 @@
                     <div slot="col3-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
                 </mek-component-stats>
                 <mek-save-reset-component style="align-self:baseline;" @save-reset-component="componentSaveReset"
-                    active-buttons="save,reset,new"
+                    :active-buttons="activeButtons"
                 ></mek-save-reset-component>
             </span>
         </span>
@@ -116,15 +116,6 @@ export default
             this.selected_shots=+_selected_shots;
             this.component_changed=true;
         },
-        /* generic updateProp method 
-        updateProperty(_property)
-        {
-            this.selected_property1.prop1=_property.prop1;
-            this.selected_property1.prop2=_property.prop2;
-            this.selected_property1.prop3=_property.prop3;
-            this.component_changed=true;
-            this.damage_capacity=_damage.damage;
-        }, */
         componentSaveReset:function(_action)
         {
             let action=_action=="reset" && this.original_component==null?"new":_action;
@@ -138,6 +129,19 @@ export default
                     {
                         this.ingest_data(JSON.parse(this.original_component));
                         break;
+                    }
+                    // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
                     }
                     // eslint-disable-next-line
                 case "new":
@@ -255,6 +259,10 @@ export default
                 _string+=_val.type;
                 return _string;
             },"");
+        },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
         }
     }
 };

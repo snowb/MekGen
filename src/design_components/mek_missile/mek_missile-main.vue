@@ -63,7 +63,7 @@
                 <div slot="col4-row2">Multiplier: x{{cost_multiplier}}</div>
                 <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
-            <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+            <mek-save-reset-component @save-reset-component="componentSaveReset" :active-buttons="activeButtons"
             ></mek-save-reset-component>
         </div>
     </span>
@@ -236,15 +236,6 @@ export default
                 this.$set(this,"smoke_scatter_duration",this.round(this.selected_damage.damage/2,0));
             }
         },
-        /* generic updateProp method 
-        updateProperty(_property)
-        {
-            this.selected_property1.prop1=_property.prop1;
-            this.selected_property1.prop2=_property.prop2;
-            this.selected_property1.prop3=_property.prop3;
-            this.component_changed=true;
-            this.damage_capacity=_damage.damage;
-        }, */
         componentSaveReset:function(_action)
         {
             let action=_action=="reset" && this.original_component==null?"new":_action;
@@ -260,14 +251,23 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
+                    }
+                    // eslint-disable-next-line
                 case "new":
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
                     this.component_name=null;
-                    //generic props and key values to reset
-                    //this.selected_property1.keyProp=1;
-                    //this.selected_property2.keyProp=1;
-                    //this.$set(this,"feature_array",[]);
                     this.smoke_scatter_duration=null;
                     this.$set(this,"selected_pack_size",{size:1,cost:1});
                     this.$set(this,"feature_array",[]);
@@ -402,6 +402,10 @@ export default
         {
             let has_duration=this.has_feature("smoke") || this.has_feature("scatter") || this.has_feature("smoke-scatter");
             return has_duration
+        },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
         }
     }
 };

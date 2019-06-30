@@ -18,7 +18,7 @@
                     <div slot="col1-row2">Total Weight: {{weight}} tons</div>
                     <div slot="col1-row3">Total Cost: {{cost}} tons</div>
                 </mek-component-stats>
-                <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+                <mek-save-reset-component @save-reset-component="componentSaveReset" :active-buttons="activeButtons"
                 ></mek-save-reset-component>
             </span>
         </span>
@@ -131,6 +131,19 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
+                    }
+                    // eslint-disable-next-line
                 case "new":
                     this.uuid=null;
                     this.selected_locomotion_type.type="Wheels";
@@ -163,6 +176,10 @@ export default
         {
             return this.round(this.damage_capacity/2,2);
         },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
+        }
     }
 };
 </script>

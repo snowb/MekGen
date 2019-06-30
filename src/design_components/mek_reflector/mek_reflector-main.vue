@@ -30,7 +30,7 @@
                 <div slot="col3-row1">Base Cost: {{selected_reflector.cost}}</div>
                 <div slot="col3-row2" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
-            <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+            <mek-save-reset-component @save-reset-component="componentSaveReset" :active-buttons="activeButtons"
             ></mek-save-reset-component>
         </div>
     </span>
@@ -147,6 +147,19 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
+                    }
+                    // eslint-disable-next-line
                 case "new":
                     this.uuid=null;
                     this.efficiencies.space.modifier=0;
@@ -206,6 +219,10 @@ export default
                 this.select_armor_type(cleaned_data.data);
             }
             return cleaned_data.key_list;
+        },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
         }
     }
 }

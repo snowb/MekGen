@@ -1,12 +1,12 @@
 <template>
     <div id="app" style="display:inline-flex;">
-        <mek-side-menu :sections="categoryObject('equipment')" title="Equipment" format="cut"
-            @side-menu-clicked="loadData" clickable="true"
+        <mek-side-menu :sections="equipmentList" title="Equipment" format="cut"
+            @side-menu-clicked="loadData" clickable="true" :key="random_key"
         ></mek-side-menu>
         <span>
             <mek-top-menu @focus-section="focusSection" :section="targetDesignTab" :section-list="sectionList"></mek-top-menu>
             <span id="design-main">
-                <component :is="targetDesignTab"></component>
+                <component :is="targetDesignTab" @updateMSMKey="updateKey"></component>
             </span>
         </span>
         <!--mek-alert></mek-alert-->
@@ -66,6 +66,7 @@ export default {
         {id:"mek-reflector",name:"Reflectors"},
         {id:"mek-locomotion",name:"Wheels/Treads"},
     ];
+    obj.random_key="mdc-msm-"+Math.random()+"-key";
     return obj;
   },
   methods:
@@ -81,6 +82,10 @@ export default {
             this.$store.commit("showTab",{prop:"currentDesignTab",tab:"mek-"+this.getComponent(_uuid).component_type});
             this.$store.commit("selectComponent",_uuid);
         }   
+    },
+    updateKey()
+    {
+        this.random_key="mdc-msm-"+Math.random()+"-key";
     }
   },
   computed:
@@ -90,7 +95,12 @@ export default {
             targetDesignTab:'targetDesignTab',
             categoryObject:'categoryObject',
             getComponent:'getComponent'
-        })
+        }),
+    equipmentList()
+    {
+        this.random_key;
+        return this.categoryObject('equipment');
+    }
   }
 }
 </script>

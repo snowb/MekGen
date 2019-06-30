@@ -55,7 +55,7 @@
                 <div slot="col4-row2">Multiplier: x{{armor_cost_multiplier}}</div>
                 <div slot="col4-row3" style="font-weight:bold;">Total Cost: {{cost}}</div>
             </mek-component-stats>
-            <mek-save-reset-component @save-reset-component="componentSaveReset" active-buttons="save,reset,new"
+            <mek-save-reset-component @save-reset-component="componentSaveReset" :active-buttons="activeButtons"
             ></mek-save-reset-component>
         </div>
     </span>
@@ -230,6 +230,19 @@ export default
                         break;
                     }
                     // eslint-disable-next-line
+                case "delete":
+                    if(this.uuid)
+                    {
+                        this.$store.commit("deleteComponent",
+                            {
+                                category:this.component_category,
+                                type:this.component_type,
+                                uuid:this.uuid
+                            });
+                        this.uuid=null;
+                        this.$emit("updateMSMKey");
+                    }
+                    // eslint-disable-next-line
                 case "new":
                     this.uuid=null;
                     this.$set(this,"selected_servo_type",{type:"Torso"});
@@ -316,6 +329,10 @@ export default
                 cost_multiplier*=this.cost_multipliers.armor[multi];
             }
             return this.round(cost_multiplier,2);
+        },
+        activeButtons()
+        {
+            return "save,reset,new"+(this.uuid!==null?",delete":"");
         }
     }
 };
