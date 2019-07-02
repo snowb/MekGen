@@ -1,34 +1,29 @@
-<template>
+<template functional>
     <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small_mw">
+        <div class="metallic_background_small_mw" 
+            v-if="props.type!='bare'"
+            :class="[props.type===undefined||props.type=='titled' ? 'title_padding' : '']"
+        >
             <div class="subsection_container_mw">
-                <div class="subsection_header_small_mw">{{title}}</div>
-                <div class="subsection_hidden_header_mw">{{title}}</div>
+                <div class="subsection_header_small_mw" 
+                    v-if="props.type===undefined||props.type=='titled'"
+                >{{props.title}}</div>
+                <div class="subsection_hidden_header_mw">{{props.title}}</div>
                 <slot></slot>
             </div>
         </div>
+        <div class="subsection_container_mw" v-else-if="props.type=='bare'">
+            <slot></slot>
+        </div>
+        <!---div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
+            <slot></slot>
+        </div--->
     </span>
 </template>
 <script>
-import selected_item_mixin from "@/mixins/selected_item_mixin";
-
 export default 
 {
     name:"mek_window",
-    props:["title"],
-    mixins:[selected_item_mixin],
-    components:{},
-    data:()=>
-    {
-        let obj={};
-        return obj;
-    },
-    methods:
-    {
-    },
-    computed:
-    {
-    }
 }
 </script>
 <style scoped>
@@ -71,6 +66,10 @@ export default
     padding:5px;
     border-radius: 7px;
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
+    /* padding-top:34px; */
+}
+.title_padding
+{
     padding-top:34px;
 }
 .subsection_container_mw
