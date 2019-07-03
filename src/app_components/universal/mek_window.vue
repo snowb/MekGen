@@ -1,23 +1,26 @@
 <template functional>
     <span class="mek-flex-col" style="align-self:baseline;">
         <div class="metallic_background_small_mw" 
-            v-if="props.type!='bare'"
-            :class="[props.type===undefined||props.type=='titled' ? 'title_padding' : '']"
+            v-if="[undefined,'titled','untitled'].includes(props.type)"
+            :class="[[undefined,'titled'].includes(props.type) ? 'title_padding' : '']"
         >
             <div class="subsection_container_mw">
                 <div class="subsection_header_small_mw" 
-                    v-if="props.type===undefined||props.type=='titled'"
+                    v-if="[undefined,'titled'].includes(props.type)"
                 >{{props.title}}</div>
-                <div class="subsection_hidden_header_mw">{{props.title}}</div>
+                <div class="subsection_hidden_header_mw"
+                    v-if="[undefined,'titled'].includes(props.type)"
+                >{{props.title}}</div>
                 <slot></slot>
             </div>
         </div>
-        <div class="subsection_container_mw" v-else-if="props.type=='bare'">
+        <div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
             <slot></slot>
         </div>
-        <!---div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
+        <div class="subsection_container_mw" v-else>
             <slot></slot>
-        </div--->
+        </div>
+        
     </span>
 </template>
 <script>
