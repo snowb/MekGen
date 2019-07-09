@@ -41,13 +41,43 @@ export default
   {
     let obj={};
     obj.configurationForms=
-    [
-      {config:"Humanoid",cost:0},
-      {config:"Beast",cost:0},
-      {config:"Avian",cost:0},
+    [//wildly incomplete
+    //needs to be in its own data module
+    //with a separate data module for modifiers
+      //for use with custom configs
+      {config:"Humanoid",cost:0, modifiers:
+        {
+          hardpoints:["all"],
+          propulsion:["all"],
+          flight_without_propulsion:false,
+          no_hands:false
+        }
+      },
+      {config:"Tank",cost:0, modifiers:
+        {
+          maneuver_value:-1,
+          armor_stopping_power:+2,
+          propulsion:["wheels","treads","ges","gravitics"],
+          hardpoints:["torso","head","pod","binder"],
+          no_hands:true,
+          flight_without_propulsion:false
+        }
+      },
+      {config:"Avian",cost:0, modifiers:
+        {
+          maneuver_value: -1,
+          melee_damage: +2,
+          flight_movement_allowance: +6,
+          land_movement_alloance: +0,
+          propulsion:["legs","ges","thrusters","gravitics"],
+          hardpoints:["all"],
+          no_hands:true,
+          flight_without_propulsion:true
+        }
+      },
     ];
     obj.headers={config:"Form",cost:"Cost"}
-    obj.selected_configuration={config:"Humanoid",cost:0};
+    obj.selected_configuration=obj.configurationForms[0];
     obj.working_configurations={};
     obj.component_name=null;
     obj.working_uuid=null;
@@ -100,7 +130,7 @@ export default
         // eslint-disable-next-line
         case "new":
           this.working_uuid=null;
-          this.selected_configuration={config:"Humanoid",cost:0};
+          this.selected_configuration=this.configurationForms[0];
           this.newComponent=true;
           this.component_changed=true;
           break;
@@ -111,7 +141,7 @@ export default
       switch(true)
       {
         case _config=="" && this.working_uuid===null:
-          this.selected_configuration={config:"Humanoid",cost:0};
+          this.selected_configuration=this.configurationForms[0];
           break;
         case _config=="":
           this.selected_configuration=this.selectedData[this.working_uuid];
@@ -136,6 +166,10 @@ export default
     },
     configuration_list()
     {
+      this.working_uuid=null;
+      this.selected_configuration=this.configurationForms[0];
+      this.component_changed=true;
+      this.newComponent=true;
       this.working_configurations=JSON.parse(JSON.stringify(this.selectedData || {}));
       if(this.selectedData===undefined)
       {
@@ -146,6 +180,13 @@ export default
         _obj[_el]=this.selectedData[_el].name ? this.selectedData[_el].name : this.selectedData[_el].config;
         return _obj;
       },{});
+      if(this.working_uuid===null)
+      {
+        this.working_uuid=Object.keys(this.selectedData)[0];
+        this.selected_configuration=this.selectedData[this.working_uuid];
+        this.component_changed=false;
+        this.newComponent=false;
+      }
       return obj;
     },
     activeButtons()
