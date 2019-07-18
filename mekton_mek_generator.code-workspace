@@ -4,5 +4,9 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"javascript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+		"typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": true,
+		"editor.wordWrapColumn": 110
+	}
 }
