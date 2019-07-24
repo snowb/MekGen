@@ -101,7 +101,7 @@ export default
 <style scoped>
 .container
 {
-    margin:10px 0px;
+    margin:0px 20px 10px 0px;
     align-self:flex-start;
     position: relative;
 }
