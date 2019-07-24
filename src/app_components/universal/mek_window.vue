@@ -1,32 +1,58 @@
 <template functional>
     <span class="mek-flex-col" style="align-self:baseline;">
         <div class="metallic_background_small_mw" 
-            v-if="[undefined,'titled','untitled'].includes(props.type)"
-            :class="[[undefined,'titled'].includes(props.type) ? 'title_padding' : '']"
+            v-if="props.type=='metallic'"
+            :class="$options.setClasses(props)"
         >
             <div class="subsection_container_mw">
                 <div class="subsection_header_small_mw" 
-                    v-if="[undefined,'titled'].includes(props.type)"
+                    v-if="props.title!==undefined"
                 >{{props.title}}</div>
                 <div class="subsection_hidden_header_mw"
-                    v-if="[undefined,'titled'].includes(props.type)"
+                    v-if="props.title!==undefined"
                 >{{props.title}}</div>
                 <slot></slot>
             </div>
         </div>
-        <div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
+        <!---div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
             <slot></slot>
-        </div>
+        </div--->
         <div class="subsection_container_mw" v-else>
             <slot></slot>
         </div>
-        
     </span>
 </template>
 <script>
 export default 
 {
     name:"mek_window",
+    setClasses:(_props)=>
+    {
+        let class_array=[];
+        if(_props.title!==undefined)
+        {
+            class_array.push("title_padding");
+        }
+        //if(["redmetal","bluemetal","greenmetal","redchrome","bluechrome"].includes(_props.color))
+        if(["redmetal","bluemetal","greenmetal"].includes(_props.color))
+        {
+            class_array.push(_props.color);
+        }
+        else
+        {
+            class_array.push("redmetal")
+        }
+
+        return class_array;
+    },
+    setType:(_type)=>
+    {
+        if(["metallic","greybox"].includes(_type))
+        {
+            return _type;
+        }
+        return "greybox";
+    }
 }
 </script>
 <style scoped>
@@ -58,22 +84,55 @@ export default
     line-height: 0px;
     height:0px;
 }
-.metallic_background_small_mw
+.redmetal
 {
     background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
         rgba(255, 129, 110,1) 49%, 
         rgba(255, 129, 110,1) 51%, 
         rgba(185,0,0,1) 100%);
+}
+.redchrome
+{
+    background-image: linear-gradient(to bottom right,
+     rgba(248, 80, 50, 1) 0%,
+     rgba(241, 111, 92, 1) 50%,
+     rgba(246, 41, 12, 1) 51%,
+     rgba(240, 47, 23, 1) 71%,
+     rgba(231, 56, 39, 1) 100%);
+}
+.bluemetal
+{
+    background-image: linear-gradient(to left top, rgba(0,0,247,1) 0%, 
+        rgba(182, 192, 255,1) 49%, 
+        rgba(182, 192, 255,1) 51%, 
+        rgba(0,0,185,1) 100%);
+}
+.bluechrome
+{
+    background-image: linear-gradient(to bottom right, 
+    rgba(109, 179, 242, 1) 0%,
+    rgba(84, 163, 238, 1) 50%,
+    rgba(54, 144, 240, 1) 51%,
+    /* rgb(29, 98, 172) 51%, */
+    /* rgb(30, 105, 222, 1) 100%); */
+    rgb(0, 0, 247, 1) 100%);
+}
+.greenmetal
+{
+    background-image: linear-gradient(to left top, rgba(0,116,0,1) 0%, 
+        rgba(129, 255, 110,1) 49%, 
+        rgba(129, 255, 110,1) 51%, 
+        rgba(0,141,0,1) 100%);
+}
+.metallic_background_small_mw
+{
+    
     height: 100%;
     width: 100%;
     padding:5px;
     border-radius: 7px;
     box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
     /* padding-top:34px; */
-}
-.title_padding
-{
-    padding-top:34px;
 }
 .subsection_container_mw
 {
@@ -84,5 +143,19 @@ export default
     height: 100%;
     width: 100%;
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
+}
+.greybox_background_small_mw
+{
+    background-color: rgb(170, 170, 170);
+    height: 100%;
+    width: 100%;
+    padding:5px;
+    border-radius: 7px;
+    box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
+    /* padding-top:34px; */
+}
+.title_padding
+{
+    padding-top:34px;
 }
 </style>
