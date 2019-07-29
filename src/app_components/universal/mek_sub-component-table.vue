@@ -1,139 +1,135 @@
 <template>
     <span class="mek-flex-col" style="align-self:baseline;">
-        <div class="metallic_background_small_sct">
-            <div class="subsection_container_sct">
-                <div class="subsection_header_small_sct">{{name}}</div>
-                <div class="subsection_hidden_header_sct">{{name}}</div>
-                <table style="margin:auto;" v-if="flow=='pkey-col'">
-                    <tr v-if="showHeaders" class="head_row_sct">
-                        <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
+        <mek-window type="metallic" :title="name">
+            <table style="margin:auto;" v-if="flow=='pkey-col'">
+                <tr v-if="showHeaders" class="head_row_sct">
+                    <th v-for="(header,key) in headers" :key="key+'-header-'+name" class="pad">
+                        {{header}}
+                    </th>
+                </tr>
+                <tr v-if="showHeaders">
+                    <td :colspan="colspan" style="line-height:2px;border-top:1px solid black">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr v-for="(item,index) in items" :key="index+'-item-'+name"
+                    class="clickable_sct pad_sct"
+                    :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
+                    @click="updateSelectedData(items[index])"
+                >
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                        {{formatOutput(item[key],key)}}
+                    </td>
+                </tr>
+                <tr class="invisible_pad_row_sct">
+                    <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                        {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+            </table>
+            <table style="margin:auto;" v-else-if="flow=='pkey-row'">
+                <tr>
+                    <td class="head_column_sct pad_sct" v-if="showHeaders">
+                        <div v-for="(header,key) in headers" :key="key+'-header-'+name">
                             {{header}}
-                        </th>
-                    </tr>
-                    <tr v-if="showHeaders">
-                        <td :colspan="colspan" style="line-height:2px;border-top:1px solid black">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
+                        </div>
+                    </td>
+                    <td>&nbsp;</td>
+                    <td v-for="(item,index) in items" :key="index+'-item-'+name"
                         class="clickable_sct pad_sct"
                         :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
                         @click="updateSelectedData(items[index])"
                     >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                        <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
                             {{formatOutput(item[key],key)}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row_sct">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table>
-                <table style="margin:auto;" v-else-if="flow=='pkey-row'">
-                    <tr>
-                        <td class="head_column_sct pad_sct" v-if="showHeaders">
-                            <div v-for="(header,key) in headers" :key="key+'-header-'+name">
-                                {{header}}
-                            </div>
-                        </td>
-                        <td>&nbsp;</td>
-                        <td v-for="(item,index) in items" :key="index+'-item-'+name"
-                            class="clickable_sct pad_sct"
-                            :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
-                            @click="updateSelectedData(items[index])"
-                        >
-                            <div v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                                {{formatOutput(item[key],key)}}
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-                <table style="margin:auto;" v-if="flow=='dropdown'">
-                    <tr v-if="showHeaders" class="head_row_sct">
-                        <th v-for="(header,key) in headers" :key="key+'-header-'+name">
-                            {{header}}
-                        </th>
-                    </tr>
-                    <tr>
-                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr class="pad selected_item_sct" @click="showDropdown=true"
-                        :style="hiddenDropDown"
+                        </div>
+                    </td>
+                </tr>
+            </table>
+            <table style="margin:auto;" v-if="flow=='dropdown'">
+                <tr v-if="showHeaders" class="head_row_sct">
+                    <th v-for="(header,key) in headers" :key="key+'-header-'+name">
+                        {{header}}
+                    </th>
+                </tr>
+                <tr>
+                    <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr class="pad selected_item_sct" @click="showDropdown=true"
+                    :style="hiddenDropDown"
+                >
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
                     >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
-                        >
-                            {{items[selectedIndices[0]][key]}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row_sct">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table>
-                <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown">
-                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
-                        class="clickable_sct pad_sct"
-                        :class="selectedItemMultiple('selectedIndices',index,'selected_item_sct')"
-                        @click="updateSelectedIndices(index);showDropdown=false"
+                        {{items[selectedIndices[0]][key]}}
+                    </td>
+                </tr>
+                <tr class="invisible_pad_row_sct">
+                    <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                        {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+            </table>
+            <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown">
+                <tr v-for="(item,index) in items" :key="index+'-item-'+name"
+                    class="clickable_sct pad_sct"
+                    :class="selectedItemMultiple('selectedIndices',index,'selected_item_sct')"
+                    @click="updateSelectedIndices(index);showDropdown=false"
+                >
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                        {{formatOutput(item[key],key)}}
+                    </td>
+                </tr>
+                <tr class="invisible_pad_row_sct">
+                    <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                        {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+            </table>
+            <table style="margin:auto;" v-if="flow=='dropdown-pkey'">
+                <tr v-if="showHeaders" class="head_row_sct">
+                    <th v-for="(header,key) in headers" :key="key+'-header-'+name">
+                        {{header}}
+                    </th>
+                </tr>
+                <tr>
+                    <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
+                        &nbsp;
+                    </td>
+                </tr>
+                <tr class="pad selected_item_sct" @click="showDropdown=true"
+                    :style="hiddenDropDown"
+                >
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
                     >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                            {{formatOutput(item[key],key)}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row_sct">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table>
-                <table style="margin:auto;" v-if="flow=='dropdown-pkey'">
-                    <tr v-if="showHeaders" class="head_row_sct">
-                        <th v-for="(header,key) in headers" :key="key+'-header-'+name">
-                            {{header}}
-                        </th>
-                    </tr>
-                    <tr>
-                        <td :colspan="colspan" style="line-height:4px;border-top:1px solid black">
-                            &nbsp;
-                        </td>
-                    </tr>
-                    <tr class="pad selected_item_sct" @click="showDropdown=true"
-                        :style="hiddenDropDown"
-                    >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
-                        >
-                            <!-- {{formatOutput(items[key],key)}} -->
-                            {{formatOutput(selectedDropdownPkey[key],key)}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row_sct">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table>
-                <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown">
-                    <tr v-for="(item,index) in items" :key="index+'-item-'+name"
-                        class="clickable_sct pad_sct"
-                        :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
-                        @click="updateSelectedData(items[index]);showDropdown=false"
-                    >
-                        <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
-                            {{formatOutput(item[key],key)}}
-                        </td>
-                    </tr>
-                    <tr class="invisible_pad_row_sct">
-                        <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
-                            {{largestKeyValues[key]}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
+                        <!-- {{formatOutput(items[key],key)}} -->
+                        {{formatOutput(selectedDropdownPkey[key],key)}}
+                    </td>
+                </tr>
+                <tr class="invisible_pad_row_sct">
+                    <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                        {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+            </table>
+            <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown">
+                <tr v-for="(item,index) in items" :key="index+'-item-'+name"
+                    class="clickable_sct pad_sct"
+                    :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
+                    @click="updateSelectedData(items[index]);showDropdown=false"
+                >
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                        {{formatOutput(item[key],key)}}
+                    </td>
+                </tr>
+                <tr class="invisible_pad_row_sct">
+                    <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
+                        {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+            </table>
+        </mek-window>
     </span>
 </template>
 <script>
@@ -155,7 +151,10 @@ export default
         selectedKeys: primary keys of selected elements
      */
     mixins:[selected_item_mixin],
-    components:{},
+    components:{
+        "mek-window": () =>
+            import(/* webpackChunkName: "mek_window" */ "@/app_components/universal/mek_window.vue"),
+    },
     data:()=>
     {
         let obj={};
@@ -317,34 +316,6 @@ table
     box-shadow: #222 0px 0px 5px 2px;
     z-index:100;
 }
-.subsection_header_small_sct
-{
-    font-weight: bold;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%,0%);
-    top: -32px;
-    font-family: Arial Black, sans-serif;
-    font-size: 110%;
-    border: 1px solid black;
-    padding: 2px 10px;
-    border-radius: 7px;
-    box-shadow: rgba(255, 255, 255, 0.5) -1px -1px 1px 1px inset, rgba(0,0,0,0.5) 1px 1px 1px 3px inset;
-    color: #ddd;
-    text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
-    background-color: rgba(0,0,0,0.2);
-    white-space: nowrap;
-}
-.subsection_hidden_header_sct
-{
-    font-weight: bold;
-    font-family: Arial Black, sans-serif;
-    font-size: 110%;
-    white-space: nowrap;
-    visibility: hidden;
-    line-height: 0px;
-    height:0px;
-}
 .head_column_sct
 {
     padding:2px 5px; 
@@ -382,42 +353,6 @@ tr.clickable_sct:hover td:last-child
 {
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
-}
-.metallic_background_sct
-{
-    background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
-        rgba(255, 129, 110,1) 49%, 
-        rgba(255, 129, 110,1) 51%, 
-        rgba(185,0,0,1) 100%);
-    height: 100%;
-    width: 100%;
-    padding:5px;
-    border-radius: 7px;
-    box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
-    padding-top:43px;
-}
-.metallic_background_small_sct
-{
-    background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
-        rgba(255, 129, 110,1) 49%, 
-        rgba(255, 129, 110,1) 51%, 
-        rgba(185,0,0,1) 100%);
-    height: 100%;
-    width: 100%;
-    padding:5px;
-    border-radius: 7px;
-    box-shadow: #222 0px 0px 0px 2px, #fff 0px 0px 5px 2px;
-    padding-top:34px;
-}
-.subsection_container_sct
-{
-    position: relative;
-    border-radius: 7px;
-    padding: 10px;
-    background-color: rgb(170, 170, 170);
-    height: 100%;
-    width: 100%;
-    box-shadow: rgb(34, 34, 34) 0px 0px 0px 2px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
 }
 .selected_item_sct
 {

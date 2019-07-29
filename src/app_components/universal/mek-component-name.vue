@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <mek-window type="metallic" noinset class="container">
         <span class="section_header">
             <span class="info_tag">{{newComponent?"(New)":""}} {{componentChanged?"(Unsaved)":""}} </span>
             <span class="edit_name" :contenteditable="editMode" @keydown="catchEnter($event)">{{componentName}}</span>
@@ -14,7 +14,7 @@
         <span v-if="editMode" class="icon_container cancel_icon" title="Cancel" @click="cancelEdit">
             <v-icon name="window-close" scale="0.75"></v-icon>
         </span>
-    </div>
+    </mek-window>
 </template>
 <script>
 import 'vue-awesome/icons/edit';
@@ -28,7 +28,9 @@ export default
     props:["componentName","newComponent","componentChanged"],
     components:
     {
-        'v-icon':Icon
+        'v-icon':Icon,
+        "mek-window": () =>
+            import(/* webpackChunkName: "mek_window" */ "@/app_components/universal/mek_window.vue"),
     },
     data:function()
     {
@@ -116,7 +118,7 @@ export default
     color: #eee;
     background-color: #222;
     padding: 2px 5px 1px 1px;
-    position: relative;
+    position: absolute;
     cursor: pointer;
 }
 .info_tag
@@ -126,20 +128,33 @@ export default
 }
 .edit_icon
 {
-    top: 5px;
-    position: absolute;
+    /* top: 5px; */
+    /* position: absolute; */
+    transform: translateX(10px);
 }
 .save_icon
 {
-    top: 5px;
-    position: absolute;
+    /* top: 5px; */
+    /* position: absolute; */
+    transform: translateX(10px);
 }
 .cancel_icon
 {
-    bottom: 5px;
-    position: absolute;
+    /* bottom: 5px; */
+    /* position: absolute; */
+    transform: translate(10px,25px);
 }
 .section_header
+{
+    font-weight: bold;
+    font-size: 25px;
+    color: #eee;
+    padding:5px 20px;
+    font-family: Arial Black, sans-serif;
+    text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
+    display: inline-block;
+}
+/* .section_header
 {
     display:inline-block;
     font-weight: bold;
@@ -151,10 +166,9 @@ export default
     box-shadow: rgb(34, 34, 34) 0px 0px 0px 1px inset, rgb(255, 255, 255) 0px 0px 5px 2px inset;
     color: #eee;
     text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
-    /*background-color: rgba(34,34,34,1);*/
     background-image: linear-gradient(to left top, rgba(247,0,0,1) 0%, 
         rgba(255, 129, 110,1) 49%, 
         rgba(255, 129, 110,1) 51%, 
         rgba(185,0,0,1) 100%)
-}
+} */
 </style>
