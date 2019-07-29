@@ -1,24 +1,5 @@
 <template>
     <div class="mek-button-container">
-        <!---span :class="{'mek-button':!saveClicked,'mek-button-clicked':saveClicked}" 
-            @click="button_clicked('save')" @animationend="saveClicked=false"
-            title="Save Equipment" v-if="showSave"
-        >
-            Save
-        </span>
-        <span :class="{'mek-button':!resetClicked,'mek-button-clicked':resetClicked}" 
-            @click="button_clicked('reset')" @animationend="resetClicked=false"
-            title="Reset Equipment" v-if="showReset"
-        >
-            Reset
-        </span>
-        <span :class="{'mek-button':!newClicked,'mek-button-clicked':newClicked}" 
-            @click="button_clicked('new')" @animationend="newClicked=false"
-            title="Clear/New Equipment" v-if="showNew"
-        >
-            New
-        </span--->
-
         <span v-for="(btn,idx) in filteredButtonList" :key="'msrc-'+btn.event+idx"
             :class="{'mek-button':!clickedTracker[btn.event],'mek-button-clicked':clickedTracker[btn.event]}" 
             @click="button_clicked(btn.event)" @animationend="clickedTracker[btn.event]=false"
@@ -26,7 +7,6 @@
         >
             {{btn.button}}
         </span>
-
     </div>
 </template>
 <script>
@@ -61,19 +41,6 @@ export default
     {
         button_clicked:function(_btn)
         {
-            // if(_btn=="save")
-            // {
-            //     this.saveClicked=true;
-            //     this.clickedTracker.save=true;
-            // }
-            // else if(_btn=="reset")
-            // {
-            //     this.resetClicked=true;
-            // }
-            // else if(_btn=="new")
-            // {
-            //     this.newClicked=true;
-            // }
             switch(_btn)
             {
                 case "save":
