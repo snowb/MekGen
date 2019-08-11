@@ -88,9 +88,11 @@ let configCompare=(_config1, _config2)=>
     case hardpoints1[0]=="all" && hardpoints2[0]=="all":
       return 0;
     case hardpoints1[0]=="all":
-    case hardpoints1.length > hardpoints2.length:
       return 1;
     case hardpoints2[0]=="all":
+      return -1;
+    case hardpoints1.length > hardpoints2.length:
+      return 1;
     case hardpoints1.length < hardpoints2.length:
       return -1;
   }
@@ -120,6 +122,34 @@ let updateConfigurationsList=(_base_config)=>
     });
 };
 
+let updateBaseConfiguration=(_working_configurations)=>
+{
+  let working_clone=JSON.parse(JSON.stringify(_working_configurations));
+  let base_config_uuid=Object.keys(working_clone)[0];
+
+  if(Object.keys(working_clone).length==1)
+  {
+    working_clone[base_config_uuid].base_config=true;
+  }
+  else
+  {
+    for(let _config_uuid in working_clone)
+    {
+      if(working_clone[_config_uuid].base_config)
+      {
+        delete working_clone[_config_uuid].base_config;
+      }
+      if(configCompare(working_clone[_config_uuid],working_clone[base_config_uuid])==1)
+      {
+        base_config_uuid=_config_uuid;
+      }
+    }
+  }
+  
+  working_clone[base_config_uuid].base_config=true;
+  return {configurations:working_clone,base_config_uuid:base_config_uuid};
+};
+
 /*
 let validateConfiguration=(_config)=>
 {
@@ -129,4 +159,4 @@ let validateConfiguration=(_config)=>
 }
 */
 
-export {configurationsList, filteredConfigurationsList, updateConfigurationsList};
+export {configurationsList, filteredConfigurationsList, updateConfigurationsList, updateBaseConfiguration};
