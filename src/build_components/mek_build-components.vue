@@ -119,7 +119,7 @@ export default {
       if(this.workingMek.uuid!==undefined)
       {
         sectionList.push({id:"mek-build-config",name:"Config"});
-        sectionList.push({id:"mek-build-frame",name:"Frame"});
+        //sectionList.push({id:"mek-build-frame",name:"Frame"});
       }
       return sectionList;
     },

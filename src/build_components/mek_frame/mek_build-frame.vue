@@ -1,6 +1,6 @@
 <template>
   <div class="mek-inline-flex-col">
-    {{selectedData}}
+    <mek-window>Much work, progress so wow</mek-window>
   </div>
 </template>
 
