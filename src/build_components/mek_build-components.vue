@@ -57,6 +57,7 @@ export default {
     {
       this.$store.commit('selectMek',_uuid);
       this.selected_uuid=_uuid;
+      this.$store.commit("showTab",{prop:"currentBuildTab",tab:"mek-build-general"});
     },
     saveSelectedData(_type, _data)
     {
@@ -71,6 +72,7 @@ export default {
               this.$set(this.workingMek,prop,clonedData[prop]);
             } 
           }
+          this.mek_select(this.workingMek.uuid);
           break;
         case "config":
           this.$set(this.workingMek,"configurations",clonedData);
@@ -119,7 +121,10 @@ export default {
       if(this.workingMek.uuid!==undefined)
       {
         sectionList.push({id:"mek-build-config",name:"Config"});
-        //sectionList.push({id:"mek-build-frame",name:"Frame"});
+        if(this.workingMek.configurations!==undefined && Object.keys(this.workingMek.configurations).length>0)
+        {
+          sectionList.push({id:"mek-build-frame",name:"Frame"});
+        }
       }
       return sectionList;
     },
