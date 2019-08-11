@@ -39,7 +39,7 @@ export default {
     [
       {id:"mek-build-general",name:"Mek"},
       {id:"mek-build-config",name:"Config"},
-      //{id:"mek-build-frame",name:"Frame"},
+      {id:"mek-build-frame",name:"Frame"},
     ];
     obj.originalMek={};
     obj.workingMek={};
@@ -98,10 +98,10 @@ export default {
   {
     ...mapGetters(
     {
-        targetBuildTab:'targetBuildTab',
-        listByCategoryAndType:"listByCategoryAndType",
-        getComponent:"getComponent",
-        selectedMek:"selectedMek"
+      targetBuildTab:'targetBuildTab',
+      listByCategoryAndType:"listByCategoryAndType",
+      getComponent:"getComponent",
+      selectedMek:"selectedMek"
     }),
     mekList()
     {
@@ -119,6 +119,7 @@ export default {
       if(this.workingMek.uuid!==undefined)
       {
         sectionList.push({id:"mek-build-config",name:"Config"});
+        sectionList.push({id:"mek-build-frame",name:"Frame"});
       }
       return sectionList;
     },
@@ -147,6 +148,7 @@ export default {
           }
           break;
         case "mek-build-config":
+        case "mek-build-frame":
           returnObj=this.getSelectedMek.configurations;
           break;
       }
@@ -156,6 +158,7 @@ export default {
   beforeDestroy()
   {
     this.$store.commit('saveComponent',null);
+    this.$store.commit("showTab",{prop:"currentBuildTab",tab:"mek-build-general"});
   }
 }
 </script>
