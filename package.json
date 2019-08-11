@@ -8,7 +8,10 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "version-patch":"npm --no-git-tag-version version patch",
+    "version-minor":"npm version minor",
+    "version-major":"npm version major"
   },
   "dependencies": {
     "terser": "^3.17.0",
