@@ -30,7 +30,7 @@
 
 <script>
 import utility_mixin from "@/mixins/utility_mixin";
-import {configurationsList, filteredConfigurationsList, updateConfigurationsList}
+import {configurationsList, filteredConfigurationsList, updateConfigurationsList, updateBaseConfiguration}
   from "@/data_table_modules/build_config/mek_build-config-module";
 
 export default {
@@ -149,10 +149,10 @@ export default {
           this.$set(this,"selected_configuration",null);
           break;
         case _config == "":
-          this.$set(this,"selected_configuration",this.selectedData[this.working_uuid]);
+          this.$set(this,"selected_configuration",this.working_configurations[this.working_uuid]);
           break;
         default:
-          this.$set(this,"selected_configuration",this.selectedData[_config]);
+          this.$set(this,"selected_configuration",this.working_configurations[_config]);
           this.working_uuid = _config;
           this.newComponent = false;
           this.component_changed = false;
@@ -254,8 +254,8 @@ export default {
       handler(_new) 
       {
         let working_configs = JSON.parse( JSON.stringify(this.selectedData || {}) );
-        this.$set(this,"working_configurations",working_configs);
-        if (_new === undefined || Object.keys(_new).length == 0 || _new===null)
+        let config_count=Object.keys(_new).length;
+        if (_new === undefined || config_count == 0 || _new===null)
         {
           this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
           this.working_uuid = null;
@@ -263,7 +263,19 @@ export default {
           this.newComponent = true;
           this.$set(this.selected_configuration, "base_config", true);
         }
-        else if(Object.keys(_new).length>1)
+        else
+        {
+          let updated_configs=updateBaseConfiguration(working_configs);
+          working_configs=updated_configs.configurations;
+          updateConfigurationsList(working_configs[updated_configs.base_config_uuid]);
+        }
+        this.$set(this,"working_configurations",working_configs);
+        /* else if(config_count==1)
+        {
+          let base_config_uuid=Object.keys(this.working_configurations)[0];
+          this.$set(this.working_configurations[base_config_uuid],"base_config",true);
+        }
+        else if(config_count>1)
         {
           let base_config_uuid=Object.keys(this.working_configurations)[0];
           for(let _config in this.working_configurations)
@@ -274,9 +286,9 @@ export default {
               updateConfigurationsList(this.working_configurations[_config]);
               break;
             }
-          }
+          } */
           //this.adjustBaseConfig(this.working_configurations[base_config_uuid]);
-        }
+        //}
         this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
         
       }
