@@ -20,7 +20,7 @@
         @update-selected-data="select_config"
       ></mek-sub-component-table>
       <!--- frame component ? --->
-      <mek-save-reset-component
+      <mek-save-reset-component style="align-self:baseline;"
         @save-reset-component="saveResetComponent"
         :activeButtons="activeButtons"
       ></mek-save-reset-component>
@@ -51,13 +51,13 @@ export default {
     let obj = {};
     obj.configurationFormsList = configurationsList;
     obj.headers = { config: "Form", cost: "Cost" };
-    obj.selected_configuration = null;//JSON.parse(JSON.stringify(obj.configurationForms[0]));
+    obj.selected_configuration = JSON.parse(JSON.stringify(filteredConfigurationsList[0]));
     obj.working_configurations = {};
     obj.component_name = null;
     obj.working_uuid = null;
 
-    obj.component_changed = true;
-    obj.newComponent = true;
+    obj.component_changed = false;
+    obj.newComponent = false;
     return obj;
   },
   methods:
@@ -134,7 +134,7 @@ export default {
         // eslint-disable-next-line
         case "new":
           this.working_uuid = null;
-          this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
+          this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.filtered_configuration_list[0])));
           //this.$set(this,"selected_configuration",null);
           this.newComponent = true;
           this.component_changed = true;
@@ -145,8 +145,8 @@ export default {
     {
       switch (true) {
         case _config == "" && this.working_uuid === null:
-          //this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationFormsList[0])));
-          this.$set(this,"selected_configuration",null);
+          this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.filtered_configuration_list[0])));
+          //this.$set(this,"selected_configuration",null);
           break;
         case _config == "":
           this.$set(this,"selected_configuration",this.working_configurations[this.working_uuid]);
@@ -240,7 +240,7 @@ export default {
     computedComponentName()
     {
       let name= this.component_name!==null ? this.component_name 
-              : this.selected_configuration!==null ? this.selected_configuration.config
+              : this.selected_configuration!==null && this.selected_configuration!==undefined ? this.selected_configuration.config
               : this.configurationForms.length>0 ? this.configurationForms[0].config
               : "dunno" ;
       return name;
@@ -254,7 +254,8 @@ export default {
       handler(_new) 
       {
         let working_configs = JSON.parse( JSON.stringify(this.selectedData || {}) );
-        let config_count=Object.keys(_new).length;
+        this.$set(this,"working_configurations",working_configs);
+        let config_count=_new ? Object.keys(_new).length : 0;
         if (_new === undefined || config_count == 0 || _new===null)
         {
           this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
@@ -268,29 +269,9 @@ export default {
           let updated_configs=updateBaseConfiguration(working_configs);
           working_configs=updated_configs.configurations;
           updateConfigurationsList(working_configs[updated_configs.base_config_uuid]);
-        }
-        this.$set(this,"working_configurations",working_configs);
-        /* else if(config_count==1)
-        {
-          let base_config_uuid=Object.keys(this.working_configurations)[0];
-          this.$set(this.working_configurations[base_config_uuid],"base_config",true);
-        }
-        else if(config_count>1)
-        {
-          let base_config_uuid=Object.keys(this.working_configurations)[0];
-          for(let _config in this.working_configurations)
-          {
-            if(this.working_configurations[_config].base_config)
-            {
-              base_config_uuid=this.working_configurations[_config].uuid;
-              updateConfigurationsList(this.working_configurations[_config]);
-              break;
-            }
-          } */
-          //this.adjustBaseConfig(this.working_configurations[base_config_uuid]);
-        //}
-        this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
-        
+          this.working_uuid=updated_configs.base_config_uuid;
+          this.load_config(updated_configs.base_config_uuid);
+        }        
       }
     },
     /* selected_configuration:
