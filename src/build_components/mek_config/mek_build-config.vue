@@ -30,6 +30,9 @@
 
 <script>
 import utility_mixin from "@/mixins/utility_mixin";
+import {configurationsList, filteredConfigurationsList, updateConfigurationsList}
+  from "@/data_table_modules/build_config/mek_build-config-module";
+
 export default {
   name: "mek-build-config",
   components: {
@@ -46,67 +49,9 @@ export default {
   mixins: [utility_mixin],
   data: () => {
     let obj = {};
-    obj.configurationFormsList =
-    [
-      //wildly incomplete
-      //needs to be in its own data module
-      //with a separate data module for modifiers
-      //for use with custom configs
-      {
-        config: "Humanoid",
-        cost: 0.375,
-        hardpoints: ["all"],
-        propulsion: ["all"],
-        flight_without_propulsion: false,
-        no_hands: false,
-        modifiers: {
-        }
-      },
-      {
-        config: "Tank",
-        cost: 0.3,
-        propulsion: ["wheels", "treads", "ges", "gravitics"],
-          hardpoints: ["torso", "head", "pod", "binder"],
-        no_hands: true,
-        flight_without_propulsion: false,
-        modifiers: {
-          maneuver_value: -1,
-          armor_stopping_power: +2,
-        }
-      },
-      {
-        config: "Avian",
-        cost: 0.35,
-        propulsion: ["legs", "ges", "thrusters", "gravitics"],
-        hardpoints: ["all"],
-        no_hands: true,
-        flight_without_propulsion: true,
-        modifiers:
-        {
-          maneuver_value: -1,
-          melee_damage: +2,
-          flight_movement_allowance: +6,
-          land_movement_alloance: +0,
-        }
-      },
-      {
-        config: "Fighter/Corvette",
-        cost: 0.3,
-        propulsion: ["ges", "thrusters", "gravitics"],
-        hardpoints: ["torso", "pod", "head", "wings", "binder"],
-        no_hands: true,
-        flight_without_propulsion: false,
-        modifiers:
-        {
-          maneuver_value: -2,
-          flight_movement_allowance: "x2",
-          minimum_flight_movement_alloance: 4,
-          land_movement_alloance: +0,
-        }
-      }
-    ];
+    obj.configurationFormsList = configurationsList;
     obj.headers = { config: "Form", cost: "Cost" };
-    obj.selected_configuration = null;//JSON.parse(JSON.stringify(obj.configurationFormsList[0]));
+    obj.selected_configuration = null;//JSON.parse(JSON.stringify(obj.configurationForms[0]));
     obj.working_configurations = {};
     obj.component_name = null;
     obj.working_uuid = null;
@@ -144,6 +89,10 @@ export default {
       if(base_config)
       {
         this.selected_configuration.base_config = true;
+        if(_config.config!=this.selected_configuration.config)
+        {
+          updateConfigurationsList(this.selected_configuration);
+        }
       }
       this.component_changed = true;
     },
@@ -209,63 +158,6 @@ export default {
           this.component_changed = false;
       }
     },
-    configCompare(_config1, _config2)
-    {
-      let config1=_config1.config;
-      let config2=_config2.config;
-
-      switch(true)
-      {
-        case config1==config2:
-          return 0;
-        case config1=="Humanoid":
-          return 1;
-        case config2=="Humanoid":
-          return -1;
-      }
-
-      let hardpoints1=_config1.hardpoints;
-      let hardpoints2=_config2.hardpoints;
-      switch(true)
-      {
-        case hardpoints1[0]=="all" && hardpoints2[0]=="all":
-          return 0;
-        case hardpoints1[0]=="all":
-        case hardpoints1.length > hardpoints2.length:
-          return 1;
-        case hardpoints2[0]=="all":
-        case hardpoints1.length < hardpoints2.length:
-          return -1;
-      }
- 
-      return this.hardpointCompare(hardpoints1,hardpoints2);
-    },
-    hardpointCompare(_hardpoints1, _hardpoints2)
-    {
-      let filtered=_hardpoints1.filter(_hardpoint =>
-      {
-        return !_hardpoints2.includes(_hardpoint);
-      });
-
-      return filtered.length>0 ? 1 : 0;
-    },
-    adjustBaseConfig(_current_base_config)
-    {//scans overall working configs, adjusts base_config config as needed
-      let new_base_config=null;
-      for(let _config in this.working_configurations)
-      {
-        if(this.configCompare(_current_base_config,this.working_configurations[_config])==-1)
-        {
-          new_base_config=this.working_configurations[_config].uuid;
-          break;
-        }
-      }
-      if(new_base_config!==null)
-      {
-        delete _current_base_config.base_config;
-        this.working_configurations[new_base_config].base_config=true;
-      }
-    }
   },
   computed: 
   {
@@ -303,33 +195,14 @@ export default {
     },
     configurationForms()
     {
-      let base_form =
-        this.selectedData === undefined || Object.keys(this.selectedData).length == 0
-          ? "Humanoid"
-          : this.selectedData[this.base_config_key].config; //selectedData is an object of objects, need to flag one as 'base'
-      let base_hardpoints = this.selectedData === undefined || Object.keys(this.selectedData).length == 0
-          ? ["all"]
-          : this.working_configurations[this.base_config_key].hardpoints; //selectedData is an object of objects, need to flag one as 'base'
-      let isBaseConfig=this.selected_configuration && this.selected_configuration.base_config
-          ? true : false ;
-      if (base_form == "Humanoid" || isBaseConfig)
+      switch(true)
       {
-        return this.configurationFormsList;
+        case this.selectedData === undefined:
+        case Object.keys(this.selectedData).length == 0:
+        case this.selected_configuration && this.selected_configuration.base_config:
+          return configurationsList;
       }
-      
-      if (base_hardpoints[0] == "all")
-      {
-        return this.configurationFormsList.slice(1);
-      }
-      let return_obj = this.configurationFormsList.reduce((_newConfigList, _config) =>
-      {
-        if([-1,0].includes(this.hardpointCompare(base_hardpoints,_config.hardpoints)))
-        {
-          _newConfigList.push(_config);
-        }
-        return _newConfigList;
-      }, []);
-      return return_obj;
+      return filteredConfigurationsList;
     },
     base_config_key()
     {
@@ -347,6 +220,18 @@ export default {
         }
       }
       return base_config_key === null ? first_config_key : base_config_key;
+    },
+    base_configuration()
+    {
+      if(this.base_config_key===null)
+      {
+        return null;
+      }
+      return this.working_configurations[this.base_config_key];
+    },
+    filtered_configuration_list()
+    {
+      return filteredConfigurationsList;
     },
     activeButtons()
     {
@@ -366,13 +251,13 @@ export default {
     selectedData:
     {
       immediate: true,
-      handler: function(_new) 
+      handler(_new) 
       {
         let working_configs = JSON.parse( JSON.stringify(this.selectedData || {}) );
         this.$set(this,"working_configurations",working_configs);
-        if (_new === undefined || Object.keys(_new).length == 0)
+        if (_new === undefined || Object.keys(_new).length == 0 || _new===null)
         {
-          this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationFormsList[0])));
+          this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
           this.working_uuid = null;
           this.component_changed = true;
           this.newComponent = true;
@@ -386,11 +271,14 @@ export default {
             if(this.working_configurations[_config].base_config)
             {
               base_config_uuid=this.working_configurations[_config].uuid;
+              updateConfigurationsList(this.working_configurations[_config]);
               break;
             }
           }
-          this.adjustBaseConfig(this.working_configurations[base_config_uuid]);
+          //this.adjustBaseConfig(this.working_configurations[base_config_uuid]);
         }
+        this.$set(this,"selected_configuration",JSON.parse(JSON.stringify(this.configurationForms[0])));
+        
       }
     },
     /* selected_configuration:
