@@ -20,7 +20,7 @@ let store= new Vuex.Store(
                     },
                 }
             },
-            currentDesignTab:"mek-shield",
+            currentDesignTab:"mek-servo",
             currentBuildTab:"mek-build-general",
             currentImportTab:"equipment",
             currentExportTab:"equipment",
@@ -198,6 +198,13 @@ let store= new Vuex.Store(
                 return _state.component_list[_category];
             },
             getComponent: (_state)=>(_uuid)=>_state.components[_uuid],
+            getMultipleComponents: (_state)=>(_uuid_list)=>
+            {
+                return _uuid_list.map((_uuid)=>
+                {
+                    return _state.components[_uuid];
+                });
+            },
             targetDesignTab: _state=>_state.currentDesignTab,
             targetBuildTab: _state=>_state.currentBuildTab,
             targetImportTab: _state=>_state.currentImportTab,
