@@ -121,10 +121,10 @@ export default {
       if(this.workingMek.uuid!==undefined)
       {
         sectionList.push({id:"mek-build-config",name:"Config"});
-        if(this.workingMek.configurations!==undefined && Object.keys(this.workingMek.configurations).length>0)
+        /* if(this.workingMek.configurations!==undefined && Object.keys(this.workingMek.configurations).length>0)
         {
           sectionList.push({id:"mek-build-frame",name:"Frame"});
-        }
+        } */
       }
       return sectionList;
     },
