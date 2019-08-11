@@ -1,0 +1,1 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["create_uuid_module~a62afb32"],{c0e5:function(e,n,t){"use strict";t.r(n),t.d(n,"create_uuid",function(){return r});t("6b54"),t("a481");let r=function(){return([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,e=>(e^crypto.getRandomValues(new Uint8Array(1))[0]&15>>e/4).toString(16))}}}]);
