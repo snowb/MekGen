@@ -99,9 +99,9 @@
                     </td>
                 </tr>
                 <tr class="pad selected_item_sct" @click="showDropdown=true"
-                    :style="hiddenDropDown"
+                    :style="hiddenDropDown" id="msct-td-id"
                 >
-                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" 
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" id="msct-td-id"
                     >
                         <!-- {{formatOutput(items[key],key)}} -->
                         {{formatOutput(selectedDropdownPkey[key],key)}}
@@ -113,13 +113,16 @@
                     </td>
                 </tr>
             </table>
-            <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown">
+            <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown"
+                 v-click-outside="clickOutside"
+            >
                 <tr v-for="(item,index) in items" :key="index+'-item-'+name"
                     class="clickable_sct pad_sct"
                     :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
-                    @click="updateSelectedData(items[index]);showDropdown=false"
+                    @click="updateSelectedData(items[index])"
+                    id="msct-td-id"
                 >
-                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name">
+                    <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" id="msct-td-id">
                         {{formatOutput(item[key],key)}}
                     </td>
                 </tr>
@@ -169,7 +172,11 @@ export default
         },
         updateSelectedData(_data)
         {
-            this.$emit("update-selected-data",_data);
+            if(_data[this.pkey]!=this.selectedKeys[0])
+            {
+                this.$emit("update-selected-data",_data);
+            }
+            this.showDropdown=false;
         },
         formatOutput(_data, _key)
         {
@@ -222,6 +229,13 @@ export default
                 }
             }
             return outputData;
+        },
+        clickOutside(_event)
+        {
+            if(_event.target.id!="msct-td-id")
+            {
+                this.showDropdown=false;
+            }
         }
     },
     computed:
@@ -278,7 +292,8 @@ export default
         },
         selectedDropdownPkey()
         {
-            let selected_dropdown_pkey;
+            let selected_dropdown_pkey={};
+            selected_dropdown_pkey[this.pkey]=null;
             this.items.some((_el)=>
             {
                 if(_el[this.pkey]==this.selectedKeys[0])
@@ -289,6 +304,23 @@ export default
                 return false;
             },this);
             return selected_dropdown_pkey;
+        }
+    },
+    directives:
+    {
+        "click-outside":
+        {
+            bind(_el, _binding, _vnode) 
+            {
+                _vnode.context.showDropdowm=true;
+                document.addEventListener('click',_vnode.context.clickOutside);
+            },   
+            unbind(_el, _binding, _vnode) 
+            {
+                document.removeEventListener('click',_vnode.context.clickOutside);
+            },
+
+            // stopProp(event) { event.stopPropagation() }
         }
     }
 }
