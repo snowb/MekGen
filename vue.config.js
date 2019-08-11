@@ -5,7 +5,7 @@ process.env.VUE_APP_BUILD_DATE=require("./timestamp")();
 module.exports = {
     publicPath:"./",
     configureWebpack: {
-        devtool: 'eval-source-map',
+        devtool: process.env.NODE_ENV=='development'?'eval-source-map':false,
         optimization: {
             splitChunks: {
               minSize: 10000,
