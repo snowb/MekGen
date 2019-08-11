@@ -3,5 +3,8 @@ process.env.VUE_APP_VERSION=require("./package.json").version;
 process.env.VUE_APP_BUILD_DATE=require("./timestamp")();
 
 module.exports = {
-    publicPath:"./"
+    publicPath:"./",
+    configureWebpack: {
+        devtool: 'eval-source-map'
+    }
 }
