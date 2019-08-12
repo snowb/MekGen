@@ -19,6 +19,7 @@
 <script>
 
 import {mapGetters} from 'vuex';
+import {isValidProperty} from "@/data_table_modules/universal/helper_functions";
 
 export default {
   name: 'build',
@@ -113,19 +114,32 @@ export default {
     },
     sectionList()
     { 
-      let sectionList=[{id:"mek-build-general",name:"Mek"}];
       if(this.workingMek===null)
       {
-        return sectionList;
+        return [{id:"mek-build-general",name:"Mek"}];
       }
-      if(this.workingMek.uuid!==undefined)
+/*       if(this.workingMek.uuid!==undefined)
       {
         sectionList.push({id:"mek-build-config",name:"Config"});
-        /* if(this.workingMek.configurations!==undefined && Object.keys(this.workingMek.configurations).length>0)
+        if(this.workingMek.configurations && Object.keys(this.workingMek.configurations).length>0)
         {
           sectionList.push({id:"mek-build-frame",name:"Frame"});
-        } */
+        }
+      } */
+      let sectionList=[];
+      switch(true)
+      {
+        case isValidProperty(this,"workingMek.configurations")
+        && Object.keys(this.workingMek.configurations).length>0:
+          sectionList.unshift({id:"mek-build-frame",name:"Frame"});
+          // eslint-disable-next-line
+        case isValidProperty(this,"workingMek.uuid"):
+          sectionList.unshift({id:"mek-build-config",name:"Config"});
+          // eslint-disable-next-line
+        default:
+          sectionList.unshift({id:"mek-build-general",name:"Mek"});
       }
+
       return sectionList;
     },
     getSelectedMek()
