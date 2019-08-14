@@ -50,7 +50,6 @@ export default {
   data: () => {
     let obj = {};
     obj.configurationFormsList = configurationsList;
-    obj.headers = { config: "Form", cost: "Cost" };
     obj.selected_configuration = JSON.parse(JSON.stringify(filteredConfigurationsList[0]));
     obj.working_configurations = {};
     obj.component_name = null;
@@ -221,14 +220,14 @@ export default {
       }
       return base_config_key === null ? first_config_key : base_config_key;
     },
-    base_configuration()
+    /* base_configuration()
     {
       if(this.base_config_key===null)
       {
         return null;
       }
       return this.working_configurations[this.base_config_key];
-    },
+    }, */
     filtered_configuration_list()
     {
       return filteredConfigurationsList;
@@ -244,6 +243,14 @@ export default {
               : this.configurationForms.length>0 ? this.configurationForms[0].config
               : "dunno" ;
       return name;
+    },
+    headers()
+    {
+      if(this.working_uuid===null || this.base_config_key==this.working_uuid)
+      {
+        return { config: "Form" }
+      }
+      return { config: "Form", cost: "Cost" };
     }
   },
   watch:
