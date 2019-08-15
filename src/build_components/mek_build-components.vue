@@ -118,14 +118,6 @@ export default {
       {
         return [{id:"mek-build-general",name:"Mek"}];
       }
-/*       if(this.workingMek.uuid!==undefined)
-      {
-        sectionList.push({id:"mek-build-config",name:"Config"});
-        if(this.workingMek.configurations && Object.keys(this.workingMek.configurations).length>0)
-        {
-          sectionList.push({id:"mek-build-frame",name:"Frame"});
-        }
-      } */
       let sectionList=[];
       switch(true)
       {
@@ -167,6 +159,7 @@ export default {
           }
           break;
         case "mek-build-config":
+          // eslint-disable-next-line
         case "mek-build-frame":
           returnObj=this.getSelectedMek.configurations;
           break;
