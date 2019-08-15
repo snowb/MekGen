@@ -6,8 +6,8 @@
             <div v-if="props.noinset!==undefined">
                 <slot></slot>
             </div>
-            <div :class="$options.innerClasses(props)" v-else>
-                <div class="subsection_header_small_mw" 
+            <div :class="$options.innerClasses(props)" :style="$options.innerStyle(props)" v-else>
+                <div :class="$options.titleClasses(props)"
                     v-if="props.title!==undefined"
                 >{{props.title}}</div>
                 <div class="subsection_hidden_header_mw"
@@ -31,9 +31,15 @@ export default
     outerClasses:(_props)=>
     {
         let class_array=["metallic_background_small_mw"];
-        if(_props.title!==undefined)
+        if(_props.title!==undefined && (_props.size===undefined || _props.size==""))
         {
+            class_array.push("subsection_header_size_default");
             class_array.push("title_padding");
+        }
+        else if(_props.title!==undefined && _props.size=="sm")
+        {
+            class_array.push("subsection_header_size_small")
+            class_array.push("title_padding_small");
         }
         //if(["redmetal","bluemetal","greenmetal","redchrome","bluechrome"].includes(_props.color))
         if(["redmetal","bluemetal","greenmetal","greymetal","goldmetal","grey"].includes(_props.color))
@@ -69,6 +75,35 @@ export default
 
         return class_array;
     },
+    innerStyle:(_props)=>
+    {
+        let style_array="";
+        if(_props.width!==undefined && _props.width!="")
+        {
+            let width=_props.width.replace(/[^0-9]/gi,"");
+            style_array+="width:"+width+"px;"
+        }
+        if(_props.minWidth!==undefined && _props.minWidth!="")
+        {
+            let minWidth=_props.minWidth.replace(/[^0-9]/gi,"");
+            style_array+="min-width:"+minWidth+"px;"
+        }
+
+        return style_array;
+    },
+    titleClasses:(_props)=>
+    {
+        let class_array=["subsection_header_mw"];
+        if(_props.title!==undefined && (_props.size===undefined || _props.size==""))
+        {
+            class_array.push("subsection_header_size_default");
+        }
+        else if(_props.title!==undefined && _props.size=="sm")
+        {
+            class_array.push("subsection_header_size_small")
+        }
+        return class_array;
+    },
     setType:(_type)=>
     {
         if(["metallic","greybox"].includes(_type))
@@ -80,15 +115,23 @@ export default
 }
 </script>
 <style scoped>
-.subsection_header_small_mw
+.subsection_header_size_small
+{
+    top: -24px;
+    font-size: 85%;
+}
+.subsection_header_size_default
+{
+    top: -34px;
+    font-size: 110%;
+}
+.subsection_header_mw
 {
     font-weight: bold;
     position: absolute;
     left: 50%;
     transform: translate(-50%,0%);
-    top: -32px;
     font-family: Arial Black, sans-serif;
-    font-size: 110%;
     border: 1px solid black;
     padding: 2px 10px;
     border-radius: 7px;
@@ -208,7 +251,11 @@ export default
 }
 .title_padding
 {
-    padding-top:34px;
+    padding-top:35px;
+}
+.title_padding_small
+{
+    padding-top: 25px;
 }
 .noinset
 {
