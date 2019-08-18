@@ -36,7 +36,37 @@
 </template>
 
 <script>
+/*
+props:
+  sections: object of objects of values (default)
+    -1st object keys are displayed as section headers
+    -2nd object keys are displayed as button name
+    -2nd object values returned when button clicked
+    OR
+  sections: object of values (list=true)
+    -keys displayed as buttons
+    -values returned on click
 
+  format:
+    "cut" - overflow is hidden (with ellipsis, shows full on hover)
+    default - full key is displayed
+
+  title: string, title displayed in side-menu
+
+  draggable: boolean
+
+  clickable: boolean, required for click events
+
+  collapsible: boolean, whether collapse bar is shown
+
+  selectedItem: string/valid object key
+    highlights matching bottom key in sections
+
+  events:
+    "side-menu-clicked": string/valid object value
+      returns the value of the clicked menu key
+
+ */
 export default 
 {
   name:"mek_frame_side_menu",
