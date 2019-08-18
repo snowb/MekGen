@@ -9,6 +9,27 @@
 </template>
 
 <script>
+/*
+props:
+    section: string, currently selected button, matching id in sectinoList
+
+    sectionList: array of objects, list of buttons to display
+        objects must be of format
+            {name:'name', id:'id'}
+
+    size: string
+        "sm", "lg", default (md)
+
+    color: hex string, base color of the button
+        "f"->"ffffff"
+        "fff"->"ffffff"
+
+    colorOffset: string, determines which colors to shade
+        "rgb" or subset of "rgb"
+
+    borderRadius: numeric, unused
+
+*/
 import selected_item_mixin from "@/mixins/selected_item_mixin";
 
 export default
