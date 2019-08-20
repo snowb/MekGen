@@ -288,15 +288,16 @@ export default
         },
         colspan()
         {
-            return Object.keys(this.headers).length
+            return this.headers!==undefined ? Object.keys(this.headers).length : 1 ;
         },
         selectedDropdownPkey()
         {
             let selected_dropdown_pkey={};
             selected_dropdown_pkey[this.pkey]=null;
+            let selectedKey=typeof this.selectedKeys=="string" ? this.selectedKeys : this.selectedKeys[0];
             this.items.some((_el)=>
             {
-                if(_el[this.pkey]==this.selectedKeys[0])
+                if(_el[this.pkey]==selectedKey)
                 {
                     selected_dropdown_pkey=_el;
                     return true;
