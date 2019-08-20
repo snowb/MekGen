@@ -17,7 +17,7 @@ let configurationsList=
     config: "Tank",
     cost: 0.3,
     propulsion: ["wheels", "treads", "ges", "gravitics"],
-    hardpoints: ["torso", "head", "pod", "binder"],
+    hardpoints: ["torso", "head", "pod"],
     no_hands: true,
     flight_without_propulsion: false,
     modifiers: {
@@ -44,7 +44,7 @@ let configurationsList=
     config: "Fighter/Corvette",
     cost: 0.3,
     propulsion: ["ges", "thrusters", "gravitics"],
-    hardpoints: ["torso", "pod", "head", "wings", "binder"],
+    hardpoints: ["torso", "head", "wings", "pod"],
     no_hands: true,
     flight_without_propulsion: false,
     modifiers:
