@@ -19,12 +19,31 @@
         <!---div class="metallic_background_small_mw" v-else-if="props.type=='metal'">
             <slot></slot>
         </div--->
-        <div :class="$options.innerClasses(props)" v-else>
+        <div :class="$options.innerClasses(props)" :style="$options.innerStyle(props)" v-else>
             <slot></slot>
         </div>
     </span>
 </template>
 <script>
+/*
+functional component
+
+props:
+    size: string, "sm" or other
+        "sm" generates a small window for smaller titles and text
+
+    color: string, "redmetal", "bluemetal", "greenmetal", "greymetal", "goldmetal", "grey"
+        *metal shows a metallic with given color
+        grey blank grey
+
+    engraveColor: string, 'engraved' color of the window
+
+    width: string, defines width of window
+
+    minWidth: string, defines min-width of window
+
+    title: string, title of the window
+*/
 export default 
 {
     name:"mek_window",
