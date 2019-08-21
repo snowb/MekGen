@@ -81,17 +81,22 @@ export default
         },
         class_table()
         {
-            create_class_data_table(this.servoType);
+            this.servoType;
             return class_data_table;
         }
     },
     watch:
     {
-        "servoType":function(_newval,_oldval)
-        {//must track changes in servoType to disable alerts for removed features on cleaned_feat
-            if(_newval!=_oldval)
-            {
-                this.suppressAlerts=true;
+        servoType:
+        {
+            immediate:true,
+            handler(_newval,_oldval)
+            {//must track changes in servoType to disable alerts for removed features on cleaned_feat
+                create_class_data_table(this.servoType);
+                if(_newval!=_oldval)
+                {
+                    this.suppressAlerts=true;
+                }
             }
         }
     }
