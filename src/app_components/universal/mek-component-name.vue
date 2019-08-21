@@ -142,14 +142,14 @@ export default
 {
     /* bottom: 5px; */
     /* position: absolute; */
-    transform: translate(10px,25px);
+    transform: translate(10px,19px);
 }
 .section_header
 {
     font-weight: bold;
     font-size: 25px;
     color: #eee;
-    padding:5px 20px;
+    padding:1px 10px;
     font-family: Arial Black, sans-serif;
     text-shadow: 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, -1px 1px 1px #000;
     display: inline-block;
