@@ -6,6 +6,7 @@ import {partial_validate, partial_has_feature, partial_get_feature, partial_clea
 let class_data_table=[];
 let data_table_keys=["code","id","name","cost","kills","damage_bonus","throw_range"];
 //create new class_data_table
+let data_cached=false;
 let create_class_data_table=function(_servo_type)
 {//factory function to create class_data_table based on servo_type, otherwise creates a generic head-type servo
     let type_cost_multiplier=1;
@@ -61,19 +62,43 @@ let create_class_data_table=function(_servo_type)
         }
         return obj;
     });
+    data_cached=false;
     class_data_table=new_class_table;
 };
 create_class_data_table();//create default servo_class_table
+/*
+
+DATA BEING SAVED IS TORSO NOT DYNAMIC
+data being displayed is dynamic ... odd ...
+
+*/
 
 //data validator for class_data_table
 //call partial_validate with appropriate data for full validate
-let servo_class_validate=partial_validate(class_data_table, data_table_keys);
+let cached_validate=partial_validate(class_data_table, data_table_keys);
+let servo_class_validate=(_data)=>
+{
+    if(data_cached)
+    {
+        return cached_validate(_data);
+    }
+    data_cached=true;
+    cached_validate=partial_validate(class_data_table, data_table_keys);
+    return cached_validate(_data);
+};
 
 //completed function for checking if data has data
-let has_feature=partial_has_feature(class_data_table);
+let has_feature=(_pkey,_data)=>
+{
+    return partial_has_feature(class_data_table)(_pkey,_data);
+};
+
 
 //completed function for returning matching data
-let get_feature=partial_get_feature(class_data_table, has_feature);
+let get_feature=(_pkey,_data)=>
+{
+    return partial_get_feature(class_data_table, has_feature)(_pkey,_data);
+};
 
 let default_data=get_feature("code",1);
 
