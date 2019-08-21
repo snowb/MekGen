@@ -42,6 +42,8 @@ props:
 
     minWidth: string, defines min-width of window
 
+    maxWidth: string, defines max-width of window
+
     title: string, title of the window
 */
 export default 
@@ -107,6 +109,11 @@ export default
             let minWidth=_props.minWidth.replace(/[^0-9]/gi,"");
             style_array+="min-width:"+minWidth+"px;"
         }
+        if(_props.maxWidth!==undefined && _props.maxWidth!="")
+        {
+            let maxWidth=_props.maxWidth.replace(/[^0-9]/gi,"");
+            style_array+="max-width:"+maxWidth+"px;"
+        }
 
         return style_array;
     },
@@ -139,10 +146,20 @@ export default
     top: -24px;
     font-size: 85%;
 }
+.subsection_header_size_small > *
+{
+    top: initial;
+    font-size: initial;
+}
 .subsection_header_size_default
 {
     top: -34px;
-    font-size: 110%;
+    font-size: 120%;
+}
+.subsection_header_size_default > *
+{
+    top: initial;
+    font-size: initial;
 }
 .subsection_header_mw
 {
