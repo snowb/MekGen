@@ -71,7 +71,7 @@
                     </td>
                 </tr>
             </table>
-            <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown">
+            <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown" :style="maxTableWidth">
                 <tr v-for="(item,index) in items" :key="index+'-item-'+name"
                     class="clickable_sct pad_sct"
                     :class="selectedItemMultiple('selectedIndices',index,'selected_item_sct')"
@@ -87,7 +87,7 @@
                     </td>
                 </tr>
             </table>
-            <table style="margin:auto;" v-if="flow=='dropdown-pkey'">
+            <table style="margin:auto;" v-if="flow=='dropdown-pkey'" :style="maxTableWidth">
                 <tr v-if="showHeaders" class="head_row_sct">
                     <th v-for="(header,key) in headers" :key="key+'-header-'+name">
                         {{header}}
@@ -114,12 +114,12 @@
                 </tr>
             </table>
             <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown"
-                 v-click-outside="clickOutside"
+                 v-click-outside="clickOutside" :style="maxTableWidth"
             >
                 <tr v-for="(item,index) in items" :key="index+'-item-'+name"
-                    class="clickable_sct pad_sct"
+                    class="clickable_sct pad_sct dropdown-row_sct"
                     :class="selectedItemMultiple('selectedKeys',item[pkey],'selected_item_sct')"
-                    @click="updateSelectedData(items[index])"
+                    @click="updateSelectedData(items[index])" @mouseover="updateMouseOver(item[pkey])"
                     id="msct-td-id"
                 >
                     <td v-for="(header,key) in headers" :key="'item-'+key+'-element-'+name" id="msct-td-id">
@@ -137,11 +137,20 @@
 </template>
 <script>
 import selected_item_mixin from "@/mixins/selected_item_mixin";
+/*
+events:
+    update-selected-indices: numeric, returns selected index from items array
 
+    update-selected-data: pkey value, returns selected pkey from items array of objects
+
+    update-mouse-over: pkey value, returns moused-over pkey from items array of objects
+        ** don't use?
+ */
 export default 
 {
     name:"mek_sub_component_table",
-    props:["name","items","headers","flow","selectedIndices","showHeaders","format","pkey","selectedKeys"],
+    props:["name","items","headers","flow","selectedIndices","showHeaders",
+            "format","pkey","selectedKeys","maxWidth"],
     /*
         name: String, title of the sub-component
         items: Array[Object], array of objects to display in the sub-component
@@ -177,6 +186,10 @@ export default
                 this.$emit("update-selected-data",_data);
             }
             this.showDropdown=false;
+        },
+        updateMouseOver(_pkey)
+        {
+            this.$emit("update-mouse-over",_pkey);
         },
         formatOutput(_data, _key)
         {
@@ -305,6 +318,14 @@ export default
                 return false;
             },this);
             return selected_dropdown_pkey;
+        },
+        maxTableWidth()
+        {
+            if(this.maxWidth===undefined || this.maxWidth=="")
+            {
+                return "";
+            }
+            return "max-width: "+this.maxWidth.replace(/[^0-9]/gi,"")+"px;";
         }
     },
     directives:
@@ -365,6 +386,11 @@ table
 .clickable_sct
 {
     cursor: pointer;
+    
+}
+.dropdown-row_sct
+{
+    border-bottom: rgba(0,0,0,0.2) dashed 1px;
 }
 .pad_sct
 {
