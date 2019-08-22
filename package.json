@@ -1,6 +1,6 @@
 {
   "name": "mekton_mek_generator",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Mekton Mek Generator",
   "author": "https://github.com/snowb",
   "license": "GNU General Public License v3.0",
@@ -9,9 +9,9 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "version-patch":"npm --no-git-tag-version version patch",
-    "version-minor":"npm version minor",
-    "version-major":"npm version major"
+    "Patch Version": "npm version patch",
+    "Minor Version": "npm version minor",
+    "Major Version": "npm version major"
   },
   "dependencies": {
     "terser": "^3.17.0",
