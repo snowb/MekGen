@@ -357,6 +357,10 @@ table:not(.dropdown-table_sct)
 {
     width: 100%;
 }
+table.dropdown-table_sct
+{
+    width: 90%;
+}
 .invisible_pad_row_sct
 {
     visibility:hidden;
