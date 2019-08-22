@@ -46,7 +46,7 @@
                     </td>
                 </tr>
             </table>
-            <table style="margin:auto;" v-if="flow=='dropdown'">
+            <table style="margin:auto;" v-if="flow=='dropdown'" :style="maxTableWidth">
                 <tr v-if="showHeaders" class="head_row_sct">
                     <th v-for="(header,key) in headers" :key="key+'-header-'+name">
                         {{header}}
@@ -352,6 +352,10 @@ table
 {
     border-collapse: collapse;
     box-sizing:border-box;
+}
+table:not(.dropdown-table_sct)
+{
+    width: 100%;
 }
 .invisible_pad_row_sct
 {
