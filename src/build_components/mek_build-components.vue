@@ -29,7 +29,7 @@ export default {
     //"mek-alert":()=>import(/* webpackChunkName: "[request]" */"../app_components/universal/mek_alert.vue"),
     "mek-side-menu":()=>import(/* webpackChunkName: "mek_side-menu" */"@/app_components/mek_side_menu/mek_side-menu.vue"),
 
-    "mek-build-frame":()=>import(/* webpackChunkName: "mek_build-frame" */"@/build_components/mek_frame/mek_build-frame.vue"),
+    // "mek-build-frame":()=>import(/* webpackChunkName: "mek_build-frame" */"@/build_components/mek_frame/mek_build-frame.vue"),
     "mek-build-general":()=>import(/* webpackChunkName: "mek_build-general" */"@/build_components/mek_general/mek_build-general.vue"),
     "mek-build-config":()=>import(/* webpackChunkName: "mek_build-config" */"@/build_components/mek_config/mek_build-config.vue"),
   },
@@ -121,9 +121,9 @@ export default {
       let sectionList=[];
       switch(true)
       {
-        case isValidProperty(this,"workingMek.configurations")
+        /* case isValidProperty(this,"workingMek.configurations")
         && Object.keys(this.workingMek.configurations).length>0:
-          sectionList.unshift({id:"mek-build-frame",name:"Frame"});
+          sectionList.unshift({id:"mek-build-frame",name:"Frame"}); */
           // eslint-disable-next-line
         case isValidProperty(this,"workingMek.uuid"):
           sectionList.unshift({id:"mek-build-config",name:"Config"});
