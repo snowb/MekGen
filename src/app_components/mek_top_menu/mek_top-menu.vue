@@ -1,5 +1,5 @@
 <template>
-    <span class="mek-inline-flex-row">
+    <span :class="directionClass">
         <span v-for="(section,index) in sectionList" :key="index" :class="selectedItem('focusedSection',section.id,'top_menu_selected_item','top_menu_nonselected_item')"
             @click="focusSection(section.id)"
             class="clickable top_menu" :style="button_style(selectedItem('focusedSection',section.id,'selected','nonselected'))">
@@ -35,7 +35,7 @@ import selected_item_mixin from "@/mixins/selected_item_mixin";
 export default
 {
     name: "mek_top_menu",
-    props:["section","sectionList","size","color","colorOffset","borderRadius"],
+    props:["section","sectionList","size","color","colorOffset","borderRadius","direction"],
     mixins:[selected_item_mixin],
     data:function()
     {
@@ -68,7 +68,21 @@ export default
     },
     computed:
     {
-        focusedSection:function()
+        directionClass()
+        {
+            if(this.direction===undefined)
+            {
+                return "mek-inline-flex-row";
+            }
+            switch(this.direction)
+            {
+                case "col":
+                    return "mek-inline-flex-col";
+                default:
+                    return "mek-inline-flex-row";
+            }
+        },
+        focusedSection()
         {
             return this.section;
         },
