@@ -26,6 +26,11 @@
                         {{largestKeyValues[key]}}
                     </td>
                 </tr>
+                <tr class="invisible_title">
+                    <td :colspan="headersLength">
+                        {{name}}
+                    </td>
+                </tr>
             </table>
             <table style="margin:auto;" v-else-if="flow=='pkey-row'">
                 <tr>
@@ -70,6 +75,11 @@
                         {{largestKeyValues[key]}}
                     </td>
                 </tr>
+                <tr class="invisible_title">
+                    <td :colspan="headersLength">
+                        {{name}}
+                    </td>
+                </tr>
             </table>
             <table class="dropdown-table_sct" v-if="flow=='dropdown' && showDropdown" :style="maxTableWidth">
                 <tr v-for="(item,index) in items" :key="index+'-item-'+name"
@@ -84,6 +94,11 @@
                 <tr class="invisible_pad_row_sct">
                     <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                         {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+                <tr class="invisible_title">
+                    <td :colspan="headersLength">
+                        {{name}}
                     </td>
                 </tr>
             </table>
@@ -112,6 +127,11 @@
                         {{largestKeyValues[key]}}
                     </td>
                 </tr>
+                <tr class="invisible_title">
+                    <td :colspan="headersLength">
+                        {{name}}
+                    </td>
+                </tr>
             </table>
             <table class="dropdown-table_sct" v-if="flow=='dropdown-pkey' && showDropdown"
                  v-click-outside="clickOutside" :style="maxTableWidth"
@@ -129,6 +149,11 @@
                 <tr class="invisible_pad_row_sct">
                     <td v-for="(header,key) in headers" :key="key+'-pad-'+name">
                         {{largestKeyValues[key]}}
+                    </td>
+                </tr>
+                <tr class="invisible_title">
+                    <td :colspan="headersLength">
+                        {{name}}
                     </td>
                 </tr>
             </table>
@@ -326,6 +351,10 @@ export default
                 return "";
             }
             return "max-width: "+this.maxWidth.replace(/[^0-9]/gi,"")+"px;";
+        },
+        headersLength()
+        {
+            return Object.keys(this.headers).length;
         }
     },
     directives:
@@ -353,20 +382,22 @@ table
     border-collapse: collapse;
     box-sizing:border-box;
 }
-table:not(.dropdown-table_sct)
-{
-    width: 100%;
-}
-table.dropdown-table_sct
-{
-    width: 90%;
-}
 .invisible_pad_row_sct
 {
     visibility:hidden;
     height:0px;
     line-height:0px;
     font-weight:bold;
+}
+.invisible_title
+{
+    font-weight: bold;
+    font-family: Arial Black, sans-serif;
+    font-size: 120%;
+    white-space: nowrap;
+    visibility: hidden;
+    line-height: 0px;
+    height:0px;
 }
 .dropdown-table_sct
 {
