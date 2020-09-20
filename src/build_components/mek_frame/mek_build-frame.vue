@@ -41,8 +41,8 @@ export default
       "@/app_components/mek_top_menu/mek_top-menu.vue"),
     "mek-side-menu":()=>import(/* webpackChunkName: "mek_side-menu" */
       "@/app_components/mek_side_menu/mek_side-menu.vue"),
-    "mek-window":()=>import(/* webpackChunkName: "mek_window" */
-      "@/app_components/universal/mek_window.vue"),
+    //"mek-window":()=>import(/* webpackChunkName: "mek_window" */
+    //  "@/app_components/universal/mek_window.vue"),
   },
   mixins:[],
   data:()=>
